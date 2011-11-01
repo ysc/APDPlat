@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.platform.filter.OpenEntityManagerInViewFilter" project="APDPlat_Core" xLocation="4133" yLocation="786"/>
+        <class className="com.apdplat.platform.filter.GzipFilter" project="APDPlat_Core" xLocation="809" yLocation="847"/>
+        <class className="com.apdplat.platform.filter.GenericResponseWrapper" project="APDPlat_Core" xLocation="3947" yLocation="-381"/>
+        <class className="com.apdplat.platform.filter.FilterServletOutputStream" project="APDPlat_Core" xLocation="2396" yLocation="-313"/>
+        <class className="com.apdplat.platform.filter.ResponseUtil" project="APDPlat_Core" xLocation="2605" yLocation="838"/>
+        <class className="com.apdplat.platform.filter.Filter" project="APDPlat_Core" xLocation="140" yLocation="-398"/>
+    </diagram>
+</ajsv>

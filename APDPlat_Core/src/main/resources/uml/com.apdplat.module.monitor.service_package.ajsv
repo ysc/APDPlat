@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.module.monitor.service.BackupLogChartDataService" project="APDPlat_Core" xLocation="3445" yLocation="606"/>
+        <class className="com.apdplat.module.monitor.service.MemoryMonitorThread" project="APDPlat_Core" xLocation="3442" yLocation="856"/>
+        <class className="com.apdplat.module.monitor.service.RuningTimeChartDataService" project="APDPlat_Core" xLocation="3436" yLocation="1561"/>
+        <class className="com.apdplat.module.monitor.service.BackupLogSingleService" project="APDPlat_Core" xLocation="4090" yLocation="815"/>
+        <class className="com.apdplat.module.monitor.service.UserLoginSingleService" project="APDPlat_Core" xLocation="4090" yLocation="1001"/>
+        <class className="com.apdplat.module.monitor.service.IndexLogChartDataService" project="APDPlat_Core" xLocation="3440" yLocation="1190"/>
+        <class className="com.apdplat.module.monitor.service.UserLoginChartDataService" project="APDPlat_Core" xLocation="3438" yLocation="1404"/>
+        <class className="com.apdplat.module.monitor.service.IndexLogSingleService" project="APDPlat_Core" xLocation="4092" yLocation="902"/>
+        <class className="com.apdplat.module.monitor.service.RuningTimeSingleService" project="APDPlat_Core" xLocation="4091" yLocation="1102"/>
+        <class className="com.apdplat.module.monitor.service.ProcessTimeSingleService" project="APDPlat_Core" xLocation="3453" yLocation="434"/>
+        <class className="com.apdplat.module.monitor.service.ProcessTimeChartDataService" project="APDPlat_Core" xLocation="4495" yLocation="1269"/>
+        <class className="com.apdplat.module.monitor.service.MemoryStateCategoryService" project="APDPlat_Core" xLocation="4616" yLocation="598"/>
+        <class className="com.apdplat.module.monitor.service.MemoryStateChartDataService" project="APDPlat_Core" xLocation="4604" yLocation="970"/>
+    </diagram>
+</ajsv>

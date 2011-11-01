@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.module.dictionary.service.DicParser" project="APDPlat_Core" xLocation="1038" yLocation="590"/>
+        <class className="com.apdplat.module.dictionary.action.DicItemAction" project="APDPlat_Core" xLocation="-550" yLocation="-518"/>
+        <class className="com.apdplat.module.dictionary.generator.DictionaryGenerator" project="APDPlat_Core" xLocation="-539" yLocation="874"/>
+        <class className="com.apdplat.module.dictionary.model.Dic" project="APDPlat_Core" xLocation="-586" yLocation="-150"/>
+        <class className="com.apdplat.module.dictionary.model.DicItem" project="APDPlat_Core" xLocation="1211" yLocation="-110"/>
+        <class className="com.apdplat.module.dictionary.service.register.RegisteDic" project="APDPlat_Core" xLocation="667" yLocation="86"/>
+        <class className="com.apdplat.module.dictionary.action.DicAction" project="APDPlat_Core" xLocation="942" yLocation="-591"/>
+        <class className="com.apdplat.module.dictionary.service.DicService" project="APDPlat_Core" xLocation="40" yLocation="-641"/>
+    </diagram>
+</ajsv>

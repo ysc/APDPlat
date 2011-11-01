@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.module.security.service.register.RegisteUser" project="APDPlat_Core" xLocation="442" yLocation="89"/>
+        <class className="com.apdplat.module.security.service.register.RegisteRole" project="APDPlat_Core" xLocation="918" yLocation="105"/>
+        <class className="com.apdplat.module.security.service.register.RegisteOrg" project="APDPlat_Core" xLocation="-185" yLocation="51"/>
+    </diagram>
+</ajsv>

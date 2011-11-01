@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.module.monitor.model.MemoryState" project="APDPlat_Core" xLocation="622" yLocation="-156"/>
+        <class className="com.apdplat.module.monitor.model.BackupLog" project="APDPlat_Core" xLocation="2110" yLocation="1091"/>
+        <class className="com.apdplat.module.monitor.model.IndexLog" project="APDPlat_Core" xLocation="2115" yLocation="107"/>
+        <class className="com.apdplat.module.monitor.model.RuningTime" project="APDPlat_Core" xLocation="614" yLocation="764"/>
+        <class className="com.apdplat.module.monitor.model.ProcessTime" project="APDPlat_Core" xLocation="1399" yLocation="178"/>
+        <class className="com.apdplat.module.monitor.model.IndexLogResult" project="APDPlat_Core" xLocation="2118" yLocation="-108"/>
+        <class className="com.apdplat.module.monitor.model.BackupLogResult" project="APDPlat_Core" xLocation="1417" yLocation="-95"/>
+        <class className="com.apdplat.module.monitor.model.UserLogin" project="APDPlat_Core" xLocation="1402" yLocation="1202"/>
+        <class className="com.apdplat.module.monitor.model.BackupLogType" project="APDPlat_Core" xLocation="1754" yLocation="-105"/>
+    </diagram>
+</ajsv>

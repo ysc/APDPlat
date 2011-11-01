@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.platform.util.ReflectionUtils" project="APDPlat_Core" xLocation="5109" yLocation="-876"/>
+        <class className="com.apdplat.platform.util.XMLUtils" project="APDPlat_Core" xLocation="5102" yLocation="242"/>
+        <class className="com.apdplat.platform.util.SpringContextUtils" project="APDPlat_Core" xLocation="2058" yLocation="370"/>
+        <class className="com.apdplat.platform.util.Struts2Utils" project="APDPlat_Core" xLocation="3626" yLocation="-184"/>
+        <class className="com.apdplat.platform.util.FileUtils" project="APDPlat_Core" xLocation="3704" yLocation="-872"/>
+        <class className="com.apdplat.platform.util.SortUtils" project="APDPlat_Core" xLocation="5793" yLocation="259"/>
+        <class className="com.apdplat.platform.util.PKIUtils" project="APDPlat_Core" xLocation="1879" yLocation="-163"/>
+        <class className="com.apdplat.platform.util.ConvertUtils" project="APDPlat_Core" xLocation="5069" yLocation="-64"/>
+        <class className="com.apdplat.platform.util.ServletUtils" project="APDPlat_Core" xLocation="1860" yLocation="-888"/>
+        <class className="com.apdplat.platform.util.XMLFactory" project="APDPlat_Core" xLocation="5784" yLocation="-90"/>
+    </diagram>
+</ajsv>

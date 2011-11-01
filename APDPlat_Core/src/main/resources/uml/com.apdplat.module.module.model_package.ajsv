@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.module.module.model.Module" project="APDPlat_Core" xLocation="-158" yLocation="34"/>
+        <class className="com.apdplat.module.module.model.Command" project="APDPlat_Core" xLocation="860" yLocation="164"/>
+    </diagram>
+</ajsv>

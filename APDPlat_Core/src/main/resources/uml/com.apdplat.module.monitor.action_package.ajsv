@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.module.monitor.action.RuningTimeAction" project="APDPlat_Core" xLocation="2804" yLocation="336"/>
+        <class className="com.apdplat.module.monitor.action.IndexLogAction" project="APDPlat_Core" xLocation="2912" yLocation="-362"/>
+        <class className="com.apdplat.module.monitor.action.ProcessTimeAction" project="APDPlat_Core" xLocation="1659" yLocation="281"/>
+        <class className="com.apdplat.module.monitor.action.BackupLogAction" project="APDPlat_Core" xLocation="2827" yLocation="-30"/>
+        <class className="com.apdplat.module.monitor.action.UserLoginAction" project="APDPlat_Core" xLocation="1662" yLocation="-51"/>
+        <class className="com.apdplat.module.monitor.action.MemoryStateAction" project="APDPlat_Core" xLocation="1652" yLocation="-382"/>
+        <class className="com.apdplat.module.monitor.filter.PerformanceFilter" project="APDPlat_Core" xLocation="1670" yLocation="-725"/>
+    </diagram>
+</ajsv>

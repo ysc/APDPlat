@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.module.security.action.UserAction" project="APDPlat_Core" xLocation="3090" yLocation="44"/>
+        <class className="com.apdplat.module.security.action.RoleAction" project="APDPlat_Core" xLocation="2109" yLocation="53"/>
+        <class className="com.apdplat.module.security.action.ActiveAction" project="APDPlat_Core" xLocation="2105" yLocation="594"/>
+        <class className="com.apdplat.module.security.action.OrgAction" project="APDPlat_Core" xLocation="2467" yLocation="837"/>
+    </diagram>
+</ajsv>
