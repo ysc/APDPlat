@@ -2,11 +2,12 @@
 <!--AgileJ Ltd. (http://www.agilej.com)-->
 <ajsv>
     <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
-        <class className="com.apdplat.platform.service.ServiceFacade" project="APDPlat_Core" xLocation="0" yLocation="0"/>
-        <class className="com.apdplat.platform.service.CategoryService" project="APDPlat_Core" xLocation="20" yLocation="20"/>
-        <class className="com.apdplat.platform.service.Service" project="APDPlat_Core" xLocation="40" yLocation="40"/>
-        <class className="com.apdplat.platform.service.AbstractService" project="APDPlat_Core" xLocation="60" yLocation="60"/>
-        <class className="com.apdplat.platform.service.ChartService" project="APDPlat_Core" xLocation="80" yLocation="80"/>
-        <class className="com.apdplat.platform.service.SingleService" project="APDPlat_Core" xLocation="100" yLocation="100"/>
+        <class className="com.apdplat.platform.service.ServiceFacade" project="APDPlat_Core" xLocation="682" yLocation="749"/>
+        <class className="com.apdplat.platform.service.CategoryService" project="APDPlat_Core" xLocation="1516" yLocation="335"/>
+        <class className="com.apdplat.platform.service.Service" project="APDPlat_Core" xLocation="-1017" yLocation="560"/>
+        <class className="com.apdplat.platform.service.AbstractService" project="APDPlat_Core" xLocation="-1020" yLocation="787"/>
+        <class className="com.apdplat.platform.service.ChartService" project="APDPlat_Core" xLocation="796" yLocation="37"/>
+        <class className="com.apdplat.platform.service.SingleService" project="APDPlat_Core" xLocation="685" yLocation="514"/>
+        <class className="com.apdplat.platform.common.Common" project="APDPlat_Core" xLocation="-1017" yLocation="36"/>
     </diagram>
 </ajsv>

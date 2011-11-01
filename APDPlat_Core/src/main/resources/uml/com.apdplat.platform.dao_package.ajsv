@@ -2,9 +2,11 @@
 <!--AgileJ Ltd. (http://www.agilej.com)-->
 <ajsv>
     <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
-        <class className="com.apdplat.platform.dao.DaoFacade" project="APDPlat_Core" xLocation="2065" yLocation="102"/>
-        <class className="com.apdplat.platform.dao.AbstractDao" project="APDPlat_Core" xLocation="3933" yLocation="120"/>
-        <class className="com.apdplat.platform.dao.Dao" project="APDPlat_Core" xLocation="4575" yLocation="-100"/>
-        <class className="com.apdplat.platform.dao.DaoSupport" project="APDPlat_Core" xLocation="2367" yLocation="-654"/>
+        <class className="com.apdplat.platform.dao.DaoFacade" project="APDPlat_Core" xLocation="2062" yLocation="123"/>
+        <class className="com.apdplat.platform.dao.AbstractDao" project="APDPlat_Core" xLocation="3941" yLocation="87"/>
+        <class className="com.apdplat.platform.dao.Dao" project="APDPlat_Core" xLocation="4220" yLocation="-221"/>
+        <class className="com.apdplat.platform.dao.DaoSupport" project="APDPlat_Core" xLocation="2066" yLocation="-664"/>
+        <class className="com.apdplat.platform.common.Common" project="APDPlat_Core" xLocation="4452" yLocation="-431"/>
+        <class className="com.apdplat.platform.common.DataPrivilegeControl" project="APDPlat_Core" xLocation="4329" yLocation="-678"/>
     </diagram>
 </ajsv>
