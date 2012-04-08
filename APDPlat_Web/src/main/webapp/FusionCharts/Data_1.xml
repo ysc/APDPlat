@@ -1,0 +1,31 @@
+<?xml version="1.0"  encoding="GBK"?>
+<chart caption="用户业务操作日志" subCaption="2011年5月" numberPrefix="" sformatNumberScale="1" sNumberPrefix="" syncAxisLimits="1" rotateValues="1" showSum="0">
+<!-- Data for multi-series stacked and combination chart -->
+	<categories>
+		<category label="admin"/>
+		<category label="杨尚川"/>
+		<category label="李晓璐"/>
+		<category label="罗生沙"/>
+	</categories>
+	<dataset seriesName="添加数据">
+		<set value="23"/>
+		<set value="23"/>
+		<set value="33"/>
+		<set value="41"/>
+		<set value="39"/>
+	</dataset>
+	<dataset seriesName="修改数据" renderAs="line" parentYAxis="S" showValues="1" valuePosition="BELOW">
+		<set value="14"/>
+		<set value="18"/>
+		<set value="21"/>
+		<set value="28"/>
+		<set value="20"/>
+	</dataset>
+	<dataset seriesName="删除数据">
+		<set value="2"/>
+		<set value="3"/>
+		<set value="3"/>
+		<set value="1"/>
+		<set value="9"/>
+	</dataset>
+</chart>

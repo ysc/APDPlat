@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dic SYSTEM "dic.dtd">
+<!--
+        业务字典XML文件
+        在本文件中的先后顺序就是在下拉菜单中的顺序
+-->
+<dic  english="root" chinese="数据字典">
+    <subDics>
+        <dic english="info" chinese="内容管理">
+            <subDics>                
+                <dic english="choice" chinese="是否">
+                    <dicItems>
+                        <dicItem code="true" name="是"/>
+                        <dicItem code="false" name="否"/>
+                    </dicItems>
+                </dic>
+            </subDics>
+        </dic>  
+    </subDics>
+</dic>

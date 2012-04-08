@@ -1,0 +1,8 @@
+<?xml version="1.0"  encoding="GBK"?>
+<chart caption="用户登录次数" subCaption="2011年5月" numberPrefix="" sformatNumberScale="1" sNumberPrefix="" syncAxisLimits="1" rotateValues="1" showSum="0">
+<!-- Data for single series chart -->
+	<set label="admin" value="24"/>
+	<set label="杨尚川" value="58"/>
+	<set label="李晓璐" value="19"/>
+	<set label="罗生沙" value="44"/>
+</chart>

@@ -1,0 +1,49 @@
+
+.chart {
+    background-image: url( ../images/chart/chart.png ) !important;
+}
+#x-form-el-MSColumn2D{ background:url(../images/chart/MSColumn2D.png)  no-repeat!important; }
+#x-form-el-MSColumn3D{ background:url(../images/chart/MSColumn3D.png)  no-repeat!important; }
+#x-form-el-MSLine{ background:url(../images/chart/Line.png)  no-repeat!important; }
+#x-form-el-MSBar2D{ background:url(../images/chart/MSBar2D.png)  no-repeat!important; }
+#x-form-el-MSBar3D{ background:url(../images/chart/MSBar3D.png)  no-repeat!important; }
+#x-form-el-MSArea{ background:url(../images/chart/Area2D.png)  no-repeat!important; }
+#x-form-el-StackedColumn3D{ background:url(../images/chart/StackedColumn3D.png)  no-repeat!important; }
+#x-form-el-StackedColumn2D{ background:url(../images/chart/StackedColumn2D.png)  no-repeat!important; }
+#x-form-el-StackedBar2D{ background:url(../images/chart/StackedBar2D.png)  no-repeat!important; }
+#x-form-el-StackedBar3D{ background:url(../images/chart/StackedBar3D.png)  no-repeat!important; }
+#x-form-el-StackedArea2D{ background:url(../images/chart/StackedArea2D.png)  no-repeat!important; }
+#x-form-el-Marimekko{ background:url(../images/chart/Marimekko.png)  no-repeat!important; }
+#x-form-el-ScrollArea2D{ background:url(../images/chart/Area2D.png)  no-repeat!important; }
+#x-form-el-ScrollColumn2D{ background:url(../images/chart/MSColumn2D.png)  no-repeat!important; }
+#x-form-el-ScrollCombi2D{ background:url(../images/chart/MSColumn3D.png)  no-repeat!important; }
+#x-form-el-ScrollLine2D{ background:url(../images/chart/Line.png)  no-repeat!important; }
+#x-form-el-ZoomLine{ background:url(../images/chart/Line.png)  no-repeat!important; }
+#x-form-el-ScrollStackedColumn2D{ background:url(../images/chart/StackedColumn2D.png)  no-repeat!important; }
+
+
+
+
+#x-form-el-Column2D{ background:url(../images/chart/Column2D.png)  no-repeat!important; }
+#x-form-el-Column3D{ background:url(../images/chart/Column3D.png)  no-repeat!important; }
+#x-form-el-Line{ background:url(../images/chart/Line.png)  no-repeat!important; }
+#x-form-el-Area2D{ background:url(../images/chart/Area2D.png)  no-repeat!important; }
+#x-form-el-Bar2D{ background:url(../images/chart/Bar2D.png)  no-repeat!important; }
+#x-form-el-Pie2D{ background:url(../images/chart/Pie2D.png)  no-repeat!important; }
+#x-form-el-Pie3D{ background:url(../images/chart/Pie3D.png)  no-repeat!important; }
+#x-form-el-Pareto2D{ background:url(../images/chart/Pareto2D.png)  no-repeat!important; }
+#x-form-el-Pareto3D{ background:url(../images/chart/Pareto3D.png)  no-repeat!important; }
+#x-form-el-Doughnut2D{ background:url(../images/chart/Doughnut2D.png)  no-repeat!important; }
+#x-form-el-Doughnut3D{ background:url(../images/chart/Doughnut3D.png)  no-repeat!important; }
+#x-form-el-SSGrid{ background:url(../images/chart/chart_bar.png)  no-repeat!important; }
+
+.chart_curve
+    background-image: url( ../images/chart/chart_curve.png ) !important;
+}
+.chart_line {
+    background-image: url( ../images/chart/chart_line.png ) !important;
+}
+.chart_pie {
+    background-image: url( ../images/chart/chart_pie.png ) !important;
+}
+ 

@@ -1,0 +1,27 @@
+
+一、如果不需要web service功能，在可以关闭它，以节省资源：
+1、在pom.xml中去除cxf的依赖，即删除从<!-- webservice begin -->到<!-- webservice end -->的所有四个依赖。
+2、将源代码中使用了web service的相关类删除。
+3、删除spring.xml中的web service导入，即删除<import resource="classpath:/ws.xml" />
+
+二、如果不需要使用在线文件管理，则可以去除PHP支持功能，以节省资源：
+1、删除jar文件WEB-INF/lib/resin-4.0.11.jar
+2、在web.xml中删除Quercus Servlet
+3、删除web根目录下的ckfinder目录
+4、在web根目录下的ckeditor/Ext.form.CKEditor.js文件中，删除一行代码：CKFinder.setupCKEditor( editor, contextPath+'/ckfinder/' ) ;
+
+三、当在正式运行的时候，因为已经确定了要使用的数据库，所以可以删除其他的数据库驱动程序，在WEB-INF/lib/目录下，找到
+不需要使用的数据库驱动，删除之，sqljdbc4.jar是MS SQL Server的驱动，ojdbc6.jar是ORACLE的驱动，mysql-connector-java-5.1.10.jar是
+MYSQL的驱动，hsqldb-2.0.0.jar是HSQL的驱动. 
+
+四、删除p6spy-1.3.jar，因为这是在开发阶段用于观察数据库SQL语句和真实值绑定的工具，在生产环境中用不上
+
+五、系统监控日志和业务操作日志会消耗一定的CPU时间及内存，当你确定要取消这些功能的时候，可以在config.local.properties文件中加入以下配置：
+monitor.memory=false
+monitor.performance=false
+monitor.runing=false
+monitor.login=false
+monitor.index=false
+log.create=false
+log.delete=false
+log.update=false

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="allatori">
+    <target name="allatori">
+        <taskdef name="allatori" classname="com.allatori.ant.ObfuscatorTask" classpath="src/main/obfuscate/allatori.jar"/>
+        <allatori config="src/main/obfuscate/allatori.xml"/>
+        
+        <!-- 可以在ant中引用maven中的变量 -->
+        <echo message="compile classpath: ${compile_classpath}"/>
+        <echo message="runtime classpath: ${runtime_classpath}"/>
+        <echo message="test classpath:    ${test_classpath}"/>
+        <echo message="plugin classpath:  ${plugin_classpath}"/>
+        <echo message="apdplat.version:  ${apdplat.version}"/>
+        <!-- For example, to show the path to a dependency with groupId "javax" and artifactId "javaee-api", the following could be used. -->
+        <echo message="javaee-api:  ${javax:javaee-api:jar}"/>
+    </target>
+</project>
+

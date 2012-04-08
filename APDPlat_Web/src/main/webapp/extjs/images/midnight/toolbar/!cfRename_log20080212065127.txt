@@ -1,0 +1,8 @@
+Modified on:{ts '2008-02-12 18:51:27'}
+* bg.gif changed to: toolbar_bg.gif
+* btn-arrow-light.gif changed to: toolbar_btn-arrow-light.gif
+* btn-arrow.gif changed to: toolbar_btn-arrow.gif
+* btn-over-bg.gif changed to: toolbar_btn-over-bg.gif
+* gray-bg.gif changed to: toolbar_gray-bg.gif
+* tb-bg.gif changed to: toolbar_tb-bg.gif
+* tb-btn-sprite.gif changed to: toolbar_tb-btn-sprite.gif

@@ -1,0 +1,17 @@
+<config>
+    <!--  Note: You can reference properties defined in the Ant build file from the Allatori configuration file using standard Ant syntax: ${PropertyName}.   -->
+    <jars>
+        <jar in="../../../target/APDPlat_Web-${apdplat.version}/WEB-INF/lib/APDPlat_Core-${apdplat.version}.jar" out="../../../target/APDPlat_Web-${apdplat.version}/WEB-INF/lib/APDPlat_Core-${apdplat.version}.jar"/>
+        <jar in="../../../target/APDPlat_Web-${apdplat.version}/WEB-INF/lib/APDPlat_Module-${apdplat.version}.jar" out="../../../target/APDPlat_Web-${apdplat.version}/WEB-INF/lib/APDPlat_Module-${apdplat.version}.jar"/>
+    </jars>
+
+    <keep-names>
+ 	<class access="protected+"/>
+ 	<field access="protected+"/> 
+ 	<method access="protected+"/>
+    </keep-names>
+
+    <property name="log-file" value="../../../target/obfuscate_log.xml"/>
+
+    <watermark key="yang-shangchuan@qq.com" value="APDPlat应用级开发平台（杨尚川）"/>
+</config>

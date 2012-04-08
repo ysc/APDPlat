@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.platform.model.Model" project="APDPlat_Core" xLocation="948" yLocation="-76"/>
+        <class className="com.apdplat.platform.model.ModelMetaData" project="APDPlat_Core" xLocation="1336" yLocation="1084"/>
+        <class className="com.apdplat.platform.model.ModelListener" project="APDPlat_Core" xLocation="2152" yLocation="15"/>
+        <class className="com.apdplat.platform.model.ModelFieldData" project="APDPlat_Core" xLocation="2484" yLocation="734"/>
+    </diagram>
+</ajsv>

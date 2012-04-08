@@ -1,0 +1,12 @@
+Modified on:{ts '2008-02-12 18:48:46'}
+* corners-sprite.gif changed to: panel_corners-sprite.gif
+* left-right.gif changed to: panel_left-right.gif
+* light-hd.gif changed to: panel_light-hd.gif
+* tool-sprite-tpl.gif changed to: panel_tool-sprite-tpl.gif
+* tool-sprites.gif changed to: panel_tool-sprites.gif
+* tools-sprites-trans.gif changed to: panel_tools-sprites-trans.gif
+* top-bottom.gif changed to: panel_top-bottom.gif
+* top-bottom.png changed to: panel_top-bottom.png
+* white-corners-sprite.gif changed to: panel_white-corners-sprite.gif
+* white-left-right.gif changed to: panel_white-left-right.gif
+* white-top-bottom.gif changed to: panel_white-top-bottom.gif

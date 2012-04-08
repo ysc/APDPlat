@@ -1,0 +1,6 @@
+Modified on:{ts '2008-02-12 18:47:42'}
+* clear-trigger.gif changed to: form_clear-trigger.gif
+* date-trigger.gif changed to: form_date-trigger.gif
+* search-trigger.gif changed to: form_search-trigger.gif
+* trigger-tpl.gif changed to: form_trigger-tpl.gif
+* trigger.gif changed to: form_trigger.gif

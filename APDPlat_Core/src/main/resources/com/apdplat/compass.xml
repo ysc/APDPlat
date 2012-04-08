@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+    <bean id="annotationConfiguration"
+          class="org.compass.annotations.config.CompassAnnotationsConfiguration">
+    </bean>
+
+    <!--更新索引-->
+    <bean id="compassGps" class="org.compass.gps.impl.SingleCompassGps"  init-method="start" destroy-method="stop">
+        <property name="compass" ref="compass" />
+        <property name="gpsDevices">
+            <list>
+                <bean class="org.compass.spring.device.SpringSyncTransactionGpsDeviceWrapper">
+                    <property name="gpsDevice" ref="jpaGpsDevice" />
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <bean id="compass" class="com.apdplat.platform.compass.APDPlatLocalCompassBean">
+        <property name="resourceJarLocations" value="${scan.jars}"/>
+        <property name="resourceDirectoryLocations" value="${basePackages.local}"/>
+        <property name="connection">
+            <value>${index.dictionary}</value>
+        </property>
+        <property name="compassConfiguration" ref="annotationConfiguration" />
+        <property name="compassSettings">
+            <props>
+                <prop key="compass.transaction.factory">
+                    org.compass.spring.transaction.SpringSyncTransactionFactory
+                </prop>
+                <prop key="compass.engine.analyzer.default.type">net.paoding.analysis.analyzer.PaodingAnalyzer</prop>
+                <prop key="compass.engine.highlighter.default.formatter.simple.pre">
+                    <![CDATA[<font color="red"><b>]]>
+                </prop>
+                <prop key="compass.engine.highlighter.default.formatter.simple.post">
+                    <![CDATA[</b></font>]]>
+                </prop>
+            </props>
+        </property>
+        <property name="transactionManager" ref="transactionManager" />
+    </bean>
+    <bean id="jpaGpsDevice" class="org.compass.gps.device.jpa.JpaGpsDevice">
+        <property name="name">
+            <value>jpaDevice</value>
+        </property>
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="compassTemplate" class="org.compass.core.CompassTemplate">
+        <property name="compass" ref="compass" />
+    </bean>
+
+    <!--定义定时执行 indexManager 这个bean中的rebuidAll()方法-->
+    <bean id="indexTask"    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="indexManager" />
+        </property>
+        <property name="targetMethod">
+            <value>rebuidAll</value>
+        </property>
+    </bean>
+</beans>

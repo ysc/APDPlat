@@ -1,0 +1,14 @@
+Modified on:{ts '2008-02-12 18:50:01'}
+* e-handle-dark.gif changed to: sizer_e-handle-dark.gif
+* e-handle.gif changed to: sizer_e-handle.gif
+* ne-handle-dark.gif changed to: sizer_ne-handle-dark.gif
+* ne-handle.gif changed to: sizer_ne-handle.gif
+* nw-handle-dark.gif changed to: sizer_nw-handle-dark.gif
+* nw-handle.gif changed to: sizer_nw-handle.gif
+* s-handle-dark.gif changed to: sizer_s-handle-dark.gif
+* s-handle.gif changed to: sizer_s-handle.gif
+* se-handle-dark.gif changed to: sizer_se-handle-dark.gif
+* se-handle.gif changed to: sizer_se-handle.gif
+* square.gif changed to: sizer_square.gif
+* sw-handle-dark.gif changed to: sizer_sw-handle-dark.gif
+* sw-handle.gif changed to: sizer_sw-handle.gif

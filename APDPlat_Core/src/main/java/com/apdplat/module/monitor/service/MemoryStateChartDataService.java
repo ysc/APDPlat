@@ -1,0 +1,72 @@
+package com.apdplat.module.monitor.service;
+
+import com.apdplat.module.monitor.model.MemoryState;
+import com.apdplat.module.monitor.model.ProcessTime;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.LinkedHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ *
+ * @author ysc
+ */
+public class MemoryStateChartDataService {
+    protected static final Logger log = LoggerFactory.getLogger(MemoryStateChartDataService.class);
+
+    public static List<MemoryState> getSequenceDataHH(List<MemoryState> models){    
+        return getSequenceTimeData(models,"yyyy-MM-dd HH");
+    }
+    public static List<MemoryState> getSequenceDataDD(List<MemoryState> models){    
+        return getSequenceTimeData(models,"yyyy-MM-dd");
+    }
+    public static List<MemoryState> getSequenceDataMonth(List<MemoryState> models){    
+        return getSequenceTimeData(models,"yyyy-MM");
+    }
+    private static List<MemoryState> getSequenceTimeData(List<MemoryState> models,String format){        
+        LinkedHashMap<String,MemoryState> temp=new LinkedHashMap<String,MemoryState>();
+        //将日志数据转换为统计报表数据
+        for(MemoryState item : models){
+            String key=new SimpleDateFormat(format).format(item.getRecordTime());
+            MemoryState value=temp.get(key);
+            if(value==null){
+                value=item;
+            }else{
+                //几次采集的内存数据，根据 已分配内存 来判断，谁大说明谁的内存使用情况最糟糕
+                value=value.getTotalMemory()>item.getTotalMemory()?value:item;
+            }
+            
+            temp.put(key,value);
+        } 
+        List<MemoryState> list=new ArrayList<MemoryState>();
+        for(MemoryState value : temp.values()){
+            list.add(value);
+        }
+        return list;
+    }
+
+    /**
+     * 同一命令只留最耗时的命令
+     * @param models
+     * @return 
+     */
+    private static List<ProcessTime> mini(List<ProcessTime> models) {
+        LinkedHashMap<String,ProcessTime> LinkedHashMap=new LinkedHashMap<String,ProcessTime>();
+        for(ProcessTime item : models){
+            ProcessTime value=LinkedHashMap.get(item.getResource());
+            if(value==null){
+                value=item;
+            }else{
+                value=value.getProcessTime()>item.getProcessTime()?value:item;
+            }
+            LinkedHashMap.put(item.getResource(), value);
+        }
+        List<ProcessTime> list=new ArrayList<ProcessTime>();
+        for(ProcessTime item : LinkedHashMap.values()){
+            list.add(item);
+        }
+        return list;
+    }
+}

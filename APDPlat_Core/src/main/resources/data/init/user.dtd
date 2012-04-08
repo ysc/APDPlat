@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/user.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE page SYSTEM "user.dtd">
+
+    <page>
+    ...
+    </page>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT page (models)*>
+<!ATTLIST page
+    xmlns:xsi CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT models (model)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT model EMPTY>
+<!ATTLIST model
+    des CDATA #IMPLIED
+    enabled CDATA #IMPLIED
+    password CDATA #IMPLIED
+    username CDATA #IMPLIED
+    xsi:type CDATA #IMPLIED
+  >

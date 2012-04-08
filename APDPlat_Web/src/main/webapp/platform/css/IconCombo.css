@@ -1,0 +1,16 @@
+    .ux-icon-combo-icon {
+        background-repeat: no-repeat;
+        background-position: 0 50%;
+        width: 18px;
+        height: 14px;
+    }
+ 
+    .x-form-field-wrap .ux-icon-combo-icon {
+        top: 3px;
+        left: 4px;
+    }
+    .ux-icon-combo-item {
+        background-repeat: no-repeat ! important;
+        background-position: 3px 50% ! important;
+        padding-left: 24px ! important;
+    }

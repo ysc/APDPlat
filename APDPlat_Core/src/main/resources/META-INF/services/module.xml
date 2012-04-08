@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM  "module.dtd">
+<module english="root" chinese="功能菜单">
+    <subModules>
+        <module english="security" chinese="安全管理">
+            <subModules>
+                <module english="user"  chinese="用户管理" >
+                    <commands>
+                        <command english="create" chinese="添加用户" />
+                        <command english="delete" chinese="删除用户" />
+                        <command english="update" chinese="修改用户" />
+                        <command english="query" chinese="查询用户" />
+                        <command english="export" chinese="导出用户" />
+                        <command english="reset" chinese="重置密码" />
+                    </commands>
+                </module>
+                <module english="role"  chinese="角色管理" >
+                    <commands>
+                        <command english="create" chinese="添加角色" />
+                        <command english="delete" chinese="删除角色" />
+                        <command english="update" chinese="修改角色" />
+                        <command english="query" chinese="查询角色" />
+                    </commands>
+                </module>
+                <module english="org"  chinese="组织机构" >
+                    <commands>
+                        <command english="create" chinese="添加组织机构" />
+                        <command english="delete" chinese="删除组织机构" />
+                        <command english="update" chinese="修改组织机构" />
+                        <command english="query" chinese="查询组织机构" />
+                    </commands>
+                </module>
+            </subModules>
+        </module>
+        <module english="monitor" chinese="系统监控">
+            <subModules>
+                <!--可以查看用户登录情况，以确定有哪些用户在哪些时间登录了多长时间-->
+                <module english="userLogin"  chinese="用户登录" >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                        <command english="chart" chinese="图表" />
+                    </commands>
+                </module>
+                <!--可以查看系统持续运行时间，以确定系统已经持续运行了多次时间，在哪些时间段停机，停了多次时间-->
+                <module english="runingTime"  chinese="运行时间" >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                        <command english="chart" chinese="图表" />
+                    </commands>
+                </module>
+                <!--可以查看系统运行以来对内存的使用情况-->
+                <module english="memoryState"  chinese="内存使用"  >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                        <command english="chart" chinese="图表" />
+                    </commands>
+                </module>
+                <!--可以查看系统用户做了哪些操作，以及每个操作所花费的时间-->
+                <module english="processTime"  chinese="操作耗时" >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                        <command english="chart" chinese="图表" />
+                    </commands>
+                </module>
+                <module english="backupLog"  chinese="备份日志" >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                        <command english="chart" chinese="图表" />
+                    </commands>
+                </module>
+                <module english="indexLog"  chinese="索引日志" >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                        <command english="chart" chinese="图表" />
+                    </commands>
+                </module>
+                <!--可以查看系统用户在操作过程中出现的异常情况，可以以此来判断系统是不是存在缺陷，作为系统改进的依据
+                <module english="processException"  chinese="异常情况" >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                    </commands>
+                </module>-->
+            </subModules>
+        </module>
+        <module english="log" chinese="业务日志">
+            <subModules>
+                <module english="cud"  chinese="增删改日志" >
+                    <commands>
+                        <command english="query" chinese="查询" />
+                        <command english="chart" chinese="图表" />
+                    </commands>
+                </module>
+            </subModules>
+        </module>
+        <module english="system" chinese="系统管理">
+            <subModules>
+                <module english="backup"  chinese="备份恢复" >
+                    <commands>
+                        <command english="backup" chinese="备份" />
+                        <command english="restore" chinese="恢复" />
+                    </commands>
+                </module>
+            </subModules>
+        </module>
+        <module english="module" chinese="模块管理">
+            <subModules>
+                <module english="editModule"  chinese="模块维护" >
+                    <commands>
+                        <command english="create" chinese="添加模块" />
+                        <command english="delete" chinese="删除模块" />
+                        <command english="update" chinese="修改模块" />
+                        <command english="query" chinese="查询模块" />
+                    </commands>
+                </module>
+                <!-- 在命令菜单中不显示，但是作为相应的权限可以分配给角色，其他的命令可以依赖本命令来协同完成任务 -->
+                <module english="editCommand"  chinese="命令维护" display="false">
+                    <commands>
+                        <command english="create" chinese="添加命令" />
+                        <command english="delete" chinese="删除命令" />
+                        <command english="update" chinese="修改命令" />
+                        <command english="query" chinese="查询命令" />
+                    </commands>
+                </module>
+            </subModules>
+        </module>
+        <module english="dictionary" chinese="数据字典">
+            <subModules>
+                <module english="dicItem"  chinese="字典维护" >
+                    <commands>
+                        <command english="create" chinese="添加字典" />
+                        <command english="delete" chinese="删除字典" />
+                        <command english="update" chinese="修改字典" />
+                        <command english="query" chinese="查询字典" />
+                    </commands>
+                </module>
+            </subModules>
+        </module>
+    </subModules>
+</module>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE page SYSTEM  "user.dtd">
+<!--
+        用户
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <models>
+        <model xsi:type="User" username="admin" password="admin" enabled="true" job="职位" des="超级管理员"/>
+    </models>
+</page>

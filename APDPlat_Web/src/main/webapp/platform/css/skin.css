@@ -1,0 +1,25 @@
+
+.default {
+    background-image: url(../images/skin/default.gif) !important;
+}
+.midnight {
+    background-image: url(../images/skin/midnight.gif) !important;
+}
+.blue {
+    background-image: url(../images/skin/blue.gif) !important;
+}
+.tp {
+    background-image: url(../images/skin/tp.gif) !important;
+}
+.red5 {
+    background-image: url(../images/skin/red5.gif) !important;
+}
+.orange {
+    background-image: url(../images/skin/orange.gif) !important;
+}
+.pink {
+    background-image: url(../images/skin/pink.gif) !important;
+}
+.access {
+    background-image: url(../images/skin/access.gif) !important;
+}

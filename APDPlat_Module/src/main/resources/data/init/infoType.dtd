@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/infoType.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE infoType SYSTEM "infoType.dtd">
+
+    <infoType>
+    ...
+    </infoType>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT infoType (subInfoTypes)*>
+<!ATTLIST infoType
+    infoTypeName CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT subInfoTypes (infoType)*>

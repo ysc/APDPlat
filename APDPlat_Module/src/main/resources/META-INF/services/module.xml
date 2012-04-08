@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM  "module.dtd">
+<module english="root" chinese="功能菜单">
+    <subModules>
+        <module english="index" chinese="索引管理">
+            <subModules>
+                <module english="state"  chinese="索引状况" >
+                    <commands>
+                        <command english="query" chinese="查询索引" />
+                    </commands>
+                </module>
+                <module english="setup"  chinese="索引设置" >
+                    <commands>
+                        <command english="rebuidAll" chinese="重建索引" />
+                        <command english="clearTask" chinese="取消定时重建" />
+                        <command english="setTask" chinese="设置定时重建" />
+                        <command english="query" chinese="查询状态" />
+                    </commands>
+                </module>
+            </subModules>
+        </module>
+        <module english="info" chinese="内容管理">
+            <subModules>
+                <module english="infoType"  chinese="类别管理" >
+                    <commands>
+                        <command english="create" chinese="添加新闻类别" />
+                        <command english="delete" chinese="删除新闻类别" />
+                        <command english="update" chinese="修改新闻类别" />
+                        <command english="query" chinese="查询新闻类别" />
+                    </commands>
+                </module>
+                <module english="news"  chinese="新闻管理" >
+                    <commands>
+                        <command english="create" chinese="添加新闻" />
+                        <command english="delete" chinese="删除新闻" />
+                        <command english="update" chinese="修改新闻" />
+                        <command english="query" chinese="查询新闻" />
+                        <command english="export" chinese="导出新闻" />
+                    </commands>
+                </module>
+            </subModules>
+        </module>
+    </subModules>
+</module>

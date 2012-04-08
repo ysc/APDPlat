@@ -1,0 +1,5 @@
+Modified on:{ts '2008-02-12 18:49:44'}
+* glass-bg.gif changed to: shared_glass-bg.gif
+* hd-sprite.gif changed to: shared_hd-sprite.gif
+* left-btn.gif changed to: shared_left-btn.gif
+* right-btn.gif changed to: shared_right-btn.gif

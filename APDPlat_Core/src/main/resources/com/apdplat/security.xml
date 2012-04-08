@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:s="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+	default-lazy-init="true">
+            
+    <s:http auto-config="true" use-expressions="true">        
+        <s:intercept-url pattern="/FusionCharts/**" filters="none"/>  
+        <s:intercept-url pattern="/userfiles/**" filters="none"/>  
+        <s:intercept-url pattern="/extjs/**" filters="none"/>  
+        <s:intercept-url pattern="/css/**" filters="none"/>  
+        <s:intercept-url pattern="/images/**" filters="none"/>  
+        <s:intercept-url pattern="/js/**" filters="none"/>  
+        <s:intercept-url pattern="/index.jsp" filters="none"/>  
+        <s:intercept-url pattern="/public/**" filters="none"/>  
+        <s:intercept-url pattern="/accessDenied.jsp" filters="none"/>  
+        
+        <s:intercept-url pattern="/**" requires-channel="${channel.type}"/>  
+        
+        <s:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
+        <s:form-login login-page="${login.page}?state=login" default-target-url="${system.main.page}" authentication-failure-url="${login.fail.page}?state=login&amp;login_error=true" login-processing-url="/j_spring_security_check" />
+        <s:access-denied-handler error-page="${deny.page}"/>  
+        <s:logout logout-success-url="${login.page}?state=logout" />
+        <s:session-management session-authentication-error-url="${login.page}?state=session-authentication-error" invalid-session-url="${login.page}?state=session-invalid" session-fixation-protection="none" > 
+            <s:concurrency-control max-sessions="1" expired-url="${login.page}?state=session-expired" error-if-maximum-exceeded="false" session-registry-alias="sessionRegistry"/>
+        </s:session-management>
+        
+        <s:port-mappings>
+            <s:port-mapping http="${http.port}" https="${https.port}"/>
+        </s:port-mappings>
+    </s:http>
+    
+    <s:authentication-manager alias="authenticationManager">
+        <s:authentication-provider   user-service-ref="userDetailsServiceImpl" >
+            <!--加密由客户端来完成
+            <s:password-encoder  hash="md5">
+                <s:salt-source user-property="metaData"/>
+            </s:password-encoder>
+            -->
+        </s:authentication-provider>
+    </s:authentication-manager>
+    
+    <bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+        <property name="accessDecisionManager" ref="accessDecisionManager" />
+        <property name="authenticationManager" ref="authenticationManager" />
+        <property name="securityMetadataSource">
+            <s:filter-security-metadata-source>
+                <s:intercept-url pattern="/**" access="ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER"/>
+            </s:filter-security-metadata-source>
+        </property>
+    </bean>
+            
+    <bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+        <property name="decisionVoters">
+            <list>
+                <bean class="org.springframework.security.access.vote.RoleVoter">
+                    <property name="rolePrefix" value="ROLE_" />
+                </bean>
+                <bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+            </list>
+        </property>
+    </bean>
+    <!--JCaptcha验证码服务 -->
+    <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+            <property name="captchaEngine" ref="captchaEngine"/>
+            <!-- 
+            生成的图片过期时间 , 单位为秒
+            -->
+            <property name="minGuarantedStorageDelayInSeconds" value="300" />
+    </bean>
+</beans>

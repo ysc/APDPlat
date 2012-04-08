@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.platform.service.ServiceFacade" project="APDPlat_Core" xLocation="0" yLocation="0"/>
+        <class className="com.apdplat.platform.service.CategoryService" project="APDPlat_Core" xLocation="20" yLocation="20"/>
+        <class className="com.apdplat.platform.service.Service" project="APDPlat_Core" xLocation="40" yLocation="40"/>
+        <class className="com.apdplat.platform.service.AbstractService" project="APDPlat_Core" xLocation="60" yLocation="60"/>
+        <class className="com.apdplat.platform.service.ChartService" project="APDPlat_Core" xLocation="80" yLocation="80"/>
+        <class className="com.apdplat.platform.service.SingleService" project="APDPlat_Core" xLocation="100" yLocation="100"/>
+    </diagram>
+</ajsv>

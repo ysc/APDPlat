@@ -1,0 +1,5 @@
+Modified on:{ts '2008-02-12 18:48:25'}
+* item-over - Copy.gif changed to: menu_item-over - Copy.gif
+* item-over.gif changed to: menu_item-over.gif
+* menu-parent.gif changed to: menu_menu-parent.gif
+* menu.gif changed to: menu_menu.gif

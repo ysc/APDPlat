@@ -1,0 +1,9 @@
+Modified on:{ts '2008-02-12 18:51:55'}
+* icon-error.gif changed to: window_icon-error.gif
+* icon-info.gif changed to: window_icon-info.gif
+* icon-question.gif changed to: window_icon-question.gif
+* icon-warning.gif changed to: window_icon-warning.gif
+* left-corners.png changed to: window_left-corners.png
+* left-right.png changed to: window_left-right.png
+* right-corners.png changed to: window_right-corners.png
+* top-bottom.png changed to: window_top-bottom.png

@@ -1,0 +1,32 @@
+#生成密钥库
+1、keytool -genkey -alias apdplat  -storepass apdplat_core_module -keypass apdplat_core_module -keyalg RSA -validity 100000 -keysize 2048 -keystore   d:\apdplat.keystore
+#生成证书请求（之后使用生成的apdplat.csr去 https://www.startssl.com/ 请求证书，使用数字证书 杨尚川_startssl.p12 登录网站）
+2、keytool -certreq -alias apdplat  -keyalg RSA -file d:\apdplat.csr -keystore d:\apdplat.keystore  -storepass apdplat_core_module
+#导入根证书（http://www.startssl.com/certs/ca.pem）
+3、keytool -import -trustcacerts -alias root -file d:\ca.pem   -keystore  d:\apdplat.keystore    -storepass apdplat_core_module 
+#导入中级根证书（http://www.startssl.com/certs/sub.class1.server.ca.pem）
+4、keytool -import -trustcacerts -alias inter -file d:\sub.class1.server.ca.pem -keystore   d:\apdplat.keystore    -storepass apdplat_core_module 
+#导入apdplat证书（由www.startssl.com生成）
+5、keytool -import -trustcacerts -alias apdplat -file  d:\apdplat.crt  -keystore  d:\apdplat.keystore    -storepass apdplat_core_module 
+
+#导出公钥（数字证书）
+6、keytool -export -alias apdplat -file d:\apdplat_public.crt -keystore d:\apdplat.keystore   -storepass apdplat_core_module -keypass apdplat_core_module
+
+
+
+
+keytool -list -v -alias apdplat -keystore d:\apdplat.keystore -storepass apdplat_core_module
+keytool -delete -alias root -keystore d:\apdplat.keystore  -storepass apdplat_core_module
+
+注意：将以下配置加入tomcat的server.xml中
+
+<Connector port="443" protocol="org.apache.coyote.http11.Http11NioProtocol" SSLEnabled="true" maxThreads="150" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS"          	
+  keystoreFile="d:/apdplat.keystore"       
+  keystorePass="apdplat_core_module" URIEncoding="utf-8"/>
+
+在Jboss中修改以下文件：
+jboss-5.0.1.GA\server\default\deploy\jbossweb.sar\server.xml
+
+注意：在C:\Windows\System32\drivers\etc\hosts文件中添加以下两行
+127.0.0.1				www.apdplat.com
+127.0.0.1				apdplat.com

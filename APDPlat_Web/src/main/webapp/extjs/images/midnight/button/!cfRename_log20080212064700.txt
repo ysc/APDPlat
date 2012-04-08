@@ -1,0 +1,4 @@
+Modified on:{ts '2008-02-12 18:47:00'}
+* !cfRename_log20080212064646.txt changed to: button_!cfRename_log20080212064646.txt
+* btn-arrow.gif changed to: button_btn-arrow.gif
+* btn-sprite.gif changed to: button_btn-sprite.gif

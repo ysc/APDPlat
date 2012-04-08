@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+    <diskStore path="d:/ehcache/cache"/>
+    <defaultCache
+            maxElementsInMemory="100000"
+            eternal="false"
+            timeToIdleSeconds="72000"
+            timeToLiveSeconds="72000"
+            overflowToDisk="false"
+           />
+    <cache name="DEFAULT_CACHE"
+         maxElementsInMemory="100000"
+         eternal="false"
+         timeToIdleSeconds="72000"
+         timeToLiveSeconds="72000"
+         overflowToDisk="false"
+        />
+</ehcache>

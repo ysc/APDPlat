@@ -1,0 +1,18 @@
+        body{
+            margin:0;
+            padding:0;
+            background-color:#EEF2F6;
+	}
+        .j_username{ background:url(../images/j_username.gif)  no-repeat!important;padding:2px 0 2px 18px; }
+        .j_password{ background:url(../images/j_password.gif)  no-repeat!important;padding:2px 0 2px 18px;  }
+        .j_rand{ background:url(../images/j_rand.gif)  no-repeat!important;padding:2px 0 2px 18px;  }
+
+        .login-icon {
+            background-image: url(../images/login.png ) !important;
+        }
+        .save {
+            background-image: url(../images/save.png ) !important;
+        }
+        .reset {
+            background-image: url(../images/reset.png ) !important;
+        }

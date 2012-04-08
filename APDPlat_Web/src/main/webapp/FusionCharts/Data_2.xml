@@ -1,0 +1,55 @@
+<?xml version="1.0"  encoding="GBK"?>
+<chart caption="用户业务操作日志" subCaption="2011年5月" numberPrefix="" sformatNumberScale="1" sNumberPrefix="" syncAxisLimits="1" rotateValues="1" showSum="0">
+<!-- Data for multi-series stacked and combination chart -->
+	<categories>
+		<category label="admin"/>
+		<category label="杨尚川"/>
+		<category label="李晓璐"/>
+		<category label="罗生沙"/>
+	</categories>
+	<dataset seriesName="添加数据">
+		<set value="23"/>
+		<set value="23"/>
+		<set value="33"/>
+		<set value="41"/>
+		<set value="39"/>
+<!-- Data for multi-series stacked chart - nested dataset-->
+		<dataset seriesName="Product A">
+			<set value="232400"/>
+			<set value="232400"/>
+			<set value="339800"/>
+			<set value="411900"/>
+			<set value="398400"/>
+		</dataset>
+		<dataset seriesName="Product B">
+			<set value="232400"/>
+			<set value="232400"/>
+			<set value="339800"/>
+			<set value="411900"/>
+			<set value="398400"/>
+		</dataset>
+	</dataset>
+	<dataset seriesName="修改数据" renderAs="line" parentYAxis="S" showValues="1" valuePosition="BELOW">
+		<set value="14"/>
+		<set value="18"/>
+		<set value="21"/>
+		<set value="28"/>
+		<set value="20"/>
+<!-- Data for multi-series stacked chart - nested dataset-->
+		<dataset seriesName="All Services" renderAs="line" parentYAxis="S">
+			<set value="214400"/>
+			<set value="214100"/>
+			<set value="284800"/>
+			<set value="323100"/>
+			<set value="324800"/>
+		</dataset>
+	</dataset>
+<!-- Data for multi-series stacked chart line chart - line dataset -->
+	<lineset seriesName="Target Profitability" valuePosition="BELOW">
+		<set value="104400"/>
+		<set value="104100"/>
+		<set value="144800"/>
+		<set value="213100"/>
+		<set value="214800"/>
+	</lineset>
+</chart>

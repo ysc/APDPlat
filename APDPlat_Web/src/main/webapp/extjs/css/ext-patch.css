@@ -1,0 +1,68 @@
+.x-window-footer{
+    position:relative;
+    top:0;
+    right:0;
+}
+.x-tab-strip SPAN.x-tab-strip-text{
+    font-size:12px;
+}
+.x-panel-header{
+    font-size:12px;
+}
+.x-tree-node{
+    font-size:12px;
+}
+.x-grid3-hd-row TD{
+    font-size:12px;
+}
+.x-grid3-row TD{
+    font-size:12px;
+    LINE-HEIGHT:16px;
+}
+.x-tip .x-tip-bd{
+    font-size:12px;
+}
+.x-tip h3{
+    font-size:12px;
+}
+.x-tip .x-tip-bd-inner{
+    font-size:12px;
+}
+.x-panel-tl .x-panel-header{
+    FONT:normal 12px tahoma,arial,verdana,sans-serif;
+}.x-form-field{
+    FONT:12px tahoma,arial,helvetica,sans-serif;
+}
+.x-small-editor .x-form-field{
+    FONT:12px tahoma,arial,helvetica,sans-serif;
+}
+.x-combo-list-item{
+    FONT:12px tahoma,arial,helvetica,sans-serif;
+}
+.x-menu-list-item{
+    FONT:12px tahoma,arial,sans-serif;
+}
+.x-window-tl .x-window-header{
+    FONT:bold 12px tahoma,arial,verdana,sans-serif;
+}
+.x-layout-split-west .x-layout-mini{
+    BACKGROUND-IMAGE:url(../images/mini-left.jpg);
+}
+.ext-ie .x-form-text{
+    margin-top:1px;
+}
+.x-form-item{
+    FONT:12px tahoma,arial,helvetica,sans-serif;
+}
+.x-grid-group-hd DIV{
+    FONT:bold 12px tahoma,arial,helvetica,sans-serif;
+}
+.x-btn-text-icon .x-btn-center .x-btn-text{
+    background-position:0 2px;background-repeat:no-repeat;padding:3px 0 2px 18px;
+}
+.ext-gecko .x-btn button{
+    padding-left:0;padding-right:0;
+}
+.x-btn button{
+    font-size:12px;
+}

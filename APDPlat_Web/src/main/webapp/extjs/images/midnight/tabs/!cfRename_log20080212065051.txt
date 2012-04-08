@@ -1,0 +1,13 @@
+Modified on:{ts '2008-02-12 18:50:51'}
+* scroll-left.gif changed to: tabs_scroll-left.gif
+* scroll-right.gif changed to: tabs_scroll-right.gif
+* scroller-bg.gif changed to: tabs_scroller-bg.gif
+* tab-btm-inactive-left-bg.gif changed to: tabs_tab-btm-inactive-left-bg.gif
+* tab-btm-inactive-right-bg.gif changed to: tabs_tab-btm-inactive-right-bg.gif
+* tab-btm-left-bg.gif changed to: tabs_tab-btm-left-bg.gif
+* tab-btm-right-bg.gif changed to: tabs_tab-btm-right-bg.gif
+* tab-close.gif changed to: tabs_tab-close.gif
+* tab-strip-bg.gif changed to: tabs_tab-strip-bg.gif
+* tab-strip-bg.png changed to: tabs_tab-strip-bg.png
+* tab-strip-btm-bg.gif changed to: tabs_tab-strip-btm-bg.gif
+* tabs-sprite.gif changed to: tabs_tabs-sprite.gif

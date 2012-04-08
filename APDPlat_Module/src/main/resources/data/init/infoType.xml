@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE infoType SYSTEM "infoType.dtd">
+<!--
+        新闻类别
+-->
+<infoType infoTypeName="新闻类别">
+    <subInfoTypes>
+        <infoType infoTypeName="综合信息">
+            <subInfoTypes>
+                <infoType infoTypeName="通知公告"/>
+                <infoType infoTypeName="图片新闻"/>
+                <infoType infoTypeName="新闻动态"/>
+                <infoType infoTypeName="投诉处理"/>
+            </subInfoTypes>
+        </infoType>
+        <infoType infoTypeName="政策法规">
+            <subInfoTypes>
+                <infoType infoTypeName="国家"/>
+                <infoType infoTypeName="地方">
+                    <subInfoTypes>
+                        <infoType infoTypeName="省"/>
+                        <infoType infoTypeName="市"/>
+                        <infoType infoTypeName="县"/>
+                        <infoType infoTypeName="乡"/>
+                    </subInfoTypes>
+                </infoType>
+            </subInfoTypes>
+        </infoType>
+        <infoType infoTypeName="办事指南">
+            <subInfoTypes>
+                <infoType infoTypeName="办事程序"/>
+                <infoType infoTypeName="投诉处理程序"/>
+            </subInfoTypes>
+        </infoType>
+        <infoType infoTypeName="关于"/>
+        <infoType infoTypeName="帮助"/>
+    </subInfoTypes>
+</infoType>

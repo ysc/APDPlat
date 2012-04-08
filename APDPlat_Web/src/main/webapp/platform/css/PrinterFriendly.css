@@ -1,0 +1,18 @@
+﻿.x-grid3-scroller
+{
+	overflow:visible;
+	display:inline;
+}
+.x-grid3
+{
+	overflow:visible;
+	display:inline;
+}
+.x-panel-body
+{
+	overflow:visible;
+}
+.x-grid3-viewport
+{
+	overflow:visible;
+}

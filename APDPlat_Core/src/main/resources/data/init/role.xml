@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE page SYSTEM  "role.dtd">
+<!--
+        角色
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <models>
+        <model xsi:type="Role" roleName="超级管理员" superManager="true"  des="超级管理员"/>
+    </models>
+</page>

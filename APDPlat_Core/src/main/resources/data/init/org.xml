@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE org SYSTEM "org.dtd">
+<!--
+        组织机构
+-->
+<org orgName="组织机构">
+    <subOrgs>
+        <org orgName="人事"/>
+        <org orgName="财务"/>
+        <org orgName="行政"/>
+    </subOrgs>
+</org>

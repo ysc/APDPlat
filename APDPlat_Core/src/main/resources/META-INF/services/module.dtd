@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/module.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE module SYSTEM "module.dtd">
+
+    <module>
+    ...
+    </module>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT module (commands|subModules)*>
+<!ATTLIST module
+    display CDATA #IMPLIED
+    chinese CDATA #IMPLIED
+    english CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT subModules (module)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT commands (command)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT command EMPTY>
+<!ATTLIST command
+    chinese CDATA #IMPLIED
+    english CDATA #IMPLIED
+  >

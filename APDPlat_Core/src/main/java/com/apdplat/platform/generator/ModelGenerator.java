@@ -1,0 +1,511 @@
+package com.apdplat.platform.generator;
+
+import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.generator.Generator;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import java.io.File;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+
+/**
+ *
+ * @author ysc
+ */
+public class ModelGenerator extends Generator {
+    private final static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+
+    private static Configuration freemarkerConfiguration = null;
+
+    static {
+        factory.setTemplateLoaderPath(PropertyHolder.getProperty("model.generator.freemarker.template"));
+        try {
+            freemarkerConfiguration = factory.createConfiguration();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private static List<InputStream> getModelExcels(String module){     
+        List<InputStream> ins=new ArrayList<InputStream>();
+        try{
+            String pattern="classpath*:generator/"+module+"/*.xls";
+            log.info("模式："+pattern);
+            Resource[] rs= resourcePatternResolver.getResources(pattern);
+            log.info("扫描到的数量为："+rs.length);
+
+            for(Resource r : rs){
+                try {
+                    InputStream in=r.getInputStream();
+                    log.info("文件："+r.getFile().getAbsolutePath());
+                    ins.add(in);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return ins;
+    }
+    public static List<ModelInfo> generate(String moduleProjectName){
+        List<ModelInfo> all = new ArrayList<ModelInfo>();
+        List<InputStream> ins = getModelExcels(moduleProjectName);
+        for(InputStream in : ins){
+            List<ModelInfo> modelInfos = readModelInfos(in);
+            generate(modelInfos, moduleProjectName);
+            all.addAll(modelInfos);
+        }
+        return all;
+    }
+    private static void generate(List<ModelInfo> modelInfos,String moduleProjectName){
+        for (ModelInfo modelInfo : modelInfos) {
+            generate(modelInfo, moduleProjectName);
+            log.info("-----------------------------------------------------------------------------");
+            log.info("包："+modelInfo.getModelPackage());
+            log.info("模型中文名称："+modelInfo.getModelChinese());
+            log.info("模型英文名称："+modelInfo.getModelEnglish());
+
+            for (Attr attr : modelInfo.getAttrs()) {
+                log.info("        " + attr.toString());
+            }
+            log.info("-----------------------------------------------------------------------------");
+        }
+    }
+
+    private static void generate(ModelInfo modelInfo,String moduleProjectName) {
+        String workspaceModuleBasePath = ModelGenerator.class.getResource("/").getFile().replace("target/classes/", "")+ "../" + moduleProjectName + "/src/main/java/";
+        
+        String templateName = "model.ftl";
+
+        log.info("开始生成Model");
+        log.info("workspaceModuleBasePath：" + workspaceModuleBasePath);
+
+        Map<String, Object> context = new HashMap<String, Object>();
+        context.put("modelInfo", modelInfo);
+
+        boolean result = false;
+        try {
+            Template template = freemarkerConfiguration.getTemplate(templateName, ENCODING);
+            String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
+            String modelPath = modelInfo.getModelPackage().replace(".", "/");
+            String modelName = modelInfo.getModelEnglish();
+            result = saveFile(workspaceModuleBasePath, modelPath, modelName, content);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (TemplateException ex) {
+            ex.printStackTrace();
+        }
+        if (result) {
+            log.info("Model生成成功");
+        } else {
+            log.info("忽略生成Model");
+        }
+    }
+
+    private static boolean saveFile(String workspaceModuleBasePath, String modelPath, String modelName, String content) {
+        if (workspaceModuleBasePath == null) {
+            return false;
+        }
+        File file = new File(workspaceModuleBasePath);
+        file = new File(file, modelPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        file = new File(file, modelName + ".java");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            log.info("源文件已经存在，请删除 " + file.getAbsolutePath() + " 后在执行命令");
+            return false;
+        }
+        saveFile(file, content);
+        return true;
+    }
+
+    final public static class ModelInfo {
+
+        private String modelPackage;
+        private String modelEnglish;
+        private String modelChinese;
+        private boolean hasDateTime;
+        private boolean hasDicItem;
+        private List<Attr> attrs = new ArrayList<Attr>();
+
+        public boolean isHasDateTime() {
+            return hasDateTime;
+        }
+
+        public void setHasDateTime(boolean hasDateTime) {
+            this.hasDateTime = hasDateTime;
+        }
+
+        public boolean isHasDicItem() {
+            return hasDicItem;
+        }
+
+        public void setHasDicItem(boolean hasDicItem) {
+            this.hasDicItem = hasDicItem;
+        }
+
+        public List<Attr> getAttrs() {
+            return attrs;
+        }
+
+        public void addAttr(Attr attr) {
+            this.attrs.add(attr);
+        }
+
+        public void removeAttr(Attr attr) {
+            this.attrs.remove(attr);
+        }
+
+        public String getModelChinese() {
+            return modelChinese;
+        }
+
+        public void setModelChinese(String modelChinese) {
+            this.modelChinese = modelChinese;
+        }
+
+        public String getModelEnglish() {
+            return modelEnglish;
+        }
+
+        public void setModelEnglish(String modelEnglish) {
+            this.modelEnglish = modelEnglish;
+        }
+
+        public String getModelPackage() {
+            return modelPackage;
+        }
+
+        public void setModelPackage(String modelPackage) {
+            this.modelPackage = modelPackage;
+        }
+
+        public boolean isHasOneToMany() {
+            for(Attr attr : attrs){
+                if(MapType.validType("OneToMany").equals(attr.map)){
+                    return true;
+                }                    
+            }
+            return false;
+        }
+
+        public boolean isHasMap() {
+            for(Attr attr : attrs){
+                if(!MapType.validType("None").equals(attr.map)){
+                    return true;
+                } 
+                //当类型为DicItem的时候设置映射为DicItem
+                if(attr.type.equals(AttrType.validType("DicItem"))){
+                    attr.map="DicItem";
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    final public static class Attr {
+
+        private String name;
+        private String type;
+        private String des;
+        private boolean searchable = false;
+        private String map = MapType.validType("None");
+        private String attrRef = "None";
+        private boolean renderIgnore = false;
+        private String dic = DicType.validType("None");
+
+        public String getDic() {
+            return dic;
+        }
+
+        public void setDic(String dic) {
+            this.dic = dic;
+        }
+
+        public boolean isRenderIgnore() {
+            return renderIgnore;
+        }
+
+        public void setRenderIgnore(boolean renderIgnore) {
+            this.renderIgnore = renderIgnore;
+        }
+
+        public boolean isSearchable() {
+            return searchable;
+        }
+
+        public void setSearchable(boolean searchable) {
+            this.searchable = searchable;
+        }
+
+        public String getDes() {
+            return des;
+        }
+
+        public void setDes(String des) {
+            this.des = des;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getMap() {
+            return map;
+        }
+
+        public void setMap(String map) {
+            this.map = map;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getAttrRef() {
+            return attrRef;
+        }
+
+        public void setAttrRef(String attrRef) {
+            this.attrRef = attrRef;
+        }
+
+        @Override
+        public String toString() {
+            return "Attr{" + "name=" + name + ", type=" + type + ", des=" + des + ", searchable=" + searchable + ", map=" + map + ", attrRef=" + attrRef + ", renderIgnore=" + renderIgnore + ", dic=" + dic + '}';
+        }
+    }
+
+    final public static class MapType {
+
+        private static final Map<String, String> types = new HashMap<String, String>();
+
+        static {
+            types.put("None", "None");
+            types.put("ManyToOne", "ManyToOne");
+            types.put("ManyToMany", "ManyToMany");
+            types.put("OneToOne", "OneToOne");
+            types.put("OneToMany", "OneToMany");
+        }
+
+        public static String validType(String typeName) {
+            String type = types.get(typeName);
+            if (type == null) {
+                StringBuilder str = new StringBuilder();
+                str.append("【 ");
+                for (String key : types.keySet()) {
+                    str.append(key).append(",");
+                }
+                str = str.deleteCharAt(str.length() - 1);
+                str.append(" 】");
+                throw new RuntimeException("映射类型【" + type + "】不正确，映射类型只能为：" + str.toString());
+            }
+            return type;
+        }
+    }
+
+    final public static class DicType {
+
+        private static final Map<String, String> types = new HashMap<String, String>();
+
+        static {
+            types.put("None", "None");
+            types.put("SimpleDic", "SimpleDic");
+            types.put("TreeDic", "TreeDic");
+        }
+
+        public static String validType(String typeName) {
+            String type = types.get(typeName);
+            if (type == null) {
+                StringBuilder str = new StringBuilder();
+                str.append("【 ");
+                for (String key : types.keySet()) {
+                    str.append(key).append(",");
+                }
+                str = str.deleteCharAt(str.length() - 1);
+                str.append(" 】");
+                throw new RuntimeException("字典类型【" + type + "】不正确，字典类型只能为：" + str.toString());
+            }
+            return type;
+        }
+    }
+
+    final public static class AttrType {
+
+        private static final Map<String, String> types = new HashMap<String, String>();
+
+        static {
+            types.put("String", "String");
+            types.put("Integer", "Integer");
+            types.put("Float", "Float");
+            types.put("DicItem", "DicItem");
+            types.put("Date", "Date");
+            types.put("Time", "Time");
+        }
+
+        public static String validType(String typeName) {
+            String type = types.get(typeName);
+            if (type == null) {
+                types.put(typeName, typeName);
+                return typeName;
+            }
+            return type;
+        }
+    }
+
+
+    private static List<ModelInfo> readModelInfos(InputStream inputStream) {
+        List<ModelInfo> models = new ArrayList<ModelInfo>();
+        try {
+            HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+            for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+                HSSFSheet sheet = workbook.getSheetAt(i);
+                try {
+                    HSSFRow row = sheet.getRow(2);
+                    if (row == null) {
+                        log.info("发现不合法的工作表：" + sheet.getSheetName());
+                        continue;
+                    }
+                    HSSFCell cell = row.getCell(1);
+                    //包名
+                    String modelPackage = cell.getStringCellValue();
+                    row = sheet.getRow(3);
+                    cell = row.getCell(1);
+                    //模型名称（英文）
+                    String modelEnglish = cell.getStringCellValue();
+                    row = sheet.getRow(4);
+                    cell = row.getCell(1);
+                    //模型名称（中文）
+                    String modelChinese = cell.getStringCellValue();
+
+                    ModelInfo modelInfo = new ModelInfo();
+                    modelInfo.setModelPackage(modelPackage);
+                    modelInfo.setModelEnglish(modelEnglish);
+                    modelInfo.setModelChinese(modelChinese);
+
+                    int rows = sheet.getPhysicalNumberOfRows();
+                    //从第8行开始解析字段信息，
+                    for (int rowNumber = 7; rowNumber < rows; rowNumber++) {
+                        HSSFRow oneRow = sheet.getRow(rowNumber);
+
+                        if (oneRow == null) {
+                            continue;
+                        }
+                        Attr attr = new Attr();
+                        //字段中文名称
+                        HSSFCell oneCell = oneRow.getCell(0);
+                        if (oneCell != null) {
+                            String cellValue = oneCell.getStringCellValue();
+                            if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                attr.setDes(cellValue);
+                            } else {
+                                continue;
+                            }
+                        }
+                        //字段英文名称
+                        oneCell = oneRow.getCell(1);
+                        if (oneCell != null) {
+                            String cellValue = oneCell.getStringCellValue();
+                            if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                attr.setName(cellValue);
+                            } else {
+                                continue;
+                            }
+                        }
+                        //字段类型
+                        oneCell = oneRow.getCell(2);
+                        if (oneCell != null) {
+                            String cellValue = oneCell.getStringCellValue();
+                            if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                attr.setType(AttrType.validType(cellValue));
+                            } else {
+                                attr.setType(AttrType.validType("String"));
+                            }
+                        }
+                        //是否为搜索字段
+                        oneCell = oneRow.getCell(3);
+                        if (oneCell != null) {
+                            boolean cellValue = oneCell.getBooleanCellValue();
+                            attr.setSearchable(cellValue);
+                        }
+                        //是否忽略渲染到页面表格
+                        oneCell = oneRow.getCell(4);
+                        if (oneCell != null) {
+                            boolean cellValue = oneCell.getBooleanCellValue();
+                            attr.setRenderIgnore(cellValue);
+                        }
+                        //字段的下拉菜单类型
+                        oneCell = oneRow.getCell(5);
+                        if (oneCell != null) {
+                            String cellValue = oneCell.getStringCellValue();
+                            if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                attr.setDic(DicType.validType(cellValue));
+                            }
+                        }
+                        //字段的映射类型
+                        oneCell = oneRow.getCell(6);
+                        if (oneCell != null) {
+                            String cellValue = oneCell.getStringCellValue();
+                            if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                attr.setMap(MapType.validType(cellValue));
+                            }
+                        }
+                        //映射对象渲染字段
+                        oneCell = oneRow.getCell(7);
+                        if (oneCell != null) {
+                            String cellValue = oneCell.getStringCellValue();
+                            if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                attr.setAttrRef(cellValue);
+                            }
+                        }
+                        if("Date".equals(attr.getType()) || "Time".equals(attr.getType())){
+                            modelInfo.setHasDateTime(true);
+                        }
+                        if("DicItem".equals(attr.getType())){
+                            modelInfo.setHasDicItem(true);
+                        }
+                        modelInfo.addAttr(attr);
+                    }
+                    models.add(modelInfo);
+                } catch (Exception e) {
+                    log.info("解析工作表:" + sheet.getSheetName() + " 失败");
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return models;
+    }
+}

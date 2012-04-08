@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--AgileJ Ltd. (http://www.agilej.com)-->
+<ajsv>
+    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
+        <class className="com.apdplat.platform.dao.DaoFacade" project="APDPlat_Core" xLocation="2065" yLocation="102"/>
+        <class className="com.apdplat.platform.dao.AbstractDao" project="APDPlat_Core" xLocation="3933" yLocation="120"/>
+        <class className="com.apdplat.platform.dao.Dao" project="APDPlat_Core" xLocation="4575" yLocation="-100"/>
+        <class className="com.apdplat.platform.dao.DaoSupport" project="APDPlat_Core" xLocation="2367" yLocation="-654"/>
+    </diagram>
+</ajsv>
