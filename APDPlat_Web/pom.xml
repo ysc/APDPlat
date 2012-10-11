@@ -103,6 +103,14 @@
     </repositories>
     <pluginRepositories>  
         <pluginRepository>
+            <id>offical</id>
+            <name>Maven Official Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
             <name>oss.sonatype.org</name>
             <id>oss.sonatype.org</id>
             <url>http://oss.sonatype.org/content/groups/public</url>
@@ -184,7 +192,7 @@
             </plugin>
             
             <!--执行对JS和CSS的混淆压缩-->
-            <!-- The yuicompressor plugin will process the js files and css files in src/main/webapp, but they won't be included in the final war. -->
+            <!-- The yuicompressor plugin will process the js files and css files in src/main/webapp, but they won't be included in the final war. 
             
             <plugin>        
                 <groupId>net.alchim31.maven</groupId>
@@ -214,6 +222,7 @@
                     </excludes>
                 </configuration> 
             </plugin>
+            -->
             
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
