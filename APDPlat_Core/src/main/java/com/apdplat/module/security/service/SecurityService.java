@@ -40,7 +40,30 @@ public class SecurityService {
     }
     private String auth(String machineCode){
         String newCode="(yang-shangchuan@qq.com)["+machineCode.toUpperCase()+"](APDPlat应用级产品开发平台)";
-        return new Md5PasswordEncoder().encodePassword(newCode,"杨尚川").toUpperCase()+machineCode.length();
+        String code = new Md5PasswordEncoder().encodePassword(newCode,"杨尚川").toUpperCase()+machineCode.length();
+        return getSplitString(code);
+    }
+    private String getSplitString(String str){ 
+        return getSplitString(str, "-", 4);
+    }
+    private String getSplitString(String str, String split, int length){        
+        int len=str.length();
+        StringBuilder temp=new StringBuilder();
+        for(int i=0;i<len;i++){
+            if(i%length==0 && i>0){
+                temp.append(split);
+            }
+            temp.append(str.charAt(i));
+        }
+        String[] attrs=temp.toString().split(split);
+        StringBuilder finalMachineCode=new StringBuilder();
+        for(String attr : attrs){
+            if(attr.length()==length){
+                finalMachineCode.append(attr).append(split);
+            }
+        }
+        String result=finalMachineCode.toString().substring(0, finalMachineCode.toString().length()-1);
+        return result;
     }
     private boolean valide(String  seq) {
         try{
