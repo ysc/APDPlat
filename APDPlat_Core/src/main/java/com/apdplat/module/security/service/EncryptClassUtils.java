@@ -27,7 +27,7 @@ public class EncryptClassUtils {
     private static String winClspath;
     private static String linuxClspath;
     private static String securityClspath;
-    private static final String workDir="D:/Workspaces/NetBeans7.0/APDPlat2.2/APDPlat_Core/";
+    private static final String workDir="D:/workspaces/netbeans/APDPlat/APDPlat_Core/";
     static{        
         String dir=workDir+"src/main/resources/com/apdplat/module/security/service/";
         sequenceKeyName = dir+"SequenceKey";
