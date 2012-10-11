@@ -4,12 +4,15 @@ import com.apdplat.platform.util.FileUtils;
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ *IP地址访问限制
  * @author ysc
  */
 public class IPAccessControler {
+    protected static final Logger log = LoggerFactory.getLogger(IPAccessControler.class);
     private Collection<String> allow;
     private Collection<String> deny;
 
@@ -27,12 +30,18 @@ public class IPAccessControler {
         }
         try{
             String ip = getIpAddr(request);
+            if(ip==null){
+                log.info("无法获取到访问者的IP");
+                return true;
+            }
 
             if (hasMatch(ip, deny)) {
+                log.info("ip: "+ip+" 位于黑名单中");
                 return true;
             }
 
             if (!allow.isEmpty() && !hasMatch(ip, allow)) {
+                log.info("ip: "+ip+" 没有位于白名单中");
                 return true;
             }
         }catch(Exception e){}
@@ -51,22 +60,35 @@ public class IPAccessControler {
         return false;
     }
 
-    private String getIpAddr(HttpServletRequest request){        
-        String ipString = request.getHeader("x-forwarded-for");
-        if (StringUtils.isBlank(ipString) || "unknown".equalsIgnoreCase(ipString)) {
-            ipString = request.getHeader("Proxy-Client-IP");
+    private String getIpAddr(HttpServletRequest request){       
+        String ipString=null;
+        String temp = request.getHeader("x-forwarded-for");
+        if(temp.indexOf(":")==-1 && temp.indexOf(".")!=-1){
+            ipString=temp;
         }
         if (StringUtils.isBlank(ipString) || "unknown".equalsIgnoreCase(ipString)) {
-            ipString = request.getHeader("WL-Proxy-Client-IP");
+            temp = request.getHeader("Proxy-Client-IP");
+            if(temp.indexOf(":")==-1 && temp.indexOf(".")!=-1){
+                ipString=temp;
+            }
         }
         if (StringUtils.isBlank(ipString) || "unknown".equalsIgnoreCase(ipString)) {
-            ipString = request.getRemoteAddr();
+            temp = request.getHeader("WL-Proxy-Client-IP");
+            if(temp.indexOf(":")==-1 && temp.indexOf(".")!=-1){
+                ipString=temp;
+            }
+        }
+        if (StringUtils.isBlank(ipString) || "unknown".equalsIgnoreCase(ipString)) {
+            temp = request.getRemoteAddr();
+            if(temp.indexOf(":")==-1 && temp.indexOf(".")!=-1){
+                ipString=temp;
+            }
         }
 
         // 多个路由时，取第一个非unknown的ip
         final String[] arr = ipString.split(",");
         for (final String str : arr) {
-            if (!"unknown".equalsIgnoreCase(str)) {
+            if (!"unknown".equalsIgnoreCase(str) && str.indexOf(":")==-1 && str.split(".").length==4) {
                 ipString = str;
                 break;
             }
