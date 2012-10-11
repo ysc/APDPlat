@@ -82,6 +82,16 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
     <script type="text/javascript" src="js/md5.js"></script>
     <script type="text/javascript" src="js/login.js"></script>
     <script type="text/javascript">
+        //解决Ext在ie9报错：不支持extjs对象的“createContextualFragment属性或方法”
+        if ((typeof Range !== "undefined") && !Range.prototype.createContextualFragment) {
+            Range.prototype.createContextualFragment = function(html) {
+                var frag = document.createDocumentFragment(),div = document.createElement("div");
+                frag.appendChild(div);
+                div.outerHTML = html;
+                return frag;
+            };
+        }
+
         var contextPath='<%=contextPath%>';
         var requestCode='<%=requestCode%>';
         var loginImage='<%=PropertyHolder.getProperty("login.image")%>';
