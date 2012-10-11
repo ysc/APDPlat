@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,6 +36,24 @@ public class FileUtils {
     
     private static String basePath=System.getProperty("user.dir")+File.separator;
 
+    /**
+     * 追加写入文件
+     * @param path 文件绝对路径
+     * @param text 要追加的文件内容
+     * @return 
+     */
+    public static boolean appendText(String path,String text){
+        try{
+            File file=new File(path);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
+            writer.write(text);
+            writer.close();
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
     /**
      * 系统的默认目录为当前用户目录，可通过此函数重新设置
      * @param basePath 
