@@ -74,7 +74,7 @@
         <mysql.version>5.1.18</mysql.version>
         <org.hsqldb.version>2.0.0</org.hsqldb.version>
         
-        <!-- 主����� 插件�的 版本�定义 -->
+        <!-- 主����� 插件�的 版本�定� -->
         <yuicompressor-maven-plugin>1.1</yuicompressor-maven-plugin>
         <maven-jetty-plugin.version>6.1H.14.1</maven-jetty-plugin.version>
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
@@ -139,6 +139,14 @@
         </repository>
     </repositories>
     <pluginRepositories>
+        <pluginRepository>
+            <id>offical</id>
+            <name>Maven Official Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
         <pluginRepository>
             <name>oss.sonatype.org</name>
             <id>oss.sonatype.org</id>
@@ -761,7 +769,7 @@
         <plugins>
             
             <!--执行对JS和CSS的混淆压缩-->
-            <!-- The yuicompressor plugin will process the js files and css files in src/main/webapp, but they won't be included in the final war.-->
+            <!-- The yuicompressor plugin will process the js files and css files in src/main/webapp, but they won't be included in the final war.
            
             <plugin>        
                 <groupId>net.alchim31.maven</groupId>
@@ -784,6 +792,8 @@
                     <linebreakpos>7999</linebreakpos>
                 </configuration> 
             </plugin>
+            -->
+            
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-release-plugin</artifactId>
