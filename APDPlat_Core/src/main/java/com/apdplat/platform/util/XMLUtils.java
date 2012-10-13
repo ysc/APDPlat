@@ -5,6 +5,8 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -13,6 +15,7 @@ import org.xml.sax.SAXException;
  * @author ysc
  */
 public class XMLUtils {
+    protected static final Logger log = LoggerFactory.getLogger(XMLUtils.class);
 
     private XMLUtils() {
     }
@@ -34,11 +37,11 @@ public class XMLUtils {
             builder.parse(new InputSource(FileUtils.getAbsolutePath("/WEB-INF/classes" + xml)));
             return true;
         } catch (ParserConfigurationException ex) {
-            ex.printStackTrace();
+            log.error("验证XML失败",ex);
         } catch (SAXException ex) {
-            ex.printStackTrace();
+            log.error("验证XML失败",ex);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error("验证XML失败",ex);
         }
         return false;
     }
@@ -51,11 +54,11 @@ public class XMLUtils {
             builder.parse(new InputSource(in));
             return true;
         } catch (ParserConfigurationException ex) {
-            ex.printStackTrace();
+            log.error("验证XML失败",ex);
         } catch (SAXException ex) {
-            ex.printStackTrace();
+            log.error("验证XML失败",ex);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error("验证XML失败",ex);
         }
         return false;
     }
