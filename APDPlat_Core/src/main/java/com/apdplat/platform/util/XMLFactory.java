@@ -6,16 +6,18 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
 *在XML和对象之间进行转换
 * @author 杨尚川
 */
 public class XMLFactory {
+    protected static final Logger log = LoggerFactory.getLogger(XMLFactory.class);
 
     private Marshaller marshaller;
     private Unmarshaller unmarshaller;
@@ -68,8 +70,8 @@ public class XMLFactory {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new InputStreamReader(in, "utf-8"));
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
 
         try {
