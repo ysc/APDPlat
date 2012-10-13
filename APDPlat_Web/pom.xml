@@ -165,6 +165,8 @@
                 <version>${maven-war-plugin.version}</version>   
             </plugin>
             
+            <!--执行对Jar的混淆-->
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -190,7 +192,7 @@
                   </execution>
                 </executions>
             </plugin>
-            
+            -->
             <!--执行对JS和CSS的混淆压缩-->
             <!-- The yuicompressor plugin will process the js files and css files in src/main/webapp, but they won't be included in the final war. 
             
@@ -245,7 +247,7 @@
                     <target>1.6</target>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
-                    <debug>false</debug>
+                    <debug>true</debug>
                 </configuration>
             </plugin>
             <!-- test插件 -->
