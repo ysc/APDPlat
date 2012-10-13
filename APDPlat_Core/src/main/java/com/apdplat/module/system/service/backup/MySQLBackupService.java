@@ -25,6 +25,7 @@ public class MySQLBackupService extends BackupService{
             String command=PropertyHolder.getProperty("db.backup.command");
             command=command.replace("${db.username}", username);
             command=command.replace("${db.password}", password);
+            command=command.replace("${module.short.name}", PropertyHolder.getProperty("module.short.name"));
 
             Runtime runtime = Runtime.getRuntime();
             Process child = runtime.exec(command);
@@ -55,6 +56,7 @@ public class MySQLBackupService extends BackupService{
             String command=PropertyHolder.getProperty("db.restore.command");
             command=command.replace("${db.username}", username);
             command=command.replace("${db.password}", password);
+            command=command.replace("${module.short.name}", PropertyHolder.getProperty("module.short.name"));
             
             Runtime runtime = Runtime.getRuntime();
             Process child = runtime.exec(command);
