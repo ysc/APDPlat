@@ -10,11 +10,15 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import javax.crypto.Cipher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * 
  * @author ysc
  */
 public class PKIUtils {
+    private static final Logger log = LoggerFactory.getLogger(PKIUtils.class);
+       
     private PKIUtils(){}
     /**
      * 
@@ -36,7 +40,7 @@ public class PKIUtils {
             byte[] signed = signet.sign(); // 对信息的数字签名
             return signed;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("签名失败",ex);
         }
         return null;
     }
@@ -57,7 +61,7 @@ public class PKIUtils {
             boolean result=signet.verify(signatureData);
             return result;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("验证签名失败",ex);
         }
         return false;
     }
@@ -76,7 +80,7 @@ public class PKIUtils {
             PublicKey key = cert.getPublicKey();
             return key;
         } catch (CertificateException ex) {
-            ex.printStackTrace();
+            log.error("获取证书公钥失败",ex);
         }
         return null;
     }
@@ -96,7 +100,7 @@ public class PKIUtils {
             byte encryptedData[] = cipher.doFinal(data);
             return encryptedData;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("加密数据失败",ex);
         }
         return null;
     }
@@ -114,7 +118,7 @@ public class PKIUtils {
             byte encryptedData[] = encrypt(key,data);
             return encryptedData;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("用证书的公钥加密失败",ex);
         }
         return null;
     }
@@ -135,7 +139,7 @@ public class PKIUtils {
             byte encryptedData[] = encrypt(privateKey,data);
             return encryptedData;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("用证书的私钥加密失败",ex);
         }
         return null;
     }
@@ -157,7 +161,7 @@ public class PKIUtils {
             PrivateKey privateKey = (PrivateKey) ks.getKey(key, keyPassword.toCharArray());
             return privateKey;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("获取证书私钥失败",ex);
         }
         return null;
     }
@@ -176,7 +180,7 @@ public class PKIUtils {
             byte[] result = cipher.doFinal(data);
             return result;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("解密数据失败",ex);
         }
         return null;
     }
@@ -198,7 +202,7 @@ public class PKIUtils {
             byte[] result = decrypt(privateKey,data);
             return result;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("用证书的私钥解密失败",ex);
         }
         return null;
     }
@@ -217,7 +221,7 @@ public class PKIUtils {
             byte[] result = decrypt(key,data);
             return result;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("用证书的公钥解密失败",ex);
         }
         return null;
     }

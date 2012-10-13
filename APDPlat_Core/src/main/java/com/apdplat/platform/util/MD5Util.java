@@ -1,23 +1,22 @@
 package com.apdplat.platform.util;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.Log;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * md5算法工具
- * @since 2009-8-7 14:46:27
+ * @author ysc
  */
 public class MD5Util {
-    private final static Log log = LogFactory.getLog(MD5Util.class);
+    private static final Log log = LogFactory.getLog(MD5Util.class);
     static MessageDigest md = null;
 
     static {
@@ -53,8 +52,8 @@ public class MD5Util {
         } finally {
             try {
                 if (fis != null) fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+             log.error("文件操作失败",ex);
             }
         }
     }

@@ -14,10 +14,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Administrator
+ * @author ysc
  */
 public class ZipUtils {
-    protected static final Logger log = LoggerFactory.getLogger(ZipUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ZipUtils.class);
+        
+    private ZipUtils(){};
    /**
      * 创建ZIP文件
      * @param sourcePath 文件或文件夹路径

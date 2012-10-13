@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
@@ -21,6 +18,8 @@ import org.slf4j.LoggerFactory;
 * @author 杨尚川
 */
 public class Struts2Utils {
+        private static final Logger log = LoggerFactory.getLogger(XMLUtils.class);
+        
         private Struts2Utils(){};
 
 	private static final String ENCODING_PREFIX = "encoding";
@@ -66,8 +65,9 @@ public class Struts2Utils {
 					encoding = headerValue;
 				} else if (StringUtils.equalsIgnoreCase(headerName, NOCACHE_PREFIX)) {
 					noCache = Boolean.parseBoolean(headerValue);
-				} else
-					throw new IllegalArgumentException(headerName + "不是一个合法的header类型");
+				} else {
+                                    throw new IllegalArgumentException(headerName + "不是一个合法的header类型");
+                                }
 			}
 
 			HttpServletResponse response = ServletActionContext.getResponse();

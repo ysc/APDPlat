@@ -7,8 +7,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -21,8 +21,9 @@ import org.springframework.util.Assert;
  * @author 杨尚川
  */
 public class ReflectionUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+    
     private ReflectionUtils(){};
-    private static Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
 
     /**
      * 搜索给定的所有的类里，某个类的所有子类或实现类
@@ -82,8 +83,14 @@ public class ReflectionUtils {
         return classes;
     }
 
+    /**
+     *
+     * @param <T>
+     * @param instance
+     * @return
+     */
     @SuppressWarnings("unchecked")
-    public static final <T> T cloneInstance(T instance) {
+    public static <T> T cloneInstance(T instance) {
         Class<T> cls = (Class<T>) instance.getClass();
         T newIns = (T) BeanUtils.instantiateClass(cls);
         BeanUtils.copyProperties(instance, newIns);
@@ -95,7 +102,7 @@ public class ReflectionUtils {
      *
      * @see Class#getSimpleName()
      */
-    public static final String getSimpleSurname(Class<?> clazz) {
+    public static String getSimpleSurname(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -107,7 +114,7 @@ public class ReflectionUtils {
      *
      * @see Class#getName()
      */
-    public static final String getSurname(Class<?> clazz) {
+    public static String getSurname(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -229,9 +236,7 @@ public class ReflectionUtils {
         List<Field> fields=new ArrayList<Field>();
         for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
             Field[] f=superClass.getDeclaredFields();
-            for(Field t : f){
-                fields.add(t);
-            }
+            fields.addAll(Arrays.asList(f));
         }
         return fields;
     }

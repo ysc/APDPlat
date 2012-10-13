@@ -30,9 +30,9 @@ import org.springframework.util.Assert;
  * @author ysc
  */
 public class FileUtils {
-    private FileUtils(){};
-
     private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
+        
+    private FileUtils(){};
     
     private static String basePath=System.getProperty("user.dir")+File.separator;
 
@@ -135,9 +135,9 @@ public class FileUtils {
                 }
             }
         } catch (ZipException ex) {
-            ex.printStackTrace();
+            log.error("文件解压失败",ex);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error("文件操作失败",ex);
         }
     }
     
@@ -145,7 +145,7 @@ public class FileUtils {
         try {
             copyFile(new FileInputStream(inFile),outFile);
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            log.error("文件不存在",ex);
         }
     }
     public static void copyFile(InputStream in, File outFile){
@@ -156,21 +156,21 @@ public class FileUtils {
             out.write(data, 0, data.length);
             out.close();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("文件操作失败",ex);
         } finally {
             try {
                 if(in!=null){
                     in.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+             log.error("文件操作失败",ex);
             }
             try {
                 if(out!=null){
                     out.close();
                 }
             } catch (IOException ex) {
-                ex.printStackTrace();
+             log.error("文件操作失败",ex);
             }
         }
     }
@@ -179,7 +179,7 @@ public class FileUtils {
         try {
             return readAll(new FileInputStream(file));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            log.error("读取文件失败",ex);
         }
         return null;
     }
@@ -192,7 +192,7 @@ public class FileUtils {
                 out.write(buffer, 0, n);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error("读取文件失败",ex);
         }
         return out.toByteArray();
     }
@@ -201,7 +201,7 @@ public class FileUtils {
         try {
             return new FileInputStream(getAbsolutePath(path));
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            log.error("文件没有找到",ex);
         }
         return null;
     }
@@ -211,8 +211,8 @@ public class FileUtils {
             if(file.exists()){
                 return true;
             }
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception ex){
+            log.error("文件操作失败",ex);
         }
         return false;
     }
@@ -227,8 +227,8 @@ public class FileUtils {
             out.write(data, 0, data.length);
             out.close();
             return file;
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception ex){
+            log.error("文件操作失败",ex);
         }
         return null;
     }
@@ -243,8 +243,8 @@ public class FileUtils {
             writer.write(text);
             writer.close();
             return file;
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception ex){
+            log.error("文件操作失败",ex);
         }
         return null;
     }
@@ -256,8 +256,8 @@ public class FileUtils {
                 file.delete();
             }
             return true;
-        }catch(Exception e){
-            e.printStackTrace();
+        }catch(Exception ex){
+            log.error("文件操作失败",ex);
         }
         return false;
     }
@@ -280,14 +280,14 @@ public class FileUtils {
                 line=reader.readLine();
             }
         } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
+            log.error("不支持的编码",ex);
         }  catch (IOException ex) {
-            ex.printStackTrace();
+            log.error("文件操作失败",ex);
         } finally {
             try {
                 reader.close();
             } catch (IOException ex) {
-                ex.printStackTrace();
+                log.error("文件操作失败",ex);
             }
         }
         return result;
@@ -297,7 +297,7 @@ public class FileUtils {
             ClassPathResource cr = new ClassPathResource(path);
             return getTextFileContent(cr.getInputStream());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            log.error("文件操作失败",ex);
         }
         return null;
     }

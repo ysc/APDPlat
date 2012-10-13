@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
  * @author ysc
  */
 public class XMLUtils {
-    protected static final Logger log = LoggerFactory.getLogger(XMLUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(XMLUtils.class);
 
     private XMLUtils() {
     }

@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 * @author 杨尚川
 */
 public class XMLFactory {
-    protected static final Logger log = LoggerFactory.getLogger(XMLFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(XMLFactory.class);
+       
+    private XMLFactory(){};
 
     private Marshaller marshaller;
     private Unmarshaller unmarshaller;

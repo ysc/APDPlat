@@ -258,6 +258,7 @@ public class FileSizeFormat extends Format {
    * @return 经NumberFormat解析的结果
    * 
    */
+    @Override
   public Object parseObject(String source,
                             ParsePosition pos) {
     return formatter.parseObject(source, pos);
@@ -271,6 +272,7 @@ public class FileSizeFormat extends Format {
    * @return 经NumberFormat格式化以后的StringBuffer
    * 
    */
+    @Override
   public StringBuffer format(Object obj,
                              StringBuffer toAppendTo,
                              FieldPosition pos) {
