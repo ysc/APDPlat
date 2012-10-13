@@ -4,7 +4,10 @@ import com.apdplat.module.system.model.BackupScheduleConfig;
 import com.apdplat.module.system.service.backup.BackupSchedulerService;
 import com.apdplat.module.system.service.backup.BackupService;
 import com.apdplat.platform.action.DefaultAction;
+import com.apdplat.platform.util.FileUtils;
 import com.apdplat.platform.util.Struts2Utils;
+import com.apdplat.platform.util.ZipUtils;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,6 +81,27 @@ public class BackupAction extends DefaultAction {
         }else{
             Struts2Utils.renderText("false");
         }
+        return null;
+    }
+    public String download(){        
+        if(date==null || "".equals(date.trim())){
+            log.info("请指定下载备份数据库的时间点");
+            return null;
+        }
+        date= date.replace(" ", "-").replace(":", "-");
+        
+        //生成一个临时目录
+        String destPath = "/platform/temp/backup/" + System.currentTimeMillis();
+        File outputFile = new File( FileUtils.getAbsolutePath(destPath));
+        outputFile.mkdirs();
+        
+        outputFile=new File(outputFile, date+".zip");
+        //获取备份文件
+        String backupFile=BackupService.getPath()+date+".bak";
+        //生成一个临时压缩文件
+        ZipUtils.createZip(backupFile, outputFile.getAbsolutePath());
+            
+        Struts2Utils.renderText(destPath+"/"+date+".zip");
         return null;
     }
     public String restore(){

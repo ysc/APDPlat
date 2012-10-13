@@ -98,6 +98,7 @@
                     <commands>
                         <command english="backup" chinese="备份" />
                         <command english="restore" chinese="恢复" />
+                        <command english="download" chinese="下载备份文件" />
                     </commands>
                 </module>
             </subModules>

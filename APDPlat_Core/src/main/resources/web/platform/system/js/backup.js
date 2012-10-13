@@ -7,6 +7,7 @@
     var backupURL=contextPath+'/'+namespace+'/'+action+'!backup.action';
     var clearTaskURL=contextPath+'/'+namespace+'/'+action+'!clearTask.action';
     var setTaskURL=contextPath+'/'+namespace+'/'+action+'!setTask.action';
+    var downloadURL=contextPath+'/'+namespace+'/'+action+'!download.action';
 
     Backup = function() {
         return {
@@ -27,19 +28,60 @@
                         title: '已有备份',
                         collapsible: false,
                         items: [{
-                            xtype: 'combo',
-                            store:existBackupStore,
-                            emptyText:'请选择',
-                            mode:'remote',
-                            triggerAction:'all',
-                            forceSelection: true,
-                            editable:       false,
-                            valueField:'value',
-                            displayField:'text',
-                            cls : 'attr',
-                            id: 'date',
-                            fieldLabel: '存在的备份时间点'
-                        }]
+                                layout:'column',
+                                defaults: {width: 250},
+                                items:[{
+                                    columnWidth:.5,
+                                    layout: 'form',
+
+                                     items: [{
+                                                xtype: 'combo',
+                                                store:existBackupStore,
+                                                emptyText:'请选择',
+                                                mode:'remote',
+                                                triggerAction:'all',
+                                                forceSelection: true,
+                                                editable:       false,
+                                                valueField:'value',
+                                                displayField:'text',
+                                                cls : 'attr',
+                                                id: 'date',
+                                                fieldLabel: '存在的备份时间点'
+                                            }]
+                                },{
+                                    columnWidth:.5,
+                                    layout: 'form',
+
+                                    items: [new Ext.Button({  
+                                                text: '下载备份文件',
+                                                iconCls:'download',
+                                                scope: this,
+                                                handler: function() {
+                                                    var date=Ext.getCmp('date').getValue();
+                                                    if(""==date){
+                                                        parent.Ext.MessageBox.alert('提示', "请选择需要下载的备份文件的时间点");
+                                                        return;
+                                                    }
+                                                    parent.Ext.Ajax.request({
+                                                            url : downloadURL,
+                                                            waitTitle: '请稍等',
+                                                            waitMsg: '正在下载备份文件……',
+                                                            params : {date : date},
+                                                            method : 'POST',
+                                                            success : function(response,opts){
+                                                                    var path = response.responseText;
+                                                                    //contextPath定义在引用了此JS的页面中
+                                                                    path=this.contextPath+path;
+                                                                    window.open(path,'_blank','width=1,height=1,toolbar=no,menubar=no,location=no');
+                                                            },
+                                                            failure : function(response,options){
+                                                                    parent.Ext.ux.Toast.msg('操作提示：', "下载失败");
+                                                            }
+                                                    });
+                                                }
+                                        })]
+                                }]
+                            }]
                     },{
                             xtype: 'fieldset',
                             title: '定时重建状态',
