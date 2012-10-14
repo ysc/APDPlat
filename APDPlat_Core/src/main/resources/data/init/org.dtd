@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
-<!--- 组织机构. -->
+<!--- 组织架构. -->
 <!ELEMENT org (subOrgs)*>
 <!ATTLIST org
     orgName CDATA #IMPLIED
   >
 
-<!--- 子组织机构. -->
+<!--- 子组织架构. -->
 <!ELEMENT subOrgs (org)*>

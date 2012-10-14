@@ -1,7 +1,7 @@
 
 var currentNode;
 var currentId="-1";
-var currentName="组织机构";
+var currentName="组织架构";
 var propertyCriteriaPre="parent.id:eq:";
 var propertyCriteria=propertyCriteriaPre+currentId;
 
@@ -10,7 +10,7 @@ var action='org';
 
 var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
             
-//添加组织机构
+//添加组织架构
 CreateModel = function() {
     return {
         getItems: function() {
@@ -64,7 +64,7 @@ CreateModel = function() {
 
         show: function() {
             GridBaseModel.createURLParameter='?model.parent.id='+currentId;
-            CreateBaseModel.show('添加组织机构', 'org', 500, 320, this.getItems());
+            CreateBaseModel.show('添加组织架构', 'org', 500, 320, this.getItems());
             CreateBaseModel.dlg.on('close',function(){
                     //刷新表格
                     GridBaseModel.refresh();
@@ -74,7 +74,7 @@ CreateModel = function() {
         }
     };
 } ();
-//修改组织机构
+//修改组织架构
 ModifyModel = function() {
     return {
         getItems: function(model) {
@@ -138,7 +138,7 @@ ModifyModel = function() {
                     //刷新树
                     TreeModel.refreshTree(forceRefreshParentNode);
             };
-            ModifyBaseModel.show('修改组织机构', 'org', 500, 320, this.getItems(model),model);
+            ModifyBaseModel.show('修改组织架构', 'org', 500, 320, this.getItems(model),model);
         }
     };
 } ();
@@ -220,7 +220,7 @@ TreeModel = function(){
             var create=true;
             var remove=true;
             var modify=true;
-            var tree = TreeBaseModel.getTreeWithContextMenu(treeDataUrl, '组织机构', 'root', 'org', create, remove, modify);
+            var tree = TreeBaseModel.getTreeWithContextMenu(treeDataUrl, '组织架构', 'root', 'org', create, remove, modify);
             currentNode=TreeBaseModel.root;
             return tree;
         },

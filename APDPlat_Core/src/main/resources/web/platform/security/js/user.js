@@ -1,7 +1,7 @@
     //orgId==-1或orgId<0代表为根节点，不加过滤条件
     var orgId="-1";
     var rootNodeID="root";
-    var rootNodeText="组织机构";
+    var rootNodeText="组织架构";
 
     var namespace='security';
     var action='user';
@@ -28,7 +28,7 @@
                                 id:'search_realName',
                                 fieldLabel: '姓名'
                             },
-                            new TreeSelector('search_orgName','',selectOrgStoreURL,rootNodeID,rootNodeText,"组织机构名称",'model.org.id','95%'),
+                            new TreeSelector('search_orgName','',selectOrgStoreURL,rootNodeID,rootNodeText,"组织架构名称",'model.org.id','95%'),
                             {
                                 xtype:'textfield',
                                 name: 'model.org.id',
@@ -73,7 +73,7 @@
     CreateModel = function() {
         return {
             getItems: function() {
-                orgSelector=new TreeSelector('model.org.name','',selectOrgStoreURL,rootNodeID,rootNodeText,"组织机构",'model.org.id','95%');
+                orgSelector=new TreeSelector('model.org.name','',selectOrgStoreURL,rootNodeID,rootNodeText,"组织架构",'model.org.id','95%');
                 var loader = new parent.Ext.tree.TreeLoader({
                     dataUrl:selectRoleStoreURL
                 });
@@ -224,7 +224,7 @@
     ModifyModel = function() {
         return {
             getItems: function(model) {
-                var orgSelector=new TreeSelector('model.org.name',model.orgName,selectOrgStoreURL,rootNodeID,rootNodeText,"组织机构",'model.org.id','95%');
+                var orgSelector=new TreeSelector('model.org.name',model.orgName,selectOrgStoreURL,rootNodeID,rootNodeText,"组织架构",'model.org.id','95%');
                 var loader = new parent.Ext.tree.TreeLoader({
                     dataUrl:selectRoleStoreURL
                 });
@@ -394,7 +394,7 @@
                                                                     editable:       false
                                                                 }},
 				{header: "拥有角色", width: 40, dataIndex: 'roles', sortable: true},
-				{header: "组织机构", width: 40, dataIndex: 'orgName', sortable: true},
+				{header: "组织架构", width: 40, dataIndex: 'orgName', sortable: true},
 				{header: "描述", width: 40, dataIndex: 'des', sortable: true,editor:new Ext.form.TextField()}
                             ];
                 return columns;           

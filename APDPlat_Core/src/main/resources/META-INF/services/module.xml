@@ -22,12 +22,12 @@
                         <command english="query" chinese="查询角色" />
                     </commands>
                 </module>
-                <module english="org"  chinese="组织机构" >
+                <module english="org"  chinese="组织架构" >
                     <commands>
-                        <command english="create" chinese="添加组织机构" />
-                        <command english="delete" chinese="删除组织机构" />
-                        <command english="update" chinese="修改组织机构" />
-                        <command english="query" chinese="查询组织机构" />
+                        <command english="create" chinese="添加组织架构" />
+                        <command english="delete" chinese="删除组织架构" />
+                        <command english="update" chinese="修改组织架构" />
+                        <command english="query" chinese="查询组织架构" />
                     </commands>
                 </module>
             </subModules>

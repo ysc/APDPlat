@@ -3,7 +3,7 @@
 <html>
 <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>组织机构管理</title>
+        <title>组织架构管理</title>
         <%@include file="../include/common.jsp" %>
 	<script type="text/javascript" src="js/org.js"></script>
 </head>

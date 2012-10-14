@@ -341,7 +341,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
             str.append("(");
             //用户可以操纵自己的数据
             str.append(" +username:").append(user.getUsername());
-            //如果用户的组织机构有子机构，则用户除了能操纵自己的数据，还能操纵子机构的所有数据
+            //如果用户的组织架构有子机构，则用户除了能操纵自己的数据，还能操纵子机构的所有数据
             if(!child.isEmpty()){
                 for(String orgName : child){
                     str.append(" OR +orgName:").append(orgName);

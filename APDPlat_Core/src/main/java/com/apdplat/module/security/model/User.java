@@ -47,7 +47,7 @@ uniqueConstraints = {
 public class User extends Model  implements UserDetails{
     @ManyToOne
     @SearchableComponent(prefix="org_")
-    @ModelAttr("组织机构")
+    @ModelAttr("组织架构")
     @ModelAttrRef("orgName")
     protected Org org;
 

@@ -154,7 +154,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
         Org o=null;
         Role r=null;
         if(!StringUtils.isBlank(org)){
-            //返回特定组织机构及其所有子机构的在线用户
+            //返回特定组织架构及其所有子机构的在线用户
             int id=Integer.parseInt(org);
             o=service.retrieve(Org.class, id);
         }

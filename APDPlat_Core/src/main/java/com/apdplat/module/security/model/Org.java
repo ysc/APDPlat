@@ -51,7 +51,7 @@ public class Org extends Model{
     protected String functions;
     @ManyToOne
     @SearchableComponent
-    @ModelAttr("上级组织机构")
+    @ModelAttr("上级组织架构")
     @ModelAttrRef("orgName")
     protected Org parent;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
@@ -138,7 +138,7 @@ public class Org extends Model{
 
     @Override
     public String getMetaData() {
-        return "组织机构";
+        return "组织架构";
     }
 
     public static void main(String[] args){

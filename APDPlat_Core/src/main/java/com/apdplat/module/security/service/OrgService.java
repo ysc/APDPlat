@@ -56,7 +56,7 @@ public class OrgService {
     public String toRootJson(){
         Org rootOrg=getRootOrg();
         if(rootOrg==null){
-            log.error("获取根组织机构失败！");
+            log.error("获取根组织架构失败！");
             return "";
         }
         StringBuilder json=new StringBuilder();
@@ -79,7 +79,7 @@ public class OrgService {
     public String toJson(int orgId){
         Org org=serviceFacade.retrieve(Org.class, orgId);
         if(org==null){
-            log.error("获取ID为 "+orgId+" 的组织机构失败！");
+            log.error("获取ID为 "+orgId+" 的组织架构失败！");
             return "";
         }
         List<Org> child=org.getChild();
@@ -110,7 +110,7 @@ public class OrgService {
     }
     public Org getRootOrg(){
         PropertyCriteria propertyCriteria = new PropertyCriteria(Criteria.or);
-        propertyCriteria.addPropertyEditor(new PropertyEditor("orgName", Operator.eq, "String","组织机构"));
+        propertyCriteria.addPropertyEditor(new PropertyEditor("orgName", Operator.eq, "String","组织架构"));
         Page<Org> page = serviceFacade.query(Org.class, null, propertyCriteria);
         if (page.getTotalRecords() == 1) {
             return page.getModels().get(0);

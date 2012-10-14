@@ -57,11 +57,11 @@ public abstract class DaoSupport extends DataPrivilegeControl{
                 propertyCriteria=new PropertyCriteria();
             }
 
-            //如果用户的组织机构为最底层，则用户只能操纵自己的数据
+            //如果用户的组织架构为最底层，则用户只能操纵自己的数据
             if(child.isEmpty()){
                 propertyCriteria.addPropertyEditor(new PropertyEditor("ownerUser.id", Operator.eq,  user.getId()));
             }
-            //如果用户的组织机构有子机构，则用户除了能操纵自己的数据，还能操纵子机构的所有数据
+            //如果用户的组织架构有子机构，则用户除了能操纵自己的数据，还能操纵子机构的所有数据
             else{
                 PropertyEditor pe=new PropertyEditor(Criteria.or);
                 pe.addSubPropertyEditor(new PropertyEditor("ownerUser.id", Operator.eq,  user.getId()));

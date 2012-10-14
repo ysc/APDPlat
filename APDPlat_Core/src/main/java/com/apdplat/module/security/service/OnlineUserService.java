@@ -67,11 +67,11 @@ public class OnlineUserService{
         }
         //取交集
         if(org!=null && role!=null){
-            //返回特定组织机构及其所有子机构 且 属于特定角色的在线用户
+            //返回特定组织架构及其所有子机构 且 属于特定角色的在线用户
             int roleId=role.getId();
             List<Integer> orgIds=OrgService.getChildIds(org);
             orgIds.add(org.getId());
-            log.info("特定组织机构及其所有子机构:"+orgIds);
+            log.info("特定组织架构及其所有子机构:"+orgIds);
             for(Object obj : users){
                 User user=(User)obj;
                 log.info("获取到会话ID为："+sessionRegistry.getAllSessions(obj, false).get(0).getSessionId() +" 的在线用户");
@@ -87,10 +87,10 @@ public class OnlineUserService{
             return result;
         }
         if(org!=null){
-            //返回特定组织机构及其所有子机构的在线用户
+            //返回特定组织架构及其所有子机构的在线用户
             List<Integer> ids=OrgService.getChildIds(org);
             ids.add(org.getId());
-            log.info("特定组织机构及其所有子机构:"+ids);
+            log.info("特定组织架构及其所有子机构:"+ids);
             for(Object obj : users){
                 User user=(User)obj;
                 log.info("获取到会话ID为："+sessionRegistry.getAllSessions(obj, false).get(0).getSessionId() +" 的在线用户");
