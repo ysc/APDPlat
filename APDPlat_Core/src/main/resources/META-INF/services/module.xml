@@ -30,6 +30,14 @@
                         <command english="query" chinese="查询组织架构" />
                     </commands>
                 </module>
+                <module english="position"  chinese="岗位管理" >
+                    <commands>
+                        <command english="create" chinese="添加岗位" />
+                        <command english="delete" chinese="删除岗位" />
+                        <command english="update" chinese="修改岗位" />
+                        <command english="query" chinese="查询岗位" />
+                    </commands>
+                </module>
             </subModules>
         </module>
         <module english="monitor" chinese="系统监控">

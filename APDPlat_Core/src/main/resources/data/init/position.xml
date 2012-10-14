@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE position SYSTEM "position.dtd">
+<!--
+        岗位
+-->
+<position positionName="岗位">
+    <subPositions>
+        <position positionName="总经理"/>
+        <position positionName="副总经理"/>
+        <position positionName="开发工程师">
+            <subPositions>
+                <position positionName="Java软件工程师"/>
+                <position positionName="C++软件工程师"/>
+                <position positionName=".Net软件工程师"/>
+            </subPositions>
+        </position>
+        <position positionName="人事专员"/>
+    </subPositions>
+</position>

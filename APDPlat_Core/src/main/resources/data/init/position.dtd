@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/position.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE position SYSTEM "position.dtd">
+
+    <position>
+    ...
+    </position>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT position (subPositions)*>
+<!ATTLIST position
+    positionName CDATA #IMPLIED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT subPositions (position)*>
