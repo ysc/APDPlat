@@ -259,7 +259,7 @@
 				{header: "类别", width: 20, dataIndex: 'infoTypeName', sortable: true},
 				{header: "启用", width: 20, dataIndex: 'enabled', sortable: true},
 				{header: "作者", width: 20, dataIndex: 'username', sortable: true},
-				{header: "组织机构", width: 20, dataIndex: 'orgname', sortable: true},
+				{header: "组织架构", width: 20, dataIndex: 'orgname', sortable: true},
 				{header: "发布日期", width: 20, dataIndex: 'createTime', sortable: true},
 				{header: "更新日期", width: 20, dataIndex: 'updateTime', sortable: true}
                             ];
