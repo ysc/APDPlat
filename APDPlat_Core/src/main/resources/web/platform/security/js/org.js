@@ -88,7 +88,7 @@ ModifyModel = function() {
                                     readOnly:true,
                                     disabled:true,
                                     fieldClass:'detail_field',
-                                    value: model.parent,
+                                    value: model.parent_orgName,
                                     fieldLabel: '上级机构'
                                 },{
                                     xtype:'textfield',
