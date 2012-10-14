@@ -88,7 +88,7 @@ var OnlineUser = {
 				{header: "用户名", width: 20, dataIndex: 'username', sortable: true},
 				{header: "状态", width: 20, dataIndex: 'enabled', sortable: true},
 				{header: "拥有角色", width: 40, dataIndex: 'roles', sortable: true},
-				{header: "组织机构", width: 40, dataIndex: 'orgName', sortable: true},
+				{header: "组织架构", width: 40, dataIndex: 'orgName', sortable: true},
 				{header: "描述", width: 40, dataIndex: 'des', sortable: true}
 			]
 		});
@@ -96,14 +96,14 @@ var OnlineUser = {
 		var orgPanel = new Ext.tree.TreePanel({
                                         autoScroll:true,
 					id : 'orgPanel',
-					title : '组织机构 ',
+					title : '组织架构 ',
 					iconCls:'org',
                                         rootVisible:true,
 					loader : new Ext.tree.TreeLoader({
 								url : orgURL
 							}),
 					root : new Ext.tree.AsyncTreeNode({
-                                                                text: '组织机构',
+                                                                text: '组织架构',
                                                                 draggable:false, // disable root node dragging
                                                                 id:'1',
 								expanded : true
@@ -188,7 +188,7 @@ var OnlineUser = {
                         if(roleText!=""){
                             title="角色：【"+roleText+"】 ";
                         }
-                        title+="组织机构：【"+orgText+"】";
+                        title+="组织架构：【"+orgText+"】";
                         onlineGrid.getView().refresh();
                         onlineGrid.setTitle(title);
 		}
@@ -209,7 +209,7 @@ var OnlineUser = {
                         });
                         var title = "角色：【"+roleText+"】";
                         if(orgText!=""){
-                            title+=" 组织机构：【"+orgText+"】";
+                            title+=" 组织架构：【"+orgText+"】";
                         }
                         onlineGrid.getView().refresh();
                         onlineGrid.setTitle(title);

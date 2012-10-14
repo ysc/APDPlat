@@ -9,14 +9,14 @@ User loginUser=UserHolder.getCurrentLoginUser();
 String username="匿名用户";
 String realName="";
 Integer userId=0;
-String orgName="匿名组织机构";
+String orgName="匿名组织架构";
 int orgId=0;
 String userPath="";
 if(loginUser!=null){
     //设置用户的数据上传主目录
     userPath=request.getContextPath() + "/userfiles/"+loginUser.getId()+"/";
     request.getSession().setAttribute("userPath", userPath);
-    orgName=loginUser.getOrg()==null?"匿名组织机构":loginUser.getOrg().getOrgName();
+    orgName=loginUser.getOrg()==null?"匿名组织架构":loginUser.getOrg().getOrgName();
     orgId=loginUser.getOrg()==null?0:loginUser.getOrg().getId();
     username=loginUser.getUsername();
     realName=loginUser.getRealName();

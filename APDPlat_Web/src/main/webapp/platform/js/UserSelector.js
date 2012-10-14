@@ -124,7 +124,7 @@ var UserSelector = {
 				{header: "用户姓名", width: 20, dataIndex: 'realName', sortable: true},
 				{header: "状态", width: 20, dataIndex: 'enabled', sortable: true},
 				{header: "拥有角色", width: 40, dataIndex: 'roles', sortable: true},
-				{header: "组织机构", width: 40, dataIndex: 'orgName', sortable: true},
+				{header: "组织架构", width: 40, dataIndex: 'orgName', sortable: true},
 				{header: "描述", width: 40, dataIndex: 'des', sortable: true}
 			]
 		});
@@ -132,14 +132,14 @@ var UserSelector = {
 		var orgPanel = new parent.Ext.tree.TreePanel({
                                         autoScroll:true,
 					id : 'orgPanel',
-					title : '组织机构 ',
+					title : '组织架构 ',
 					iconCls:'org',
                                         rootVisible:true,
 					loader : new Ext.tree.TreeLoader({
 								url : orgURL
 							}),
 					root : new Ext.tree.AsyncTreeNode({
-                                                                text: '组织机构',
+                                                                text: '组织架构',
                                                                 draggable:false, // disable root node dragging
                                                                 id:'1',
 								expanded : true
@@ -282,7 +282,7 @@ var UserSelector = {
                         if(roleText!=""){
                             title="角色：【"+roleText+"】 ";
                         }
-                        title+="组织机构：【"+orgText+"】";
+                        title+="组织架构：【"+orgText+"】";
                         userSelectGrid.getView().refresh();
                         userSelectGrid.setTitle(title);
 		}
@@ -308,7 +308,7 @@ var UserSelector = {
                         });
                         var title = "角色：【"+roleText+"】";
                         if(orgText!=""){
-                            title+=" 组织机构：【"+orgText+"】";
+                            title+=" 组织架构：【"+orgText+"】";
                         }
                         userSelectGrid.getView().refresh();
                         userSelectGrid.setTitle(title);
