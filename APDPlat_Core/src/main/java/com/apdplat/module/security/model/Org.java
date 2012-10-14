@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 @Searchable
 public class Org extends Model{
     @SearchableProperty
-    @ModelAttr("组织结构名称")
+    @ModelAttr("组织架构名称")
     protected String orgName;
     @SearchableProperty
     @ModelAttr("负责人姓名")
