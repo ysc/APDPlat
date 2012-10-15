@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetFlags;
 import org.hyperic.sigar.NetInterfaceConfig;
@@ -28,7 +30,7 @@ public class LinuxSequenceService  implements SequenceService{
             System.out.println("linux lib : "+dir.getAbsolutePath());
             
             System.load(dir.getAbsolutePath());
-            StringBuilder result = new StringBuilder();
+            Set<String> result = new HashSet<String>();
             Sigar sigar = new Sigar();
             String[] ifaces = sigar.getNetInterfaceList();
             for (int i = 0; i < ifaces.length; i++) {
@@ -38,29 +40,30 @@ public class LinuxSequenceService  implements SequenceService{
                     continue;
                 }
                 String mac = cfg.getHwaddr();
-                result.append(mac);
+                result.add(mac);
                 log.debug("mac: " + mac);
             }
-            if(result.length()<1){
+            if(result.size()<1){
                 return null;
             }
             Properties props = System.getProperties();
             String javaVersion = props.getProperty("java.version");
-            result.append(javaVersion);
+            result.add(javaVersion);
             log.debug("Java的运行环境版本：    " + javaVersion);
             String javaVMVersion = props.getProperty("java.vm.version");
-            result.append(javaVMVersion);
+            result.add(javaVMVersion);
             log.debug("Java的虚拟机实现版本：    " + props.getProperty("java.vm.version"));
             String osVersion = props.getProperty("os.version");
-            result.append(osVersion);
+            result.add(osVersion);
             log.debug("操作系统的版本：    " + props.getProperty("os.version"));
 
             Mem mem = sigar.getMem();
             // 内存总量
             String totalMem = mem.getTotal() / 1024L + "K av";
             log.debug("内存总量:    " + totalMem);
-            result.append(totalMem);
+            result.add(totalMem);
 
+            log.debug("result:    " + result);
             String machineCode = getMD5(result.toString());
 
             return machineCode;
