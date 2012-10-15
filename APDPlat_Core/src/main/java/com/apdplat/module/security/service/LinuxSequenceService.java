@@ -1,7 +1,9 @@
 package com.apdplat.module.security.service;
 
+import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
 import com.apdplat.platform.util.ConvertUtils;
+import com.apdplat.platform.util.FileUtils;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -26,7 +28,7 @@ public class LinuxSequenceService  implements SequenceService{
     @Override
     public String getSequence() {
         try {
-            File dir = new File(SystemListener.getContextPath(), "WEB-INF/lib/amd64-linux.so");
+            File dir = new File(FileUtils.getAbsolutePath("/WEB-INF/lib/"+PropertyHolder.getProperty("libsigar")));
             System.out.println("linux lib : "+dir.getAbsolutePath());
             
             System.load(dir.getAbsolutePath());
