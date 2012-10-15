@@ -1,0 +1,13 @@
+
+
+sudo apt-get install mysql-server
+sudo apt-get install mysql-client
+mysql -uroot -proot
+show variables like 'character%'; 
+sudo vi /etc/mysql/my.cnf
+在mysqld下加入：
+character_set_server=utf8
+
+sudo service mysql stop
+
+sudo service mysql start
