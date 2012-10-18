@@ -86,6 +86,7 @@ public class NewsAction extends ExtJSSimpleAction<News> {
         map.put("title", model.getTitle());
         map.put("username", model.getOwnerUser().getUsername());
         map.put("orgname", model.getOwnerUser().getOrg().getOrgName());
+        model.getInfoType().setLang(lang);
         map.put("infoTypeName", model.getInfoType().getInfoTypeName());
         map.put("createTime", DateTypeConverter.toDefaultDateTime(model.getCreateTime()));
         map.put("updateTime", DateTypeConverter.toDefaultDateTime(model.getUpdateTime()));
