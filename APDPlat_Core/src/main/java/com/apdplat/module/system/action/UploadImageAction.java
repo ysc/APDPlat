@@ -26,7 +26,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class UploadImageAction extends DefaultAction {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected static final Logger log = LoggerFactory.getLogger(UploadImageAction.class);
     //上传
     private static int BUFFER_SIZE=1024*100*8;
     private static String uploadPath="/platform/upload";
@@ -62,8 +62,9 @@ public class UploadImageAction extends DefaultAction {
         return null;
     }
     private void deletePhotoFile(){
-        if(path==null || "".equals(path))
+        if(path==null || "".equals(path)) {
             return;
+        }
         File file=new File(FileUtils.getAbsolutePath(path));
         file.delete();
     }
@@ -79,8 +80,9 @@ public class UploadImageAction extends DefaultAction {
    private void processPhotoFile(){
        SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日HH时mm分ss秒");
        File photoPath=new File(FileUtils.getAbsolutePath(uploadPath));
-       if(!photoPath.exists())
+       if(!photoPath.exists()) {
            photoPath.mkdir();
+       }
 
        String newPhotoFileName = getFileName(this.getPhotoFileName())+"_"+df.format(new Date()) + getExtention(this.getPhotoFileName());
        path=uploadPath+"/"+newPhotoFileName;
@@ -89,27 +91,27 @@ public class UploadImageAction extends DefaultAction {
    }
 
    private static void copy(File src, File dst) {
- 	  try {
- 		  InputStream in = null ;
- 		  OutputStream out = null ;
- 		  try {
- 			  in = new BufferedInputStream( new FileInputStream(src), BUFFER_SIZE);
- 			  out = new BufferedOutputStream( new FileOutputStream(dst), BUFFER_SIZE);
- 			  byte [] buffer = new byte [BUFFER_SIZE];
- 			  while (in.read(buffer) > 0 ) {
- 				  out.write(buffer);
- 			  }
- 		  } finally {
- 			  if ( null != in) {
- 				  in.close();
- 			  }
- 			  if ( null != out) {
- 				  out.close();
- 			  }
- 		  }
- 	  } catch (Exception e) {
- 		  e.printStackTrace();
- 	  }
+        try {
+            InputStream in = null ;
+            OutputStream out = null ;
+            try {
+                    in = new BufferedInputStream( new FileInputStream(src), BUFFER_SIZE);
+                    out = new BufferedOutputStream( new FileOutputStream(dst), BUFFER_SIZE);
+                    byte [] buffer = new byte [BUFFER_SIZE];
+                    while (in.read(buffer) > 0 ) {
+                        out.write(buffer);
+                    }
+            } finally {
+                    if ( null != in) {
+                        in.close();
+                    }
+                    if ( null != out) {
+                        out.close();
+                    }
+            }
+        } catch (Exception e) {
+            log.error("生成验证码出错",e);
+        }
    }
 
     public File getPhoto() {

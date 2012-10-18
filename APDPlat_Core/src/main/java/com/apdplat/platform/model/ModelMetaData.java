@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ModelMetaData {
     protected static final Logger log = LoggerFactory.getLogger(ModelMetaData.class);
-    private static Map<String,String> des=new HashMap<String,String>();
-    private static Map<String,Class<? extends Model>> metaData=new HashMap<String,Class<? extends Model>>();
+    private static Map<String,String> des=new HashMap<>();
+    private static Map<String,Class<? extends Model>> metaData=new HashMap<>();
     public static Map<String,String> getModelDes(){
         return Collections.unmodifiableMap(des);
     }

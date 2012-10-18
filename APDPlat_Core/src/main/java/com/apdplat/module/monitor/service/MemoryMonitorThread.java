@@ -35,7 +35,7 @@ public class MemoryMonitorThread extends Thread{
                 if(!running){
                     log.info("内存监视线程退出");
                 }else{
-                    ex.printStackTrace();
+                    log.error("内存监视线程出错",ex);
                 }
             }
         }
@@ -45,18 +45,18 @@ public class MemoryMonitorThread extends Thread{
         float total=(float)Runtime.getRuntime().totalMemory()/1000000;
         float free=(float)Runtime.getRuntime().freeMemory()/1000000;
         
-        MemoryState log=new MemoryState();
+        MemoryState logger=new MemoryState();
         try {
-            log.setServerIP(InetAddress.getLocalHost().getHostAddress());
+            logger.setServerIP(InetAddress.getLocalHost().getHostAddress());
         } catch (UnknownHostException ex) {
-            ex.printStackTrace();
+            log.error("户记录日志出错",ex);
         }
-        log.setAppName(SystemListener.getContextPath());
-        log.setRecordTime(new Date());
-        log.setMaxMemory(max);
-        log.setTotalMemory(total);
-        log.setFreeMemory(free);
-        log.setUsableMemory(log.getMaxMemory()-log.getTotalMemory()+log.getFreeMemory());
-        LogQueue.addLog(log);
+        logger.setAppName(SystemListener.getContextPath());
+        logger.setRecordTime(new Date());
+        logger.setMaxMemory(max);
+        logger.setTotalMemory(total);
+        logger.setFreeMemory(free);
+        logger.setUsableMemory(logger.getMaxMemory()-logger.getTotalMemory()+logger.getFreeMemory());
+        LogQueue.addLog(logger);
     }
 }

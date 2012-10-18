@@ -2,17 +2,16 @@ package com.apdplat.platform.generator;
 
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
-import com.apdplat.platform.generator.Generator;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.model.ModelFieldData;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Entity;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -32,8 +31,8 @@ public class JsGenerator  extends Generator{
         factory.setTemplateLoaderPath(PropertyHolder.getProperty("action.generator.freemarker.template"));
         try {
             freemarkerConfiguration = factory.createConfiguration();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("初始化模板错误",e);
         }
 
         try {
@@ -71,13 +70,13 @@ public class JsGenerator  extends Generator{
                             System.out.println(path);
                             System.out.println(clazz);
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                        log.error("生成JS错误",e);
                     }
                 }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.error("生成JS错误",e);
         }
         
     }
@@ -97,7 +96,7 @@ public class JsGenerator  extends Generator{
 
         log.info("开始生成JS");
         
-        Map<String, Object> context = new HashMap<String, Object>();
+        Map<String, Object> context = new HashMap<>();
         List<ModelFieldData> attrs=model.getAllModelAttr();
         
         int baseHeight=120;
@@ -107,7 +106,7 @@ public class JsGenerator  extends Generator{
         int createHeight=baseHeight+len*16*2;        
         int labelWidth=80;
         int maxLength=0;
-        List<ModelFieldData> leftModelAttrs=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> leftModelAttrs=new ArrayList<>();
         for(int i=0;i<len;i++){
             ModelFieldData data=modelAttrs.get(i);
             leftModelAttrs.add(data);
@@ -116,7 +115,7 @@ public class JsGenerator  extends Generator{
                 maxLength=length>maxLength?length:maxLength;
             }
         }
-        List<ModelFieldData> rightModelAttrs=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> rightModelAttrs=new ArrayList<>();
         for(int i=len;i<modelAttrs.size();i++){
             ModelFieldData data=modelAttrs.get(i);
             rightModelAttrs.add(data);
@@ -132,11 +131,11 @@ public class JsGenerator  extends Generator{
         List<ModelFieldData> searchableAttrs=model.getAllModelSearchableAttr();
         len=searchableAttrs.size()/2+searchableAttrs.size()%2;        
         int searchHeight=baseHeight+len*16*2;
-        List<ModelFieldData> leftSearchableAttrs=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> leftSearchableAttrs=new ArrayList<>();
         for(int i=0;i<len;i++){
             leftSearchableAttrs.add(searchableAttrs.get(i));
         }
-        List<ModelFieldData> rightSearchableAttrs=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> rightSearchableAttrs=new ArrayList<>();
         for(int i=len;i<searchableAttrs.size();i++){
             rightSearchableAttrs.add(searchableAttrs.get(i));
         }
@@ -184,10 +183,8 @@ public class JsGenerator  extends Generator{
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             log.info("生成JS成功");
             return content;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (TemplateException ex) {
-            ex.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("生成JS错误",e);
         }
         log.info("生成JS失败");
         return "";

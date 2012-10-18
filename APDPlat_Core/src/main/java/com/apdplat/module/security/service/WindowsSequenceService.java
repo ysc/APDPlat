@@ -42,20 +42,19 @@ public final class WindowsSequenceService implements SequenceService{
         try {
             File file = File.createTempFile("tmp", ".vbs");
             file.deleteOnExit();
-            FileWriter fw = new java.io.FileWriter(file);
-
-            String vbs = "Set objFSO = CreateObject(\"Scripting.FileSystemObject\")\n"
-                    + "Set colDrives = objFSO.Drives\n" + "Set objDrive = colDrives.item(\"" + drive + "\")\n"
-                    + "Wscript.Echo objDrive.SerialNumber";
-            fw.write(vbs);
-            fw.close();
-            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
-            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while ((line = input.readLine()) != null) {
-                result += line;
+            try (FileWriter fw = new java.io.FileWriter(file)) {
+                String vbs = "Set objFSO = CreateObject(\"Scripting.FileSystemObject\")\n"
+                        + "Set colDrives = objFSO.Drives\n" + "Set objDrive = colDrives.item(\"" + drive + "\")\n"
+                        + "Wscript.Echo objDrive.SerialNumber";
+                fw.write(vbs);
             }
-            input.close();
+            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+            try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+                String line;
+                while ((line = input.readLine()) != null) {
+                    result += line;
+                }
+            }
             file.delete();
         } catch (Throwable e) {
             log.error("生成HDSerial失败", e);
@@ -77,24 +76,23 @@ public final class WindowsSequenceService implements SequenceService{
         try {
             File file = File.createTempFile("tmp", ".vbs");
             file.deleteOnExit();
-            FileWriter fw = new FileWriter(file);
+            try (FileWriter fw = new FileWriter(file)) {
+                String vbs = "On Error Resume Next \r\n\r\n" + "strComputer = \".\"  \r\n"
+                        + "Set objWMIService = GetObject(\"winmgmts:\" _ \r\n"
+                        + "    & \"{impersonationLevel=impersonate}!\\\\\" & strComputer & \"\\root\\cimv2\") \r\n"
+                        + "Set colItems = objWMIService.ExecQuery(\"Select * from Win32_Processor\")  \r\n "
+                        + "For Each objItem in colItems\r\n " + "    Wscript.Echo objItem.ProcessorId  \r\n "
+                        + "    exit for  ' do the first cpu only! \r\n" + "Next                    ";
 
-            String vbs = "On Error Resume Next \r\n\r\n" + "strComputer = \".\"  \r\n"
-                    + "Set objWMIService = GetObject(\"winmgmts:\" _ \r\n"
-                    + "    & \"{impersonationLevel=impersonate}!\\\\\" & strComputer & \"\\root\\cimv2\") \r\n"
-                    + "Set colItems = objWMIService.ExecQuery(\"Select * from Win32_Processor\")  \r\n "
-                    + "For Each objItem in colItems\r\n " + "    Wscript.Echo objItem.ProcessorId  \r\n "
-                    + "    exit for  ' do the first cpu only! \r\n" + "Next                    ";
-
-            fw.write(vbs);
-            fw.close();
-            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
-            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line;
-            while ((line = input.readLine()) != null) {
-                result += line;
+                fw.write(vbs);
             }
-            input.close();
+            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+            try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+                String line;
+                while ((line = input.readLine()) != null) {
+                    result += line;
+                }
+            }
             file.delete();
         } catch (Throwable e) {
             log.error("生成CPUSerial失败", e);
@@ -119,10 +117,8 @@ public final class WindowsSequenceService implements SequenceService{
             byte[] b = md.digest(message.getBytes("utf-8"));
             String md5 = ConvertUtils.byte2HexString(b)+message.length();
             return getSplitString(md5);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            log.error("MD5摘要出错",e);
         }
         return null;
     }

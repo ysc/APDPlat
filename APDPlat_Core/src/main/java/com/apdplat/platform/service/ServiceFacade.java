@@ -59,13 +59,13 @@ public  class ServiceFacade{
 	}
 	@Transactional
 	public <T extends Model> List<Integer> delete(Class<T> modelClass,Integer[] modelIds) {
-                List<Integer> ids=new ArrayList<Integer>();
+                List<Integer> ids=new ArrayList<>();
 		for(Integer modelId : modelIds){
 			try{
 				this.delete(modelClass,modelId);
                                 ids.add(modelId);
 			}catch(Exception e){
-				e.printStackTrace();
+				log.error("删除模型出错",e);
 			}
 		}
                 return ids;

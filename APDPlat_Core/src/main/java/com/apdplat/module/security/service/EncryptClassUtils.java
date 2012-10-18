@@ -6,12 +6,20 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *此工具负责把
@@ -22,6 +30,7 @@ import javax.crypto.spec.DESKeySpec;
  * @author ysc
  */
 public class EncryptClassUtils {
+    protected static final Logger log = LoggerFactory.getLogger(EncryptClassUtils.class);   
     private static String sequenceKeyName;
     private static String securityKeyName;
     private static String winClspath;
@@ -53,12 +62,11 @@ public class EncryptClassUtils {
             SecretKey key = kg.generateKey();
             // 获取密钥数据
             byte rawKeyData[] = key.getEncoded();
-            // 将获取到密钥数据保存到文件中，待解密时使用
-            FileOutputStream fo = new FileOutputStream(file);
-            fo.write(rawKeyData);
-            fo.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            try (FileOutputStream fo = new FileOutputStream(file)) {
+                fo.write(rawKeyData);
+            }
+        } catch (NoSuchAlgorithmException | IOException e) {
+            log.error("创建私钥失败",e);
         }
     }
 
@@ -66,10 +74,10 @@ public class EncryptClassUtils {
         try {
             // DES算法要求有一个可信任的随机数源
             SecureRandom sr = new SecureRandom();
-            // 获得密匙数据
-            FileInputStream fi = new FileInputStream(new File(keyFile));
-            byte rawKeyData[] = readAll(fi);
-            fi.close();
+            byte[] rawKeyData;
+            try (FileInputStream fi = new FileInputStream(new File(keyFile))) {
+                rawKeyData = readAll(fi);
+            }
             // 从原始密匙数据创建DESKeySpec对象
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             // 创建一个密匙工厂，然后用它把DESKeySpec转换成一个SecretKey对象
@@ -78,20 +86,20 @@ public class EncryptClassUtils {
             Cipher cipher = Cipher.getInstance("DES");
             // 用密匙初始化Cipher对象
             cipher.init(Cipher.ENCRYPT_MODE, key, sr);
-            // 现在，获取要加密的文件数据
-            FileInputStream fi2 = new FileInputStream(new File(classFile));
-            byte data[] = readAll(fi2);
-            fi2.close();
+            byte[] data;
+            try (FileInputStream fi2 = new FileInputStream(new File(classFile))) {
+                data = readAll(fi2);
+            }
             // 正式执行加密操作
             byte encryptedData[] = cipher.doFinal(data);
             // 用加密后的数据覆盖原文件
             File file = new File(newClassFile);
             file.createNewFile();
-            FileOutputStream fo = new FileOutputStream(file);
-            fo.write(encryptedData);
-            fo.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            try (FileOutputStream fo = new FileOutputStream(file)) {
+                fo.write(encryptedData);
+            }
+        } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | IOException e) {
+            log.error("加密失败",e);
         }
     }
 
@@ -109,8 +117,8 @@ public class EncryptClassUtils {
             for (int n ; (n = in.read(buffer))>0 ; ) {
                 out.write(buffer, 0, n);
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            log.error("读取数据失败",e);
         }
         return out.toByteArray();
     }

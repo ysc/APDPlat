@@ -1,14 +1,14 @@
 package com.apdplat.module.monitor.service;
 
-import com.apdplat.platform.service.CategoryService;
 import com.apdplat.module.monitor.model.MemoryState;
 import com.apdplat.platform.action.converter.DateTypeConverter;
+import com.apdplat.platform.service.CategoryService;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.jdom.Attribute;
-import org.springframework.stereotype.Service;
 import org.jdom.Element;
+import org.springframework.stereotype.Service;
 
 /**
  *
@@ -20,6 +20,7 @@ public class MemoryStateCategoryService extends CategoryService{
     public String getXML(List<MemoryState> data){
         Collections.sort(data, new Comparator(){
 
+            @Override
             public int compare(Object o1, Object o2) {
                 MemoryState p1=(MemoryState)o1;
                 MemoryState p2=(MemoryState)o2;

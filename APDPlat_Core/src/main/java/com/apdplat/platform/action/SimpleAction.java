@@ -19,7 +19,7 @@ public abstract class SimpleAction<T extends Model> extends ActionSupport implem
     protected ServiceFacade service;
     protected T model = null;
     private Class<T> modelClass;
-    protected Page<T> page = new Page<T>();
+    protected Page<T> page = new Page<>();
     @Resource(name = "springContextUtils")
     protected SpringContextUtils springContextUtils;
 

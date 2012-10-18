@@ -5,19 +5,19 @@ import com.apdplat.module.monitor.model.IndexLogResult;
 import com.apdplat.module.security.model.User;
 import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.module.system.service.LogQueue;
-import com.apdplat.platform.model.Model;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
+import com.apdplat.platform.model.Model;
 import com.apdplat.platform.util.ConvertUtils;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import javax.annotation.Resource;
-
 import org.compass.core.CompassSession;
 import org.compass.core.CompassTemplate;
 import org.compass.gps.CompassGps;
+import org.compass.gps.CompassGpsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -59,8 +59,8 @@ public class IndexManager {
             indexLog.setLoginIP(UserHolder.getCurrentUserLoginIp());
             try {
                 indexLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                ex.printStackTrace();
+            } catch (UnknownHostException e) {
+                log.error("保存索引日志出错",e);
             }
             indexLog.setAppName(SystemListener.getContextPath());
             indexLog.setStartTime(new Date());
@@ -97,8 +97,8 @@ public class IndexManager {
                     if(indexMonitor){
                         indexLog.setOperatingResult(IndexLogResult.SUCCESS);
                     }
-                }catch(Exception e){
-                    e.printStackTrace();
+                }catch(CompassGpsException | IllegalStateException e){
+                    log.error("建立索引出错",e);
                     if(indexMonitor){
                         indexLog.setOperatingResult(IndexLogResult.FAIL);
                     }

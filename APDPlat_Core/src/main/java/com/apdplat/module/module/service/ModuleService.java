@@ -1,16 +1,16 @@
 package com.apdplat.module.module.service;
 
+import com.apdplat.module.module.model.Command;
+import com.apdplat.module.module.model.Module;
 import com.apdplat.module.security.model.User;
+import com.apdplat.module.security.service.PrivilegeUtils;
+import com.apdplat.module.security.service.SpringSecurityService;
 import com.apdplat.module.security.service.UserHolder;
+import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.criteria.Operator;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.criteria.PropertyEditor;
-import com.apdplat.module.module.model.Command;
-import com.apdplat.module.module.model.Module;
-import com.apdplat.module.security.service.PrivilegeUtils;
-import com.apdplat.module.security.service.SpringSecurityService;
-import com.apdplat.module.system.service.PropertyHolder;
-import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.service.ServiceFacade;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -273,7 +273,7 @@ public class ModuleService {
     }
 
     public static Map<String, String> getCommandPathToRole(Command command) {
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         for (String path : getCommandPath(command)) {
             String role = path.toString().substring(3).replace("/", "_").replace("!", "_").toUpperCase();
             result.put(path, role);
@@ -283,7 +283,7 @@ public class ModuleService {
     }
 
     public static List<String> getCommandPath(Command command) {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         String dependency = PropertyHolder.getProperty("command." + command.getEnglish());
         String[] commands = null;
         if (dependency != null && !"".equals(dependency.trim())) {
@@ -306,7 +306,7 @@ public class ModuleService {
 
     public static String getModulePath(Module module) {
         StringBuilder str = new StringBuilder();
-        Stack<Module> stack = new Stack<Module>();
+        Stack<Module> stack = new Stack<>();
         getModules(module, stack);
         int len = stack.size();
         for (int i = 0; i < len; i++) {
@@ -332,8 +332,8 @@ public class ModuleService {
      * @return 
      */
     public static List<Command> getSpecialCommand(Module module) {
-        List<Command> special = new ArrayList<Command>();
-        List<String> commons = new ArrayList<String>();
+        List<Command> special = new ArrayList<>();
+        List<String> commons = new ArrayList<>();
         for (Method method : ExtJSSimpleAction.class.getMethods()) {
             commons.add(method.getName());
             log.info("common method: " + method.getName());
@@ -362,12 +362,12 @@ public class ModuleService {
      * @return 
      */
     public static List<Module> getAllModule(Module rootModule){
-        List<Module> list=new ArrayList<Module>();
+        List<Module> list=new ArrayList<>();
         list.add(rootModule);
         return getAllModule(list);
     }
     public static List<Module> getAllModule(List<Module> rootModules){
-        List<Module> modules=new ArrayList<Module>();
+        List<Module> modules=new ArrayList<>();
         for(Module m : rootModules){
             moduleWalk(modules,m);
         }
@@ -397,7 +397,7 @@ public class ModuleService {
      * @return 
      */
     public static List<Module> getLeafModule(Module rootModule){
-        List<Module> leaf = new ArrayList<Module>(); 
+        List<Module> leaf = new ArrayList<>(); 
         for(Module module : getAllModule(rootModule)){
             if(module.getCommands().isEmpty()){
                 log.info(module.getChinese()+" 模块不是叶子模块");

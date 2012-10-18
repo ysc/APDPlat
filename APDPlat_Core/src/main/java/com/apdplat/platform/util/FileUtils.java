@@ -45,12 +45,12 @@ public class FileUtils {
     public static boolean appendText(String path,String text){
         try{
             File file=new File(path);
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
-            writer.write(text);
-            writer.close();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file,true))) {
+                writer.write(text);
+            }
             return true;
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("写文件出错",e);
         }
         return false;
     }
@@ -223,9 +223,9 @@ public class FileUtils {
                 file.getParentFile().mkdirs();
             }
             file.createNewFile();
-            OutputStream out = new FileOutputStream(file);
-            out.write(data, 0, data.length);
-            out.close();
+            try (OutputStream out = new FileOutputStream(file)) {
+                out.write(data, 0, data.length);
+            }
             return file;
         }catch(Exception ex){
             log.error("文件操作失败",ex);
@@ -239,9 +239,9 @@ public class FileUtils {
                 file.getParentFile().mkdirs();
             }
             file.createNewFile();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"utf-8"));
-            writer.write(text);
-            writer.close();
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"utf-8"))) {
+                writer.write(text);
+            }
             return file;
         }catch(Exception ex){
             log.error("文件操作失败",ex);
@@ -267,7 +267,7 @@ public class FileUtils {
     }
 
     public static Collection<String> getTextFileContent(InputStream in) {
-        Collection<String> result=new LinkedHashSet<String>();
+        Collection<String> result=new LinkedHashSet<>();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(in, "utf-8"));

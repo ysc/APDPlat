@@ -25,7 +25,7 @@ public class PositionService {
     private ServiceFacade serviceFacade;
 
     public static List<String> getChildNames(Position position){
-        List<String> names=new ArrayList<String>();
+        List<String> names=new ArrayList<>();
         List<Position> child=position.getChild();
         for(Position item : child){
             names.add(item.getPositionName());
@@ -34,7 +34,7 @@ public class PositionService {
         return names;
     }
     public static List<Integer> getChildIds(Position position){
-        List<Integer> ids=new ArrayList<Integer>();
+        List<Integer> ids=new ArrayList<>();
         List<Position> child=position.getChild();
         for(Position item : child){
             ids.add(item.getId());

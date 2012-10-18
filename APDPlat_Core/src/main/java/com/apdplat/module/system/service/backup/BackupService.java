@@ -1,10 +1,10 @@
 package com.apdplat.module.system.service.backup;
 
-import com.apdplat.module.security.model.User;
-import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.module.monitor.model.BackupLog;
 import com.apdplat.module.monitor.model.BackupLogResult;
 import com.apdplat.module.monitor.model.BackupLogType;
+import com.apdplat.module.security.model.User;
+import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
@@ -26,9 +26,9 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class BackupService {  
     protected static final Logger log = LoggerFactory.getLogger(MySQLBackupService.class);
-    protected static StandardPBEStringEncryptor encryptor;
-    protected static String username;
-    protected static String password;
+    protected static final StandardPBEStringEncryptor encryptor;
+    protected static final String username;
+    protected static final String password;
     static{
             EnvironmentStringPBEConfig config=new EnvironmentStringPBEConfig();
             config.setAlgorithm("PBEWithMD5AndDES");
@@ -36,15 +36,19 @@ public abstract class BackupService {
 
             encryptor=new StandardPBEStringEncryptor();
             encryptor.setConfig(config);
-            username=PropertyHolder.getProperty("db.username");
-            password=PropertyHolder.getProperty("db.password");
-            if(username!=null && username.contains("ENC(") && username.contains(")")){
-                username=username.substring(4,username.length()-1);
-                username=decrypt(username);
+            String uname=PropertyHolder.getProperty("db.username");
+            String pwd=PropertyHolder.getProperty("db.password");
+            if(uname!=null && uname.contains("ENC(") && uname.contains(")")){
+                uname=uname.substring(4,uname.length()-1);
+                username=decrypt(uname);
+            }else{
+                username=uname;
             }
-            if(password!=null && password.contains("ENC(") && password.contains(")")){
-                password=password.substring(4,password.length()-1);
-                password=decrypt(password);
+            if(pwd!=null && pwd.contains("ENC(") && pwd.contains(")")){
+                pwd=pwd.substring(4,pwd.length()-1);
+                password=decrypt(pwd);
+            }else{
+                password=pwd;
             }
     }
 
@@ -60,8 +64,8 @@ public abstract class BackupService {
             backupLog.setLoginIP(ip);
             try {
                 backupLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                ex.printStackTrace();
+            } catch (UnknownHostException e) {
+                log.error("记录备份日志出错",e);
             }
             backupLog.setAppName(SystemListener.getContextPath());
             backupLog.setStartTime(new Date());
@@ -75,7 +79,7 @@ public abstract class BackupService {
                 result=restoreImpl(date);   
             }                     
         }catch(Exception e){            
-            e.printStackTrace();
+            log.error("备份出错",e);
         }
         
         if(enableBackup){
@@ -111,14 +115,15 @@ public abstract class BackupService {
     }
     
     public List<String> getExistBackup(){
-        List<String> result=new ArrayList<String>();
+        List<String> result=new ArrayList<>();
         String path=getPath();
         File dir=new File(path);
         File[] files=dir.listFiles();
         for(File file : files){
             String name=file.getName();
-            if(!name.contains("bak"))
+            if(!name.contains("bak")) {
                 continue;
+            }
             name=name.substring(0, name.length()-4);
             String[] temp=name.split("-");
             String y=temp[0];

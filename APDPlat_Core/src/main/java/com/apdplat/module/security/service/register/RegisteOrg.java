@@ -35,7 +35,7 @@ public class RegisteOrg extends RegisterService<Org>{
 
     @Override
     protected List<Org> getRegisteData() {
-        ArrayList<Org> data=new ArrayList<Org>();
+        ArrayList<Org> data=new ArrayList<>();
         data.add(org);
         return data;
     }

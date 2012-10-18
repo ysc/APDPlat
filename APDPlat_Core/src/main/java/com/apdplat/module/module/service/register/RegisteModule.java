@@ -83,7 +83,7 @@ public class RegisteModule extends RegisterService<Module>{
         orderCriteria.addOrder(new Order("id", Sequence.ASC));
         //查出所有模块
         List<Command> list=serviceFacade.query(Command.class,null,null,orderCriteria).getModels();
-        Set<String> commandCsses=new HashSet<String>();
+        Set<String> commandCsses=new HashSet<>();
         for(Command command : list){
             //在module.xml中配置的命令可能会对于前台的几个按钮
             String dependency = PropertyHolder.getProperty("command." + command.getEnglish());
@@ -119,7 +119,7 @@ public class RegisteModule extends RegisterService<Module>{
     }
     @Override
     public void registe() {
-        data=new ArrayList<Module>();
+        data=new ArrayList<>();
         List<Module> modules=ModuleParser.getRootModules();
         for(Module module : modules){
             registeModule(module);
@@ -189,7 +189,7 @@ public class RegisteModule extends RegisterService<Module>{
     }
     
     private void chechCommand(Module module){
-        Set<String> existCommands=new HashSet<String>();
+        Set<String> existCommands=new HashSet<>();
         Module existsModule=moduleService.getModule(module.getEnglish());
         if(existsModule!=null){
             for(Command command : existsModule.getCommands()){

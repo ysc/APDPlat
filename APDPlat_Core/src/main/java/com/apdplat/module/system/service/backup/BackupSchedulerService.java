@@ -111,13 +111,9 @@ public class BackupSchedulerService implements ApplicationListener {
             String taskState = "定时备份数据任务执行频率为每天，时间（24小时制）" + hour + ":" + minute;
             log.info(taskState);
             return taskState;
-        } catch (ParseException ex) {
-            String tip = "定时备份数据设置失败，原因：" + ex.getMessage();
-            log.info(tip);
-            return tip;
-        } catch (SchedulerException ex) {
-            String tip = "定时备份数据设置失败，原因：" + ex.getMessage();
-            log.info(tip);
+        } catch (ParseException | SchedulerException e) {
+            String tip = "定时备份数据设置失败，原因：" + e.getMessage();
+            log.info(tip,e);
             return tip;
         }
     }

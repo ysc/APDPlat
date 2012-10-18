@@ -28,7 +28,7 @@ public class DicParser {
      */
     public static List<Dic> getLeafDics(){
         List<Dic> dics=getDics();
-        List<Dic> result=new ArrayList<Dic>();
+        List<Dic> result=new ArrayList<>();
         for(Dic dic : dics){
             execute(result,dic);
         }
@@ -48,7 +48,7 @@ public class DicParser {
      * @return 
      */
     public static List<Dic> getDics(){
-        List<Dic> dics=new ArrayList<Dic>();
+        List<Dic> dics=new ArrayList<>();
         //准备数据字典DTD文件以供校验使用
         prepareDtd();
         try{
@@ -73,18 +73,18 @@ public class DicParser {
                     parseDic(xml,dics);
                 }catch(Exception e)
                 {
-                    e.printStackTrace();
+                    log.error("解析数据字典出错",e);
                 }
                 finally {
                     try {
                         in.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    } catch (IOException e) {
+                        log.error("解析数据字典出错",e);
                     }
                 }
             }            
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("解析数据字典出错",e);
         }
         return dics;
     }    
@@ -129,20 +129,20 @@ public class DicParser {
                     FileUtils.createAndWriteFile(dtdFile, data);
                 }catch(Exception e)
                 {
-                    e.printStackTrace();
+                    log.error("解析数据字典出错",e);
                 }
                 finally {
                     try {
                         in.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    } catch (IOException e) {
+                        log.error("解析数据字典出错",e);
                     }
                 }
             }else{
                 log.info("没有找到数据字典DTD文件");
             }            
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("解析数据字典出错",e);
         }
     }
     private static void verifyFile(InputStream in){    

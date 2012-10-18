@@ -1,9 +1,5 @@
 package com.apdplat.module.security.service;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.image.ImageFilter;
-
 import com.octo.captcha.component.image.backgroundgenerator.BackgroundGenerator;
 import com.octo.captcha.component.image.color.RandomListColorGenerator;
 import com.octo.captcha.component.image.deformation.ImageDeformation;
@@ -20,9 +16,12 @@ import com.octo.captcha.component.word.wordgenerator.ComposeDictionaryWordGenera
 import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.engine.image.ListImageCaptchaEngine;
 import com.octo.captcha.image.gimpy.GimpyFactory;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageFilter;
 import org.springframework.stereotype.Service;
 
 @Service

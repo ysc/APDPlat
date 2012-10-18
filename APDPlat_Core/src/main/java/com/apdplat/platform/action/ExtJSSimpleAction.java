@@ -1,16 +1,16 @@
 package com.apdplat.platform.action;
 
 import com.apdplat.module.security.model.User;
-import com.apdplat.platform.annotation.RenderIgnore;
+import com.apdplat.module.system.service.ExcelService;
+import com.apdplat.platform.action.converter.DateTypeConverter;
 import com.apdplat.platform.annotation.ModelAttr;
+import com.apdplat.platform.annotation.ModelAttrRef;
+import com.apdplat.platform.annotation.ModelCollRef;
+import com.apdplat.platform.annotation.RenderIgnore;
 import com.apdplat.platform.criteria.Property;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.result.Page;
-import com.apdplat.module.system.service.ExcelService;
 import com.apdplat.platform.service.ServiceFacade;
-import com.apdplat.platform.action.converter.DateTypeConverter;
-import com.apdplat.platform.annotation.ModelAttrRef;
-import com.apdplat.platform.annotation.ModelCollRef;
 import com.apdplat.platform.util.ReflectionUtils;
 import com.apdplat.platform.util.SpringContextUtils;
 import com.apdplat.platform.util.Struts2Utils;
@@ -40,7 +40,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     protected ServiceFacade service;
     protected T model = null;
     protected Class<T> modelClass;
-    protected Page<T> page = new Page<T>();
+    protected Page<T> page = new Page<>();
     @Resource(name = "springContextUtils")
     protected SpringContextUtils springContextUtils;
     @Resource(name = "excelService")
@@ -113,7 +113,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             service.create(model);
             afterSuccessCreateModel(model);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("创建模型失败",e);
             afterFailCreateModel(model);
 
             map=new HashMap();
@@ -141,10 +141,10 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             return null;
         }
         afterRetrieve(model);
-        Map map = new HashMap();
-        renderJsonForRetrieve(map);
-        retrieveAfterRender(map,model);
-        Struts2Utils.renderJson(map);
+        Map temp = new HashMap();
+        renderJsonForRetrieve(temp);
+        retrieveAfterRender(temp,model);
+        Struts2Utils.renderJson(temp);
 
         return null;
     }
@@ -204,7 +204,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             service.update(model);
             afterSuccessPartUpdateModel(model);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("更新模型失败",e);
             afterFailPartUpdateModel(model);
             map=new HashMap();
             map.put("success", false);
@@ -225,7 +225,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             service.update(model);
             afterSuccessWholeUpdateModel(model);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("更新模型失败",e);
             afterFailWholeUpdateModel(model);
             Struts2Utils.renderText("false");
             return null;
@@ -266,7 +266,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         this.setPage(service.query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
         Map json = new HashMap();
         json.put("totalProperty", page.getTotalRecords());
-        List<Map> result = new ArrayList<Map>();
+        List<Map> result = new ArrayList<>();
         renderJsonForQuery(result);
         json.put("root", result);
         Struts2Utils.renderJson(json);
@@ -287,14 +287,14 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             //导出当前页的数据
             //this.setPage(service.query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
         }
-        List<List<String>> result = new ArrayList<List<String>>();
+        List<List<String>> result = new ArrayList<>();
         renderForExport(result);
         String path=excelService.write(result, exportFileName());
         Struts2Utils.renderText(path);
         return null;
     }
     private List<T> processSearchResult(List<T> models){
-        List<T> result =  new ArrayList<T>();
+        List<T> result =  new ArrayList<>();
         for(T obj : models){
             T t=service.retrieve(modelClass, obj.getId());
             if(t!=null){
@@ -312,7 +312,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
 
         Map json = new HashMap();
         json.put("totalProperty", page.getTotalRecords());
-        List<Map> result = new ArrayList<Map>();
+        List<Map> result = new ArrayList<>();
         renderJsonForSearch(result);
         json.put("root", result);
         Struts2Utils.renderJson(json);
@@ -454,7 +454,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     }
 
     protected void renderForExport(List<List<String>> result) {
-        List<String> data = new ArrayList<String>();
+        List<String> data = new ArrayList<>();
         //获取所有字段，包括继承的
         List<Field> fields = ReflectionUtils.getDeclaredFields(model);
         for (Field field : fields) {
@@ -466,7 +466,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         }
        result.add(data);
        for( T obj : page.getModels()){
-           data =new ArrayList<String>();
+           data =new ArrayList<>();
            renderDataForExport(data,obj);
            result.add(data);
        }
@@ -478,7 +478,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         for (Field field : fields) {
             if(field.isAnnotationPresent(ModelAttr.class)){
                 //导出的时候，如果是复杂类型，则忽略*_id属性
-                Map<String,String> temp=new HashMap<String,String>();
+                Map<String,String> temp=new HashMap<>();
                 addFieldValue(obj,field,temp);
                 //复杂类型对应两个值
                 temp.remove(field.getName()+"_id");
@@ -487,7 +487,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         }
     }
     private void addFieldValue(T obj, Field field, List<String> data){
-        Map<String,String> temp=new HashMap<String,String>();
+        Map<String,String> temp=new HashMap<>();
         addFieldValue(obj,field,temp);
         data.addAll(temp.values());
     }
@@ -556,7 +556,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }
             data.put(fieldName, value.toString());
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("获取字段值失败",e);
         }
     }
     public T getModel() {

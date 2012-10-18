@@ -20,14 +20,14 @@ public class Page<T extends Model> implements Serializable {
 
     protected static final Logger log = LoggerFactory.getLogger(Page.class);
     private long totalRecords = 0;
-    private List<T> models = new ArrayList<T>();
+    private List<T> models = new ArrayList<>();
 
     public static <T extends Model> Page<T> newInstance(Class<T> modelClass, InputStream in) {
         XMLFactory factory = new XMLFactory(Page.class, modelClass);
         try {
             return factory.unmarshal(in);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("生成对象出错",e);
         }
         return null;
     }
@@ -38,7 +38,7 @@ public class Page<T extends Model> implements Serializable {
         try {
             xml = factory.marshal(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("生成XML出错",e);
         }
         return xml;
     }

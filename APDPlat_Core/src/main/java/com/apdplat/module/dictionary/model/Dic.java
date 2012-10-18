@@ -1,12 +1,11 @@
 package com.apdplat.module.dictionary.model;
 
-import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.annotation.ModelAttr;
 import com.apdplat.platform.annotation.ModelAttrRef;
+import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,11 +39,11 @@ public class Dic extends Model {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentDic")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
-    protected List<Dic> subDics = new ArrayList<Dic>();
+    protected List<Dic> subDics = new ArrayList<>();
     //不对字典项集合进行缓存，因为当字典项改变导致缓存失效后，字典的缓存没有失效
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "dic")
     @OrderBy("orderNum ASC")
-    protected List<DicItem> dicItems = new ArrayList<DicItem>();
+    protected List<DicItem> dicItems = new ArrayList<>();
     @ManyToOne
     @ModelAttr("父字典")
     @ModelAttrRef("chinese")

@@ -18,7 +18,7 @@ public class LogQueue {
     protected final Logger log = LoggerFactory.getLogger(getClass());
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
-    private static ConcurrentLinkedQueue <Model> logs =  new  ConcurrentLinkedQueue <Model>();
+    private static ConcurrentLinkedQueue <Model> logs =  new  ConcurrentLinkedQueue <>();
     private static int logQueueMax=Integer.parseInt(PropertyHolder.getProperty("logQueueMax"));
     public static synchronized void addLog(Model log){
         logs.add(log);
@@ -44,14 +44,12 @@ public class LogQueue {
                 try{
                     serviceFacade.create(model);
                     success++;
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                    log.error("保存日志失败:"+model.getMetaData());
+                }catch(Exception e){
+                    log.error("保存日志失败:"+model.getMetaData(),e);
                 }
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            log.error("保存日志抛出异常");
+        } catch (Exception e) {
+            log.error("保存日志抛出异常",e);
         }
         log.info("成功保存 "+success+" 条日志");
         log.info("保存后队列中的日志数目为："+logs.size());

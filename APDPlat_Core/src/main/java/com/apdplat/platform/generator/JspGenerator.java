@@ -1,17 +1,14 @@
 package com.apdplat.platform.generator;
 
 import com.apdplat.module.system.service.PropertyHolder;
-import com.apdplat.platform.generator.Generator;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  *
@@ -24,8 +21,8 @@ public class JspGenerator  extends Generator{
         factory.setTemplateLoaderPath(PropertyHolder.getProperty("action.generator.freemarker.template"));
         try {
             freemarkerConfiguration = factory.createConfiguration();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("初始化模板错误",e);
         }
     }
     /**
@@ -48,7 +45,7 @@ public class JspGenerator  extends Generator{
             parentDir+="../";
         }
         
-        Map<String, Object> context = new HashMap<String, Object>();
+        Map<String, Object> context = new HashMap<>();
         context.put("title", title);
         context.put("parentDir", parentDir);
         context.put("js", module);
@@ -58,10 +55,8 @@ public class JspGenerator  extends Generator{
             Template template = freemarkerConfiguration.getTemplate(templateName, ENCODING);
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             result=saveFile(workspaceWebBasePath, modulePath, module, content);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (TemplateException ex) {
-            ex.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("生成JSP错误",e);
         }
         if(result){
             log.info("Jsp生成成功");
@@ -97,8 +92,8 @@ public class JspGenerator  extends Generator{
                 try {
                     jsFile.createNewFile();
                     saveFile(jsFile,JsGenerator.getContent(modulePath,module));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException e) {
+                    log.error("生成JSP错误",e);
                 }
             }
             //生成JSP文件
@@ -108,8 +103,8 @@ public class JspGenerator  extends Generator{
                     jspFile.createNewFile();
                     saveFile(jspFile,content);
                     return true;
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException e) {
+                    log.error("生成JSP错误",e);
                 }
             }else{
                 log.info("源文件已经存在，请删除 "+jspFile.getAbsolutePath()+" 后再执行命令");                

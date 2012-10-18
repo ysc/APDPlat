@@ -88,7 +88,7 @@ public abstract class DaoSupport extends DataPrivilegeControl{
 
         setQueryCache(query);
         
-        Page<T> page = new Page<T>();
+        Page<T> page = new Page<>();
         List<T> models = query.getResultList();
         if (models != null) {
             page.setModels(models);
@@ -260,7 +260,7 @@ public abstract class DaoSupport extends DataPrivilegeControl{
     }
 
     public <T extends Model> Page<T> search(String queryString,PageCriteria pageCriteria,Class<T> modelClass){
-        List<T> result =  new ArrayList<T>();
+        List<T> result =  new ArrayList<>();
         Compass compass = compassTemplate.getCompass();
         CompassSession session=compass.openSession();
         CompassHits hits=  session.find(queryString);
@@ -304,7 +304,7 @@ public abstract class DaoSupport extends DataPrivilegeControl{
         //Collections.reverse(result);
 
         //建立页面对象
-        Page<T> page= new  Page<T>();
+        Page<T> page= new  Page<>();
         page.setModels(result);
         page.setTotalRecords(hits.getLength());
 

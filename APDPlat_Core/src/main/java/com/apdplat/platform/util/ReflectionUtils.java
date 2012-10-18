@@ -31,7 +31,7 @@ public class ReflectionUtils {
      * 搜索给定的所有的类里，某个类的所有子类或实现类
      */
     public static List<Class<?>> getAssignedClass(Class<?> cls, List<Class<?>> clses) {
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<>();
         for (Class<?> c : clses) {
             if (cls.isAssignableFrom(c) && !cls.equals(c)) {
                 classes.add(c);
@@ -56,7 +56,7 @@ public class ReflectionUtils {
      */
     public static List<Class<?>> getClasses(File dir, String pk, String[] outsides) throws ClassNotFoundException {
         log.debug("  Dir: {}, PK: {}", new Object[]{dir, pk});
-        List<Class<?>> classes = new ArrayList<Class<?>>();
+        List<Class<?>> classes = new ArrayList<>();
         if (!dir.exists()) {
             return classes;
         }
@@ -73,8 +73,8 @@ public class ReflectionUtils {
                 if (outsides == null || outsides.length == 0 || !ArrayUtils.contains(outsides, clazzName)) {
                     try {
                         clazz = Class.forName(clazzName);
-                    } catch (Throwable t) {
-                        t.printStackTrace();
+                    } catch (Throwable e) {
+                        log.error("实例化失败",e);
                     }
                     if (clazz != null) {
                         classes.add(clazz);
@@ -154,7 +154,7 @@ public class ReflectionUtils {
             try {
                 Method method=object.getClass().getMethod(methodName);
                 return method.invoke(object);
-            } catch (Exception ex) {
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 log.error("Could not exec method [" + methodName + "] on target [" + object + "]", ex);
             }
         }
@@ -232,7 +232,7 @@ public class ReflectionUtils {
             try {
                 Method method=object.getClass().getMethod(methodName,value.getClass());
                 method.invoke(object,value);
-            } catch (Exception ex) {
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 log.error("Could not exec method [" + methodName + "] on target [" + object + "]",ex);
             }
         }
@@ -256,7 +256,7 @@ public class ReflectionUtils {
     }
     public static List<Field> getDeclaredFields(final Object object) {
         Assert.notNull(object, "object不能为空");
-        List<Field> fields=new ArrayList<Field>();
+        List<Field> fields=new ArrayList<>();
         for (Class<?> superClass = object.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
             Field[] f=superClass.getDeclaredFields();
             fields.addAll(Arrays.asList(f));

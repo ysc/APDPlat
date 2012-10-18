@@ -6,7 +6,6 @@ import com.apdplat.platform.annotation.ModelAttrRef;
 import com.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,11 +38,11 @@ public class Module extends Model {
     @OrderBy("orderNum ASC")
     //不缓存，如果缓存则在修改排序号之后数据不会失效
     //@Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
-    protected List<Module> subModules = new ArrayList<Module>();
+    protected List<Module> subModules = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "module")
     @OrderBy("orderNum ASC")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
-    protected List<Command> commands = new ArrayList<Command>();
+    protected List<Command> commands = new ArrayList<>();
     @ManyToOne
     @ModelAttr("父模块")
     @ModelAttrRef("chinese")

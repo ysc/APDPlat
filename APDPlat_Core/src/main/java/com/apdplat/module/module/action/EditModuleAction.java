@@ -1,13 +1,13 @@
 package com.apdplat.module.module.action;
 
 import com.apdplat.module.module.model.Module;
+import com.apdplat.module.module.service.ModuleService;
+import com.apdplat.platform.action.ExtJSSimpleAction;
+import com.apdplat.platform.util.Struts2Utils;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import com.apdplat.module.module.service.ModuleService;
-import com.apdplat.platform.action.ExtJSSimpleAction;
-import com.apdplat.platform.util.Struts2Utils;
 /**
 * 维护树形模块，对应于module.xml文件
  * 在module.xml中的数据未导入到数据库之前，可以通过修改module.xml文件的形式修改树形模块
@@ -42,7 +42,7 @@ public class EditModuleAction extends ExtJSSimpleAction<Module> {
                     String json=moduleService.toJsonForEdit(module);
                     Struts2Utils.renderJson(json);
                 }catch(Exception e){
-                    e.printStackTrace();
+                    log.error("获取根模块出错",e);
                 }
             }
             

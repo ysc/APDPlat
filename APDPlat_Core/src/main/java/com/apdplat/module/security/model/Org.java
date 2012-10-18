@@ -1,9 +1,9 @@
 package com.apdplat.module.security.model;
 
-import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.annotation.ModelAttr;
 import com.apdplat.platform.annotation.ModelAttrRef;
 import com.apdplat.platform.annotation.RenderIgnore;
+import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,11 +57,11 @@ public class Org extends Model{
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
     @OrderBy("id DESC")
     @RenderIgnore
-    protected List<Org> child=new ArrayList<Org>();
+    protected List<Org> child=new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
     @OrderBy("id DESC")
     @RenderIgnore
-    protected List<User> users=new ArrayList<User>();
+    protected List<User> users=new ArrayList<>();
 
     @XmlElementWrapper(name = "subOrgs")
     @XmlElement(name = "org")

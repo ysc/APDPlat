@@ -6,8 +6,6 @@ import com.apdplat.module.security.model.User;
 import com.apdplat.platform.util.SpringContextUtils;
 import java.util.ArrayList;
 import java.util.List;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.session.SessionInformation;
@@ -55,7 +53,7 @@ public class OnlineUserService{
             return null;
         }
         List<Object> users=sessionRegistry.getAllPrincipals();
-        List<User> result=new ArrayList<User>();
+        List<User> result=new ArrayList<>();
         log.info("获取在线用户,org:"+org+",role:"+role);
         if(org==null && role==null ){
             //返回所有在线用户

@@ -1,8 +1,8 @@
 package com.apdplat.module.system.service;
 
 import com.apdplat.module.dictionary.generator.DictionaryGenerator;
-import com.apdplat.module.monitor.service.MemoryMonitorThread;
 import com.apdplat.module.monitor.model.RuningTime;
+import com.apdplat.module.monitor.service.MemoryMonitorThread;
 import com.apdplat.module.security.service.UserLoginListener;
 import com.apdplat.platform.util.FileUtils;
 import java.io.File;
@@ -105,8 +105,8 @@ public class SystemListener{
             runingTime=new RuningTime();
             try {
                 runingTime.setServerIP(InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                ex.printStackTrace();
+            } catch (UnknownHostException e) {
+                log.error("记录服务器启动日志出错",e);
             }
             runingTime.setAppName(contextPath);
             runingTime.setOsName(System.getProperty("os.name"));
@@ -156,9 +156,8 @@ public class SystemListener{
             Driver driver=drivers.nextElement();
             try {
                 DriverManager.deregisterDriver(driver);
-            } catch (SQLException ex) {
-                log.warn("卸载JDBC驱动失败："+driver);
-                ex.printStackTrace();
+            } catch (SQLException e) {
+                log.warn("卸载JDBC驱动失败："+driver,e);
             }
         }
     }
@@ -184,8 +183,8 @@ public class SystemListener{
                     log.warn("在非jar包中找到META-INF/services/module.xml");
                 }
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            log.error("注册模块出错",e);
         }
         if(modules.length()>0){
             modules=modules.deleteCharAt(modules.length()-1);

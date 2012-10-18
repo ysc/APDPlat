@@ -4,8 +4,8 @@ import com.apdplat.module.monitor.model.MemoryState;
 import com.apdplat.module.monitor.model.ProcessTime;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class MemoryStateChartDataService {
         return getSequenceTimeData(models,"yyyy-MM");
     }
     private static List<MemoryState> getSequenceTimeData(List<MemoryState> models,String format){        
-        LinkedHashMap<String,MemoryState> temp=new LinkedHashMap<String,MemoryState>();
+        LinkedHashMap<String,MemoryState> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(MemoryState item : models){
             String key=new SimpleDateFormat(format).format(item.getRecordTime());
@@ -40,7 +40,7 @@ public class MemoryStateChartDataService {
             
             temp.put(key,value);
         } 
-        List<MemoryState> list=new ArrayList<MemoryState>();
+        List<MemoryState> list=new ArrayList<>();
         for(MemoryState value : temp.values()){
             list.add(value);
         }
@@ -53,7 +53,7 @@ public class MemoryStateChartDataService {
      * @return 
      */
     private static List<ProcessTime> mini(List<ProcessTime> models) {
-        LinkedHashMap<String,ProcessTime> LinkedHashMap=new LinkedHashMap<String,ProcessTime>();
+        LinkedHashMap<String,ProcessTime> LinkedHashMap=new LinkedHashMap<>();
         for(ProcessTime item : models){
             ProcessTime value=LinkedHashMap.get(item.getResource());
             if(value==null){
@@ -63,7 +63,7 @@ public class MemoryStateChartDataService {
             }
             LinkedHashMap.put(item.getResource(), value);
         }
-        List<ProcessTime> list=new ArrayList<ProcessTime>();
+        List<ProcessTime> list=new ArrayList<>();
         for(ProcessTime item : LinkedHashMap.values()){
             list.add(item);
         }

@@ -1,8 +1,8 @@
 package com.apdplat.module.dictionary.model;
 
-import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.annotation.ModelAttr;
 import com.apdplat.platform.annotation.ModelAttrRef;
+import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -14,7 +14,6 @@ import org.compass.annotations.SearchableComponent;
 import org.compass.annotations.SearchableProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 /**

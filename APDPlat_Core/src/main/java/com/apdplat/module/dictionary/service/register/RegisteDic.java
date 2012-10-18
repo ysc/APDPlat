@@ -32,7 +32,7 @@ public class RegisteDic extends RegisterService<Dic>{
     }
     @Override
     public void registe() {
-        data=new ArrayList<Dic>();
+        data=new ArrayList<>();
         List<Dic> dics=DicParser.getDics();
         for(Dic dic : dics){
             registeDic(dic);

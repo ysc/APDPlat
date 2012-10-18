@@ -78,7 +78,7 @@ public class SecurityService {
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.debug("安全检查出错",e);
         }
         return false;
     }

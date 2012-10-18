@@ -41,9 +41,9 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
             String json = dicService.toStoreJson(dictionary);
             Struts2Utils.renderJson(json);
         }else{
-            List<Map<String,String>> data=new ArrayList<Map<String,String>>();
+            List<Map<String,String>> data=new ArrayList<>();
             for(DicItem item : dictionary.getDicItems()){
-                Map<String,String> map=new HashMap<String,String>();
+                Map<String,String> map=new HashMap<>();
                 if(justCode){
                     map.put("value", item.getCode());
                 }else{

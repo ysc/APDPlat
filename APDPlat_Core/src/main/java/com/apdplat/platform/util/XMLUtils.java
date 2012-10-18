@@ -36,11 +36,7 @@ public class XMLUtils {
             DocumentBuilder builder = dbf.newDocumentBuilder();
             builder.parse(new InputSource(FileUtils.getAbsolutePath("/WEB-INF/classes" + xml)));
             return true;
-        } catch (ParserConfigurationException ex) {
-            log.error("验证XML失败",ex);
-        } catch (SAXException ex) {
-            log.error("验证XML失败",ex);
-        } catch (IOException ex) {
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
             log.error("验证XML失败",ex);
         }
         return false;
@@ -53,11 +49,7 @@ public class XMLUtils {
             DocumentBuilder builder = dbf.newDocumentBuilder();
             builder.parse(new InputSource(in));
             return true;
-        } catch (ParserConfigurationException ex) {
-            log.error("验证XML失败",ex);
-        } catch (SAXException ex) {
-            log.error("验证XML失败",ex);
-        } catch (IOException ex) {
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
             log.error("验证XML失败",ex);
         }
         return false;

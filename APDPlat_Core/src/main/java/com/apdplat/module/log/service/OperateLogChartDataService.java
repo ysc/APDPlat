@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class OperateLogChartDataService {
     public static List<OperateStatistics> getData(List<OperateLog> models){
-        Map<String,OperateStatistics> temp=new HashMap<String,OperateStatistics>();
+        Map<String,OperateStatistics> temp=new HashMap<>();
         //将日志数据转换为统计报表数据
         for(OperateLog item : models){
             User user=item.getOwnerUser();
@@ -39,7 +39,7 @@ public class OperateLogChartDataService {
                 sta.increaseUpdateCount();
             }
         }
-        List<OperateStatistics> data=new ArrayList<OperateStatistics>();
+        List<OperateStatistics> data=new ArrayList<>();
         for(OperateStatistics item : temp.values()){
             data.add(item);
         }

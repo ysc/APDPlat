@@ -13,7 +13,7 @@ import java.util.List;
 public final class PropertyEditor {
     private Criteria criteria=Criteria.or;
     //此LIST里面的数据是OR的关系
-    private List<PropertyEditor> subPropertyEditor=new ArrayList<PropertyEditor>();
+    private List<PropertyEditor> subPropertyEditor=new ArrayList<>();
     private PropertyType propertyType;
     private Operator propertyOperator;
     private Property property = new Property();

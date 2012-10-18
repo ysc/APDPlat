@@ -5,8 +5,8 @@ import com.apdplat.module.monitor.service.RuningTimeChartDataService;
 import com.apdplat.module.monitor.service.RuningTimeSingleService;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.platform.action.ExtJSSimpleAction;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -40,7 +40,7 @@ public class RuningTimeAction extends ExtJSSimpleAction<RuningTime> {
     }
     @Override
     protected String generateReportData(List<RuningTime> models) {
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("runingRate".equals(category)){
             data=RuningTimeChartDataService.getRuningRateData(models);
         }

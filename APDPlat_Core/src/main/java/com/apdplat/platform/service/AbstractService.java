@@ -63,7 +63,7 @@ public abstract class AbstractService<T extends Model, D extends Dao<T>> impleme
 	@Override
 	@Transactional
 	public List<Exception> delete(Integer[] modelIds) {
-		List<Exception> errors=new ArrayList<Exception>();
+		List<Exception> errors=new ArrayList<>();
 		for(Integer modelId : modelIds){
 			try{
 				this.delete(modelId);

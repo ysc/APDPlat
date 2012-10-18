@@ -1,7 +1,7 @@
 package com.apdplat.module.security.service;
 
-import com.apdplat.module.security.model.User;
 import com.apdplat.module.monitor.model.UserLogin;
+import com.apdplat.module.security.model.User;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
@@ -11,12 +11,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
-
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -28,9 +26,9 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
 
     protected static final Logger log = LoggerFactory.getLogger(UserLoginListener.class);
 
-    private static Map<String,UserLogin> logs=new HashMap<String,UserLogin>();
+    private static Map<String,UserLogin> logs=new HashMap<>();
 
-    private static Map<String,HttpSession> sessions=new HashMap<String,HttpSession>();
+    private static Map<String,HttpSession> sessions=new HashMap<>();
     private static final boolean loginMonitor;
     static{
         loginMonitor=PropertyHolder.getBooleanProperty("monitor.login");
@@ -59,8 +57,8 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
                     userLogin.setLoginTime(new Date());
                     try {
                         userLogin.setServerIP(InetAddress.getLocalHost().getHostAddress());
-                    } catch (UnknownHostException ex) {
-                        ex.printStackTrace();
+                    } catch (UnknownHostException e) {
+                        log.error("记录登录日志出错",e);
                     }
                     userLogin.setOwnerUser(user);
                     logs.put(user.getUsername(), userLogin);

@@ -31,7 +31,7 @@ public class ModuleParser {
      */
     public static List<Module> getRootModules(){
         log.info("module.disable:"+disableModules);
-        List<Module> modules=new ArrayList<Module>();
+        List<Module> modules=new ArrayList<>();
         try{
             Enumeration<URL> ps = Thread.currentThread().getContextClassLoader().getResources("META-INF/services/module.xml");
             while(ps.hasMoreElements()) {
@@ -44,18 +44,18 @@ public class ModuleParser {
                     modules.add(root);
                 }catch(Exception e)
                 {
-                    e.printStackTrace();
+                    log.error("获取根模块出错",e);
                 }
                 finally {
                     try {
                         in.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    } catch (IOException e) {
+                        log.error("获取根模块出错",e);
                     }
                 }
             }            
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("获取根模块出错",e);
         }
         
         return modules;
@@ -82,8 +82,8 @@ public class ModuleParser {
             // 解析模块
             Module module=parseModule(xml);
             return module;
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            log.error("获取根模块出错",e);
         }
         return null;
     }
@@ -107,7 +107,7 @@ public class ModuleParser {
             }
         }
         order=1;
-        List<Module> toDelete=new ArrayList<Module>();
+        List<Module> toDelete=new ArrayList<>();
         for(Module m : module.getSubModules()){            
             //根据参数module.hide来设置模块
             if(disableModules.contains(m.getEnglish())){
@@ -141,20 +141,20 @@ public class ModuleParser {
                     FileUtils.createAndWriteFile(dtdFile, data);
                 }catch(Exception e)
                 {
-                    e.printStackTrace();
+                    log.error("获取根模块出错",e);
                 }
                 finally {
                     try {
                         in.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
+                    } catch (IOException e) {
+                        log.error("获取根模块出错",e);
                     }
                 }
             }else{
                 log.info("没有找到模块DTD文件");
             }            
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("获取根模块出错",e);
         }
     }
     private static void verifyFile(InputStream in){    

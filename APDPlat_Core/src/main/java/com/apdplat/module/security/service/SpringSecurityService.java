@@ -56,14 +56,14 @@ public class SpringSecurityService {
             return ;
         }
         log.info("开始初始化权限子系统...");
-        LinkedHashMap<RequestKey, Collection<ConfigAttribute>> requestMap =new LinkedHashMap<RequestKey, Collection<ConfigAttribute>>();
+        LinkedHashMap<RequestKey, Collection<ConfigAttribute>> requestMap =new LinkedHashMap<>();
         
         SecurityConfig manager=new SecurityConfig("ROLE_MANAGER");
         SecurityConfig superManager=new SecurityConfig("ROLE_SUPERMANAGER");
-        Collection<ConfigAttribute> value=new ArrayList<ConfigAttribute>();
+        Collection<ConfigAttribute> value=new ArrayList<>();
         value.add(manager);
         value.add(superManager);
-        Collection<String> urls=new LinkedHashSet<String>(); 
+        Collection<String> urls=new LinkedHashSet<>(); 
         String[] urlFiles=PropertyHolder.getProperty("manager.default.url").split(",");
         for(String urlFile : urlFiles){
             Collection<String> url=FileUtils.getClassPathTextFileContent(urlFile);
@@ -74,7 +74,7 @@ public class SpringSecurityService {
                 String[] attr=url.split("=");
                 url=attr[0];
                 String[] roles=attr[1].split(",");
-                Collection<ConfigAttribute> v=new ArrayList<ConfigAttribute>();
+                Collection<ConfigAttribute> v=new ArrayList<>();
                 for(String role : roles){
                     v.add(new SecurityConfig(role));
                 }
@@ -99,7 +99,7 @@ public class SpringSecurityService {
             Map<String,String> map=ModuleService.getCommandPathToRole(command);
             for(String path : paths){
                 RequestKey key=new RequestKey(path.toString().toLowerCase()+".action*","POST");
-                value=new ArrayList<ConfigAttribute>();
+                value=new ArrayList<>();
                 value.add(new SecurityConfig("ROLE_MANAGER"+map.get(path)));
                 value.add(superManager);
                 requestMap.put(key, value);
@@ -109,7 +109,7 @@ public class SpringSecurityService {
             }
         }
         RequestKey key=new RequestKey("/**","POST");
-        value=new ArrayList<ConfigAttribute>();
+        value=new ArrayList<>();
         value.add(superManager);
         requestMap.put(key, value);
         //GET

@@ -5,8 +5,8 @@ import com.apdplat.module.monitor.model.BackupLogResult;
 import com.apdplat.platform.action.converter.DateTypeConverter;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +20,7 @@ public class BackupLogChartDataService {
     public static LinkedHashMap<String,Long> getSequenceData(List<BackupLog> models){    
         Collections.sort(models, new Comparator(){
 
+            @Override
             public int compare(Object o1, Object o2) {
                 BackupLog p1=(BackupLog)o1;
                 BackupLog p2=(BackupLog)o2;
@@ -27,7 +28,7 @@ public class BackupLogChartDataService {
             }
         
         });
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if(models.size()<1){
             return data;
         }
@@ -38,7 +39,7 @@ public class BackupLogChartDataService {
         return data;
     }
     public static LinkedHashMap<String,Long> getRateData(List<BackupLog> models){    
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if(models.size()<1){
             return data;
         }

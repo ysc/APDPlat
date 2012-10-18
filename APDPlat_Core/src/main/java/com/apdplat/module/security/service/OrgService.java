@@ -25,7 +25,7 @@ public class OrgService {
     private ServiceFacade serviceFacade;
 
     public static List<String> getChildNames(Org org){
-        List<String> names=new ArrayList<String>();
+        List<String> names=new ArrayList<>();
         List<Org> child=org.getChild();
         for(Org item : child){
             names.add(item.getOrgName());
@@ -34,7 +34,7 @@ public class OrgService {
         return names;
     }
     public static List<Integer> getChildIds(Org org){
-        List<Integer> ids=new ArrayList<Integer>();
+        List<Integer> ids=new ArrayList<>();
         List<Org> child=org.getChild();
         for(Org item : child){
             ids.add(item.getId());

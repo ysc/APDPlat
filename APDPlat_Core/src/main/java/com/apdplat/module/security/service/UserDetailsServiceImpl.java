@@ -1,14 +1,14 @@
 package com.apdplat.module.security.service;
 
-import com.apdplat.platform.criteria.Operator;
-import com.apdplat.platform.criteria.PropertyCriteria;
-import com.apdplat.platform.criteria.PropertyEditor;
-import com.apdplat.platform.result.Page;
-import com.apdplat.platform.service.ServiceFacade;
 import com.apdplat.module.security.model.User;
 import com.apdplat.module.security.service.filter.IPAccessControler;
 import com.apdplat.platform.criteria.Criteria;
+import com.apdplat.platform.criteria.Operator;
+import com.apdplat.platform.criteria.PropertyCriteria;
+import com.apdplat.platform.criteria.PropertyEditor;
 import com.apdplat.platform.filter.OpenEntityManagerInViewFilter;
+import com.apdplat.platform.result.Page;
+import com.apdplat.platform.service.ServiceFacade;
 import com.apdplat.platform.util.FileUtils;
 import java.util.Collection;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     protected static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
-    private static Map<String,String> messages = new HashMap<String,String>();
+    private static Map<String,String> messages = new HashMap<>();
     private String message;
     private static final IPAccessControler ipAccessControler=new IPAccessControler();
 
@@ -49,9 +49,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException(message);
             }
             return load(username);
-        }catch(UsernameNotFoundException e){
-            throw e;
-        }catch(DataAccessException e){
+        }catch(  UsernameNotFoundException | DataAccessException e){
             throw e;
         }
         finally{

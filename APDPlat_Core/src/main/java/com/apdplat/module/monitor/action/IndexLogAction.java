@@ -34,7 +34,7 @@ public class IndexLogAction extends ExtJSSimpleAction<IndexLog> {
     }
     @Override
     protected String generateReportData(List<IndexLog> models) {
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("rate".equals(category)){
             data=IndexLogChartDataService.getRateData(models);
         }

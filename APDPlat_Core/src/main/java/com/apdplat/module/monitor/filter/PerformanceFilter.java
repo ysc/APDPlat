@@ -42,21 +42,21 @@ public class PerformanceFilter implements Filter {
         if (enabled && filter(req)) {
 		long end=System.currentTimeMillis();
                 User user=OnlineUserService.getUser(req.getSession().getId());
-                ProcessTime log=new ProcessTime();
-                log.setOwnerUser(user);
-                log.setUserIP(req.getRemoteAddr());
+                ProcessTime logger=new ProcessTime();
+                logger.setOwnerUser(user);
+                logger.setUserIP(req.getRemoteAddr());
                 try {
-                    log.setServerIP(InetAddress.getLocalHost().getHostAddress());
+                    logger.setServerIP(InetAddress.getLocalHost().getHostAddress());
                 } catch (UnknownHostException ex) {
-                    ex.printStackTrace();
+                    log.error("保存日志出错",ex);
                 }
-                log.setAppName(SystemListener.getContextPath());
-                String resource=req.getRequestURI().replace(log.getAppName(), "");
-                log.setResource(resource);
-                log.setStartTime(new Date(start));
-                log.setEndTime(new Date(end));
-                log.setProcessTime(end-start);
-                LogQueue.addLog(log);
+                logger.setAppName(SystemListener.getContextPath());
+                String resource=req.getRequestURI().replace(logger.getAppName(), "");
+                logger.setResource(resource);
+                logger.setStartTime(new Date(start));
+                logger.setEndTime(new Date(end));
+                logger.setProcessTime(end-start);
+                LogQueue.addLog(logger);
         }
     }
 

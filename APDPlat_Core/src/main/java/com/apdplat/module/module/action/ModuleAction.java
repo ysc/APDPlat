@@ -1,13 +1,13 @@
 package com.apdplat.module.module.action;
 
 import com.apdplat.module.module.model.Module;
+import com.apdplat.module.module.service.ModuleService;
+import com.apdplat.platform.action.ExtJSSimpleAction;
+import com.apdplat.platform.util.Struts2Utils;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import com.apdplat.module.module.service.ModuleService;
-import com.apdplat.platform.action.ExtJSSimpleAction;
-import com.apdplat.platform.util.Struts2Utils;
 /**
 * 为树形模块导航菜单服务
 * @author 杨尚川

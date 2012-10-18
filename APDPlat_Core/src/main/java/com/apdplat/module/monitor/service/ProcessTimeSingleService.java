@@ -4,8 +4,8 @@ import com.apdplat.platform.service.SingleService;
 import com.apdplat.platform.util.SortUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.springframework.stereotype.Service;
 import org.jdom.Element;
+import org.springframework.stereotype.Service;
 
 /**
  *

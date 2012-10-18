@@ -3,9 +3,10 @@ package com.apdplat.module.security.service.filter;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.platform.util.ServletUtils;
 import com.apdplat.platform.util.SpringContextUtils;
+import com.octo.captcha.service.CaptchaService;
+import com.octo.captcha.service.CaptchaServiceException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,12 +17,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.octo.captcha.service.CaptchaService;
 
 public class JCaptchaFilter implements Filter {
     public static final String PARAM_CAPTCHA_PARAMTER_NAME = "captchaParamterName";
@@ -101,13 +99,13 @@ public class JCaptchaFilter implements Filter {
             //String writerNames[] = ImageIO.getWriterFormatNames();
             ImageIO.write(challenge, "png", out);
             out.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | CaptchaServiceException e) {
+            log.error("生成验证码出错",e);
         } finally {
             try {
                 out.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException e) {
+                log.error("生成验证码出错",e);
             }
         }
     }

@@ -3,8 +3,8 @@ package com.apdplat.module.security.model;
 import com.apdplat.module.module.model.Command;
 import com.apdplat.module.module.model.Module;
 import com.apdplat.module.module.service.ModuleService;
-import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.annotation.ModelAttr;
+import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class Role extends Model {
     protected String des;
 
     @ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "roles", fetch = FetchType.LAZY)
-    protected List<User> users=new ArrayList<User>();
+    protected List<User> users=new ArrayList<>();
 
     @ModelAttr("超级管理员")
     protected boolean superManager = false;
@@ -57,17 +57,17 @@ public class Role extends Model {
     @JoinColumn(name = "privilegeID")}, inverseJoinColumns = {
     @JoinColumn(name = "commandID")})
     @OrderBy("id")
-    protected List<Command> commands = new ArrayList<Command>();
+    protected List<Command> commands = new ArrayList<>();
     public String getModuleCommandStr(){
         if(this.commands==null || this.commands.isEmpty()){
             return "";
         }
         StringBuilder ids=new StringBuilder();
         
-        Set<Integer> moduleIds=new HashSet<Integer>();
+        Set<Integer> moduleIds=new HashSet<>();
         
         for(Command command : this.commands){
-            ids.append("command-"+command.getId()).append(",");
+            ids.append("command-").append(command.getId()).append(",");
             Module module=command.getModule();
             moduleIds.add(module.getId());
             module=module.getParentModule();
@@ -76,8 +76,8 @@ public class Role extends Model {
                 module=module.getParentModule();
             }
         }
-        for(Integer id : moduleIds){
-            ids.append("module-"+id).append(",");
+        for(Integer moduleId : moduleIds){
+            ids.append("module-").append(moduleId).append(",");
         }
         ids=ids.deleteCharAt(ids.length()-1);
         return ids.toString();
@@ -87,7 +87,7 @@ public class Role extends Model {
      * @return
      */
     public List<String> getAuthorities() {
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         if (superManager) {
             result.add("ROLE_SUPERMANAGER");
         }

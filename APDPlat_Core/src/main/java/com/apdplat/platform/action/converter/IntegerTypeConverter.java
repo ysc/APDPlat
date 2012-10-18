@@ -6,9 +6,7 @@ package com.apdplat.platform.action.converter;
  */
 
 import java.util.Map;
-
 import org.apache.struts2.util.StrutsTypeConverter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +29,9 @@ public class IntegerTypeConverter extends StrutsTypeConverter
     }
     @Override
     public String convertToString(Map context, Object o) {
-        if (o == null)
+        if (o == null) {
             return "0";
+        }
         return o.toString();
     }
 }

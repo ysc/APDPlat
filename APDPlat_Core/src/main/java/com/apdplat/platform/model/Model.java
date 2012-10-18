@@ -3,8 +3,8 @@ package com.apdplat.platform.model;
 import com.apdplat.module.security.model.User;
 import com.apdplat.platform.annotation.ModelAttr;
 import com.apdplat.platform.annotation.ModelAttrRef;
-import com.apdplat.platform.annotation.SimpleDic;
 import com.apdplat.platform.annotation.RenderIgnore;
+import com.apdplat.platform.annotation.SimpleDic;
 import com.apdplat.platform.annotation.TreeDic;
 import com.apdplat.platform.util.ReflectionUtils;
 import java.io.Serializable;
@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.compass.annotations.SearchableComponent;
 import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +74,7 @@ public abstract class Model implements Serializable{
     protected User ownerUser;
 
     public List<String> getSearchProperties() {
-        List<String> list=new ArrayList<String>();
+        List<String> list=new ArrayList<>();
         //获取所有字段，包括继承的
         List<Field> fields = ReflectionUtils.getDeclaredFields(this);
         for (Field field : fields) {
@@ -161,7 +160,7 @@ public abstract class Model implements Serializable{
         return this.getMetaData() + this.getId();
     }
     public List<ModelFieldData> getAllModelAttr(){
-        List<ModelFieldData> list=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> list=new ArrayList<>();
         //获取所有字段，包括继承的
         List<Field> fields = ReflectionUtils.getDeclaredFields(this);
         for (Field field : fields) {
@@ -173,7 +172,7 @@ public abstract class Model implements Serializable{
         return list;
     }
     public List<ModelFieldData> getModelAttr(){
-        List<ModelFieldData> list=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> list=new ArrayList<>();
         //获取所有字段，不包括继承的
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -185,7 +184,7 @@ public abstract class Model implements Serializable{
         return list;
     }
     public List<ModelFieldData> getAllModelSearchableAttr(){
-        List<ModelFieldData> list=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> list=new ArrayList<>();
         //获取所有字段，包括继承的
         List<Field> fields = ReflectionUtils.getDeclaredFields(this);
         for (Field field : fields) {
@@ -197,7 +196,7 @@ public abstract class Model implements Serializable{
         return list;
     }
     public List<ModelFieldData> getModelSearchableAttr(){
-        List<ModelFieldData> list=new ArrayList<ModelFieldData>();
+        List<ModelFieldData> list=new ArrayList<>();
         //获取所有字段，不包括继承的
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {

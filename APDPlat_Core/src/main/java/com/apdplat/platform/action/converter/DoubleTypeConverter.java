@@ -6,9 +6,7 @@ package com.apdplat.platform.action.converter;
  */
 
 import java.util.Map;
-
 import org.apache.struts2.util.StrutsTypeConverter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

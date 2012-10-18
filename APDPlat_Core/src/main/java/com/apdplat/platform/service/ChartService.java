@@ -26,7 +26,7 @@ public abstract class ChartService {
             outputter.setFormat(Format.getPrettyFormat());
             outputter.output(chartDocument, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("保生成XML出错",e);
         }
         return writer.toString();
     }

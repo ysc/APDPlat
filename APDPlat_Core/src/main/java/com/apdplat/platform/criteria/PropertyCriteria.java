@@ -19,7 +19,7 @@ public class PropertyCriteria {
     public PropertyCriteria(Criteria criteria) {
         this.criteria = criteria;
     }
-    private List<PropertyEditor> propertyEditors = new ArrayList<PropertyEditor>();
+    private List<PropertyEditor> propertyEditors = new ArrayList<>();
 
     public List<PropertyEditor> getPropertyEditors() {
         return propertyEditors;

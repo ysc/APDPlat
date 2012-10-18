@@ -84,7 +84,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
 
     public Integer[] getIds() {
         if (ids != null && ids.contains("-") && ids.contains(",")) {
-            Set<Integer> result = new HashSet<Integer>();
+            Set<Integer> result = new HashSet<>();
             String[] idInfo = ids.split(",");
             for (String info : idInfo) {
                 if (info.contains("-")) {
@@ -114,7 +114,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
                 start = end;
                 end = temp;
             }
-            Set<Integer> result = new HashSet<Integer>();
+            Set<Integer> result = new HashSet<>();
             for (int i = start; i < end + 1; i++) {
                 result.add(i);
             }
@@ -122,7 +122,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
         }
         if (ids != null && ids.contains(",")) {
             String[] idInfo = ids.split(",");
-            Set<Integer> result = new HashSet<Integer>();
+            Set<Integer> result = new HashSet<>();
             for (int i = 0; i < idInfo.length; i++) {
                 result.add(Integer.parseInt(idInfo[i]));
             }
@@ -228,7 +228,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
 
     }
     protected <T extends Model> List<Property> getPartProperties(T model) {
-        List<Property> properties = new ArrayList<Property>();
+        List<Property> properties = new ArrayList<>();
 
         Enumeration<?> pars = getRequestParameterNames();
         while (pars.hasMoreElements()) {

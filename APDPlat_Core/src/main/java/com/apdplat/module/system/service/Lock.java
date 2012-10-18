@@ -29,7 +29,9 @@ public class Lock implements Filter {
 
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("Lock:DoBeforeProcessing");
+	if (debug) {
+                log("Lock:DoBeforeProcessing");
+            }
 
 	// Write code here to process the request and/or response before
 	// the rest of the filter chain is invoked.
@@ -56,7 +58,9 @@ public class Lock implements Filter {
 
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
 	throws IOException, ServletException {
-	if (debug) log("Lock:DoAfterProcessing");
+	if (debug) {
+                log("Lock:DoAfterProcessing");
+            }
 
 	// Write code here to process the request and/or response after
 	// the rest of the filter chain is invoked.
@@ -88,11 +92,14 @@ public class Lock implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain)
 	throws IOException, ServletException {
 
-	if (debug) log("Lock:doFilter()");
+	if (debug) {
+                log("Lock:doFilter()");
+            }
 
 	doBeforeProcessing(request, response);
 
@@ -105,12 +112,11 @@ public class Lock implements Filter {
                 chain.doFilter(request, response);
             }
 	}
-	catch(Throwable t) {
+	catch(IOException | ServletException t) {
 	    // If an exception is thrown somewhere down the filter chain,
 	    // we still want to execute our after processing, and then
 	    // rethrow the problem after that.
 	    problem = t;
-	    t.printStackTrace();
 	}
 
 	doAfterProcessing(request, response);
@@ -118,8 +124,12 @@ public class Lock implements Filter {
 	// If there was a problem, we want to rethrow it if it is
 	// a known type, otherwise log it.
 	if (problem != null) {
-	    if (problem instanceof ServletException) throw (ServletException)problem;
-	    if (problem instanceof IOException) throw (IOException)problem;
+	    if (problem instanceof ServletException) {
+                throw (ServletException)problem;
+            }
+	    if (problem instanceof IOException) {
+                throw (IOException)problem;
+            }
 	    sendProcessingError(problem, response);
 	}
     }
@@ -143,12 +153,14 @@ public class Lock implements Filter {
     /**
      * Destroy method for this filter
      */
+    @Override
     public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
+    @Override
     public void init(FilterConfig filterConfig) {
 	this.filterConfig = filterConfig;
 	if (filterConfig != null) {
@@ -163,8 +175,10 @@ public class Lock implements Filter {
      */
     @Override
     public String toString() {
-	if (filterConfig == null) return ("Lock()");
-	StringBuffer sb = new StringBuffer("Lock(");
+	if (filterConfig == null) {
+            return ("Lock()");
+        }
+	StringBuilder sb = new StringBuilder("Lock(");
 	sb.append(filterConfig);
 	sb.append(")");
 	return (sb.toString());
@@ -176,25 +190,23 @@ public class Lock implements Filter {
 	if(stackTrace != null && !stackTrace.equals("")) {
 	    try {
 		response.setContentType("text/html");
-		PrintStream ps = new PrintStream(response.getOutputStream());
-		PrintWriter pw = new PrintWriter(ps);
-		pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
+                try (PrintStream ps = new PrintStream(response.getOutputStream()); PrintWriter pw = new PrintWriter(ps)) {
+                    pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
-		// PENDING! Localize this for next official release
-		pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
-		pw.print(stackTrace);
-		pw.print("</pre></body>\n</html>"); //NOI18N
-		pw.close();
-		ps.close();
+                    // PENDING! Localize this for next official release
+                    pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                    pw.print(stackTrace);
+                    pw.print("</pre></body>\n</html>"); //NOI18N
+                }
 		response.getOutputStream().close();
 	    }
 	    catch(Exception ex) {}
 	}
 	else {
 	    try {
-		PrintStream ps = new PrintStream(response.getOutputStream());
-		t.printStackTrace(ps);
-		ps.close();
+                try (PrintStream ps = new PrintStream(response.getOutputStream())) {
+                    t.printStackTrace(ps);
+                }
 		response.getOutputStream().close();
 	    }
 	    catch(Exception ex) {}

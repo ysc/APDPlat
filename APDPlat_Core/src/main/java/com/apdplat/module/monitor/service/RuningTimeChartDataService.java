@@ -5,8 +5,8 @@ import com.apdplat.platform.action.converter.DateTypeConverter;
 import com.apdplat.platform.util.ConvertUtils;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +18,13 @@ public class RuningTimeChartDataService {
     protected static final Logger log = LoggerFactory.getLogger(RuningTimeChartDataService.class);
     
     public static LinkedHashMap<String,Long> getRuningSequence(List<RuningTime> models){
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if(models.size()<1){
             return data;
         }
         Collections.sort(models, new Comparator(){
 
+            @Override
             public int compare(Object o1, Object o2) {
                 RuningTime p1=(RuningTime)o1;
                 RuningTime p2=(RuningTime)o2;
@@ -48,12 +49,13 @@ public class RuningTimeChartDataService {
     }
     
     public static LinkedHashMap<String,Long> getRuningRateData(List<RuningTime> models){
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if(models.size()<1){
             return data;
         }
         Collections.sort(models, new Comparator(){
 
+            @Override
             public int compare(Object o1, Object o2) {
                 RuningTime p1=(RuningTime)o1;
                 RuningTime p2=(RuningTime)o2;

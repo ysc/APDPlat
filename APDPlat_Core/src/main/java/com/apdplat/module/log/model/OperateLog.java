@@ -1,9 +1,9 @@
 package com.apdplat.module.log.model;
 
-import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.annotation.IgnoreBusinessLog;
 import com.apdplat.platform.annotation.IgnoreUser;
 import com.apdplat.platform.annotation.ModelAttr;
+import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import java.util.Date;
 import javax.persistence.Entity;

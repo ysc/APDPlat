@@ -171,12 +171,12 @@ public class Struts2Utils {
             try {
                 HttpServletResponse response = ServletActionContext.getResponse();
                 response.setContentType(type);
-                OutputStream out=response.getOutputStream();
-                out.write(data, 0, data.length);
-                out.flush();
-                out.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+                try (OutputStream out = response.getOutputStream()) {
+                    out.write(data, 0, data.length);
+                    out.flush();
+                }
+            } catch (IOException e) {
+                log.error("渲染图像失败",e);
             }
         }
 

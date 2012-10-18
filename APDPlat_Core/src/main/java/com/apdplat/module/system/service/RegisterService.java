@@ -62,8 +62,9 @@ public abstract class RegisterService<T extends Model> implements ApplicationLis
 
     protected boolean shouldRegister() {
         Page<T> page=serviceFacade.query(modelClass);
-        if(page.getTotalRecords()==0)
+        if(page.getTotalRecords()==0) {
             return true;
+        }
         return false;
     }
 }

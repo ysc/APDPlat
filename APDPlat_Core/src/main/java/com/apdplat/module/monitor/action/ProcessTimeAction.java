@@ -5,8 +5,8 @@ import com.apdplat.module.monitor.service.ProcessTimeChartDataService;
 import com.apdplat.module.monitor.service.ProcessTimeSingleService;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.platform.action.ExtJSSimpleAction;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -35,7 +35,7 @@ public class ProcessTimeAction extends ExtJSSimpleAction<ProcessTime> {
     }
     @Override
     protected String generateReportData(List<ProcessTime> models) {
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("userTime".equals(category)){
             data=ProcessTimeChartDataService.getUserTimeData(models);
         

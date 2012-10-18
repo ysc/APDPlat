@@ -35,7 +35,7 @@ public class RegistePosition extends RegisterService<Position>{
 
     @Override
     protected List<Position> getRegisteData() {
-        ArrayList<Position> data=new ArrayList<Position>();
+        ArrayList<Position> data=new ArrayList<>();
         data.add(position);
         return data;
     }

@@ -5,9 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-
 import org.apache.struts2.util.StrutsTypeConverter;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,16 +34,14 @@ public class DateTypeConverter extends StrutsTypeConverter {
         if (values[0].contains(":")) {
             try {
                 return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(values[0]);
-            } catch (ParseException ex) {
-                ex.printStackTrace();
+            } catch (ParseException e) {
+                log.error("转换失败",e);
             }
         }
         for (DateFormat format : ACCEPT_DATE_FORMATS) {
             try {
                 return format.parse(values[0]);
-            } catch (ParseException e) {
-                continue;
-            } catch (RuntimeException e) {
+            } catch (    ParseException | RuntimeException e) {
                 continue;
             }
         }

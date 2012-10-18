@@ -1,11 +1,11 @@
 package com.apdplat.module.log.service;
 
-import com.apdplat.platform.service.CategoryService;
 import com.apdplat.module.log.model.OperateStatistics;
+import com.apdplat.platform.service.CategoryService;
 import java.util.List;
 import org.jdom.Attribute;
-import org.springframework.stereotype.Service;
 import org.jdom.Element;
+import org.springframework.stereotype.Service;
 
 /**
  *

@@ -1,12 +1,12 @@
 package com.apdplat.module.security.model;
 
 import com.apdplat.module.module.model.Command;
-import com.apdplat.platform.model.Model;
 import com.apdplat.module.module.model.Module;
-import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.annotation.ModelAttr;
 import com.apdplat.platform.annotation.ModelAttrRef;
 import com.apdplat.platform.annotation.ModelCollRef;
+import com.apdplat.platform.generator.ActionGenerator;
+import com.apdplat.platform.model.Model;
 import com.apdplat.platform.service.ServiceFacade;
 import com.apdplat.platform.util.SpringContextUtils;
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class User extends Model  implements UserDetails{
     @OrderBy("id")
     @ModelAttr("用户拥有的角色列表")
     @ModelCollRef("roleName")
-    protected List<Role> roles = new ArrayList<Role>();
+    protected List<Role> roles = new ArrayList<>();
 
     @ModelAttr("账号过期")
     protected boolean accountexpired = false;
@@ -98,19 +98,22 @@ public class User extends Model  implements UserDetails{
      * @return
      */
     public boolean isSuperManager(){
-        if(this.roles==null || this.roles.isEmpty())
-        	return false;
+        if(this.roles==null || this.roles.isEmpty()) {
+            return false;
+        }
 
         for(Role role : this.roles){
-            if(role.isSuperManager())
+            if(role.isSuperManager()) {
                 return true;
+            }
         }
         return false;
     }
     
     public String getRoleStrs(){
-        if(this.roles==null || this.roles.isEmpty())
+        if(this.roles==null || this.roles.isEmpty()) {
             return "";
+        }
         StringBuilder result=new StringBuilder();
         for(Role role : this.roles){
             result.append("role-").append(role.getId()).append(",");
@@ -120,10 +123,11 @@ public class User extends Model  implements UserDetails{
     }
 
     public List<Command> getCommand() {
-        List<Command> result = new ArrayList<Command>();
+        List<Command> result = new ArrayList<>();
 
-        if(this.roles==null || this.roles.isEmpty())
-        	return result;
+        if(this.roles==null || this.roles.isEmpty()) {
+            return result;
+        }
 
         //如果用户为超级管理员
         for (Role role : this.roles) {
@@ -146,10 +150,11 @@ public class User extends Model  implements UserDetails{
     }
 
     public List<Module> getModule() {
-        List<Module> result = new  ArrayList<Module>();
+        List<Module> result = new  ArrayList<>();
         
-        if(this.roles==null || this.roles.isEmpty())
-        	return result;
+        if(this.roles==null || this.roles.isEmpty()) {
+            return result;
+        }
 
         //如果用户为超级管理员
         for (Role role : this.roles) {
@@ -170,9 +175,10 @@ public class User extends Model  implements UserDetails{
         return allModule;
     }
     private List<Module> assemblyModule(List<Command> commands){
-        List<Module> modules=new ArrayList<Module>();
-        if(commands==null)
+        List<Module> modules=new ArrayList<>();
+        if(commands==null) {
             return modules;
+        }
         
         for(Command command : commands){
             if(command!=null){
@@ -207,10 +213,11 @@ public class User extends Model  implements UserDetails{
      */
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        if(this.roles==null || this.roles.isEmpty())
-        	return null;
+        if(this.roles==null || this.roles.isEmpty()) {
+            return null;
+        }
 
-        Collection<GrantedAuthority> grantedAuthArray=new HashSet<GrantedAuthority>();
+        Collection<GrantedAuthority> grantedAuthArray=new HashSet<>();
 
         log.debug("user privilege:");
         for (Role role : this.roles) {

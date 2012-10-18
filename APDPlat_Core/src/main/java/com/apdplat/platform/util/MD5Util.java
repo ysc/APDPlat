@@ -51,7 +51,9 @@ public class MD5Util {
             return null;
         } finally {
             try {
-                if (fis != null) fis.close();
+                if (fis != null) {
+                    fis.close();
+                }
             } catch (IOException ex) {
              log.error("文件操作失败",ex);
             }

@@ -1,7 +1,6 @@
 package com.apdplat.module.security.service;
 
 import com.apdplat.module.system.service.PropertyHolder;
-import com.apdplat.module.system.service.SystemListener;
 import com.apdplat.platform.util.ConvertUtils;
 import com.apdplat.platform.util.FileUtils;
 import java.io.File;
@@ -32,7 +31,7 @@ public class LinuxSequenceService  implements SequenceService{
             System.out.println("linux lib : "+dir.getAbsolutePath());
             
             System.load(dir.getAbsolutePath());
-            Set<String> result = new HashSet<String>();
+            Set<String> result = new HashSet<>();
             Sigar sigar = new Sigar();
             String[] ifaces = sigar.getNetInterfaceList();
             for (int i = 0; i < ifaces.length; i++) {
@@ -87,10 +86,8 @@ public class LinuxSequenceService  implements SequenceService{
             byte[] b = md.digest(message.getBytes("utf-8"));
             String md5 = ConvertUtils.byte2HexString(b)+message.length();
             return getSplitString(md5);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            log.error("MD5摘要失败",e);
         }
         return null;
     }

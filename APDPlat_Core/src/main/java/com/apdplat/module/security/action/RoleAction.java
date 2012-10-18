@@ -54,8 +54,9 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
                     canDel=false;
                 }
             }
-            if(!canDel)
+            if(!canDel) {
                 continue;
+            }
             for(User user : users){
                 user.removeRole(role);
                 service.update(user);
@@ -92,10 +93,10 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
     }
     @Override
     protected void renderJsonForQuery(List result) {
-        for (Role model : page.getModels()) {
-            Map map = new HashMap();
-            render(map,model);
-            result.add(map);
+        for (Role role : page.getModels()) {
+            Map temp = new HashMap();
+            render(temp,role);
+            result.add(temp);
         }
     }
     @Override
@@ -107,7 +108,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
     }
     public void setPrivileges(String privileges) {
         String[] ids=privileges.split(",");
-        commands=new ArrayList<Command>();
+        commands=new ArrayList<>();
         for(String id :ids){
             String[] attr=id.split("-");
             if(attr.length==2){

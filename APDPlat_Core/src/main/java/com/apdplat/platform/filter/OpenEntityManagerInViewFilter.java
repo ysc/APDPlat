@@ -2,7 +2,6 @@ package com.apdplat.platform.filter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 /**
 *JPA事务开启和关闭过滤器
@@ -22,8 +21,9 @@ public class OpenEntityManagerInViewFilter extends org.springframework.orm.jpa.s
 		String path = request.getServletPath();
                 
 		for (String suffix : excludeSuffixs) {
-			if (path.endsWith(suffix))
-				return true;
+			if (path.endsWith(suffix)) {
+                            return true;
+                        }
 		}
 
 		return false;

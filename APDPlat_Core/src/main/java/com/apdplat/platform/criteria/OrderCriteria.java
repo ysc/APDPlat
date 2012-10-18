@@ -6,7 +6,7 @@ import java.util.LinkedList;
  * @author 杨尚川
  */
 public class OrderCriteria {
-	private LinkedList<Order> orders=new LinkedList<Order>();
+	private LinkedList<Order> orders=new LinkedList<>();
 
 	public LinkedList<Order> getOrders() {
 		return orders;

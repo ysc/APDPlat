@@ -17,7 +17,7 @@ public abstract class AbstractAction<T extends Model, S extends Service<T>>  ext
 
     protected S service = null;
     protected T model = null;
-    protected Page<T> page = new Page<T>();
+    protected Page<T> page = new Page<>();
     @Resource(name = "springContextUtils")
     protected SpringContextUtils springContextUtils;
 

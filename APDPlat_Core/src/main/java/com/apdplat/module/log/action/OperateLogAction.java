@@ -1,12 +1,10 @@
 package com.apdplat.module.log.action;
 
 import com.apdplat.module.log.model.OperateLog;
-import com.apdplat.module.log.model.OperateLogType;
 import com.apdplat.module.log.model.OperateStatistics;
 import com.apdplat.module.log.service.OperateLogChartDataService;
 import com.apdplat.module.log.service.OperateTyeCategoryService;
 import com.apdplat.module.log.service.UserCategoryService;
-import com.apdplat.module.security.model.User;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.model.ModelMetaData;
@@ -55,12 +53,12 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
      * @return 
      */
     public String store(){        
-        List<Map<String,String>> data=new ArrayList<Map<String,String>>();
+        List<Map<String,String>> data=new ArrayList<>();
         for(String key : ModelMetaData.getModelDes().keySet()){
-            Map<String,String> map=new HashMap<String,String>();
-            map.put("value", ModelMetaData.getModelDes().get(key));
-            map.put("text", ModelMetaData.getModelDes().get(key));
-            data.add(map);
+            Map<String,String> temp=new HashMap<>();
+            temp.put("value", ModelMetaData.getModelDes().get(key));
+            temp.put("text", ModelMetaData.getModelDes().get(key));
+            data.add(temp);
         }
         Struts2Utils.renderJson(data);
         return null;

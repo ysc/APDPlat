@@ -5,11 +5,19 @@ package com.apdplat.module.security.service;
  * @author ysc
  */
 import com.apdplat.platform.util.FileUtils;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import javax.annotation.PostConstruct;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
@@ -49,10 +57,10 @@ public class SecurityCheck {
         try {
             // DES算法要求有一个可信任的随机数源
             SecureRandom sr = new SecureRandom();
-            // 获得密匙数据
-            InputStream fi = SecurityCheck.class.getResourceAsStream(keyFile);
-            byte rawKeyData[] = FileUtils.readAll(fi);
-            fi.close();
+            byte[] rawKeyData;
+            try (InputStream fi = SecurityCheck.class.getResourceAsStream(keyFile)) {
+                rawKeyData = FileUtils.readAll(fi);
+            }
             // 从原始密匙数据创建一个DESKeySpec对象
             DESKeySpec dks = new DESKeySpec(rawKeyData);
             // 创建一个密匙工厂，然后用它把DESKeySpec对象转换成一个SecretKey对象
@@ -61,10 +69,10 @@ public class SecurityCheck {
             Cipher cipher = Cipher.getInstance("DES");
             // 用密匙初始化Cipher对象
             cipher.init(Cipher.DECRYPT_MODE, key, sr);
-            // 现在，获取数据并解密
-            InputStream fi2 = SecurityCheck.class.getResourceAsStream(classFile);
-            byte encryptedData[] = FileUtils.readAll(fi2);
-            fi2.close();
+            byte[] encryptedData;
+            try (InputStream fi2 = SecurityCheck.class.getResourceAsStream(classFile)) {
+                encryptedData = FileUtils.readAll(fi2);
+            }
             // 正式执行解密操作
             final byte decryptedData[] = cipher.doFinal(encryptedData);            
             Object obj = new ClassLoader(){
@@ -78,8 +86,8 @@ public class SecurityCheck {
                 }
             }.loadClass(className);
             return (T)obj;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | ClassNotFoundException e) {
+            log.debug("加载类失败",e);
         } 
         return null;
     }
@@ -90,8 +98,8 @@ public class SecurityCheck {
             Method method=ReflectionUtils.findMethod(clazz, "getSequence");
             String seq=method.invoke(obj).toString();
             return seq;
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            log.debug("获取机器码钥失败",e);
         }
         return "";
     }
@@ -103,7 +111,7 @@ public class SecurityCheck {
             seq=getSequence();
             log.debug("机器指纹："+seq);
         }catch(Exception e){
-            e.printStackTrace();
+            log.debug("安全检查失败",e);
         }
         try {
             Class clazz=loadClass(securityKeyName,securityClspath,"com.apdplat.module.security.service.SecurityService");
@@ -111,9 +119,8 @@ public class SecurityCheck {
             Method method=ReflectionUtils.findMethod(clazz, "checkSeq",String.class);
             method.invoke(obj,seq);
             log.debug("安全检查完成");
-        } catch (Exception ex) {
-            log.debug("安全检查出错");
-            ex.printStackTrace();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            log.debug("安全检查出错",e);
         }
     }
 }

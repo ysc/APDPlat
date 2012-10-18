@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +24,7 @@ public class ProcessTimeChartDataService {
     public static LinkedHashMap<String, Long> getProcessRate(List<ProcessTime> models) {    
         Collections.sort(models, new Comparator(){
 
+            @Override
             public int compare(Object o1, Object o2) {
                 ProcessTime p1=(ProcessTime)o1;
                 ProcessTime p2=(ProcessTime)o2;
@@ -31,7 +32,7 @@ public class ProcessTimeChartDataService {
             }
         
         });
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if(models.size()<1){
             return data;
         }
@@ -58,19 +59,19 @@ public class ProcessTimeChartDataService {
         //同一命令只留最耗时的命令
         models=mini(models);
         
-        LinkedHashMap<Long,ProcessTime> LinkedHashMap=new LinkedHashMap<Long,ProcessTime>();
+        LinkedHashMap<Long,ProcessTime> LinkedHashMap=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(ProcessTime item : models){            
             LinkedHashMap.put(item.getProcessTime(),item);
         }
         Collection<Long> keys=LinkedHashMap.keySet();
-        List<Long> list=new ArrayList<Long>();
+        List<Long> list=new ArrayList<>();
         for(Long key : keys){
             list.add(key);
         }
         Collections.sort(list);
         Collections.reverse(list);
-        LinkedHashMap<String,Long> result=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> result=new LinkedHashMap<>();
         int i=0;
         for(Long processTime : list){
             String newKey=DateTypeConverter.toDefaultDateTime(LinkedHashMap.get(processTime).getStartTime())+", "+LinkedHashMap.get(processTime).getResource();
@@ -83,7 +84,7 @@ public class ProcessTimeChartDataService {
         return result;
     }
     public static LinkedHashMap<String,Long> getUserTimeData(List<ProcessTime> models){        
-        LinkedHashMap<String,Long> temp=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(ProcessTime item : models){
             User user=item.getOwnerUser();
@@ -120,7 +121,7 @@ public class ProcessTimeChartDataService {
         return getSequenceTimeData(models,"yyyy-MM");
     }
     private static LinkedHashMap<String,Long> getSequenceTimeData(List<ProcessTime> models,String format){        
-        LinkedHashMap<String,ProcessTime> temp=new LinkedHashMap<String,ProcessTime>();
+        LinkedHashMap<String,ProcessTime> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(ProcessTime item : models){
             String key=new SimpleDateFormat(format).format(item.getStartTime());
@@ -133,7 +134,7 @@ public class ProcessTimeChartDataService {
             
             temp.put(key,value);
         } 
-        LinkedHashMap<String,Long> LinkedHashMap=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> LinkedHashMap=new LinkedHashMap<>();
         for(String key : temp.keySet()){
             LinkedHashMap.put(key+", "+temp.get(key).getResource(), temp.get(key).getProcessTime());
         }
@@ -146,7 +147,7 @@ public class ProcessTimeChartDataService {
      * @return 
      */
     private static List<ProcessTime> mini(List<ProcessTime> models) {
-        LinkedHashMap<String,ProcessTime> LinkedHashMap=new LinkedHashMap<String,ProcessTime>();
+        LinkedHashMap<String,ProcessTime> LinkedHashMap=new LinkedHashMap<>();
         for(ProcessTime item : models){
             ProcessTime value=LinkedHashMap.get(item.getResource());
             if(value==null){
@@ -156,7 +157,7 @@ public class ProcessTimeChartDataService {
             }
             LinkedHashMap.put(item.getResource(), value);
         }
-        List<ProcessTime> list=new ArrayList<ProcessTime>();
+        List<ProcessTime> list=new ArrayList<>();
         for(ProcessTime item : LinkedHashMap.values()){
             list.add(item);
         }

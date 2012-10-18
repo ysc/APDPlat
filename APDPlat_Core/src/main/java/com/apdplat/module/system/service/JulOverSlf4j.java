@@ -1,7 +1,6 @@
 package com.apdplat.module.system.service;
 
 import javax.annotation.PostConstruct;
-
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.stereotype.Service;
 

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 public class WindowsMavenRunner implements MavenRunner{
     protected static Logger log = LoggerFactory.getLogger(WindowsMavenRunner.class);    
 
+    @Override
     public void run(String workspaceModuleRootPath) {
         log.info("workspaceModuleRootPath:"+workspaceModuleRootPath);
         StringBuilder cmd=new StringBuilder();

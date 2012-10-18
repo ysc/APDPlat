@@ -170,18 +170,18 @@ public class UserAction extends ExtJSSimpleAction<User> {
         if(len>users.size()){
             len=users.size();
         }
-        List<User> models=new ArrayList<User>();
+        List<User> models=new ArrayList<>();
         for(int i=start;i<len;i++){
             models.add(users.get(i));
         }
         //构造当前页面对象
-        page=new Page<User>();
+        page=new Page<>();
         page.setModels(models);
         page.setTotalRecords(users.size());
         
         Map json = new HashMap();
         json.put("totalProperty", page.getTotalRecords());
-        List<Map> result = new ArrayList<Map>();
+        List<Map> result = new ArrayList<>();
         renderJsonForQuery(result);
         json.put("root", result);
         Struts2Utils.renderJson(json);
@@ -193,12 +193,12 @@ public class UserAction extends ExtJSSimpleAction<User> {
             return super.query();
         }
         List<User> users=service.query(User.class).getModels();
-        List<Map<String,String>> data=new ArrayList<Map<String,String>>();
+        List<Map<String,String>> data=new ArrayList<>();
         for(User user : users){
-            Map<String,String> map=new HashMap<String,String>();
-            map.put("value", user.getUsername());
-            map.put("text", user.getUsername());
-            data.add(map);
+            Map<String,String> temp=new HashMap<>();
+            temp.put("value", user.getUsername());
+            temp.put("text", user.getUsername());
+            data.add(temp);
         }
         Struts2Utils.renderJson(data);
         return null;
@@ -216,9 +216,9 @@ public class UserAction extends ExtJSSimpleAction<User> {
                 String[] attr=id.split("-");
                 if(attr.length==2){
                     int roleId=Integer.parseInt(attr[1]);
-                    Role role=service.retrieve(Role.class, roleId);
-                    if(role!=null){
-                        model.addRole(role);
+                    Role temp=service.retrieve(Role.class, roleId);
+                    if(temp!=null){
+                        model.addRole(temp);
                     }
                 }
             }
@@ -283,34 +283,34 @@ public class UserAction extends ExtJSSimpleAction<User> {
     
     @Override
     protected void renderJsonForSearch(List result) {
-        for (User model : page.getModels()) {
-            Map map = new HashMap();
-            render(map,model);
+        for (User user : page.getModels()) {
+            Map temp = new HashMap();
+            render(temp,user);
 
             StringBuilder str=new StringBuilder();
             //搜索出来的模型已经被detach了，无法获得延迟加载的数据
-            User tmp=service.retrieve(User.class, model.getId());
+            User tmp=service.retrieve(User.class, user.getId());
             for(Role r : tmp.getRoles()){
                 str.append(r.getRoleName()).append(",");
             }
-            map.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            temp.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
 
-            result.add(map);
+            result.add(temp);
         }
     }
     @Override
     protected void renderJsonForQuery(List result) {
-        for (User model : page.getModels()) {
-            Map map = new HashMap();
-            render(map,model);
+        for (User user : page.getModels()) {
+            Map temp = new HashMap();
+            render(temp,user);
 
             StringBuilder str=new StringBuilder();
-            for(Role r : model.getRoles()){
+            for(Role r : user.getRoles()){
                 str.append(r.getRoleName()).append(",");
             }
-            map.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            temp.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
 
-            result.add(map);
+            result.add(temp);
         }
     }
     @Override

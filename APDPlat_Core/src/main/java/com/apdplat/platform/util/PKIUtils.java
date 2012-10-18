@@ -1,15 +1,24 @@
 package com.apdplat.platform.util;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.security.SignatureException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -60,7 +69,7 @@ public class PKIUtils {
             signet.update(data);
             boolean result=signet.verify(signatureData);
             return result;
-        } catch (Exception ex) {
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException ex) {
             log.error("验证签名失败",ex);
         }
         return false;
@@ -99,7 +108,7 @@ public class PKIUtils {
             // 正式执行加密操作
             byte encryptedData[] = cipher.doFinal(data);
             return encryptedData;
-        } catch (Exception ex) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             log.error("加密数据失败",ex);
         }
         return null;
@@ -160,7 +169,7 @@ public class PKIUtils {
             // 获取证书私钥
             PrivateKey privateKey = (PrivateKey) ks.getKey(key, keyPassword.toCharArray());
             return privateKey;
-        } catch (Exception ex) {
+        } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException ex) {
             log.error("获取证书私钥失败",ex);
         }
         return null;
@@ -179,7 +188,7 @@ public class PKIUtils {
             // 解密后的数据
             byte[] result = cipher.doFinal(data);
             return result;
-        } catch (Exception ex) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             log.error("解密数据失败",ex);
         }
         return null;

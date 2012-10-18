@@ -35,22 +35,22 @@ public class SQLServerBackupService extends BackupService{
             else{
                 return false;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.error("备份出错",e);
             return false;
         }finally{
             if(bps!=null){
                 try {
                     bps.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
+                } catch (SQLException e) {
+                    log.error("备份出错",e);
                 }
             }
             if(con!=null){
                 try {
                     con.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
+                } catch (SQLException e) {
+                    log.error("备份出错",e);
                 }
             }
         }
@@ -75,23 +75,23 @@ public class SQLServerBackupService extends BackupService{
             else{
                 return false;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.error("恢复出错",e);
             return false;
         } finally{
             Lock.setRestore(false);
             if(rps!=null){
                 try {
                     rps.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
+                } catch (SQLException e) {
+                    log.error("恢复出错",e);
                 }
             }
             if(con!=null){
                 try {
                     con.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
+                } catch (SQLException e) {
+                    log.error("恢复出错",e);
                 }
             }
         }

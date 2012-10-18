@@ -1,20 +1,16 @@
 package com.apdplat.platform.generator;
 
 import com.apdplat.module.system.service.PropertyHolder;
-import com.apdplat.platform.generator.Generator;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -22,6 +18,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  *
@@ -36,12 +33,12 @@ public class ModelGenerator extends Generator {
         factory.setTemplateLoaderPath(PropertyHolder.getProperty("model.generator.freemarker.template"));
         try {
             freemarkerConfiguration = factory.createConfiguration();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("初始化模板错误",e);
         }
     }
     private static List<InputStream> getModelExcels(String module){     
-        List<InputStream> ins=new ArrayList<InputStream>();
+        List<InputStream> ins=new ArrayList<>();
         try{
             String pattern="classpath*:generator/"+module+"/*.xls";
             log.info("模式："+pattern);
@@ -53,17 +50,17 @@ public class ModelGenerator extends Generator {
                     InputStream in=r.getInputStream();
                     log.info("文件："+r.getFile().getAbsolutePath());
                     ins.add(in);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (Exception e) {
+                    log.error("生成MODEL错误",e);
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("生成MODEL错误",e);
         }
         return ins;
     }
     public static List<ModelInfo> generate(String moduleProjectName){
-        List<ModelInfo> all = new ArrayList<ModelInfo>();
+        List<ModelInfo> all = new ArrayList<>();
         List<InputStream> ins = getModelExcels(moduleProjectName);
         for(InputStream in : ins){
             List<ModelInfo> modelInfos = readModelInfos(in);
@@ -95,7 +92,7 @@ public class ModelGenerator extends Generator {
         log.info("开始生成Model");
         log.info("workspaceModuleBasePath：" + workspaceModuleBasePath);
 
-        Map<String, Object> context = new HashMap<String, Object>();
+        Map<String, Object> context = new HashMap<>();
         context.put("modelInfo", modelInfo);
 
         boolean result = false;
@@ -105,10 +102,8 @@ public class ModelGenerator extends Generator {
             String modelPath = modelInfo.getModelPackage().replace(".", "/");
             String modelName = modelInfo.getModelEnglish();
             result = saveFile(workspaceModuleBasePath, modelPath, modelName, content);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (TemplateException ex) {
-            ex.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("生成MODEL错误",e);
         }
         if (result) {
             log.info("Model生成成功");
@@ -130,8 +125,8 @@ public class ModelGenerator extends Generator {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            } catch (IOException e) {
+                log.error("生成MODEL错误",e);
             }
         } else {
             log.info("源文件已经存在，请删除 " + file.getAbsolutePath() + " 后在执行命令");
@@ -148,7 +143,7 @@ public class ModelGenerator extends Generator {
         private String modelChinese;
         private boolean hasDateTime;
         private boolean hasDicItem;
-        private List<Attr> attrs = new ArrayList<Attr>();
+        private List<Attr> attrs = new ArrayList<>();
 
         public boolean isHasDateTime() {
             return hasDateTime;
@@ -309,7 +304,7 @@ public class ModelGenerator extends Generator {
 
     final public static class MapType {
 
-        private static final Map<String, String> types = new HashMap<String, String>();
+        private static final Map<String, String> types = new HashMap<>();
 
         static {
             types.put("None", "None");
@@ -337,7 +332,7 @@ public class ModelGenerator extends Generator {
 
     final public static class DicType {
 
-        private static final Map<String, String> types = new HashMap<String, String>();
+        private static final Map<String, String> types = new HashMap<>();
 
         static {
             types.put("None", "None");
@@ -363,7 +358,7 @@ public class ModelGenerator extends Generator {
 
     final public static class AttrType {
 
-        private static final Map<String, String> types = new HashMap<String, String>();
+        private static final Map<String, String> types = new HashMap<>();
 
         static {
             types.put("String", "String");
@@ -386,7 +381,7 @@ public class ModelGenerator extends Generator {
 
 
     private static List<ModelInfo> readModelInfos(InputStream inputStream) {
-        List<ModelInfo> models = new ArrayList<ModelInfo>();
+        List<ModelInfo> models = new ArrayList<>();
         try {
             HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
@@ -499,12 +494,11 @@ public class ModelGenerator extends Generator {
                     }
                     models.add(modelInfo);
                 } catch (Exception e) {
-                    log.info("解析工作表:" + sheet.getSheetName() + " 失败");
-                    e.printStackTrace();
+                    log.error("解析工作表:" + sheet.getSheetName() + " 失败",e);
                 }
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            log.error("生成MODEL错误",e);
         }
         return models;
     }

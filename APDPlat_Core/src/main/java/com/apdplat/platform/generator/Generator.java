@@ -18,10 +18,10 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
  * @author ysc
  */
 public abstract class Generator {
-    protected static Logger log = LoggerFactory.getLogger(Generator.class);    
-    protected static String ENCODING = "utf-8";
+    protected static final Logger log = LoggerFactory.getLogger(Generator.class);    
+    protected static final String ENCODING = "utf-8";
     protected static final FreeMarkerConfigurationFactoryBean factory = new FreeMarkerConfigurationFactoryBean();
-    protected final static Map<String,Model> actionToModel=new HashMap<String,Model>();  
+    protected static final Map<String,Model> actionToModel=new HashMap<>();  
     
     /**
      * 当Action和Model没有遵循约定，即Action为UserAction,Model为User这种方式时：
@@ -45,7 +45,7 @@ public abstract class Generator {
             writer.flush();
             log.info("生成的文件为："+file.getAbsolutePath());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("生成数据字典出错",e);
         } finally {
             if (writer != null) {
                 try {

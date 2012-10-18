@@ -65,9 +65,9 @@ public class BackupAction extends DefaultAction {
     }
     public String store(){
         List<String> existBackup=backupService.getExistBackup();
-        List<Map<String,String>> data=new ArrayList<Map<String,String>>();
+        List<Map<String,String>> data=new ArrayList<>();
         for(String item : existBackup){
-            Map<String,String> map=new HashMap<String,String>();
+            Map<String,String> map=new HashMap<>();
             map.put("value", item);
             map.put("text", item);
             data.add(map);

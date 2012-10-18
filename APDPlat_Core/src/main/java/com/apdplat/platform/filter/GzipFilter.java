@@ -1,17 +1,11 @@
 package com.apdplat.platform.filter;
 
-import java.io.IOException;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,8 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPOutputStream;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,14 +70,12 @@ public class GzipFilter extends Filter {
 
             // Create a gzip stream
             final ByteArrayOutputStream compressed = new ByteArrayOutputStream();
-            final GZIPOutputStream gzout = new GZIPOutputStream(compressed);
-
-            // Handle the request
-            final GenericResponseWrapper wrapper = new GenericResponseWrapper(response, gzout);
-            chain.doFilter(request, wrapper);
-            wrapper.flush();
-
-            gzout.close();
+            final GenericResponseWrapper wrapper;
+            try (GZIPOutputStream gzout = new GZIPOutputStream(compressed)) {
+                wrapper = new GenericResponseWrapper(response, gzout);
+                chain.doFilter(request, wrapper);
+                wrapper.flush();
+            }
 
             //Saneness checks
             byte[] compressedBytes = compressed.toByteArray();
@@ -551,7 +550,7 @@ abstract class Filter implements javax.servlet.Filter {
                             new Class[]{Object.class, Throwable.class});
                     method.invoke(log, new Object[]{throwable.getMessage(), throwable});
                 }
-            } catch (Exception e) {
+            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 log.error("Could not invoke Log method for " + exceptionsToLogDifferentlyLevel, e);
             }
             throw new ServletException(message, throwable);

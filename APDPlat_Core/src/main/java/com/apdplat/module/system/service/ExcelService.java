@@ -55,20 +55,20 @@ public class ExcelService {
                         j++;
                     }
                 }catch(Exception e){
-                    e.printStackTrace();
+                    log.error("生成EXCEL出错",e);
                 }
             }
             File dir = new File(outputFile);
             dir.mkdirs();
             File file = new File(dir, xlsName);
             file.createNewFile();
-            FileOutputStream out = new FileOutputStream(file);
-            workbook.write(out);
-            out.flush();
-            out.close();
+            try (FileOutputStream out = new FileOutputStream(file)) {
+                workbook.write(out);
+                out.flush();
+            }
             log.info("共导出" + (rowNum - 1) + "条数据");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("生成EXCEL出错",e);
         }
         return path + "/" + xlsName;
     }

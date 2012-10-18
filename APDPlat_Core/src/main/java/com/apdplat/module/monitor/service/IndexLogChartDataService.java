@@ -5,8 +5,8 @@ import com.apdplat.module.monitor.model.IndexLogResult;
 import com.apdplat.platform.action.converter.DateTypeConverter;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +20,7 @@ public class IndexLogChartDataService {
     public static LinkedHashMap<String,Long> getSequenceData(List<IndexLog> models){    
         Collections.sort(models, new Comparator(){
 
+            @Override
             public int compare(Object o1, Object o2) {
                 IndexLog p1=(IndexLog)o1;
                 IndexLog p2=(IndexLog)o2;
@@ -27,7 +28,7 @@ public class IndexLogChartDataService {
             }
         
         });
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if(models.size()<1){
             return data;
         }
@@ -38,7 +39,7 @@ public class IndexLogChartDataService {
         return data;
     }
     public static LinkedHashMap<String,Long> getRateData(List<IndexLog> models){    
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if(models.size()<1){
             return data;
         }

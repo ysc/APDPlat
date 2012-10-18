@@ -2,8 +2,8 @@ package com.apdplat.module.monitor.service;
 
 import com.apdplat.module.monitor.model.UserLogin;
 import com.apdplat.module.security.model.User;
-import java.util.List;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  *
@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 public class UserLoginChartDataService {
   
     public static LinkedHashMap<String,Long> getUserOnlineTime(List<UserLogin> models){        
-        LinkedHashMap<String,Long> temp=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(UserLogin item : models){
             User user=item.getOwnerUser();
@@ -36,7 +36,7 @@ public class UserLoginChartDataService {
      * @return  以用户名为KEY，以登录次数为VALUE的MAP
      */
     public static LinkedHashMap<String,Long> getUserLoginTimes(List<UserLogin> models){
-        LinkedHashMap<String,Long> temp=new LinkedHashMap<String,Long>();
+        LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(UserLogin item : models){
             User user=item.getOwnerUser();

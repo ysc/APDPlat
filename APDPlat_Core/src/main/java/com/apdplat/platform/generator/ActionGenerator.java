@@ -5,24 +5,22 @@ import com.apdplat.module.module.model.Module;
 import com.apdplat.module.module.service.ModuleParser;
 import com.apdplat.module.module.service.ModuleService;
 import com.apdplat.module.system.service.PropertyHolder;
-import com.apdplat.platform.generator.Generator;
-import com.apdplat.platform.model.Model;
 import com.apdplat.platform.generator.ModelGenerator.ModelInfo;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import com.apdplat.platform.model.Model;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  *
@@ -35,8 +33,8 @@ public class ActionGenerator extends Generator{
         factory.setTemplateLoaderPath(PropertyHolder.getProperty("action.generator.freemarker.template"));
         try {
             freemarkerConfiguration = factory.createConfiguration();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("初始化模板错误",e);
         }
     }
     /**
@@ -72,7 +70,7 @@ public class ActionGenerator extends Generator{
      * @param workspaceModuleBasePath 开发时模块的根路径
      */
     private static void generateFromModule(List<ModelInfo>  modelInfos,String workspaceModuleBasePath) {
-        List<String> models=new ArrayList<String>();
+        List<String> models=new ArrayList<>();
         for(ModelInfo info : modelInfos){            
             models.add(info.getModelEnglish());
         }
@@ -118,8 +116,8 @@ public class ActionGenerator extends Generator{
                 System.out.println("generateFromModule action："+actionName);
                 generateFromModule(specialCommands,actionPackage,actionNamespace,actionName,workspaceModuleBasePath,actionPath);
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+        } catch (FileNotFoundException e) {
+            log.error("生成ACTION错误",e);
         }
     }
     private static void generateFromModule(List<Command> specialCommands, String actionPackage, String actionNamespace, String actionName, String workspaceModuleBasePath, String actionPath) {
@@ -128,7 +126,7 @@ public class ActionGenerator extends Generator{
         log.info("开始生成Action");
         log.info("workspaceModuleBasePath：" + workspaceModuleBasePath);
         //准备数据        
-        Map<String, Object> context = new HashMap<String, Object>();
+        Map<String, Object> context = new HashMap<>();
         context.put("actionPackage", actionPackage);
         context.put("actionNamespace", actionNamespace);
         context.put("actionName", actionName);
@@ -139,10 +137,8 @@ public class ActionGenerator extends Generator{
             Template template = freemarkerConfiguration.getTemplate(templateName, ENCODING);
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             result=saveFile(workspaceModuleBasePath, actionPath, actionName, content);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (TemplateException ex) {
-            ex.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("生成ACTION错误",e);
         }
         if(result){
             log.info("Action生成成功");
@@ -170,6 +166,7 @@ public class ActionGenerator extends Generator{
         }else{
             File[] subFiles=file.listFiles(new FilenameFilter(){
 
+                @Override
                 public boolean accept(File dir, String name) {
                     if(name.startsWith(".")){
                         return false;
@@ -237,7 +234,7 @@ public class ActionGenerator extends Generator{
     private static void generateAction(String actionPackage, String actionNamespace, String actionName, String modelPackage,String model, String workspaceModuleBasePath, List<Command> specialCommands) {
         //检查参数，防止空指针
         if(specialCommands==null){
-            specialCommands=new ArrayList<Command>();
+            specialCommands=new ArrayList<>();
         }
         System.out.println("generateAction actionPackage："+actionPackage);
         System.out.println("generateAction actionNamespace："+actionNamespace);
@@ -251,7 +248,7 @@ public class ActionGenerator extends Generator{
         //准备数据
         String actionPath=actionPackage.replace(".", "/"); 
         
-        Map<String, Object> context = new HashMap<String, Object>();
+        Map<String, Object> context = new HashMap<>();
         context.put("actionPackage", actionPackage);
         context.put("actionNamespace", actionNamespace);
         context.put("modelPackage", modelPackage);
@@ -264,10 +261,8 @@ public class ActionGenerator extends Generator{
             Template template = freemarkerConfiguration.getTemplate(templateName, ENCODING);
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             result=saveFile(workspaceModuleBasePath, actionPath, actionName, content);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (TemplateException ex) {
-            ex.printStackTrace();
+        } catch (IOException | TemplateException e) {
+            log.error("生成ACTION错误",e);
         }
         if(result){
             System.out.println("Action生成成功");
@@ -296,8 +291,8 @@ public class ActionGenerator extends Generator{
             if (!file.exists()) {
                 try {
                     file.createNewFile();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                } catch (IOException e) {
+                    log.error("生成ACTION错误",e);
                 }
             }else{
                 log.info("源文件已经存在，请删除 "+file.getAbsolutePath()+" 后在执行命令");

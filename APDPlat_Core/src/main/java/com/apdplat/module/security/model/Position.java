@@ -40,7 +40,7 @@ public class Position extends Model{
     @OrderBy("id DESC")
     @ModelAttr("下级岗位")
     @ModelCollRef("positionName")
-    protected List<Position> child = new ArrayList<Position>();
+    protected List<Position> child = new ArrayList<>();
 
     
 

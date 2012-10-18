@@ -35,12 +35,14 @@ public class UserLoginAction extends ExtJSSimpleAction<UserLogin> {
     }
     @Override
     protected String generateReportData(List<UserLogin> models) {
-        LinkedHashMap<String,Long> data=new LinkedHashMap<String,Long>();
-        if("loginTimes".equals(category)){
-            data=UserLoginChartDataService.getUserLoginTimes(models);
-        }
-        else if("onlineTime".equals(category)){
-            data=UserLoginChartDataService.getUserOnlineTime(models);
+        LinkedHashMap<String,Long> data=new LinkedHashMap<>();
+        switch (category) {
+            case "loginTimes":
+                data=UserLoginChartDataService.getUserLoginTimes(models);
+                break;
+            case "onlineTime":
+                data=UserLoginChartDataService.getUserOnlineTime(models);
+                break;
         }
         
         return userLoginSingleService.getXML(data);

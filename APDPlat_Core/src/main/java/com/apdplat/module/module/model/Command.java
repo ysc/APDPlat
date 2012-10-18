@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 /**
