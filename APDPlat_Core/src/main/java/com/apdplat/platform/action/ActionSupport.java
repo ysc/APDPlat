@@ -12,11 +12,13 @@ import com.apdplat.platform.criteria.PropertyEditor;
 import com.apdplat.platform.criteria.Sequence;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.util.ReflectionUtils;
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import javax.persistence.MappedSuperclass;
 import javax.servlet.http.HttpServletRequest;
@@ -60,6 +62,15 @@ public abstract class ActionSupport extends DataPrivilegeControl{
 
     static {
         defaultOrderCriteria.addOrder(new Order("id", Sequence.DESC));
+    }
+    public Locale getLocale() {
+        ActionContext ctx = ActionContext.getContext();
+        if (ctx != null) {
+            return ctx.getLocale();
+        } else {
+            log.debug("Action context not initialized");
+            return null;
+        }
     }
 
     public String execute() {
