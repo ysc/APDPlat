@@ -1,9 +1,8 @@
 package com.apdplat.module.info.model;
 
-import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.annotation.ModelAttr;
-import com.apdplat.platform.annotation.ModelAttrRef;
 import com.apdplat.platform.annotation.RenderIgnore;
+import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -21,7 +21,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableComponent;
-import org.compass.annotations.SearchableProperty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -32,22 +31,68 @@ import org.springframework.stereotype.Component;
 @XmlType(name = "InfoType")
 @Searchable
 public class InfoType extends Model{
-    @SearchableProperty
-    @ModelAttr("类别名称")
-    protected String infoTypeName;
+    
+    @Transient
+    @ModelAttr("语言")
+    protected String lang="zh";
     @ModelAttr("顺序号")
     protected int orderNum;
     @ManyToOne
     @SearchableComponent
     @ModelAttr("父类别")
-    @ModelAttrRef("infoTypeName")
     protected InfoType parent;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
     @OrderBy("orderNum ASC")
     @RenderIgnore
     @ModelAttr("子类别")
-    protected List<InfoType> child=new ArrayList<InfoType>();
+    protected List<InfoType> child=new ArrayList<>();
     
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "infoType")
+    @RenderIgnore
+    @ModelAttr("多语言内容")
+    protected List<InfoTypeContent> infoTypeContents=new ArrayList<>();    
+
+    public void forceSpecifyLanguageForCreate(String language){
+        if(infoTypeContents.size()==1 && id==null){
+            infoTypeContents.get(0).setLang(Lang.valueOf(language));
+        }        
+    }
+    
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+    
+    public String getInfoTypeName(){
+        for(InfoTypeContent infoTypeContent : infoTypeContents){
+            if(infoTypeContent.getLang().getSymbol().equals(lang)){
+                return infoTypeContent.getInfoTypeName();
+            }
+        }
+        return null;
+    }
+    //setInfoTypeName方法依赖于setLang方法先执行
+    public void setInfoTypeName(String infoTypeName){
+        log.info("设置新闻类别名称");
+        log.info("模型语言："+lang);
+        InfoTypeContent infoTypeContent = getInfoTypeContent();
+        infoTypeContent.setInfoTypeName(infoTypeName);
+    }
+    private InfoTypeContent getInfoTypeContent(){
+        for(InfoTypeContent infoTypeContent : infoTypeContents){
+            if(infoTypeContent.getLang().getSymbol().equals(lang)){
+                return infoTypeContent;
+            }
+        }
+        InfoTypeContent infoTypeContent = new InfoTypeContent();
+        infoTypeContent.setLang(Lang.valueOf(lang));
+        infoTypeContent.setInfoType(this);
+        infoTypeContents.add(infoTypeContent);
+        return infoTypeContent;
+    }
 
     @XmlElementWrapper(name = "subInfoTypes")
     @XmlElement(name = "infoType")
@@ -68,13 +113,18 @@ public class InfoType extends Model{
         this.parent = parent;
     }
 
-    @XmlAttribute
-    public String getInfoTypeName() {
-        return infoTypeName;
+    @XmlElementWrapper(name = "infoTypeContents")
+    @XmlElement(name = "infoTypeContent")
+    public List<InfoTypeContent> getInfoTypeContents() {
+        return infoTypeContents;
     }
 
-    public void setInfoTypeName(String infoTypeName) {
-        this.infoTypeName = infoTypeName;
+    public void addInfoTypeContent(InfoTypeContent infoTypeContent) {
+        this.infoTypeContents.add(infoTypeContent);
+    }
+
+    public void removeInfoTypeContent(InfoTypeContent infoTypeContent) {
+        this.infoTypeContents.remove(infoTypeContent);
     }
 
 

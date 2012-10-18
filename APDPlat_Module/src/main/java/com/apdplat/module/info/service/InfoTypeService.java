@@ -1,6 +1,7 @@
 package com.apdplat.module.info.service;
 
 import com.apdplat.module.info.model.InfoType;
+import com.apdplat.module.info.model.InfoTypeContent;
 import com.apdplat.platform.criteria.Criteria;
 import com.apdplat.platform.criteria.Operator;
 import com.apdplat.platform.criteria.PropertyCriteria;
@@ -23,7 +24,7 @@ public class InfoTypeService {
     protected static final Logger log = LoggerFactory.getLogger(InfoTypeService.class);
 
     public static List<Integer> getChildIds(InfoType obj) {
-        List<Integer> ids=new ArrayList<Integer>();
+        List<Integer> ids=new ArrayList<>();
         List<InfoType> child=obj.getChild();
         for(InfoType item : child){
             ids.add(item.getId());
@@ -35,8 +36,10 @@ public class InfoTypeService {
     private ServiceFacade serviceFacade;
 
     
-    public String toRootJson(){
+    public String toRootJson(String lang){
         InfoType infoType=getRootInfoType();
+        infoType.setLang(lang);
+        
         if(infoType==null){
             log.error("获取根新闻类别失败！");
             return "";
@@ -58,7 +61,7 @@ public class InfoTypeService {
         
         return json.toString();
     }
-    public String toJson(int infoTypeId){
+    public String toJson(int infoTypeId, String lang){
         InfoType infoType=serviceFacade.retrieve(InfoType.class, infoTypeId);
         if(infoType==null){
             log.error("获取ID为 "+infoType+" 的新闻类别失败！");
@@ -73,6 +76,7 @@ public class InfoTypeService {
 
         
         for(InfoType item : child){
+            item.setLang(lang);
             json.append("{'text':'")
                 .append(item.getInfoTypeName())
                 .append("','id':'")
@@ -91,11 +95,15 @@ public class InfoTypeService {
         return json.toString();
     }
     public InfoType getRootInfoType(){
-        PropertyCriteria propertyCriteria = new PropertyCriteria(Criteria.or);
-        propertyCriteria.addPropertyEditor(new PropertyEditor("infoTypeName", Operator.eq, "String","新闻类别"));
-        Page<InfoType> page = serviceFacade.query(InfoType.class, null, propertyCriteria);
-        if (page.getTotalRecords() == 1) {
-            return page.getModels().get(0);
+        try{
+            PropertyCriteria propertyCriteria = new PropertyCriteria(Criteria.or);
+            propertyCriteria.addPropertyEditor(new PropertyEditor("infoTypeName", Operator.eq, "String","新闻类别"));
+            Page<InfoTypeContent> page = serviceFacade.query(InfoTypeContent.class, null, propertyCriteria);
+            if (page.getTotalRecords() == 1) {
+                return page.getModels().get(0).getInfoType();
+            }
+        }catch(Exception e){
+            log.error("获取ROOT失败",e);
         }
         return null;
     }

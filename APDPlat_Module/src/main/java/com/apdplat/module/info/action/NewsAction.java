@@ -6,6 +6,7 @@ import com.apdplat.module.info.service.InfoTypeService;
 import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.action.converter.DateTypeConverter;
 import com.apdplat.platform.criteria.Operator;
+import com.apdplat.platform.criteria.Property;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.criteria.PropertyEditor;
 import com.apdplat.platform.criteria.PropertyType;
@@ -20,7 +21,28 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/info")
 public class NewsAction extends ExtJSSimpleAction<News> {
+    private String lang = "zh";
     private int infoTypeId;
+    
+    //setTitle和setContent依赖于setLang，所以在创建的时候没有办法确保顺序
+    //所以要强制指定
+    @Override
+    protected void assemblyModelForCreate(News model) {
+        model.forceSpecifyLanguageForCreate(lang);
+    }
+    @Override
+    protected void assemblyModelForPartUpdate(List<Property> properties) {
+        for(Property property : properties){
+            if("lang".equals(property.getName())){
+                properties.remove(property);
+            }
+        }
+    }
+    @Override
+    protected void old(News model) {
+        log.info("控制器设置语言："+lang);
+        model.setLang(lang);
+    }
     //方式二：使用IN语句
     @Override
     public PropertyCriteria buildPropertyCriteria(){
@@ -42,21 +64,23 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     }
     @Override
     protected void renderJsonForRetrieve(Map map) {
+        model.setLang(lang);
         render(map,model);
         map.put("infoTypeId", model.getInfoType().getId());
         map.put("content", model.getContent());
     }
     @Override
     protected void renderJsonForQuery(List result) {
-        for (News model : page.getModels()) {
-            Map map = new HashMap();
-            render(map,model);
+        for (News news : page.getModels()) {
+            Map temp = new HashMap();
+            render(temp,news);
 
-            result.add(map);
+            result.add(temp);
         }
     }
     @Override
     protected void render(Map map,News model){
+        model.setLang(lang);
         map.put("id", model.getId());
         map.put("version", model.getVersion());
         map.put("title", model.getTitle());
@@ -67,8 +91,10 @@ public class NewsAction extends ExtJSSimpleAction<News> {
         map.put("updateTime", DateTypeConverter.toDefaultDateTime(model.getUpdateTime()));
         map.put("enabled", model.isEnabled()==true?"是":"否");
     }
-
     public void setInfoTypeId(int infoTypeId) {
         this.infoTypeId = infoTypeId;
+    }
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 }

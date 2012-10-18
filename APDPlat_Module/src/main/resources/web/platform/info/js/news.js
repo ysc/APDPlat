@@ -5,8 +5,9 @@
     var namespace='info';
     var action='news';
     
+    var lang='zh';
     //本页面特殊URL
-    var selectInfoTypeStoreUrl=contextPath+'/info/info-type!store.action';
+    var selectInfoTypeStoreUrl=contextPath+'/info/info-type!store.action?lang=';
     
     //高级搜索
     AdvancedSearchModel = function() {
@@ -61,7 +62,7 @@
     CreateModel = function() {
         return {
             getItems: function() {
-                 var infoTypeSelector=new TreeSelector('model.infoType.infoTypeName','',selectInfoTypeStoreUrl,rootNodeID,rootNodeText,"类别",'model.infoType.id','95%');
+                 var infoTypeSelector=new TreeSelector('model.infoType.infoTypeName','',selectInfoTypeStoreUrl+lang,rootNodeID,rootNodeText,"类别",'model.infoType.id','95%');
                  var items = [{
                             layout: 'form',
                             defaults: {
@@ -122,7 +123,7 @@
     ModifyModel = function() {
         return {
             getItems: function(model) {
-                 var infoTypeSelector=new TreeSelector('model.infoType.infoTypeName',model.infoTypeName,selectInfoTypeStoreUrl,rootNodeID,rootNodeText,"类别",'model.infoType.id','95%');
+                 var infoTypeSelector=new TreeSelector('model.infoType.infoTypeName',model.infoTypeName,selectInfoTypeStoreUrl+lang,rootNodeID,rootNodeText,"类别",'model.infoType.id','95%');
                  var items = [{
                             layout: 'form',
                             defaults: {
@@ -269,10 +270,19 @@
                 var pageSize=17;
                 
                 //添加特殊参数
+                GridBaseModel.extraModifyParameters=function(){
+                    return "&lang="+lang;
+                };
+                GridBaseModel.extraDetailParameters=function(){
+                    return "&lang="+lang;
+                };
+                GridBaseModel.extraCreateParameters=function(){
+                    return "?lang="+lang;
+                };
                 GridBaseModel.infoTypeId=infoTypeId;
                 GridBaseModel.setStoreBaseParams=function(store){
                     store.on('beforeload',function(store){
-                       store.baseParams = {queryString:GridBaseModel.queryString,search:GridBaseModel.search,infoTypeId:GridBaseModel.infoTypeId};
+                       store.baseParams = {queryString:GridBaseModel.queryString,search:GridBaseModel.search,infoTypeId:GridBaseModel.infoTypeId,lang:lang};
                     });
                 };
                 
@@ -294,7 +304,7 @@
         return{
             getTree: function(){
                 TreeBaseModel.onClick=this.onClick;
-                return TreeBaseModel.getTree(selectInfoTypeStoreUrl,rootNodeText,'root','infoType');
+                return TreeBaseModel.getTree(selectInfoTypeStoreUrl+lang,rootNodeText,'root','infoType');
             },
             onClick: function(node, event) {
                 node.expand(false, true);
@@ -318,10 +328,44 @@
     NewsPanel = function() {
         return {
             show: function() {
+                 var tree=TreeModel.getTree();
                  var frm = new Ext.Viewport({
                     layout : 'border',
-                    items: [
-                        TreeModel.getTree(),
+                    items: [{
+                            region:'west',
+                            width : 200,
+                            labelWidth : 40,
+                            labelAlign : 'right',
+                            layout : 'form',
+                            items:[
+                                    {
+                                        xtype: 'combo',
+                                        width : 150,
+                                        store:langStore,
+                                        emptyText:'请选择',
+                                        mode:'remote',
+                                        valueField:'value',
+                                        displayField:'text',
+                                        triggerAction:'all',
+                                        forceSelection: true,
+                                        editable:       false,
+                                        fieldLabel: '语言',
+                                        listeners: {
+                                                select: function(combo,record,number){								
+                                                        lang=combo.getValue();
+                                                        tree.loader.dataUrl=selectInfoTypeStoreUrl+lang;
+                                                        tree.root.reload(
+                                                            function(){
+                                                                tree.root.expand(false, true);
+                                                                TreeModel.onClick(tree.root.childNodes[0]);
+                                                            },
+                                                        tree);
+                                                }
+                                        }
+                                    },
+                                    tree
+                            ]
+                        },
                         {
                             region:'center',
                             autoScroll:true,

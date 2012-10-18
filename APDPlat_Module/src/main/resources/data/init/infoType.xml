@@ -3,36 +3,121 @@
 <!--
         新闻类别
 -->
-<infoType infoTypeName="新闻类别">
+<infoType>
+    <infoTypeContents>
+        <infoTypeContent lang="zh" infoTypeName="新闻类别"/>
+        <infoTypeContent lang="en" infoTypeName="News categories"/>
+    </infoTypeContents>
     <subInfoTypes>
-        <infoType infoTypeName="综合信息">
+        <infoType>
+            <infoTypeContents>
+                <infoTypeContent lang="zh" infoTypeName="综合信息"/>
+                <infoTypeContent lang="en" infoTypeName="Information"/>
+            </infoTypeContents>
             <subInfoTypes>
-                <infoType infoTypeName="通知公告"/>
-                <infoType infoTypeName="图片新闻"/>
-                <infoType infoTypeName="新闻动态"/>
-                <infoType infoTypeName="投诉处理"/>
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="通知公告"/>
+                        <infoTypeContent lang="en" infoTypeName="The notice"/>
+                    </infoTypeContents>
+                </infoType>
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="图片新闻"/>
+                        <infoTypeContent lang="en" infoTypeName="Picture news"/>
+                    </infoTypeContents>
+                </infoType>
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="新闻动态"/>
+                        <infoTypeContent lang="en" infoTypeName="Dynamic news"/>
+                    </infoTypeContents>
+                </infoType>
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="投诉处理"/>
+                        <infoTypeContent lang="en" infoTypeName="Complaint handling"/>
+                    </infoTypeContents>
+                </infoType>
             </subInfoTypes>
         </infoType>
-        <infoType infoTypeName="政策法规">
+        <infoType>
+            <infoTypeContents>
+                <infoTypeContent lang="zh" infoTypeName="政策法规"/>
+                <infoTypeContent lang="en" infoTypeName="Policies and regulations"/>
+            </infoTypeContents>
             <subInfoTypes>
-                <infoType infoTypeName="国家"/>
-                <infoType infoTypeName="地方">
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="国家"/>
+                        <infoTypeContent lang="en" infoTypeName="Country"/>
+                    </infoTypeContents>
+                </infoType>
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="地方"/>
+                        <infoTypeContent lang="en" infoTypeName="Place"/>
+                    </infoTypeContents>
                     <subInfoTypes>
-                        <infoType infoTypeName="省"/>
-                        <infoType infoTypeName="市"/>
-                        <infoType infoTypeName="县"/>
-                        <infoType infoTypeName="乡"/>
+                        <infoType>                    
+                            <infoTypeContents>
+                                <infoTypeContent lang="zh" infoTypeName="省"/>
+                                <infoTypeContent lang="en" infoTypeName="Province"/>
+                            </infoTypeContents>
+                        </infoType>
+                        <infoType>                    
+                            <infoTypeContents>
+                                <infoTypeContent lang="zh" infoTypeName="市"/>
+                                <infoTypeContent lang="en" infoTypeName="City"/>
+                            </infoTypeContents>
+                        </infoType>
+                        <infoType>                    
+                            <infoTypeContents>
+                                <infoTypeContent lang="zh" infoTypeName="县"/>
+                                <infoTypeContent lang="en" infoTypeName="County"/>
+                            </infoTypeContents>
+                        </infoType>
+                        <infoType>                    
+                            <infoTypeContents>
+                                <infoTypeContent lang="zh" infoTypeName="乡"/>
+                                <infoTypeContent lang="en" infoTypeName="Township"/>
+                            </infoTypeContents>
+                        </infoType>
                     </subInfoTypes>
                 </infoType>
             </subInfoTypes>
         </infoType>
-        <infoType infoTypeName="办事指南">
+        <infoType>
+            <infoTypeContents>
+                <infoTypeContent lang="zh" infoTypeName="办事指南"/>
+                <infoTypeContent lang="en" infoTypeName="The service guide"/>
+            </infoTypeContents>
             <subInfoTypes>
-                <infoType infoTypeName="办事程序"/>
-                <infoType infoTypeName="投诉处理程序"/>
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="办事程序"/>
+                        <infoTypeContent lang="en" infoTypeName="Work procedures"/>
+                    </infoTypeContents>
+                </infoType>
+                <infoType>                    
+                    <infoTypeContents>
+                        <infoTypeContent lang="zh" infoTypeName="投诉处理程序"/>
+                        <infoTypeContent lang="en" infoTypeName="Complaint handling procedure"/>
+                    </infoTypeContents>
+                </infoType>
             </subInfoTypes>
         </infoType>
-        <infoType infoTypeName="关于"/>
-        <infoType infoTypeName="帮助"/>
+        <infoType>                    
+            <infoTypeContents>
+                <infoTypeContent lang="zh" infoTypeName="关于"/>
+                <infoTypeContent lang="en" infoTypeName="About"/>
+            </infoTypeContents>
+        </infoType>
+        <infoType>                    
+            <infoTypeContents>
+                <infoTypeContent lang="zh" infoTypeName="帮助"/>
+                <infoTypeContent lang="en" infoTypeName="Help"/>
+            </infoTypeContents>
+        </infoType>
     </subInfoTypes>
 </infoType>

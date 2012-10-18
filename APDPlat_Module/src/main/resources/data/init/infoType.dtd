@@ -20,9 +20,16 @@
 -->
 
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT infoType (subInfoTypes)*>
-<!ATTLIST infoType
+<!ELEMENT infoType (subInfoTypes|infoTypeContents)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT infoTypeContents (infoTypeContent)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT infoTypeContent EMPTY>
+<!ATTLIST infoTypeContent
     infoTypeName CDATA #IMPLIED
+    lang CDATA #IMPLIED
   >
 
 <!--- Put your DTDDoc comment here. -->

@@ -1,6 +1,7 @@
 package com.apdplat.module.info.service.register;
 
 import com.apdplat.module.info.model.InfoType;
+import com.apdplat.module.info.model.InfoTypeContent;
 import com.apdplat.module.system.service.RegisterService;
 import com.apdplat.platform.util.XMLFactory;
 import com.apdplat.platform.util.XMLUtils;
@@ -29,21 +30,28 @@ public class RegisteInfoType extends RegisterService<InfoType>{
         XMLFactory factory=new XMLFactory(InfoType.class);
         infoType=factory.unmarshal(RegisteInfoType.class.getResourceAsStream(xml));
         
-        assembleInfoType(infoType);
+        assembleInfoType(infoType);        
         registeInfoType(infoType);
     }
 
     @Override
     protected List<InfoType> getRegisteData() {
-        ArrayList<InfoType> data=new ArrayList<InfoType>();
+        ArrayList<InfoType> data=new ArrayList<>();
         data.add(infoType);
         return data;
     }
 
     private void assembleInfoType(InfoType infoType) {
+        assembleInfoTypeContent(infoType);
         for(InfoType child : infoType.getChild()){
             child.setParent(infoType);
             assembleInfoType(child);
+        }
+    }
+
+    private void assembleInfoTypeContent(InfoType infoType) {
+        for(InfoTypeContent infoTypeContents : infoType.getInfoTypeContents()){
+            infoTypeContents.setInfoType(infoType);
         }
     }
 

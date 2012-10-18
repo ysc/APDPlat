@@ -8,7 +8,8 @@ var propertyCriteria=propertyCriteriaPre+currentId;
 var namespace='info';
 var action='info-type';
 
-var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
+var lang='zh';
+var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action?lang=';
      
 //添加
 CreateModel = function() {
@@ -77,7 +78,7 @@ ModifyModel = function() {
                                     readOnly:true,
                                     disabled:true,
                                     fieldClass:'detail_field',
-                                    value: model.parent,
+                                    value: model.parent_infoTypeName,
                                     fieldLabel: '上级类别'
                                 },{
                                     xtype:'textfield',
@@ -144,7 +145,16 @@ GridModel = function() {
                 TreeModel.refreshTree(false);
             };    
             //添加特殊参数
-            GridBaseModel.storeURLParameter="?orderCriteria=orderNum:ASC";
+            GridBaseModel.extraModifyParameters=function(){
+                return "&lang="+lang;
+            };
+            GridBaseModel.extraDetailParameters=function(){
+                return "&lang="+lang;
+            };
+            GridBaseModel.extraCreateParameters=function(){
+                return "&lang="+lang;
+            };
+            GridBaseModel.storeURLParameter="?orderCriteria=orderNum:ASC";            
             if(currentId!=-1){
                 GridBaseModel.propertyCriteria=propertyCriteria;
             }
@@ -155,7 +165,7 @@ GridModel = function() {
             }
             GridBaseModel.setStoreBaseParams=function(store){
                 store.on('beforeload',function(store){
-                   store.baseParams = {propertyCriteria:GridBaseModel.propertyCriteria};
+                   store.baseParams = {propertyCriteria:GridBaseModel.propertyCriteria,lang:lang};
                 });
             };
 
@@ -182,7 +192,7 @@ TreeModel = function(){
             var create=true;
             var remove=true;
             var modify=true;
-            var tree = TreeBaseModel.getTreeWithContextMenu(treeDataUrl, '新闻类别', 'root', 'infoType', create, remove, modify);
+            var tree = TreeBaseModel.getTreeWithContextMenu(treeDataUrl+lang, '新闻类别', 'root', 'infoType', create, remove, modify);
             currentNode=TreeBaseModel.root;
             return tree;
         },
@@ -272,7 +282,7 @@ TreeModel = function(){
                 });
             },
         modify: function() {
-                if(currentNode==TreeBaseModel.tree.getRootNode()){
+                if(currentNode.parentNode==TreeBaseModel.tree.getRootNode()){
                     parent.Ext.ux.Toast.msg('操作提示：','不能修改根节点');  
                     return;
                 }
@@ -280,7 +290,7 @@ TreeModel = function(){
                     if(button == "yes"){
                         //query org detail info
                         parent.Ext.Ajax.request({
-                                url : GridBaseModel.retrieveURL+currentId+'&time='+new Date().toString(),
+                                url : GridBaseModel.retrieveURL+currentId+'&lang='+lang+'&time='+new Date().toString(),
                                 method : 'POST',
                                 success : function(response,options){
                                     var data=response.responseText;
@@ -298,10 +308,45 @@ TreeModel = function(){
 InfoTypeForm = function() {
     return {
         show: function() {
+                 var tree=TreeModel.getTreeWithContextMenu();
                  var frm = new Ext.Viewport({
                     layout : 'border',
                     items: [
-                        TreeModel.getTreeWithContextMenu(),
+                        {
+                            region:'west',
+                            width : 200,
+                            labelWidth : 40,
+                            labelAlign : 'right',
+                            layout : 'form',
+                            items:[
+                                    {
+                                        xtype: 'combo',
+                                        width : 150,
+                                        store:langStore,
+                                        emptyText:'请选择',
+                                        mode:'remote',
+                                        valueField:'value',
+                                        displayField:'text',
+                                        triggerAction:'all',
+                                        forceSelection: true,
+                                        editable:       false,
+                                        fieldLabel: '语言',
+                                        listeners: {
+                                                select: function(combo,record,number){								
+                                                        lang=combo.getValue();
+                                                        tree.loader.dataUrl=treeDataUrl+lang;
+                                                        tree.root.reload(
+                                                            function(){
+                                                                tree.root.expand(false, true);
+                                                                TreeModel.onClick(tree.root.childNodes[0]);
+                                                            },
+                                                        tree);
+                                                }
+                                        }
+                                    },
+                                    tree
+                            ]
+                        },
                         {
                             region:'center',
                             autoScroll:true,

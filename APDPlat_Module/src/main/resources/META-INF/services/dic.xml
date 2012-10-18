@@ -13,6 +13,12 @@
                         <dicItem code="true" name="是"/>
                         <dicItem code="false" name="否"/>
                     </dicItems>
+                </dic>      
+                <dic english="lang" chinese="语言" justCode="true">
+                    <dicItems>
+                        <dicItem code="zh" name="中文"/>
+                        <dicItem code="en" name="英文"/>
+                    </dicItems>
                 </dic>
             </subDics>
         </dic>  
