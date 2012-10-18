@@ -12,15 +12,14 @@ import java.util.List;
  * @author ysc
  */
 public class IndexFileService {
-    private static  File file = null;
+    private static final  File file;
     
     static{
-        file=IndexManager.getIndexDir();
-        file=new File(file,"index");
+        file=new File(IndexManager.getIndexDir(),"index");
     }
     
     public static List<IndexDir> getIndexDirs() {
-        List<IndexDir> dirs=new ArrayList<IndexDir>();
+        List<IndexDir> dirs=new ArrayList<>();
         
         File[] files=file.listFiles();
         for(int i=0;i<files.length;i++){
@@ -36,7 +35,7 @@ public class IndexFileService {
 
     public static List<File> getIndexFiles(String dir) {
         File dirFile=new File(file,dir);
-        List<File> result=new ArrayList<File>();
+        List<File> result=new ArrayList<>();
         
         File[] files=dirFile.listFiles();
         for(int i=0;i<files.length;i++){

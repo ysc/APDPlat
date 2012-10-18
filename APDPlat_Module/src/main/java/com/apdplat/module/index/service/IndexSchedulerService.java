@@ -111,13 +111,9 @@ public class IndexSchedulerService implements ApplicationListener {
             String taskState = "定时重建索引任务执行频率为每天，时间（24小时制）" + hour + ":" + minute;
             log.info(taskState);
             return taskState;
-        } catch (ParseException ex) {
+        } catch (ParseException | SchedulerException ex) {
             String tip = "定时重建索引设置失败，原因：" + ex.getMessage();
-            log.info(tip);
-            return tip;
-        } catch (SchedulerException ex) {
-            String tip = "定时重建索引设置失败，原因：" + ex.getMessage();
-            log.info(tip);
+            log.info(tip,ex);
             return tip;
         }
     }

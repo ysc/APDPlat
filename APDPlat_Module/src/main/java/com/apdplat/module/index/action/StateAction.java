@@ -24,9 +24,9 @@ public class StateAction extends ExtJSActionSupport {
     private String dir;
     public String store(){
         List<IndexDir> dirs=IndexFileService.getIndexDirs();
-        List<Map<String,String>> data=new ArrayList<Map<String,String>>();
+        List<Map<String,String>> data=new ArrayList<>();
         for(IndexDir item : dirs){
-            Map<String,String> map=new HashMap<String,String>();
+            Map<String,String> map=new HashMap<>();
             map.put("value", item.getEnglishName());
             map.put("text", item.getChineseName());
             data.add(map);
@@ -54,14 +54,14 @@ public class StateAction extends ExtJSActionSupport {
         if(len>indexes.size()){
             len=indexes.size();
         }
-        List<File> models=new ArrayList<File>();
+        List<File> models=new ArrayList<>();
         for(int i=start;i<len;i++){
             models.add(indexes.get(i));
         }
         
         Map json = new HashMap();
         json.put("totalProperty", indexes.size());
-        List<Map> result = new ArrayList<Map>();
+        List<Map> result = new ArrayList<>();
         renderJsonForQuery(result,indexes);
         json.put("root", result);
         Struts2Utils.renderJson(json);
