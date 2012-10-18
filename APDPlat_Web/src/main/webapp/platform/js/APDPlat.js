@@ -165,7 +165,7 @@ GridBaseModel = function() {
                 var id=idList[0];
 
                 parent.Ext.Ajax.request({
-                    url : GridBaseModel.retrieveURL+id+'&time='+new Date().toString(),
+                    url : GridBaseModel.retrieveURL+id+GridBaseModel.extraModifyParameters()+'&time='+new Date().toString(),
                     waitTitle: '请稍等',
                     waitMsg: '正在检索数据……',
                     method : 'POST',
@@ -191,7 +191,7 @@ GridBaseModel = function() {
                 var id=idList[0];
 
                 parent.Ext.Ajax.request({
-                    url : GridBaseModel.retrieveURL+id+'&time='+new Date().toString(),
+                    url : GridBaseModel.retrieveURL+id+GridBaseModel.extraDetailParameters()+'&time='+new Date().toString(),
                     waitTitle: '请稍等',
                     waitMsg: '正在检索数据……',
                     method : 'POST',
@@ -327,7 +327,7 @@ GridBaseModel = function() {
             //就可以实现对中文参数的正确使用
 
             parent.Ext.Ajax.request({
-                url : this.updatePartURL+id+"&model."+key+"="+encodeURI(value)+"&model.version="+version,
+                url : this.updatePartURL+id+"&model."+key+"="+encodeURI(value)+"&model.version="+version+GridBaseModel.extraModifyParameters(),
                 method : 'POST',
                 success:function(response, opts){
                     GridBaseModel.updateAttrSuccess(response, opts);
@@ -336,6 +336,15 @@ GridBaseModel = function() {
                     parent.Ext.ux.Toast.msg('操作提示：','{0}',tip.message);  
                 }
             });
+        },
+        extraModifyParameters: function(){
+            return "";
+        },        
+        extraDetailParameters: function(){
+            return "";
+        },      
+        extraCreateParameters: function(){
+            return "";
         },
         //单个属性更新成功后的回调
         updateAttrSuccess: function(response, opts){
@@ -735,7 +744,7 @@ CreateBaseModel = function() {
             form.submit({
                     waitTitle: '请稍等',
                     waitMsg: '正在'+CreateBaseModel.dlg.title+'……',
-                    url : GridBaseModel.createURL+GridBaseModel.createURLParameter,
+                    url : GridBaseModel.createURL+GridBaseModel.createURLParameter+GridBaseModel.extraCreateParameters(),
 
                     success : function(form, action) {
                         GridBaseModel.search=false;
@@ -876,7 +885,7 @@ ModifyBaseModel = function() {
             form.submit({
                     waitTitle: '请稍等',
                     waitMsg: '正在修改……',
-                    url : GridBaseModel.updatePartURL+this.model.id+'&model.version='+this.model.version,
+                    url : GridBaseModel.updatePartURL+this.model.id+'&model.version='+this.model.version+GridBaseModel.extraModifyParameters(),
 
                     success : function(form, action) {              
                         parent.Ext.ux.Toast.msg('操作提示：','修改成功');  
