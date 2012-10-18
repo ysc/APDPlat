@@ -2,6 +2,8 @@ package com.apdplat.platform.util;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -21,7 +23,7 @@ import org.springframework.util.Assert;
  * @author 杨尚川
  */
 public class ReflectionUtils {
-    private static final Logger logger = LoggerFactory.getLogger(ReflectionUtils.class);
+    private static final Logger log = LoggerFactory.getLogger(ReflectionUtils.class);
     
     private ReflectionUtils(){};
 
@@ -53,7 +55,7 @@ public class ReflectionUtils {
      * 获取某个路径下的指定的Package下的所有类，不包括<code>outsides</code>中的
      */
     public static List<Class<?>> getClasses(File dir, String pk, String[] outsides) throws ClassNotFoundException {
-        logger.debug("  Dir: {}, PK: {}", new Object[]{dir, pk});
+        log.debug("  Dir: {}, PK: {}", new Object[]{dir, pk});
         List<Class<?>> classes = new ArrayList<Class<?>>();
         if (!dir.exists()) {
             return classes;
@@ -67,7 +69,7 @@ public class ReflectionUtils {
             if (name.endsWith(".class")) {
                 Class<?> clazz = null;
                 String clazzName = thisPk + name.substring(0, name.length() - 6);
-                logger.debug("Class: {}", clazzName);
+                log.debug("Class: {}", clazzName);
                 if (outsides == null || outsides.length == 0 || !ArrayUtils.contains(outsides, clazzName)) {
                     try {
                         clazz = Class.forName(clazzName);
@@ -131,7 +133,7 @@ public class ReflectionUtils {
         try {
             result = field.get(object);
         } catch (IllegalAccessException e) {
-            logger.error("不可能抛出的异常{}", e.getMessage());
+            log.error("不可能抛出的异常{}", e.getMessage());
         }
         return result;
     }
@@ -140,12 +142,23 @@ public class ReflectionUtils {
      * 直接读取对象属性值,无视private/protected修饰符,不经过getter函数.
      */
     public static Object getFieldValue(final Object object, final String fieldName) {
-        Field field = getDeclaredField(object, fieldName);
+        try{
+            Field field = getDeclaredField(object, fieldName);
 
-        if (field == null) {
-            throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + object + "]");
+            if (field == null) {
+                throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + object + "]");
+            }
+            return getFieldValue(object,field);
+        }catch(Exception e){
+            String methodName="get"+Character.toUpperCase(fieldName.charAt(0))+fieldName.substring(1);
+            try {
+                Method method=object.getClass().getMethod(methodName);
+                return method.invoke(object);
+            } catch (Exception ex) {
+                log.error("Could not exec method [" + methodName + "] on target [" + object + "]", ex);
+            }
         }
-        return getFieldValue(object,field);
+        return null;
     }
 
     /**
@@ -172,19 +185,19 @@ public class ReflectionUtils {
         Type genType = clazz.getGenericSuperclass();
 
         if (!(genType instanceof ParameterizedType)) {
-            logger.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
+            log.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
             return Object.class;
         }
 
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 
         if (index >= params.length || index < 0) {
-            logger.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
+            log.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
                     + params.length);
             return Object.class;
         }
         if (!(params[index] instanceof Class)) {
-            logger.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
+            log.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
             return Object.class;
         }
         return (Class) params[index];
@@ -199,7 +212,7 @@ public class ReflectionUtils {
         try {
             field.set(object, value);
         } catch (IllegalAccessException e) {
-            logger.error("不可能抛出的异常:{}", e.getMessage());
+            log.error("不可能抛出的异常:{}", e.getMessage());
         }
     }
 
@@ -207,12 +220,22 @@ public class ReflectionUtils {
      * 直接设置对象属性值,无视private/protected修饰符,不经过setter函数.
      */
     public static <T> void setFieldValue(final T object, final String fieldName, final Object value) {
-        Field field = getDeclaredField(object, fieldName);
+        try{
+            Field field = getDeclaredField(object, fieldName);
 
-        if (field == null) {
-            throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + object + "]");
+            if (field == null) {
+                throw new IllegalArgumentException("Could not find field [" + fieldName + "] on target [" + object + "]");
+            }
+            setFieldValue(object,field,value);
+        }catch(Exception e){  
+            String methodName="set"+Character.toUpperCase(fieldName.charAt(0))+fieldName.substring(1);
+            try {
+                Method method=object.getClass().getMethod(methodName,value.getClass());
+                method.invoke(object,value);
+            } catch (Exception ex) {
+                log.error("Could not exec method [" + methodName + "] on target [" + object + "]",ex);
+            }
         }
-        setFieldValue(object,field,value);
     }
 
     /**
