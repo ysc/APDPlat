@@ -16,8 +16,17 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
         private String node;
         @Resource(name="positionService")
         private PositionService positionService;
+        private boolean recursion=false;
 
-        public String store(){
+        public String store(){            
+            if(recursion){
+                int rootId = positionService.getRootPosition().getId();
+                String json=positionService.toJson(rootId,recursion);
+                Struts2Utils.renderJson(json);
+                
+                return null;
+            }
+            
             return query();
         }
         @Override
@@ -26,19 +35,27 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
             if(node==null){
                 return super.query();
             }
+            
             //如果指定了node则采用自定义的查询方式
             if(node.trim().startsWith("root")){
-                String json=positionService.toRootJson();
+                String json=positionService.toRootJson(recursion);
                 Struts2Utils.renderJson(json);
             }else{
-                int id=Integer.parseInt(node.trim());
-                String json=positionService.toJson(id);
-                Struts2Utils.renderJson(json);
+                String[] attr=node.trim().split("-");
+                if(attr.length==2){
+                    int positionId=Integer.parseInt(attr[1]);
+                    String json=positionService.toJson(positionId,recursion);
+                    Struts2Utils.renderJson(json);                    
+                }                
             }
             return null;
         }
 
         public void setNode(String node) {
             this.node = node;
+        }
+
+        public void setRecursion(boolean recursion) {
+            this.recursion = recursion;
         }
 }

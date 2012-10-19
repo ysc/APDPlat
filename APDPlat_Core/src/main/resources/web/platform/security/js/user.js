@@ -7,10 +7,12 @@
     var action='user';
 
     var roleSelector;
+    var positionSelector;
 
     //本页面特殊URL
     var selectOrgStoreURL=contextPath+'/security/org!store.action';
     var selectRoleStoreURL=contextPath + '/security/role!store.action';
+    var selectPositionURL=contextPath + '/security/position!store.action?recursion=true';
     var resetURL=contextPath+'/'+namespace+'/'+action+'!reset.action';
      
     //高级搜索
@@ -74,14 +76,15 @@
         return {
             getItems: function() {
                 orgSelector=new TreeSelector('model.org.name','',selectOrgStoreURL,rootNodeID,rootNodeText,"组织架构",'model.org.id','95%');
-                var loader = new parent.Ext.tree.TreeLoader({
+               
+                var roleLoader = new parent.Ext.tree.TreeLoader({
                     dataUrl:selectRoleStoreURL
                 });
                 roleSelector = new parent.Ext.ux.tree.CheckTreePanel({
                             title : '',
                             id : "roleSelector",
                             rootVisible : false,
-                            loader : loader,
+                            loader : roleLoader,
                             root : new Ext.tree.AsyncTreeNode({
                                 text:'角色',
                                 id : 'root',
@@ -89,6 +92,27 @@
                             })
                  });
                  roleSelector.reset=function(){
+                     this.clearValue();
+                 };
+                 
+                var positionLoader = new parent.Ext.tree.TreeLoader({
+                    dataUrl:selectPositionURL
+                });
+                positionSelector = new parent.Ext.ux.tree.CheckTreePanel({
+                            title : '',
+                            id : "positionSelector",
+                            bubbleCheck:'none' ,
+                            cascadeCheck:'all',
+                            deepestOnly:'true',
+                            rootVisible : false,
+                            loader : positionLoader,
+                            root : new Ext.tree.AsyncTreeNode({
+                                text:'岗位',
+                                id : 'root',
+                                expanded : true
+                            })
+                 });
+                 positionSelector.reset=function(){
                      this.clearValue();
                  };
                  var items=[{
@@ -198,6 +222,19 @@
                                             hidden: true,
                                             hideLabel:true
                                         }]
+                                    },{
+                                        xtype: 'fieldset',
+                                        id:'positionSelectorSet',
+                                        title: '选择岗位',
+                                        collapsible: true,
+                                        items: [
+                                            positionSelector,{
+                                            xtype: 'textfield',
+                                            name: 'positions',
+                                            id:'positions',
+                                            hidden: true,
+                                            hideLabel:true
+                                        }]
                                     }]
                     }];
                 return items;
@@ -213,6 +250,7 @@
                         return false;
                     }else{
                         parent.Ext.getCmp('roles').setValue(roleSelector.getValue());
+                        parent.Ext.getCmp('positions').setValue(positionSelector.getValue());
                         return true;
                     }
                 };
@@ -225,14 +263,15 @@
         return {
             getItems: function(model) {
                 var orgSelector=new TreeSelector('model.org.name',model.orgName,selectOrgStoreURL,rootNodeID,rootNodeText,"组织架构",'model.org.id','95%');
-                var loader = new parent.Ext.tree.TreeLoader({
+                
+                var roleLoader = new parent.Ext.tree.TreeLoader({
                     dataUrl:selectRoleStoreURL
                 });
                 roleSelector = new parent.Ext.ux.tree.CheckTreePanel({
                             title : '',
                             id : "roleSelector",
                             rootVisible : false,
-                            loader : loader,
+                            loader : roleLoader,
                             root : new Ext.tree.AsyncTreeNode({
                                 text:'角色',
                                 id : 'root',
@@ -242,8 +281,36 @@
                 roleSelector.reset=function(){
                     this.clearValue();
                 };
-                loader.on("load",function(){
+                roleLoader.on("load",function(){
                     roleSelector.setValue(model.roles);
+                });
+                
+                var positionLoader = new parent.Ext.tree.TreeLoader({
+                    dataUrl:selectPositionURL
+                });
+                positionSelector = new parent.Ext.ux.tree.CheckTreePanel({
+                            title : '',
+                            id : "positionSelector",
+                            deepestOnly:'true',
+                            rootVisible : false,
+                            loader : positionLoader,
+                            root : new Ext.tree.AsyncTreeNode({
+                                text:'岗位',
+                                id : 'root',
+                                expanded : true
+                            })
+                 });
+                positionSelector.reset=function(){
+                    this.clearValue();
+                };
+                positionLoader.on("load",function(){
+                    //在数据装载完成并展开树之后再设值
+                    positionSelector.getRootNode().expand(true,true);
+                    if(model.positions!=undefined && model.positions.toString().length>1){
+                        positionSelector.setValue(model.positions);
+                    }
+                    positionSelector.bubbleCheck='none';
+                    positionSelector.cascadeCheck='all';
                 });
                  var items=[{
                                 layout: 'form',
@@ -340,6 +407,18 @@
                                                 hidden: true,
                                                 hideLabel:true
                                             }]
+                                        },{
+                                            xtype: 'fieldset',
+                                            id:'positionSelectorSet',
+                                            title: '选择岗位',
+                                            collapsible: true,
+                                            items: [positionSelector,{
+                                                xtype: 'textfield',
+                                                name: 'positions',
+                                                id:'positions',
+                                                hidden: true,
+                                                hideLabel:true
+                                            }]
                                         }]
                     }];
                 return items;
@@ -348,6 +427,7 @@
             show: function(model) {
                 ModifyBaseModel.prepareSubmit=function() {
                     parent.Ext.getCmp('roles').setValue(roleSelector.getValue());
+                    parent.Ext.getCmp('positions').setValue(positionSelector.getValue());
                     if("启用"==parent.Ext.getCmp('state').getValue()){
                         parent.Ext.getCmp('state').setValue("true");
                     }
@@ -371,6 +451,7 @@
 				{name: 'realName'},
 				{name: 'enabled'},
 				{name: 'roles'},
+				{name: 'positions'},
 				{name: 'orgName'},
 				{name: 'des'}
 			];
@@ -394,6 +475,7 @@
                                                                     editable:       false
                                                                 }},
 				{header: "拥有角色", width: 40, dataIndex: 'roles', sortable: true},
+				{header: "拥有岗位", width: 40, dataIndex: 'positions', sortable: true},
 				{header: "组织架构", width: 40, dataIndex: 'orgName', sortable: true},
 				{header: "描述", width: 40, dataIndex: 'des', sortable: true,editor:new Ext.form.TextField()}
                             ];

@@ -75,6 +75,15 @@ public class User extends Model  implements UserDetails{
     @ModelAttr("用户拥有的角色列表")
     @ModelCollRef("roleName")
     protected List<Role> roles = new ArrayList<>();
+    
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_position", joinColumns = {
+    @JoinColumn(name = "userID")}, inverseJoinColumns = {
+    @JoinColumn(name = "positionID")})
+    @OrderBy("id")
+    @ModelAttr("用户拥有的岗位列表")
+    @ModelCollRef("positionName")
+    protected List<Position> positions = new ArrayList<>();
 
     @ModelAttr("账号过期")
     protected boolean accountexpired = false;
@@ -117,6 +126,18 @@ public class User extends Model  implements UserDetails{
         StringBuilder result=new StringBuilder();
         for(Role role : this.roles){
             result.append("role-").append(role.getId()).append(",");
+        }
+        result=result.deleteCharAt(result.length()-1);
+        return result.toString();
+    }
+    
+    public String getPositionStrs(){
+        if(this.positions==null || this.positions.isEmpty()) {
+            return "";
+        }
+        StringBuilder result=new StringBuilder();
+        for(Position position : this.positions){
+            result.append("position-").append(position.getId()).append(",");
         }
         result=result.deleteCharAt(result.length()-1);
         return result.toString();
@@ -284,6 +305,25 @@ public class User extends Model  implements UserDetails{
     public void clearRole() {
         this.roles.clear();
     }
+    
+
+    @XmlTransient
+    public List<Position> getPositions() {
+        return Collections.unmodifiableList(this.positions);
+    }
+
+    public void addPosition(Position position) {
+        this.positions.add(position);
+    }
+
+    public void removePosition(Position position) {
+        this.positions.remove(position);
+    }
+
+    public void clearPosition() {
+        this.positions.clear();
+    }
+            
     @Override
     @XmlAttribute
     public String getPassword() {

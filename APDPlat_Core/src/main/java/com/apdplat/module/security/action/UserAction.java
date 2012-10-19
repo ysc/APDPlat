@@ -1,6 +1,7 @@
 package com.apdplat.module.security.action;
 
 import com.apdplat.module.security.model.Org;
+import com.apdplat.module.security.model.Position;
 import com.apdplat.module.security.model.Role;
 import com.apdplat.module.security.model.User;
 import com.apdplat.module.security.service.OnlineUserService;
@@ -32,6 +33,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
     private String oldPassword;
     private String newPassword;
     private String roles;
+    private String positions;
     
     //在线用户 根据org查找
     private String org;
@@ -208,6 +210,8 @@ public class UserAction extends ExtJSSimpleAction<User> {
         model.setPassword(PasswordEncoder.encode(model.getPassword(),model));
         //组装角色
         assemblyRoles(model);
+        //组装岗位
+        assemblyPositions(model);
     }
     public void assemblyRoles(User model){        
         if(roles!=null && !"".equals(roles.trim())){
@@ -219,6 +223,21 @@ public class UserAction extends ExtJSSimpleAction<User> {
                     Role temp=service.retrieve(Role.class, roleId);
                     if(temp!=null){
                         model.addRole(temp);
+                    }
+                }
+            }
+        }
+    }
+    public void assemblyPositions(User model){        
+        if(positions!=null && !"".equals(positions.trim())){
+            String[] positionIds=positions.trim().split(",");
+            for(String id : positionIds){
+                String[] attr=id.split("-");
+                if(attr.length==2){
+                    int positionId=Integer.parseInt(attr[1]);
+                    Position temp=service.retrieve(Position.class, positionId);
+                    if(temp!=null){
+                        model.addPosition(temp);
                     }
                 }
             }
@@ -274,11 +293,18 @@ public class UserAction extends ExtJSSimpleAction<User> {
         }
         model.clearRole();
         assemblyRoles(model);
+        
+        if(positions==null){
+            return;
+        }
+        model.clearPosition();
+        assemblyPositions(model);
     }
     @Override
     protected void renderJsonForRetrieve(Map map) {
         render(map,model);
         map.put("roles", model.getRoleStrs());
+        map.put("positions", model.getPositionStrs());
     }
     
     @Override
@@ -295,6 +321,11 @@ public class UserAction extends ExtJSSimpleAction<User> {
             }
             temp.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
 
+            str=new StringBuilder();
+            for(Position p : tmp.getPositions()){
+                str.append(p.getPositionName()).append(",");
+            }
+            temp.put("positions", str.length()>1?str.toString().substring(0, str.length()-1):"");
             result.add(temp);
         }
     }
@@ -310,6 +341,11 @@ public class UserAction extends ExtJSSimpleAction<User> {
             }
             temp.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
 
+            str=new StringBuilder();
+            for(Position p : user.getPositions()){
+                str.append(p.getPositionName()).append(",");
+            }
+            temp.put("positions", str.length()>1?str.toString().substring(0, str.length()-1):"");
             result.add(temp);
         }
     }
@@ -341,6 +377,10 @@ public class UserAction extends ExtJSSimpleAction<User> {
 
     public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public void setPositions(String positions) {
+        this.positions = positions;
     }
 
     public void setOrg(String org) {

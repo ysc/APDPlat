@@ -53,7 +53,7 @@ public class PositionService {
         return false;
     }
     
-    public String toRootJson(){
+    public String toRootJson(boolean recursion){
         Position rootPosition=getRootPosition();
         if(rootPosition==null){
             log.error("获取根岗位失败！");
@@ -64,19 +64,25 @@ public class PositionService {
 
         json.append("{'text':'")
             .append(rootPosition.getPositionName())
-            .append("','id':'")
+            .append("','id':'position-")
             .append(rootPosition.getId());
             if(rootPosition.getChild().isEmpty()){
                 json.append("','leaf':true,'cls':'file'");
             }else{
                 json.append("','leaf':false,'cls':'folder'");
+                
+                if (recursion) {
+                    for(Position item : rootPosition.getChild()){
+                        json.append(",children:").append(toJson(item.getId(), recursion));
+                    }
+                }
             }
         json.append("}");
         json.append("]");
         
         return json.toString();
     }
-    public String toJson(int positionId){
+    public String toJson(int positionId, boolean recursion){
         Position position=serviceFacade.retrieve(Position.class, positionId);
         if(position==null){
             log.error("获取ID为 "+positionId+" 的岗位失败！");
@@ -93,12 +99,15 @@ public class PositionService {
         for(Position item : child){
             json.append("{'text':'")
                 .append(item.getPositionName())
-                .append("','id':'")
+                .append("','id':'position-")
                 .append(item.getId());
                 if(item.getChild().isEmpty()){
                     json.append("','leaf':true,'cls':'file'");
                 }else{
                     json.append("','leaf':false,'cls':'folder'");
+                    if (recursion) {
+                        json.append(",children:").append(toJson(item.getId(), recursion));
+                    }
                 }
            json .append("},");
         }
