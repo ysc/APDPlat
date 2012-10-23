@@ -92,7 +92,7 @@
         </module>
         <module english="log" chinese="业务日志">
             <subModules>
-                <module english="cud"  chinese="增删改日志" >
+                <module english="operateLog"  chinese="增删改日志" >
                     <commands>
                         <command english="query" chinese="查询" />
                         <command english="chart" chinese="图表" />

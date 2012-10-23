@@ -6,7 +6,7 @@
         <title>添删改日志</title>
         <%@include file="../include/common.jsp" %>
 	<script type="text/javascript" src="../js/chart.js"></script>
-	<script type="text/javascript" src="js/cud.js"></script>
+	<script type="text/javascript" src="js/operateLog.js"></script>
 </head>
 <body>
         <div id='grid-div' style="width:100%; height:100%;"> </div>
