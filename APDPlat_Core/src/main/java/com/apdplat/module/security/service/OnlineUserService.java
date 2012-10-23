@@ -66,16 +66,18 @@ public class OnlineUserService{
         //取交集
         if(org!=null && role!=null){
             //返回特定组织架构及其所有子机构 且 属于特定角色的在线用户
-            int roleId=role.getId();
             List<Integer> orgIds=OrgService.getChildIds(org);
             orgIds.add(org.getId());
-            log.info("特定组织架构及其所有子机构:"+orgIds);
+            List<Integer> roleIds=RoleService.getChildIds(role);
+            roleIds.add(role.getId());
+            log.info("特定组织架构及其所有子组织架构:"+orgIds);
+            log.info("特定角色及其所有子角色:"+orgIds);
             for(Object obj : users){
                 User user=(User)obj;
                 log.info("获取到会话ID为："+sessionRegistry.getAllSessions(obj, false).get(0).getSessionId() +" 的在线用户");
                 if(orgIds.contains(user.getOrg().getId())){
                     for(Role r : user.getRoles()){
-                        if(r.getId()==roleId){
+                        if(roleIds.contains(r.getId())){
                             result.add(user);
                             break;
                         }
@@ -85,7 +87,7 @@ public class OnlineUserService{
             return result;
         }
         if(org!=null){
-            //返回特定组织架构及其所有子机构的在线用户
+            //返回特定组织架构及其所有子组织架构的在线用户
             List<Integer> ids=OrgService.getChildIds(org);
             ids.add(org.getId());
             log.info("特定组织架构及其所有子机构:"+ids);
@@ -98,13 +100,14 @@ public class OnlineUserService{
             }
         }
         if(role!=null){
-            //返回属于特定角色的在线用户
-            int id=role.getId();
+            //返回属于特定角色及其所有子角色的在线用户
+            List<Integer> roleIds=RoleService.getChildIds(role);
+            roleIds.add(role.getId());
             for(Object obj : users){
                 User user=(User)obj;
                 log.info("获取到会话ID为："+sessionRegistry.getAllSessions(obj, false).get(0).getSessionId() +" 的在线用户");
                 for(Role r : user.getRoles()){
-                    if(r.getId()==id){
+                    if(roleIds.contains(r.getId())){
                         result.add(user);
                         break;
                     }
