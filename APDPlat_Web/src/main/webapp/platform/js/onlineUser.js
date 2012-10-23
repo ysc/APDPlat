@@ -118,7 +118,7 @@ var OnlineUser = {
 					id : 'rolePanel',
 					iconCls:'role',
 					title : '角色',
-					rootVisible : true,
+					rootVisible : false,
 					loader : new Ext.tree.TreeLoader({
 								url : roleURL
 							}),
