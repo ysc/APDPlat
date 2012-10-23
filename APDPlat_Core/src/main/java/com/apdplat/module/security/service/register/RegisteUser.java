@@ -35,7 +35,7 @@ public class RegisteUser extends RegisterService<User>{
             for(User user : page.getModels()){
                 user.setPassword(PasswordEncoder.encode(user.getPassword(), user));
                 user.setOrg(registeOrg.getRegisteData().get(0));
-                user.addRole(registeRole.getRegisteData().get(0));
+                user.addRole(registeRole.getRegisteData().get(0).getChild().get(0));
                 serviceFacade.create(user);
             }
         }

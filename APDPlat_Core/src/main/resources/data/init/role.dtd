@@ -12,27 +12,19 @@
 
     <?xml version="1.0"?>
 
-    <!DOCTYPE page SYSTEM "role.dtd">
+    <!DOCTYPE role SYSTEM "role.dtd">
 
-    <page>
+    <role>
     ...
-    </page>
+    </role>
 -->
 
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT page (models)*>
-<!ATTLIST page
-    xmlns:xsi CDATA #IMPLIED
-  >
-
-<!--- Put your DTDDoc comment here. -->
-<!ELEMENT models (model)*>
-
-<!--- Put your DTDDoc comment here. -->
-<!ELEMENT model EMPTY>
-<!ATTLIST model
-    des CDATA #IMPLIED
+<!ELEMENT role (subRoles)*>
+<!ATTLIST role
     superManager CDATA #IMPLIED
     roleName CDATA #IMPLIED
-    xsi:type CDATA #IMPLIED
   >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT subRoles (role)*>

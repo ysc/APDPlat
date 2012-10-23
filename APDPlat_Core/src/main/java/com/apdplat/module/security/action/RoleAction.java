@@ -8,11 +8,9 @@ import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -21,22 +19,42 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/security")
 public class RoleAction extends ExtJSSimpleAction<Role> {
+    private String node;
     @Resource(name="roleService")
     private RoleService roleService;
     private List<Command> commands;
-    private String userId;
-    public String store(){
-        String json="";
-        if(StringUtils.isBlank(userId)){
-            //返回系统中的所有角色列表
-            json=roleService.toAllRoleJson();
-        }else{
-            //返回系统中的所有角色列表
-            json=roleService.toUserRoleJson(userId);
+    private boolean recursion=false;
+
+    public String store(){            
+        if(recursion){
+            int rootId = roleService.getRootRole().getId();
+            String json=roleService.toJson(rootId,recursion);
+            Struts2Utils.renderJson(json);
+
+            return null;
         }
-        Struts2Utils.renderJson(json);
+
+        return query();
+    }
+    
+    @Override
+    public String query(){
+        //如果node为null则采用普通查询方式
+        if(node==null){
+            return super.query();
+        }
+        //如果指定了node则采用自定义的查询方式
+        if(node.trim().startsWith("root")){
+            String json=roleService.toRootJson(recursion);
+            Struts2Utils.renderJson(json);
+        }else{
+            int id=Integer.parseInt(node.trim());
+            String json=roleService.toJson(id,recursion);
+            Struts2Utils.renderJson(json);
+        }
         return null;
     }
+    
     /**
      * 删除角色前，把该角色从所有引用该角色的用户中移除
      * @param ids
@@ -84,27 +102,10 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             model.setCommands(commands);
         }
     }
-@Override
-    protected void renderJsonForRetrieve(Map map) {
-        render(map,model);
-
+    @Override
+    protected void retrieveAfterRender(Map map,Role model){
         map.put("privileges", model.getModuleCommandStr());
         map.put("superManager", model.isSuperManager());
-    }
-    @Override
-    protected void renderJsonForQuery(List result) {
-        for (Role role : page.getModels()) {
-            Map temp = new HashMap();
-            render(temp,role);
-            result.add(temp);
-        }
-    }
-    @Override
-    protected void render(Map map,Role model){
-        map.put("id", model.getId());
-        map.put("version", model.getVersion());
-        map.put("roleName", model.getRoleName());
-        map.put("des", model.getDes());
     }
     public void setPrivileges(String privileges) {
         String[] ids=privileges.split(",");
@@ -120,7 +121,11 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         }        
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRecursion(boolean recursion) {
+        this.recursion = recursion;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
     }
 }

@@ -4,6 +4,9 @@ import com.apdplat.module.module.model.Command;
 import com.apdplat.module.module.model.Module;
 import com.apdplat.module.module.service.ModuleService;
 import com.apdplat.platform.annotation.ModelAttr;
+import com.apdplat.platform.annotation.ModelAttrRef;
+import com.apdplat.platform.annotation.ModelCollRef;
+import com.apdplat.platform.annotation.RenderIgnore;
 import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import java.util.ArrayList;
@@ -19,13 +22,18 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.compass.annotations.SearchableComponent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +52,19 @@ public class Role extends Model {
     @ModelAttr("备注")
     protected String des;
 
+    @ManyToOne
+    @SearchableComponent
+    @ModelAttr("上级角色")
+    @ModelAttrRef("roleName")
+    protected Role parent;
+
+    @RenderIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parent")
+    @OrderBy("id DESC")
+    @ModelAttr("下级角色")
+    @ModelCollRef("roleName")
+    protected List<Role> child = new ArrayList<>();
+    
     @ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "roles", fetch = FetchType.LAZY)
     protected List<User> users=new ArrayList<>();
 
@@ -53,8 +74,8 @@ public class Role extends Model {
      * 角色拥有的命令
      */
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(name = "privilege_command", joinColumns = {
-    @JoinColumn(name = "privilegeID")}, inverseJoinColumns = {
+    @JoinTable(name = "role_command", joinColumns = {
+    @JoinColumn(name = "roleID")}, inverseJoinColumns = {
     @JoinColumn(name = "commandID")})
     @OrderBy("id")
     protected List<Command> commands = new ArrayList<>();
@@ -83,7 +104,7 @@ public class Role extends Model {
         return ids.toString();
     }
     /**
-     * 璇ヨ鑹插叿鏈夌殑璁块棶鏉冮檺
+     * 获取授予角色的权利
      * @return
      */
     public List<String> getAuthorities() {
@@ -120,6 +141,32 @@ public class Role extends Model {
         this.des = des;
     }
 
+    @XmlTransient
+    public Role getParent() {
+        return parent;
+    }
+
+    public void setParent(Role parent) {
+        this.parent = parent;
+    }
+
+    @XmlElementWrapper(name = "subRoles")
+    @XmlElement(name = "role")
+    public List<Role> getChild() {
+        return this.child;
+    }
+
+    public void addChild(Role child) {
+        this.child.add(child);
+    }
+
+    public void removeChild(Role child) {
+        this.child.remove(child);
+    }
+
+    public void clearChild() {
+        this.child.clear();
+    }
     @XmlAttribute
     public boolean isSuperManager() {
         return superManager;

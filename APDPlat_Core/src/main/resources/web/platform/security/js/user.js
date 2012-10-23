@@ -11,7 +11,7 @@
 
     //本页面特殊URL
     var selectOrgStoreURL=contextPath+'/security/org!store.action';
-    var selectRoleStoreURL=contextPath + '/security/role!store.action';
+    var selectRoleStoreURL=contextPath + '/security/role!store.action?recursion=true';
     var selectPositionURL=contextPath + '/security/position!store.action?recursion=true';
     var resetURL=contextPath+'/'+namespace+'/'+action+'!reset.action';
      

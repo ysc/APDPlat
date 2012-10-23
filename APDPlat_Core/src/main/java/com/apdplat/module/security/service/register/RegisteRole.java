@@ -2,8 +2,9 @@ package com.apdplat.module.security.service.register;
 
 import com.apdplat.module.security.model.Role;
 import com.apdplat.module.system.service.RegisterService;
-import com.apdplat.platform.result.Page;
+import com.apdplat.platform.util.XMLFactory;
 import com.apdplat.platform.util.XMLUtils;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RegisteRole extends RegisterService<Role>{
-    private List<Role> data=null;
-
+    private Role role=null;
     @Override
-    protected void registe() {
+    public void registe() {
         String xml="/data/role.xml";
         log.info("注册【"+xml+"】文件");
         log.info("验证【"+xml+"】文件");
@@ -26,17 +26,28 @@ public class RegisteRole extends RegisterService<Role>{
             return ;
         }
         log.info("验证通过");
-        Page<Role> page=Page.newInstance(Role.class, RegisteRole.class.getResourceAsStream(xml));
+        XMLFactory factory=new XMLFactory(Role.class);
+        role=factory.unmarshal(RegisteRole.class.getResourceAsStream(xml));
         
-        if(page!=null){
-            data=page.getModels();
-            for(Role role : page.getModels()){
-                serviceFacade.create(role);
-            }
-        }
+        assembleRole(role);
+        registeRole(role);
     }
+
     @Override
     protected List<Role> getRegisteData() {
+        ArrayList<Role> data=new ArrayList<Role>();
+        data.add(role);
         return data;
+    }
+
+    private void assembleRole(Role role) {
+        for(Role child : role.getChild()){
+            child.setParent(role);
+            assembleRole(child);
+        }
+    }
+
+    private void registeRole(Role role) {
+        serviceFacade.create(role);
     }
 }
