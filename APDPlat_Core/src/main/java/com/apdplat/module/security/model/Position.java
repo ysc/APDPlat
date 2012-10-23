@@ -2,6 +2,7 @@ package com.apdplat.module.security.model;
 
 import com.apdplat.module.module.model.Command;
 import com.apdplat.module.module.model.Module;
+import com.apdplat.module.module.service.ModuleService;
 import com.apdplat.platform.annotation.*;
 import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -54,7 +56,7 @@ public class Position extends Model{
     @JoinColumn(name = "positionID")}, inverseJoinColumns = {
     @JoinColumn(name = "commandID")})
     @OrderBy("id")
-    protected List<Command> commands = new ArrayList<Command>();
+    protected List<Command> commands = new ArrayList<>();
     
     public String getModuleCommandStr(){
         if(this.commands==null || this.commands.isEmpty()){
@@ -62,7 +64,7 @@ public class Position extends Model{
         }
         StringBuilder ids=new StringBuilder();
         
-        Set<Integer> moduleIds=new HashSet<Integer>();
+        Set<Integer> moduleIds=new HashSet<>();
         
         for(Command command : this.commands){
             ids.append("command-").append(command.getId()).append(",");
@@ -79,6 +81,22 @@ public class Position extends Model{
         }
         ids=ids.deleteCharAt(ids.length()-1);
         return ids.toString();
+    }
+    /**
+     * 获取授予岗位的权利
+     * @return
+     */
+    public List<String> getAuthorities() {
+        List<String> result = new ArrayList<>();
+        for (Command command : commands) {
+            Map<String,String> map=ModuleService.getCommandPathToRole(command);
+            for(String role : map.values()){
+                StringBuilder str = new StringBuilder();
+                str.append("ROLE_MANAGER").append(role);
+                result.add(str.toString());
+            }
+        }
+        return result;
     }
 
     @XmlAttribute

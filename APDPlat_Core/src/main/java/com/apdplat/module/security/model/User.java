@@ -94,14 +94,6 @@ public class User extends Model  implements UserDetails{
     @ModelAttr("账户可用")
     protected boolean enabled = true;
 
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
     /**
      * 用户是否为超级管理员
      * @return
@@ -146,7 +138,7 @@ public class User extends Model  implements UserDetails{
     public List<Command> getCommand() {
         List<Command> result = new ArrayList<>();
 
-        if(this.roles==null || this.roles.isEmpty()) {
+        if( (this.roles==null || this.roles.isEmpty()) && (this.positions==null || this.positions.isEmpty())) {
             return result;
         }
 
@@ -159,6 +151,9 @@ public class User extends Model  implements UserDetails{
         //如果用户不是超级管理员则进行一下处理
         for (Role role : this.roles) {
             result.addAll(role.getCommands());
+        }
+        for (Position position : this.positions) {
+            result.addAll(position.getCommands());
         }
 
         return result;
@@ -173,7 +168,7 @@ public class User extends Model  implements UserDetails{
     public List<Module> getModule() {
         List<Module> result = new  ArrayList<>();
         
-        if(this.roles==null || this.roles.isEmpty()) {
+        if( (this.roles==null || this.roles.isEmpty()) && (this.positions==null || this.positions.isEmpty())) {
             return result;
         }
 
@@ -186,6 +181,9 @@ public class User extends Model  implements UserDetails{
         //如果用户不是超级管理员则进行一下处理
         for (Role role : this.roles) {
             result.addAll(assemblyModule(role.getCommands()));
+        }
+        for (Position position : this.positions) {
+            result.addAll(assemblyModule(position.getCommands()));
         }
 
         return result;
@@ -234,15 +232,23 @@ public class User extends Model  implements UserDetails{
      */
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        if(this.roles==null || this.roles.isEmpty()) {
+        if( (this.roles==null || this.roles.isEmpty()) && (this.positions==null || this.positions.isEmpty())) {
             return null;
         }
 
         Collection<GrantedAuthority> grantedAuthArray=new HashSet<>();
 
         log.debug("user privilege:");
+        log.debug("     roles:");
         for (Role role : this.roles) {
             for (String priv : role.getAuthorities()) {
+                log.debug(priv);
+                grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+            }
+        }
+        log.debug("     positions:");
+        for (Position position : this.positions) {
+            for (String priv : position.getAuthorities()) {
                 log.debug(priv);
                 grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
             }
@@ -265,6 +271,14 @@ public class User extends Model  implements UserDetails{
     @Override
     public boolean isCredentialsNonExpired() {
         return !credentialsexpired;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     @Override
