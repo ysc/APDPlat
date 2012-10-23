@@ -232,7 +232,7 @@ GridBaseModel = function() {
                     var path = response.responseText;
                     //contextPath定义在引用了此JS的页面中
                     path=this.contextPath+path;
-                    window.open(path,'_self','width=1,height=1,toolbar=no,menubar=no,location=no');
+                    window.open(path,'_blank','width=1,height=1,toolbar=no,menubar=no,location=no');
                 },
                 failure : function(response,options){
                     parent.Ext.ux.Toast.msg('操作提示：', "导出失败");
