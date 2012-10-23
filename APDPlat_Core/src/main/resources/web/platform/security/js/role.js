@@ -349,7 +349,7 @@ TreeModel = function(){
         select: function(node,event){
             node.expand(false, true);
             currentNode=node;
-            currentId=node.id;
+            currentId=node.id.split("-")[1];
             currentName=node.text;
             GridBaseModel.grid.setTitle("已选中【"+currentName+"】");
             propertyCriteria=propertyCriteriaPre+currentId;

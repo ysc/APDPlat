@@ -21,7 +21,7 @@ public class RoleService {
     private ServiceFacade serviceFacade;
 
     public static List<String> getChildNames(Role role){
-        List<String> names=new ArrayList<String>();
+        List<String> names=new ArrayList<>();
         List<Role> child=role.getChild();
         for(Role item : child){
             names.add(item.getRoleName());
@@ -30,7 +30,7 @@ public class RoleService {
         return names;
     }
     public static List<Integer> getChildIds(Role role){
-        List<Integer> ids=new ArrayList<Integer>();
+        List<Integer> ids=new ArrayList<>();
         List<Role> child=role.getChild();
         for(Role item : child){
             ids.add(item.getId());
@@ -60,7 +60,7 @@ public class RoleService {
 
         json.append("{'text':'")
             .append(rootRole.getRoleName())
-            .append("','id':'")
+            .append("','id':'role-")
             .append(rootRole.getId());
             if(rootRole.getChild().isEmpty()){
                 json.append("','leaf':true,'cls':'file'");
@@ -95,7 +95,7 @@ public class RoleService {
         for(Role item : child){
             json.append("{'text':'")
                 .append(item.getRoleName())
-                .append("','id':'")
+                .append("','id':'role-")
                 .append(item.getId());
                 if(item.getChild().isEmpty()){
                     json.append("','leaf':true,'cls':'file'");

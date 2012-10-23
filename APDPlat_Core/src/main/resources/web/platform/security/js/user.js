@@ -83,6 +83,9 @@
                 roleSelector = new parent.Ext.ux.tree.CheckTreePanel({
                             title : '',
                             id : "roleSelector",
+                            bubbleCheck:'none' ,
+                            cascadeCheck:'all',
+                            deepestOnly:'true',
                             rootVisible : false,
                             loader : roleLoader,
                             root : new Ext.tree.AsyncTreeNode({
@@ -270,6 +273,7 @@
                 roleSelector = new parent.Ext.ux.tree.CheckTreePanel({
                             title : '',
                             id : "roleSelector",
+                            deepestOnly:'true',
                             rootVisible : false,
                             loader : roleLoader,
                             root : new Ext.tree.AsyncTreeNode({
@@ -282,7 +286,13 @@
                     this.clearValue();
                 };
                 roleLoader.on("load",function(){
-                    roleSelector.setValue(model.roles);
+                    //在数据装载完成并展开树之后再设值
+                    roleSelector.getRootNode().expand(true,true);
+                    if(model.roles!=undefined && model.roles.toString().length>1){
+                        roleSelector.setValue(model.roles);
+                    }
+                    roleSelector.bubbleCheck='none';
+                    roleSelector.cascadeCheck='all';
                 });
                 
                 var positionLoader = new parent.Ext.tree.TreeLoader({

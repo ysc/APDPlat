@@ -48,9 +48,12 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             String json=roleService.toRootJson(recursion);
             Struts2Utils.renderJson(json);
         }else{
-            int id=Integer.parseInt(node.trim());
-            String json=roleService.toJson(id,recursion);
-            Struts2Utils.renderJson(json);
+            String[] attr=node.trim().split("-");
+            if(attr.length==2){
+                int roleId=Integer.parseInt(attr[1]);
+                String json=roleService.toJson(roleId,recursion);
+                Struts2Utils.renderJson(json);                    
+            }   
         }
         return null;
     }
