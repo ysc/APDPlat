@@ -1,10 +1,15 @@
 package com.apdplat.module.security.model;
 
+import com.apdplat.module.module.model.Command;
+import com.apdplat.module.module.model.Module;
 import com.apdplat.platform.annotation.*;
 import com.apdplat.platform.generator.ActionGenerator;
 import com.apdplat.platform.model.Model;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -28,7 +33,6 @@ public class Position extends Model{
     @ModelAttr("岗位名称")
     protected String positionName;
 
-
     @ManyToOne
     @SearchableComponent
     @ModelAttr("上级岗位")
@@ -42,7 +46,40 @@ public class Position extends Model{
     @ModelCollRef("positionName")
     protected List<Position> child = new ArrayList<>();
 
+    /**
+     * 职位拥有的命令
+     */
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "position_command", joinColumns = {
+    @JoinColumn(name = "positionID")}, inverseJoinColumns = {
+    @JoinColumn(name = "commandID")})
+    @OrderBy("id")
+    protected List<Command> commands = new ArrayList<Command>();
     
+    public String getModuleCommandStr(){
+        if(this.commands==null || this.commands.isEmpty()){
+            return "";
+        }
+        StringBuilder ids=new StringBuilder();
+        
+        Set<Integer> moduleIds=new HashSet<Integer>();
+        
+        for(Command command : this.commands){
+            ids.append("command-").append(command.getId()).append(",");
+            Module module=command.getModule();
+            moduleIds.add(module.getId());
+            module=module.getParentModule();
+            while(module!=null){
+                moduleIds.add(module.getId());
+                module=module.getParentModule();
+            }
+        }
+        for(Integer moduleId : moduleIds){
+            ids.append("module-").append(moduleId).append(",");
+        }
+        ids=ids.deleteCharAt(ids.length()-1);
+        return ids.toString();
+    }
 
     @XmlAttribute
     public String getPositionName() {
@@ -78,6 +115,26 @@ public class Position extends Model{
 
     public void clearChild() {
         this.child.clear();
+    }
+
+    public void setCommands(List<Command> commands) {
+        this.commands = commands;
+    }
+
+    @XmlTransient
+    public List<Command> getCommands() {
+        return Collections.unmodifiableList(commands);
+    }
+  
+    public void addCommands(Command command) {
+        this.commands.add(command);
+    }
+  
+    public void removeCommand(Command command) {
+        this.commands.remove(command);
+    }
+    public void clearCommand() {
+        commands.clear();
     }
     @Override
     public String getMetaData() {

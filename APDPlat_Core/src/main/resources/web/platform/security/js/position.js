@@ -7,6 +7,7 @@ var propertyCriteria=propertyCriteriaPre+currentId;
 
 var namespace='security';
 var action='position';
+var privilegeSelector;
 
 var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
 
@@ -14,6 +15,26 @@ var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
 CreateModel = function() {
     return {
         getItems: function() {
+            var privilegeLoader = new parent.Ext.tree.TreeLoader({
+                dataUrl:contextPath + '/module/module!query.action?privilege=true'
+            });
+            privilegeSelector = new parent.Ext.ux.tree.CheckTreePanel({
+                        title : '',
+                        id : "privilegeSelector",
+                        bubbleCheck:'none' ,
+                        cascadeCheck:'all',
+                        deepestOnly:'true',
+                        rootVisible : false,
+                        loader : privilegeLoader,
+                        root : new Ext.tree.AsyncTreeNode({
+                            text:'功能菜单',
+                            id : 'root',
+                            expanded : true
+                        })
+             });
+             privilegeSelector.reset=function(){
+                this.clearValue();
+             };
              var items = [{
                         layout: 'form',
                         defaults: {
@@ -34,14 +55,29 @@ CreateModel = function() {
                                     fieldLabel: '岗位名称',
                                     allowBlank: false,
                                     blankText : '岗位名称不能为空'
+                                },{
+                                    xtype: 'fieldset',
+                                    id:'privilegeSelectorSet',
+                                    title: '授予权限',
+                                    collapsible: true,
+                                    items: [privilegeSelector,{
+                                        xtype: 'textfield',
+                                        name: 'privileges',
+                                        id:'privileges',
+                                        hidden: true,
+                                        hideLabel:true
+                                    }]
                                 }]
                 }];
             return items;
         },
 
         show: function() {
+            CreateBaseModel.prepareSubmit=function(){
+                parent.Ext.getCmp('privileges').setValue(privilegeSelector.getValue());
+            };
             GridBaseModel.createURLParameter='?model.parent.id='+currentId;
-            CreateBaseModel.show('添加岗位', 'position', 500, 220, this.getItems());
+            CreateBaseModel.show('添加岗位', 'position', 500, 420, this.getItems());
             CreateBaseModel.dlg.on('close',function(){
                     //刷新表格
                     GridBaseModel.refresh();
@@ -55,6 +91,33 @@ CreateModel = function() {
 ModifyModel = function() {
     return {
         getItems: function(model) {
+            var privilegeLoader = new parent.Ext.tree.TreeLoader({
+                dataUrl:contextPath + '/module/module!query.action?privilege=true'
+            });
+            privilegeSelector = new parent.Ext.ux.tree.CheckTreePanel({
+                        title : '',
+                        id : "privilegeSelector",
+                        deepestOnly:'true',
+                        rootVisible : false,
+                        loader : privilegeLoader,
+                        root : new Ext.tree.AsyncTreeNode({
+                            text:'功能菜单',
+                            id : 'root',
+                            expanded : true
+                        })
+             });
+            privilegeSelector.reset=function(){
+                this.clearValue();
+            };
+            privilegeLoader.on("load",function(){
+                //在数据装载完成并展开树之后再设值
+                privilegeSelector.getRootNode().expand(true,true);
+                if(model.privileges!=undefined && model.privileges.toString().length>1){
+                    privilegeSelector.setValue(model.privileges);
+                }
+                privilegeSelector.bubbleCheck='none';
+                privilegeSelector.cascadeCheck='all';
+            });
              var items = [{
                         layout: 'form',
                         defaults: {
@@ -76,19 +139,34 @@ ModifyModel = function() {
                                     fieldLabel: '岗位名称',
                                     allowBlank: false,
                                     blankText : '岗位名称不能为空'
+                                },{
+                                    xtype: 'fieldset',
+                                    id:'privilegeSelectorSet',
+                                    title: '授予权限',
+                                    collapsible: true,
+                                    items: [privilegeSelector,{
+                                            xtype: 'textfield',
+                                            name: 'privileges',
+                                            id:'privileges',
+                                            hidden: true,
+                                            hideLabel:true
+                                    }]
                                 }]
                 }]
             return items;
         },
 
         show: function(model,forceRefreshParentNode) {
+            ModifyBaseModel.prepareSubmit=function(){
+                parent.Ext.getCmp('privileges').setValue(privilegeSelector.getValue());
+            };
             ModifyBaseModel.modifySuccess=function(form, action){
                     //刷新表格
                     GridBaseModel.refresh();
                     //刷新树
                     TreeModel.refreshTree(forceRefreshParentNode);
             };
-            ModifyBaseModel.show('修改岗位', 'position', 500, 220, this.getItems(model),model);
+            ModifyBaseModel.show('修改岗位', 'position', 500, 420, this.getItems(model),model);
         }
     };
 } ();

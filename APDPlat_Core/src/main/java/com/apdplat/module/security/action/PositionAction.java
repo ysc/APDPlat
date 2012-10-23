@@ -1,9 +1,13 @@
 package com.apdplat.module.security.action;
 
+import com.apdplat.module.module.model.Command;
 import com.apdplat.module.security.model.Position;
 import com.apdplat.module.security.service.PositionService;
 import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.util.Struts2Utils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +20,7 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
         private String node;
         @Resource(name="positionService")
         private PositionService positionService;
+        private List<Command> commands;
         private boolean recursion=false;
 
         public String store(){            
@@ -49,6 +54,37 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
                 }                
             }
             return null;
+        }
+        @Override
+        protected void retrieveAfterRender(Map map,Position model){
+            map.put("privileges", model.getModuleCommandStr());
+        }
+
+        @Override
+        public void assemblyModelForCreate(Position model) {
+            model.setCommands(commands);
+        }
+
+        @Override
+        public void assemblyModelForUpdate(Position model){
+            //默认commands==null
+            //当在修改角色的时候，如果客户端不修改commands，则commands==null
+            if(commands!=null){
+                model.setCommands(commands);
+            }
+        }
+        public void setPrivileges(String privileges) {
+            String[] ids=privileges.split(",");
+            commands=new ArrayList<>();
+            for(String id :ids){
+                String[] attr=id.split("-");
+                if(attr.length==2){
+                    if("command".equals(attr[0])){
+                        Command command=service.retrieve(Command.class, Integer.parseInt(attr[1]));
+                        commands.add(command);
+                    }
+                }
+            }        
         }
 
         public void setNode(String node) {
