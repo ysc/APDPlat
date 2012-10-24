@@ -5,6 +5,6 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <models>
-        <model xsi:type="User" username="admin" password="admin" enabled="true" job="职位" des="超级管理员"/>
+        <model xsi:type="User" username="admin" password="admin" enabled="true" des="超级管理员"/>
     </models>
 </page>
