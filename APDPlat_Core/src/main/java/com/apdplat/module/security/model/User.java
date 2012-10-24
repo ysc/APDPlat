@@ -77,6 +77,15 @@ public class User extends Model  implements UserDetails{
     protected List<Role> roles = new ArrayList<>();
     
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_userGroup", joinColumns = {
+    @JoinColumn(name = "userID")}, inverseJoinColumns = {
+    @JoinColumn(name = "userGroupID")})
+    @OrderBy("id")
+    @ModelAttr("用户拥有的用户组列表")
+    @ModelCollRef("userGroupName")
+    protected List<UserGroup> userGroups = new ArrayList<>();
+    
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "user_position", joinColumns = {
     @JoinColumn(name = "userID")}, inverseJoinColumns = {
     @JoinColumn(name = "positionID")})
@@ -99,13 +108,20 @@ public class User extends Model  implements UserDetails{
      * @return
      */
     public boolean isSuperManager(){
-        if(this.roles==null || this.roles.isEmpty()) {
-            return false;
+        if(this.roles != null && !this.roles.isEmpty()) {
+            for(Role role : this.roles){
+                if(role.isSuperManager()) {
+                    return true;
+                }
+            }
         }
-
-        for(Role role : this.roles){
-            if(role.isSuperManager()) {
-                return true;
+        if(this.userGroups != null && !this.userGroups.isEmpty()){
+            for(UserGroup userGroup : this.userGroups){
+                for(Role role : userGroup.getRoles()){
+                    if(role.isSuperManager()) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -134,28 +150,53 @@ public class User extends Model  implements UserDetails{
         result=result.deleteCharAt(result.length()-1);
         return result.toString();
     }
+    
+    public String getUserGroupStrs(){
+        if(this.userGroups==null || this.userGroups.isEmpty()) {
+            return "";
+        }
+        StringBuilder result=new StringBuilder();
+        for(UserGroup userGroup : this.userGroups){
+            result.append("userGroup-").append(userGroup.getId()).append(",");
+        }
+        result=result.deleteCharAt(result.length()-1);
+        return result.toString();
+    }
 
     public List<Command> getCommand() {
         List<Command> result = new ArrayList<>();
 
-        if( (this.roles==null || this.roles.isEmpty()) && (this.positions==null || this.positions.isEmpty())) {
-            return result;
-        }
-
-        //如果用户为超级管理员
-        for (Role role : this.roles) {
-            if (role.isSuperManager()) {
-                return getAllCommand();
+        if(this.roles != null && !this.roles.isEmpty()) {
+            //如果用户为超级管理员
+            for (Role role : this.roles) {
+                if (role.isSuperManager()) {
+                    return getAllCommand();
+                }
+            }
+            //如果用户不是超级管理员则进行一下处理
+            for (Role role : this.roles) {
+                result.addAll(role.getCommands());
             }
         }
-        //如果用户不是超级管理员则进行一下处理
-        for (Role role : this.roles) {
-            result.addAll(role.getCommands());
+        if(this.userGroups != null && !this.userGroups.isEmpty()){
+            for(UserGroup userGroup : this.userGroups){
+                //如果用户为超级管理员
+                for(Role role : userGroup.getRoles()){
+                    if(role.isSuperManager()) {
+                        return getAllCommand();
+                    }
+                }
+                //如果用户不是超级管理员则进行一下处理
+                for(Role role : userGroup.getRoles()){
+                    result.addAll(role.getCommands());
+                }
+            }
         }
-        for (Position position : this.positions) {
-            result.addAll(position.getCommands());
+        if(this.positions != null && !this.positions.isEmpty()) {
+            for (Position position : this.positions) {
+                result.addAll(position.getCommands());
+            }
         }
-
         return result;
     }
 
@@ -167,23 +208,37 @@ public class User extends Model  implements UserDetails{
 
     public List<Module> getModule() {
         List<Module> result = new  ArrayList<>();
-        
-        if( (this.roles==null || this.roles.isEmpty()) && (this.positions==null || this.positions.isEmpty())) {
-            return result;
-        }
 
-        //如果用户为超级管理员
-        for (Role role : this.roles) {
-            if (role.isSuperManager()) {
-            	return getAllModule();
+        if(this.roles != null && !this.roles.isEmpty()) {
+            //如果用户为超级管理员
+            for (Role role : this.roles) {
+                if (role.isSuperManager()) {
+                    return getAllModule();
+                }
+            }
+            //如果用户不是超级管理员则进行一下处理
+            for (Role role : this.roles) {
+                result.addAll(assemblyModule(role.getCommands()));
             }
         }
-        //如果用户不是超级管理员则进行一下处理
-        for (Role role : this.roles) {
-            result.addAll(assemblyModule(role.getCommands()));
+        if(this.userGroups != null && !this.userGroups.isEmpty()){
+            for(UserGroup userGroup : this.userGroups){
+                //如果用户为超级管理员
+                for(Role role : userGroup.getRoles()){
+                    if(role.isSuperManager()) {
+                        return getAllModule();
+                    }
+                }
+                //如果用户不是超级管理员则进行一下处理
+                for(Role role : userGroup.getRoles()){
+                    result.addAll(assemblyModule(role.getCommands()));
+                }
+            }
         }
-        for (Position position : this.positions) {
-            result.addAll(assemblyModule(position.getCommands()));
+        if(this.positions != null && !this.positions.isEmpty()) {
+            for (Position position : this.positions) {
+                result.addAll(assemblyModule(position.getCommands()));
+            }
         }
 
         return result;
@@ -232,26 +287,40 @@ public class User extends Model  implements UserDetails{
      */
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        if( (this.roles==null || this.roles.isEmpty()) && (this.positions==null || this.positions.isEmpty())) {
-            return null;
-        }
-
         Collection<GrantedAuthority> grantedAuthArray=new HashSet<>();
 
         log.debug("user privilege:");
-        log.debug("     roles:");
-        for (Role role : this.roles) {
-            for (String priv : role.getAuthorities()) {
-                log.debug(priv);
-                grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+        if(this.roles != null && !this.roles.isEmpty()) {
+            log.debug("     roles:");
+            for (Role role : this.roles) {
+                for (String priv : role.getAuthorities()) {
+                    log.debug(priv);
+                    grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                }
             }
         }
-        log.debug("     positions:");
-        for (Position position : this.positions) {
-            for (String priv : position.getAuthorities()) {
-                log.debug(priv);
-                grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+        if(this.userGroups != null && !this.userGroups.isEmpty()){
+            log.debug("     userGroups:");
+            for(UserGroup userGroup : this.userGroups){
+                for(Role role : userGroup.getRoles()){
+                    for (String priv : role.getAuthorities()) {
+                        log.debug(priv);
+                        grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                    }
+                }
             }
+        }        
+        if(this.positions != null && !this.positions.isEmpty()) {
+            log.debug("     positions:");
+            for (Position position : this.positions) {
+                for (String priv : position.getAuthorities()) {
+                    log.debug(priv);
+                    grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                }
+            }
+        }
+        if(grantedAuthArray.isEmpty()){
+            return null;
         }
         grantedAuthArray.add(new GrantedAuthorityImpl("ROLE_MANAGER"));
         log.debug("ROLE_MANAGER");
@@ -301,6 +370,27 @@ public class User extends Model  implements UserDetails{
 
     public void setCredentialsexpired(boolean credentialsexpired) {
         this.credentialsexpired = credentialsexpired;
+    }
+
+    @XmlTransient
+    public List<UserGroup> getUserGroups() {
+        return Collections.unmodifiableList(this.userGroups);
+    }
+
+    public void setUserGroups(List<UserGroup> userGroups) {
+        this.userGroups = userGroups;
+    }
+
+    public void addUserGroup(UserGroup userGroup) {
+        this.userGroups.add(userGroup);
+    }
+
+    public void removeUserGroup(UserGroup userGroup) {
+        this.userGroups.remove(userGroup);
+    }
+
+    public void clearUserGroup() {
+        this.userGroups.clear();
     }
 
     @XmlTransient

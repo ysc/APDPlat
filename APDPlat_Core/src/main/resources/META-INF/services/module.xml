@@ -14,6 +14,14 @@
                         <command english="reset" chinese="重置密码" />
                     </commands>
                 </module>
+                <module english="userGroup"  chinese="用户组管理" >
+                    <commands>
+                        <command english="create" chinese="添加用户组" />
+                        <command english="delete" chinese="删除用户组" />
+                        <command english="update" chinese="修改用户组" />
+                        <command english="query" chinese="查询用户组" />
+                    </commands>
+                </module>
                 <module english="role"  chinese="角色管理" >
                     <commands>
                         <command english="create" chinese="添加角色" />

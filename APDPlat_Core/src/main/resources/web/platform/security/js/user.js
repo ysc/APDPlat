@@ -13,6 +13,7 @@
     var selectOrgStoreURL=contextPath+'/security/org!store.action';
     var selectRoleStoreURL=contextPath + '/security/role!store.action?recursion=true';
     var selectPositionURL=contextPath + '/security/position!store.action?recursion=true';
+    var selectUserGroupURL=contextPath + '/security/user-group!store.action';
     var resetURL=contextPath+'/'+namespace+'/'+action+'!reset.action';
      
     //高级搜索
@@ -118,6 +119,23 @@
                  positionSelector.reset=function(){
                      this.clearValue();
                  };
+                 var userGroupLoader = new parent.Ext.tree.TreeLoader({
+                    dataUrl:selectUserGroupURL
+                });
+                userGroupSelector = new parent.Ext.ux.tree.CheckTreePanel({
+                            title : '',
+                            id : "userGroupSelector",
+                            rootVisible : false,
+                            loader : userGroupLoader,
+                            root : new Ext.tree.AsyncTreeNode({
+                                text:'用户组',
+                                id : 'root',
+                                expanded : true
+                            })
+                 });
+                 userGroupSelector.reset=function(){
+                     this.clearValue();
+                 };
                  var items=[{
                                 layout: 'form',
                                 items:[{
@@ -214,6 +232,19 @@
                                         }]
                                     },{
                                         xtype: 'fieldset',
+                                        id:'userGroupSelectorSet',
+                                        title: '选择用户组',
+                                        collapsible: true,
+                                        items: [
+                                            userGroupSelector,{
+                                            xtype: 'textfield',
+                                            name: 'userGroups',
+                                            id:'userGroups',
+                                            hidden: true,
+                                            hideLabel:true
+                                        }]
+                                    },{
+                                        xtype: 'fieldset',
                                         id:'roleSelectorSet',
                                         title: '选择角色',
                                         collapsible: true,
@@ -254,6 +285,7 @@
                     }else{
                         parent.Ext.getCmp('roles').setValue(roleSelector.getValue());
                         parent.Ext.getCmp('positions').setValue(positionSelector.getValue());
+                        parent.Ext.getCmp('userGroups').setValue(userGroupSelector.getValue());
                         return true;
                     }
                 };
@@ -321,6 +353,27 @@
                     }
                     positionSelector.bubbleCheck='none';
                     positionSelector.cascadeCheck='all';
+                });
+                
+                 var userGroupLoader = new parent.Ext.tree.TreeLoader({
+                    dataUrl:selectUserGroupURL
+                });
+                userGroupSelector = new parent.Ext.ux.tree.CheckTreePanel({
+                            title : '',
+                            id : "userGroupSelector",
+                            rootVisible : false,
+                            loader : userGroupLoader,
+                            root : new Ext.tree.AsyncTreeNode({
+                                text:'用户组',
+                                id : 'root',
+                                expanded : true
+                            })
+                 });
+                 userGroupSelector.reset=function(){
+                     this.clearValue();
+                 };                 
+                userGroupLoader.on("load",function(){
+                    userGroupSelector.setValue(model.userGroups);
                 });
                  var items=[{
                                 layout: 'form',
@@ -407,6 +460,18 @@
                                             ]
                                         },{
                                             xtype: 'fieldset',
+                                            id:'userGroupSelectorSet',
+                                            title: '选择用户组',
+                                            collapsible: true,
+                                            items: [userGroupSelector,{
+                                                xtype: 'textfield',
+                                                name: 'userGroups',
+                                                id:'userGroups',
+                                                hidden: true,
+                                                hideLabel:true
+                                            }]
+                                        },{
+                                            xtype: 'fieldset',
                                             id:'roleSelectorSet',
                                             title: '选择角色',
                                             collapsible: true,
@@ -438,6 +503,7 @@
                 ModifyBaseModel.prepareSubmit=function() {
                     parent.Ext.getCmp('roles').setValue(roleSelector.getValue());
                     parent.Ext.getCmp('positions').setValue(positionSelector.getValue());
+                    parent.Ext.getCmp('userGroups').setValue(userGroupSelector.getValue());
                     if("启用"==parent.Ext.getCmp('state').getValue()){
                         parent.Ext.getCmp('state').setValue("true");
                     }

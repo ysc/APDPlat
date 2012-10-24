@@ -4,6 +4,7 @@ import com.apdplat.module.security.model.Org;
 import com.apdplat.module.security.model.Position;
 import com.apdplat.module.security.model.Role;
 import com.apdplat.module.security.model.User;
+import com.apdplat.module.security.model.UserGroup;
 import com.apdplat.module.security.service.OnlineUserService;
 import com.apdplat.module.security.service.OrgService;
 import com.apdplat.module.security.service.PasswordEncoder;
@@ -34,6 +35,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
     private String newPassword;
     private String roles;
     private String positions;
+    private String userGroups;
     
     //在线用户 根据org查找
     private String org;
@@ -212,6 +214,8 @@ public class UserAction extends ExtJSSimpleAction<User> {
         assemblyRoles(model);
         //组装岗位
         assemblyPositions(model);
+        //组装用户组
+        assemblyUserGroups(model);
     }
     public void assemblyRoles(User model){        
         if(roles!=null && !"".equals(roles.trim())){
@@ -238,6 +242,21 @@ public class UserAction extends ExtJSSimpleAction<User> {
                     Position temp=service.retrieve(Position.class, positionId);
                     if(temp!=null){
                         model.addPosition(temp);
+                    }
+                }
+            }
+        }
+    }
+    public void assemblyUserGroups(User model){        
+        if(userGroups!=null && !"".equals(userGroups.trim())){
+            String[] userGroupIds=userGroups.trim().split(",");
+            for(String id : userGroupIds){
+                String[] attr=id.split("-");
+                if(attr.length==2){
+                    int userGroupId=Integer.parseInt(attr[1]);
+                    UserGroup temp=service.retrieve(UserGroup.class, userGroupId);
+                    if(temp!=null){
+                        model.addUserGroup(temp);
                     }
                 }
             }
@@ -288,23 +307,27 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
     @Override
     protected void assemblyModelForUpdate(User model){
-        if(roles==null){
-            return;
+        if(roles!=null){
+            model.clearRole();
+            assemblyRoles(model);
         }
-        model.clearRole();
-        assemblyRoles(model);
         
-        if(positions==null){
-            return;
+        if(positions!=null){
+            model.clearPosition();
+            assemblyPositions(model);
         }
-        model.clearPosition();
-        assemblyPositions(model);
+        
+        if(userGroups!=null){
+            model.clearUserGroup();
+            assemblyUserGroups(model);
+        }
     }
     @Override
     protected void renderJsonForRetrieve(Map map) {
         render(map,model);
         map.put("roles", model.getRoleStrs());
         map.put("positions", model.getPositionStrs());
+        map.put("userGroups", model.getUserGroupStrs());
     }
     
     @Override
@@ -327,6 +350,13 @@ public class UserAction extends ExtJSSimpleAction<User> {
             }
             temp.put("positions", str.length()>1?str.toString().substring(0, str.length()-1):"");
             result.add(temp);
+            
+            str=new StringBuilder();
+            for(UserGroup p : tmp.getUserGroups()){
+                str.append(p.getUserGroupName()).append(",");
+            }
+            temp.put("userGroups", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            result.add(temp);
         }
     }
     @Override
@@ -346,6 +376,13 @@ public class UserAction extends ExtJSSimpleAction<User> {
                 str.append(p.getPositionName()).append(",");
             }
             temp.put("positions", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            result.add(temp);
+
+            str=new StringBuilder();
+            for(UserGroup p : user.getUserGroups()){
+                str.append(p.getUserGroupName()).append(",");
+            }
+            temp.put("userGroups", str.length()>1?str.toString().substring(0, str.length()-1):"");
             result.add(temp);
         }
     }
@@ -381,6 +418,10 @@ public class UserAction extends ExtJSSimpleAction<User> {
 
     public void setPositions(String positions) {
         this.positions = positions;
+    }
+
+    public void setUserGroups(String userGroups) {
+        this.userGroups = userGroups;
     }
 
     public void setOrg(String org) {
