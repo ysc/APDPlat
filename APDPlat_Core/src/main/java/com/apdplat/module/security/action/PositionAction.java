@@ -2,7 +2,9 @@ package com.apdplat.module.security.action;
 
 import com.apdplat.module.module.model.Command;
 import com.apdplat.module.security.model.Position;
+import com.apdplat.module.security.model.User;
 import com.apdplat.module.security.service.PositionService;
+import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
@@ -54,6 +56,33 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
                 }                
             }
             return null;
+        }
+        
+        /**
+         * 删除岗位前，把该岗位从所有引用该岗位的用户中移除
+         * @param ids
+         */
+        @Override
+        public void prepareForDelete(Integer[] ids){
+            User loginUser=UserHolder.getCurrentLoginUser();
+            for(int id :ids){
+                Position position=service.retrieve(Position.class, id);
+                boolean canDel=true;
+                //获取拥有等待删除的角色的所有用户
+                List<User> users=position.getUsers();
+                for(User user : users){
+                    if(loginUser.getId()==user.getId()){
+                        canDel=false;
+                    }
+                }
+                if(!canDel) {
+                    continue;
+                }
+                for(User user : users){
+                    user.removePosition(position);
+                    service.update(user);
+                }
+            }
         }
         @Override
         protected void retrieveAfterRender(Map map,Position model){

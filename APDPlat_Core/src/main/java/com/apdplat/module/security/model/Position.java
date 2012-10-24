@@ -58,6 +58,9 @@ public class Position extends Model{
     @OrderBy("id")
     protected List<Command> commands = new ArrayList<>();
     
+    @ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "positions", fetch = FetchType.LAZY)
+    protected List<User> users=new ArrayList<>();
+    
     public String getModuleCommandStr(){
         if(this.commands==null || this.commands.isEmpty()){
             return "";
@@ -153,6 +156,10 @@ public class Position extends Model{
     }
     public void clearCommand() {
         commands.clear();
+    }
+    @XmlTransient
+    public List<User> getUsers() {
+        return Collections.unmodifiableList(users);
     }
     @Override
     public String getMetaData() {
