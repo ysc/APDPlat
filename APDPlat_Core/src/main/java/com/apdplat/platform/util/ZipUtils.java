@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ *将文件或是文件夹打包压缩成zip格式
  * @author ysc
  */
 public class ZipUtils {
