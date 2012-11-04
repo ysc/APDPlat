@@ -15,11 +15,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.LinkedHashSet;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -89,58 +85,6 @@ public class FileUtils {
         log.debug("返回路径:"+path);
         return path;
     }
-    public static void unZip(String jar, String subDir, String loc, boolean force){
-        try {
-            File base=new File(loc);
-            if(!base.exists()){
-                base.mkdirs();
-            }
-            
-            ZipFile zip=new ZipFile(new File(jar));
-            Enumeration<? extends ZipEntry> entrys = zip.entries();
-            while(entrys.hasMoreElements()){
-                ZipEntry entry = entrys.nextElement();
-                String name=entry.getName();
-                if(!name.startsWith(subDir)){
-                    continue;
-                }
-                //去掉subDir
-                name=name.replace(subDir,"").trim();
-                if(name.length()<2){
-                    log.debug(name+" 长度 < 2");
-                    continue;
-                }
-                if(entry.isDirectory()){
-                    File dir=new File(base,name);
-                    if(!dir.exists()){
-                        dir.mkdirs();
-                        log.debug("创建目录");
-                    }else{
-                        log.debug("目录已经存在");
-                    }
-                    log.debug(name+" 是目录");
-                }else{
-                    File file=new File(base,name);
-                    if(file.exists() && force){
-                        file.delete();
-                    }
-                    if(!file.exists()){
-                        InputStream in=zip.getInputStream(entry);
-                        copyFile(in,file);
-                        log.debug("创建文件");
-                    }else{
-                        log.debug("文件已经存在");
-                    }
-                    log.debug(name+" 不是目录");
-                }
-            }
-        } catch (ZipException ex) {
-            log.error("文件解压失败",ex);
-        } catch (IOException ex) {
-            log.error("文件操作失败",ex);
-        }
-    }
-    
     public static void copyFile(File inFile, File outFile){
         try {
             copyFile(new FileInputStream(inFile),outFile);

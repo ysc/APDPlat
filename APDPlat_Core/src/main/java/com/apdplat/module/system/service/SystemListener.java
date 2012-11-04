@@ -5,6 +5,7 @@ import com.apdplat.module.monitor.model.RuningTime;
 import com.apdplat.module.monitor.service.MemoryMonitorThread;
 import com.apdplat.module.security.service.UserLoginListener;
 import com.apdplat.platform.util.FileUtils;
+import com.apdplat.platform.util.ZipUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -210,7 +211,7 @@ public class SystemListener{
         log.info("从模块："+jar+" 中提取web资源");
         String loc=FileUtils.getAbsolutePath("/");
         jar=FileUtils.getAbsolutePath(jar);
-        FileUtils.unZip(jar, "web", loc, true);
+        ZipUtils.unZip(jar, "web", loc, true);
         log.info("jar："+jar);
         log.info("loc："+loc);
     }
@@ -219,7 +220,7 @@ public class SystemListener{
         log.info("从模块："+jar+" 中提取数据");
         String loc=FileUtils.getAbsolutePath("/WEB-INF/classes/data/");
         jar=FileUtils.getAbsolutePath(jar);
-        FileUtils.unZip(jar, "data/init", loc, true);
+        ZipUtils.unZip(jar, "data/init", loc, true);
         log.info("jar："+jar);
         log.info("loc："+loc);
     }
