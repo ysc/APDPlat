@@ -15,7 +15,8 @@ import java.util.List;
 
 
 /**
- *
+ *此文件是用来生成《短信管理系统》的骨架代码，真实文件因客户机密原因没有保留
+ * 可参考\generator\template\model_template.xls文件
  * @author ysc
  */
 public class SmsGenerator {
