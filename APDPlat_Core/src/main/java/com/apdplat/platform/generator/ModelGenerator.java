@@ -21,7 +21,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
- *
+ *生成模型文件
  * @author ysc
  */
 public class ModelGenerator extends Generator {
@@ -37,6 +37,12 @@ public class ModelGenerator extends Generator {
             log.error("初始化模板错误",e);
         }
     }
+    /**
+     * 一个目标模块可以有多个模型描述文件EXCEL
+     * 根据目标模块的项目名称来获取模型描述文件
+     * @param module 目标模块的项目名称
+     * @return 模型描述文件的输入流列表
+     */
     private static List<InputStream> getModelExcels(String module){     
         List<InputStream> ins=new ArrayList<>();
         try{
@@ -59,6 +65,14 @@ public class ModelGenerator extends Generator {
         }
         return ins;
     }
+    /**
+     * 自动代码生成的关键点
+     * 
+     * 将自动代码生成的EXCEL描述转换为JAVA对象描述
+     * 
+     * @param moduleProjectName 双重意义，一是指从哪里获取自动代码生成的配置文件EXCEL，二是生成的文件要保存到哪里去
+     * @return JAVA描述的模型
+     */
     public static List<ModelInfo> generate(String moduleProjectName){
         List<ModelInfo> all = new ArrayList<>();
         List<InputStream> ins = getModelExcels(moduleProjectName);
@@ -69,6 +83,11 @@ public class ModelGenerator extends Generator {
         }
         return all;
     }
+    /**
+     * 将JAVA描述的一系列模型生成源代码
+     * @param modelInfos JAVA描述的一系列模型
+     * @param moduleProjectName 目标模块的项目名称
+     */
     private static void generate(List<ModelInfo> modelInfos,String moduleProjectName){
         for (ModelInfo modelInfo : modelInfos) {
             generate(modelInfo, moduleProjectName);
@@ -83,7 +102,11 @@ public class ModelGenerator extends Generator {
             log.info("-----------------------------------------------------------------------------");
         }
     }
-
+    /**
+     * 将JAVA描述的模型生成源代码
+     * @param modelInfo JAVA描述的模型
+     * @param moduleProjectName 目标模块的项目名称
+     */
     private static void generate(ModelInfo modelInfo,String moduleProjectName) {
         String workspaceModuleBasePath = ModelGenerator.class.getResource("/").getFile().replace("target/classes/", "")+ "../" + moduleProjectName + "/src/main/java/";
         
@@ -111,7 +134,14 @@ public class ModelGenerator extends Generator {
             log.info("忽略生成Model");
         }
     }
-
+    /**
+     * 保存生成的文件
+     * @param workspaceModuleBasePath 目标模块的项目完整路径
+     * @param modelPath 模型的包路径
+     * @param modelName 模型文件名
+     * @param content 模型文件内容
+     * @return 是否成功
+     */
     private static boolean saveFile(String workspaceModuleBasePath, String modelPath, String modelName, String content) {
         if (workspaceModuleBasePath == null) {
             return false;
@@ -135,13 +165,19 @@ public class ModelGenerator extends Generator {
         saveFile(file, content);
         return true;
     }
-
+    /**
+     * 模型描述JAVA表示
+     */
     final public static class ModelInfo {
-
+        //包名称
         private String modelPackage;
+        //模型名称类名称
         private String modelEnglish;
+        //模型含义
         private String modelChinese;
+        //是否有Date字段
         private boolean hasDateTime;
+        //是否有DicItem字段
         private boolean hasDicItem;
         private List<Attr> attrs = new ArrayList<>();
 
@@ -196,7 +232,7 @@ public class ModelGenerator extends Generator {
         public void setModelPackage(String modelPackage) {
             this.modelPackage = modelPackage;
         }
-
+        
         public boolean isHasOneToMany() {
             for(Attr attr : attrs){
                 if(MapType.validType("OneToMany").equals(attr.map)){
@@ -220,7 +256,9 @@ public class ModelGenerator extends Generator {
             return false;
         }
     }
-
+    /**
+     * 模型属性、类字段
+     */
     final public static class Attr {
 
         private String name;
@@ -379,7 +417,12 @@ public class ModelGenerator extends Generator {
         }
     }
 
-
+    /**
+     * 解析模型描述文件EXCEL
+     * 解析EXCEL文件为JAVA对象
+     * @param inputStream 模型描述文件EXCEL
+     * @return 一系列JAVA对象
+     */
     private static List<ModelInfo> readModelInfos(InputStream inputStream) {
         List<ModelInfo> models = new ArrayList<>();
         try {
