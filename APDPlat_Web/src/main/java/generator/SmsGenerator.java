@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class SmsGenerator {
     /**
-     * 根据类路径下的文件/generator/*.xls生成相应的模型
+     * 根据类路径下的文件/generator/moduleProjectName/*.xls生成相应的模型
      * 编译模型之后再次生成相应的控制器
      * 生成的文件放置在moduleProjectName指定的项目下
      * @param args 
