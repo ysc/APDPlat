@@ -121,10 +121,8 @@ public class ZipUtils {
                 }
             }else{
                 FileInputStream fis=null;
-                DataInputStream dis=null;
                 try {
                     fis=new FileInputStream(file);
-                    dis=new DataInputStream(new BufferedInputStream(fis));
                     ZipEntry ze = new ZipEntry(parentPath + file.getName());
                     zos.putNextEntry(ze);
                     byte [] content=new byte[1024];
@@ -141,8 +139,8 @@ public class ZipUtils {
                     log.error("创建ZIP文件失败",e);
                 }finally{
                     try {
-                        if(dis!=null){
-                            dis.close();
+                        if(fis!=null){
+                            fis.close();
                         }
                     }catch(IOException e){
                         log.error("创建ZIP文件失败",e);
