@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
- *
+ *将初始数据导入数据库
  * @author ysc
  */
 @Service
@@ -40,15 +40,23 @@ public class RegisteInfoType extends RegisterService<InfoType>{
         data.add(infoType);
         return data;
     }
-
+    /**
+     * 利用递归的方式来组装树形结构
+     * @param infoType 
+     */
     private void assembleInfoType(InfoType infoType) {
         assembleInfoTypeContent(infoType);
         for(InfoType child : infoType.getChild()){
+            //重点在这行代码，默认从XML解析出来的的树是向下引用，没有向上引用
+            //具体可看对应的XML配置文件即可明白
             child.setParent(infoType);
             assembleInfoType(child);
         }
     }
-
+    /**
+     * 默认从XML解析出来的的树有对内容的引用，但内容没有对树节点的引用
+     * @param infoType 
+     */
     private void assembleInfoTypeContent(InfoType infoType) {
         for(InfoTypeContent infoTypeContents : infoType.getInfoTypeContents()){
             infoTypeContents.setInfoType(infoType);
