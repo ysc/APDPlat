@@ -16,14 +16,17 @@
             getItems: function() {
                  var items = [
                     {
+                        xtype: 'textfield',
                         id:'search_title',
                         fieldLabel: '标题'
                     },
                     {
+                        xtype: 'textfield',
                         id:'search_content',
                         fieldLabel: '内容'
                     },
                     {
+                        xtype: 'textfield',
                         id:'search_infoTypeName',
                         fieldLabel: '类别'
                     }];
