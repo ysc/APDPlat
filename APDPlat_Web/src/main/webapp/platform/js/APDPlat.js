@@ -413,16 +413,19 @@ GridBaseModel = function() {
             columns=preColumns.concat(columns);  
             this.grid = new Ext.grid.EditorGridPanel({
                     title:' ',
-                    autoHeight: true,
-                    frame:true,
+                    //autoHeight: true,
+                    //frame:true,
                     store: this.store,
                     tbar : this.toolbar,
                     bbar: this.bbar,
                     stripeRows : true,
                     autoScroll : true,
                     viewConfig : {
-                            autoFill : true,
-                            forceFit:true
+                        loadingText : '数据加载中,请稍等...',
+                        emptyText : '无对应信息',
+                        deferEmptyText : true,
+                        autoFill : true,
+                        forceFit:true  
                     },
                     sm : cb,
                     columns: columns,
