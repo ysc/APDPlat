@@ -35,14 +35,19 @@ public class EncryptClassUtils {
     private static String securityKeyName;
     private static String winClspath;
     private static String linuxClspath;
+    private static String macClspath;
+    private static String solarisClspath;
     private static String securityClspath;
-    private static final String workDir="D:/workspaces/netbeans/APDPlat/APDPlat_Core/";
+    
+    private static final String workDir="D:/Workspaces/NetBeansProjects/APDPlat2/APDPlat_Core/";
     static{        
         String dir=workDir+"src/main/resources/com/apdplat/module/security/service/";
         sequenceKeyName = dir+"SequenceKey";
         securityKeyName = dir+"SecurityKey";
         winClspath = dir+"WindowsSequenceService";
         linuxClspath = dir+"LinuxSequenceService";
+        macClspath = dir+"MacSequenceService";
+        solarisClspath = dir+"SolarisSequenceService";
         securityClspath = dir+"SecurityService";
     }
 
@@ -108,6 +113,8 @@ public class EncryptClassUtils {
         createKey(securityKeyName);
         encrypt(sequenceKeyName, workDir+"target/classes/com/apdplat/module/security/service/WindowsSequenceService.class", winClspath);
         encrypt(sequenceKeyName, workDir+"target/classes/com/apdplat/module/security/service/LinuxSequenceService.class", linuxClspath);
+        encrypt(sequenceKeyName, workDir+"target/classes/com/apdplat/module/security/service/MacSequenceService.class", macClspath);
+        encrypt(sequenceKeyName, workDir+"target/classes/com/apdplat/module/security/service/SolarisSequenceService.class", solarisClspath);
         encrypt(securityKeyName, workDir+"target/classes/com/apdplat/module/security/service/SecurityService.class", securityClspath);
     }
     private static byte[] readAll(InputStream in){

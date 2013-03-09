@@ -8,7 +8,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
  */
 public class AuthorizationUtils {
     public static void main(String args[]) throws Exception {
-        String code="67F0-54D9-C46E-838B-C343-214B-B0CF-0304";
+        String code="71F5-DA7F-495E-7F70-6D47-F3E6-3DC6-349A";
         String authCode=auth(code);
         System.out.println("机器码："+code);
         System.out.println("注册码："+authCode);

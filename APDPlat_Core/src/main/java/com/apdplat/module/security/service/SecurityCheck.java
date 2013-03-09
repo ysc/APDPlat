@@ -35,8 +35,14 @@ public class SecurityCheck {
     private static String sequenceClspath;
     private static String osName="Windows";
     static{       
-        if(System.getProperty("os.name").toLowerCase().indexOf("window")==-1){
+        if(System.getProperty("os.name").toLowerCase().indexOf("linux")!=-1){
             osName="Linux";
+        }
+        if(System.getProperty("os.name").toLowerCase().indexOf("mac")!=-1){
+            osName="Mac";
+        }
+        if(System.getProperty("os.name").toLowerCase().indexOf("solaris")!=-1){
+            osName="Solaris";
         }
         log.debug("osName: "+osName); 
         sequenceKeyName="/com/apdplat/module/security/service/SequenceKey";

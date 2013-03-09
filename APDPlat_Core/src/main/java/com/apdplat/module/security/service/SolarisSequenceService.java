@@ -1,18 +1,19 @@
 package com.apdplat.module.security.service;
 
 /**
- *在Linux平台上生成机器码
+ *在Solaris平台上生成机器码
  * @author ysc
  */
-public class LinuxSequenceService  extends AbstractSequenceService{
+public class SolarisSequenceService    extends AbstractSequenceService{
     @Override
     public String getSequence() {
-        return getSigarSequence("linux");
+        return getSigarSequence("solaris");
     }
 
     public static void main(String[] args) {
-        LinuxSequenceService s = new LinuxSequenceService();
+        SolarisSequenceService s = new SolarisSequenceService();
         String seq = s.getSequence();
         System.out.println(seq);
     }
+    
 }
