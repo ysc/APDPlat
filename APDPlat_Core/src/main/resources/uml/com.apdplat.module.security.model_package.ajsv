@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--AgileJ Ltd. (http://www.agilej.com)-->
-<ajsv>
-    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
-        <class className="com.apdplat.module.security.model.Org" project="APDPlat_Core" xLocation="2704" yLocation="-32"/>
-        <class className="com.apdplat.module.security.model.Role" project="APDPlat_Core" xLocation="54" yLocation="-93"/>
-        <class className="com.apdplat.module.security.model.User" project="APDPlat_Core" xLocation="1184" yLocation="-107"/>
-    </diagram>
-</ajsv>

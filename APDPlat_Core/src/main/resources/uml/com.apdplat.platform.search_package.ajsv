@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--AgileJ Ltd. (http://www.agilej.com)-->
-<ajsv>
-    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
-        <class className="com.apdplat.platform.search.IndexManager" project="APDPlat_Core" xLocation="-224" yLocation="-22"/>
-    </diagram>
-</ajsv>

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--AgileJ Ltd. (http://www.agilej.com)-->
-<ajsv>
-    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
-        <class className="com.apdplat.module.module.action.EditModuleAction" project="APDPlat_Core" xLocation="599" yLocation="-119"/>
-        <class className="com.apdplat.module.module.action.ModuleAction" project="APDPlat_Core" xLocation="-114" yLocation="-222"/>
-        <class className="com.apdplat.module.module.action.EditCommandAction" project="APDPlat_Core" xLocation="701" yLocation="-208"/>
-    </diagram>
-</ajsv>

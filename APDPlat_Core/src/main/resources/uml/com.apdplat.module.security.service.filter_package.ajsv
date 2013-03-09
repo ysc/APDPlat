@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--AgileJ Ltd. (http://www.agilej.com)-->
-<ajsv>
-    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
-        <class className="com.apdplat.module.security.service.filter.JCaptchaFilter" project="APDPlat_Core" xLocation="2107" yLocation="-80"/>
-        <class className="com.apdplat.module.security.service.filter.AutoLoginFilter" project="APDPlat_Core" xLocation="2109" yLocation="650"/>
-    </diagram>
-</ajsv>

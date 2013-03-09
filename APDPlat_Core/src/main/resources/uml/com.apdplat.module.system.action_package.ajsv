@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--AgileJ Ltd. (http://www.agilej.com)-->
-<ajsv>
-    <diagram style="defaultDiagramStyle" version="1.7.5.v20110926-0935">
-        <class className="com.apdplat.module.system.action.BackupAction" project="APDPlat_Core" xLocation="-136" yLocation="40"/>
-        <class className="com.apdplat.module.system.model.BackupScheduleConfig" project="APDPlat_Core" xLocation="848" yLocation="149"/>
-    </diagram>
-</ajsv>
