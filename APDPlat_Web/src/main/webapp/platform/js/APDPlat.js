@@ -413,8 +413,8 @@ GridBaseModel = function() {
             columns=preColumns.concat(columns);  
             this.grid = new Ext.grid.EditorGridPanel({
                     title:' ',
-                    //autoHeight: true,
-                    //frame:true,
+                    autoHeight: true,
+                    frame:true,
                     store: this.store,
                     tbar : this.toolbar,
                     bbar: this.bbar,
