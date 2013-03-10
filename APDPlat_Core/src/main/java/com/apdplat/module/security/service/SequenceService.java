@@ -7,7 +7,7 @@ package com.apdplat.module.security.service;
 public interface SequenceService {
 
     /**
-     * 
+     * 获取机器码
      * @return  机器码
      */
     public String getSequence();

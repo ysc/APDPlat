@@ -25,6 +25,8 @@ import org.slf4j.LoggerFactory;
  *此工具负责把
  * LinuxSequenceService.class
  * WindowsSequenceService.class
+ * MacSequenceService.class
+ * SolarisSequenceService.class
  * SecurityService.class
  * 进行加密并放到WEB模块
  * @author ysc

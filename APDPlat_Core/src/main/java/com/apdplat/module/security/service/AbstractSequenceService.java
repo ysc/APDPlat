@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ *机器码生成的通用服务
  * @author ysc
  */
 public abstract class AbstractSequenceService   implements SequenceService{
@@ -79,6 +79,11 @@ public abstract class AbstractSequenceService   implements SequenceService{
         String result=finalMachineCode.toString().substring(0, finalMachineCode.toString().length()-1);
         return result;
     }    
+    /**
+     * 利用sigar来生成机器码，当然这个实现不是很好，无法获得CPU ID，希望朋友来改进这个实现
+     * @param osName 操作系统类型
+     * @return 机器码
+     */
     protected String getSigarSequence(String osName) {
         try {
             File libFile = new File(FileUtils.getAbsolutePath("/WEB-INF/lib/"+PropertyHolder.getProperty("libsigar."+osName)));
