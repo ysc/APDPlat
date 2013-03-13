@@ -39,15 +39,15 @@ public class SystemListener{
     static{
         memoryMonitor=PropertyHolder.getBooleanProperty("monitor.memory");        
         if(memoryMonitor){
-            log.info("启用内存监视日志");
+            log.info("启用内存监视日志(Enable memory monitor log)");
         }else{
-            log.info("禁用内存监视日志");
+            log.info("禁用内存监视日志(Disable memory monitor log)");
         }
         runingMonitor=PropertyHolder.getBooleanProperty("monitor.runing");
         if(runingMonitor){
-            log.info("启用系统运行日志");
+            log.info("启用系统运行日志(Enable system log)");
         }else{
-            log.info("禁用系统运行日志");
+            log.info("禁用系统运行日志(Disable system log)");
         }
     }
 
@@ -67,16 +67,16 @@ public class SystemListener{
     public static void contextInitialized(ServletContextEvent sce) {
         try{
             org.apache.commons.io.FileUtils.deleteDirectory(tmpDir);
-            log.info("成功清除临时目录:"+tmpDir.getAbsolutePath());
+            log.info("成功清除临时目录(Successed to clean temp directory):"+tmpDir.getAbsolutePath());
         }catch(Exception e){
-            log.info("清除临时目录失败:"+tmpDir.getAbsolutePath());
+            log.info("清除临时目录失败(Failed to clean temp directory):"+tmpDir.getAbsolutePath());
         }
         if(!tmpDir.exists()){
             tmpDir.mkdirs();
         }
         contextPath=sce.getServletContext().getContextPath();
-        log.info("启动【"+PropertyHolder.getProperty("app.name")+"】");
-        log.info("应用上下文:"+contextPath);
+        log.info("启动(Launch)【"+PropertyHolder.getProperty("app.name")+"】");
+        log.info("应用上下文(App context):"+contextPath);
         ServletContext sc=sce.getServletContext();
         basePath=sc.getRealPath("/");
         if(!basePath.endsWith(File.separator)){
@@ -89,10 +89,10 @@ public class SystemListener{
         log.info("user.dir:"+userDir);
         userDir=FileUtils.getAbsolutePath("/WEB-INF/classes/data/");
         System.setProperty("user.dir", userDir);
-        log.info("将user.dir重新设置为:"+userDir);
+        log.info("将user.dir重新设置为(Reset user directory):"+userDir);
         
         String encoding=System.getProperty("file.encoding"); 
-        log.info("你的操作系统所用的编码file.encoding："+encoding);
+        log.info("你的操作系统所用的编码file.encoding(Encoding of your OS is)："+encoding);
         
         //为spring的配置做预处理
         prepareForSpring();
@@ -102,12 +102,12 @@ public class SystemListener{
         DictionaryGenerator.generateDic(basePath);
         
         if(runingMonitor){
-            log.info("记录服务器启动日志");
+            log.info("记录服务器启动日志(Recording the server boot logging)");
             runingTime=new RuningTime();
             try {
                 runingTime.setServerIP(InetAddress.getLocalHost().getHostAddress());
             } catch (UnknownHostException e) {
-                log.error("记录服务器启动日志出错",e);
+                log.error("记录服务器启动日志出错(Failed to record the server boot logging)",e);
             }
             runingTime.setAppName(contextPath);
             runingTime.setOsName(System.getProperty("os.name"));
@@ -119,7 +119,7 @@ public class SystemListener{
             runingTime.setStartupTime(new Date());
         }
         if(memoryMonitor){
-            log.info("启动内存监视线程");
+            log.info("启动内存监视线程(Enable memory monitor thread)");
             int circle=PropertyHolder.getIntProperty("monitor.memory.circle");
             memoryMonitorThread=new MemoryMonitorThread(circle);
             memoryMonitorThread.start();
@@ -130,13 +130,13 @@ public class SystemListener{
         UserLoginListener.forceAllUserOffline();
         
         if(runingMonitor){
-            log.info("记录服务器关闭日志");        
+            log.info("记录服务器关闭日志(Recording the server shutdown logging)");        
             runingTime.setShutdownTime(new Date());
             runingTime.setRuningTime(runingTime.getShutdownTime().getTime()-runingTime.getStartupTime().getTime());
             LogQueue.addLog(runingTime);
         }
         if(memoryMonitor){
-            log.info("停止内存监视线程");
+            log.info("停止内存监视线程(Stop memory monitor thread)");
             memoryMonitorThread.running=false;
             memoryMonitorThread.interrupt();
         }
@@ -145,7 +145,7 @@ public class SystemListener{
                 LogQueue.getLogQueue().saveLog();
         }
         deregisterDrivers();
-        log.info("卸载JDBC驱动");
+        log.info("卸载JDBC驱动(Uninstalled JDBC driver)");
     }
     public static String getContextPath() {
         return contextPath;
@@ -158,7 +158,7 @@ public class SystemListener{
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException e) {
-                log.warn("卸载JDBC驱动失败："+driver,e);
+                log.warn("卸载JDBC驱动失败(Fail to uninstall JDBC driver)："+driver,e);
             }
         }
     }
@@ -177,22 +177,22 @@ public class SystemListener{
                     }
                     String jar=file.substring(start, end);
                     modules.append(jar).append(",");
-                    log.info("注册模块："+jar);
+                    log.info("注册模块(Register)："+jar);
                     extractWebFromModule(jar);
                     extractDataFromModule(jar);
                 }else{
-                    log.warn("在非jar包中找到META-INF/services/module.xml");
+                    log.warn("在非jar包中找到(Find)META-INF/services/module.xml(in non-jar)");
                 }
             }
         } catch (IOException e) {
-            log.error("注册模块出错",e);
+            log.error("注册模块出错(Failed to register)",e);
         }
         if(modules.length()>0){
             modules=modules.deleteCharAt(modules.length()-1);
         }
         //从配置文件中获取属性
         String scanJars=PropertyHolder.getProperty("scan.jars");
-        log.info("注册模块前，scanJars: "+scanJars);
+        log.info("注册模块前(Before register)，scanJars: "+scanJars);
         if(scanJars!=null && !"".equals(scanJars.trim())){
             scanJars=scanJars+","+modules.toString();
         }else{
@@ -204,11 +204,11 @@ public class SystemListener{
         System.setProperty("scan.jars", scanJars);
         //设置回配置属性
         PropertyHolder.setProperty("scan.jars", scanJars);
-        log.info("注册模块后，scanJars: "+scanJars);
+        log.info("注册模块后(After register)，scanJars: "+scanJars);
     }
 
     private static void extractWebFromModule(String jar) {
-        log.info("从模块："+jar+" 中提取web资源");
+        log.info("从模块(Extract web resource from)："+jar+" 中提取web资源");
         String loc=FileUtils.getAbsolutePath("/");
         jar=FileUtils.getAbsolutePath(jar);
         ZipUtils.unZip(jar, "web", loc, true);
@@ -217,7 +217,7 @@ public class SystemListener{
     }
 
     private static void extractDataFromModule(String jar) {
-        log.info("从模块："+jar+" 中提取数据");
+        log.info("从模块(Extract data from)："+jar+" 中提取数据");
         String loc=FileUtils.getAbsolutePath("/WEB-INF/classes/data/");
         jar=FileUtils.getAbsolutePath(jar);
         ZipUtils.unZip(jar, "data/init", loc, true);
