@@ -43,9 +43,9 @@ public abstract class Generator {
 
             writer.write(content);
             writer.flush();
-            log.info("生成的文件为："+file.getAbsolutePath());
+            log.info("生成的文件为(Generated file is)："+file.getAbsolutePath());
         } catch (IOException e) {
-            log.error("生成数据字典出错",e);
+            log.error("生成数据字典出错(Error in generate data dictionary)",e);
         } finally {
             if (writer != null) {
                 try {

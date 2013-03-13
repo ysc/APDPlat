@@ -61,30 +61,30 @@ public class DicParser {
                     in = url.openStream();
                     byte[] data=FileUtils.readAll(in);
                     String xml=new String(data,"utf-8");
-                    log.info("将DTD文件替换为绝对路径");
+                    log.info("将DTD文件替换为绝对路径(Replace DID file into absolute path)");
                     xml=xml.replace("dic.dtd", FileUtils.getAbsolutePath(dtdFile));
-                    log.info("将数据字典文件读取到字节数组中，长度为："+data.length);
+                    log.info("将数据字典文件读取到字节数组中，长度为(Load data dictionary into byte array, the length is)："+data.length);
                     ByteArrayInputStream bin=new ByteArrayInputStream(xml.getBytes("utf-8"));    
-                    log.info("注册dic.xml文件");
-                    log.info("验证dic.xml文件");
+                    log.info("注册dic.xml文件(Register dic.xml file)");
+                    log.info("验证dic.xml文件(Verify dic.xml file )");
                     //校验文件
                     verifyFile(bin);
                     // 解析数据字典
                     parseDic(xml,dics);
                 }catch(Exception e)
                 {
-                    log.error("解析数据字典出错",e);
+                    log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
                 }
                 finally {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        log.error("解析数据字典出错",e);
+                        log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
                     }
                 }
             }            
         }catch(Exception e){
-            log.error("解析数据字典出错",e);
+            log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
         }
         return dics;
     }    
@@ -148,10 +148,10 @@ public class DicParser {
     private static void verifyFile(InputStream in){    
         boolean pass=XMLUtils.validateXML(in);
         if(!pass){
-            log.info("验证没有通过，请参考dic.dtd文件");
+            log.info("验证没有通过，请参考dic.dtd文件(Validation failed, please refer to dic.dtd file)");
             return ;
         }
-        log.info("验证通过");
+        log.info("验证通过(Validation succeed)");
     }
     private static void print(Dic dic,String pre){
         System.out.println(pre+dic.getChinese()+":"+dic.getEnglish());

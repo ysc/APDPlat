@@ -248,12 +248,12 @@ class APDPlatPersistenceUnitReader {
 		unitInfo.setPersistenceXMLSchemaVersion(version);
 
 		// set unit name
-                logger.info("开始执行apdplat对spring jpa的定制修改1");
+                logger.info("开始执行apdplat对spring jpa的定制修改1(1. Start to execute custom modifications  of APDPlat for Spring JPA )");
                 String unitName=persistenceUnit.getAttribute(UNIT_NAME).trim();
-                logger.info("占位符的内容为: "+unitName);
+                logger.info("占位符的内容为(Content of placeholder is): "+unitName);
                 //去掉${和}，从配置文件读取真正内容
                 unitName=PropertyHolder.getProperty(unitName.substring(2,unitName.length()-1));
-                logger.info("占位符对应的配置文件的内容为: "+unitName);
+                logger.info("占位符对应的配置文件的内容为(Content of config file related to placeholder is): "+unitName);
 		unitInfo.setPersistenceUnitName(unitName);
 
 		// set transaction type
@@ -342,15 +342,15 @@ class APDPlatPersistenceUnitReader {
 	protected void parseJarFiles(Element persistenceUnit, SpringPersistenceUnitInfo unitInfo) throws IOException {
 		List<Element> jars = DomUtils.getChildElementsByTagName(persistenceUnit, JAR_FILE_URL);
 		for (Element element : jars) {
-                        logger.info("开始执行apdplat对spring jpa的定制修改2");
+                        logger.info("开始执行apdplat对spring jpa的定制修改2(2. Start to execute custom modifications  of APDPlat for Spring JPA )");
                         String jarHolder=DomUtils.getTextValue(element).trim();
                         if(jarHolder==null || "".equals(jarHolder.trim())){
                             continue;
                         }
-                        logger.info("占位符的内容为: "+jarHolder);
+                        logger.info("占位符的内容为(Content of placeholder is): "+jarHolder);
                         //去掉${和}，从配置文件读取真正内容
                         String realJars=PropertyHolder.getProperty(jarHolder.substring(2,jarHolder.length()-1));
-                        logger.info("占位符对应的配置文件的内容为: "+realJars);
+                        logger.info("占位符对应的配置文件的内容为(Content of config file related to placeholder is): "+realJars);
                         String[] jarArray=realJars.split(",");
                         for(String jar : jarArray){
                             if (StringUtils.hasText(jar)) {
