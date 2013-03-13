@@ -40,15 +40,15 @@ public class IndexManager {
     static{
         indexMonitor=PropertyHolder.getBooleanProperty("monitor.index");        
         if(indexMonitor){
-            log.info("启用重建索引日志");
+            log.info("启用重建索引日志(Enable rebuilding index log)");
         }else{
-            log.info("禁用重建索引日志");
+            log.info("禁用重建索引日志(Disable rebuilding index log)");
         }
     }
 
     public void rebuidAll(){
         if(buiding){
-            log.info("已经有任务在重建索引，当前请求无效");
+            log.info("已经有任务在重建索引，当前请求无效(Rebuilding index in using, invalid request)");
             return;
         }
         buiding=true;
@@ -60,7 +60,7 @@ public class IndexManager {
             try {
                 indexLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
             } catch (UnknownHostException e) {
-                log.error("保存索引日志出错",e);
+                log.error("保存索引日志出错(Error in saving index log)",e);
             }
             indexLog.setAppName(SystemListener.getContextPath());
             indexLog.setStartTime(new Date());
@@ -69,18 +69,18 @@ public class IndexManager {
             @Override
             public void run(){
                 try{
-                    log.info("开始删除索引文件");
+                    log.info("开始删除索引文件(Start to delete index file)");
                     
                     delDir(getIndexDir());
                     
-                    log.info("删除索引文件结束");
+                    log.info("删除索引文件结束(End to delete index file)");
                     
-                    log.info("开始建立索引文件...");
+                    log.info("开始建立索引文件...(Starting to create index file)");
                     long beginTime = System.currentTimeMillis();
                     float max=(float)Runtime.getRuntime().maxMemory()/1000000;
                     float total=(float)Runtime.getRuntime().totalMemory()/1000000;
                     float free=(float)Runtime.getRuntime().freeMemory()/1000000;
-                    String pre="执行之前剩余内存:"+max+"-"+total+"+"+free+"="+(max-total+free);
+                    String pre="执行之前剩余内存(Remain memory before execution):"+max+"-"+total+"+"+free+"="+(max-total+free);
                     
                     compassGps.index();
                     
@@ -88,9 +88,9 @@ public class IndexManager {
                     max=(float)Runtime.getRuntime().maxMemory()/1000000;
                     total=(float)Runtime.getRuntime().totalMemory()/1000000;
                     free=(float)Runtime.getRuntime().freeMemory()/1000000;
-                    String post="执行之后剩余内存:"+max+"-"+total+"+"+free+"="+(max-total+free);
-                    log.info("索引文件建立完毕.");
-                    log.info("花费了 " + ConvertUtils.getTimeDes(costTime));
+                    String post="执行之后剩余内存(Remain memory after execution):"+max+"-"+total+"+"+free+"="+(max-total+free);
+                    log.info("索引文件建立完毕.(Finish to build index)");
+                    log.info("花费了(this cost) " + ConvertUtils.getTimeDes(costTime));
                     log.info(pre);
                     log.info(post);
                     
@@ -98,7 +98,7 @@ public class IndexManager {
                         indexLog.setOperatingResult(IndexLogResult.SUCCESS);
                     }
                 }catch(CompassGpsException | IllegalStateException e){
-                    log.error("建立索引出错",e);
+                    log.error("建立索引出错(Error in building index)",e);
                     if(indexMonitor){
                         indexLog.setOperatingResult(IndexLogResult.FAIL);
                     }
@@ -130,7 +130,7 @@ public class IndexManager {
         String userDir = System.getProperty("user.dir");
         String indexDir=PropertyHolder.getProperty("index.dictionary").replace("/", File.separator);
         File file=new File(userDir,indexDir);
-        log.info("获取索引文件目录："+file.getAbsolutePath());
+        log.info("获取索引文件目录(Get index file list)："+file.getAbsolutePath());
         return file;
     }
     private CompassSession getCompassSession() {
@@ -148,7 +148,7 @@ public class IndexManager {
                 session.create(model);
             } catch (Exception e) {
                 String info=e.getMessage();
-                log.info("创建索引失败,原因是: " + info);
+                log.info("创建索引失败,原因是(Failed to create index because): " + info);
 
                 if(info.indexOf("LockObtainFailedException")!=-1){
                     int index=info.indexOf("@");
@@ -161,7 +161,7 @@ public class IndexManager {
             }
             closeCompassSession(session);
         }catch(Exception e){
-            log.info("创建索引失败,原因是: " + e.getMessage());
+            log.info("创建索引失败,原因是(Failed to create index because): " + e.getMessage());
         }
     }
     @Transactional
@@ -173,7 +173,7 @@ public class IndexManager {
                 session.save(model);
             } catch (Exception e) {
                 String info=e.getMessage();
-                log.info("更新索引失败,原因是: " + info);
+                log.info("更新索引失败,原因是(Failed to update index because): " + info);
                 if(info.indexOf("LockObtainFailedException")!=-1){
                     int index=info.indexOf("@");
                     String path=info.substring(index+1);
@@ -185,7 +185,7 @@ public class IndexManager {
             }
             closeCompassSession(session);
         }catch(Exception e){
-            log.info("更新索引失败,原因是: " + e.getMessage());
+            log.info("更新索引失败,原因是(Failed to update index because): " + e.getMessage());
         }
     }
     @Transactional
@@ -196,7 +196,7 @@ public class IndexManager {
                 session.delete(session.load(type, objectID));
             } catch (Exception e) {
                 String info=e.getMessage();
-                log.info("删除索引失败,原因是: " + info);
+                log.info("删除索引失败,原因是(Failed to delete index because): " + info);
                 if(info.indexOf("LockObtainFailedException")!=-1){
                     int index=info.indexOf("@");
                     String path=info.substring(index+1);
@@ -208,17 +208,17 @@ public class IndexManager {
             }
             closeCompassSession(session);
         }catch(Exception e){
-            log.info("删除索引失败,原因是: " + e.getMessage());
+            log.info("删除索引失败,原因是(Failed to delete index because): " + e.getMessage());
         }
     }
     private void fixIndex(){
-        log.info("开始修复索引");
+        log.info("开始修复索引(Begin repair index)");
         long beginTime = System.currentTimeMillis();
         File file=IndexManager.getIndexDir();
         clearWriteLock(file);
         long costTime = System.currentTimeMillis() - beginTime;
-        log.info("花费了 " + costTime + " 毫秒");
-        log.info("结束修复索引");
+        log.info("花费了(This cost) " + costTime + " (ms)毫秒");
+        log.info("结束修复索引(Finish repair index)");
     }
     private void clearWriteLock(File file){
         if(file.isFile()){
