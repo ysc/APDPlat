@@ -53,18 +53,18 @@ public class AutoLoginFilter implements Filter {
 
     @Override
     public void init(FilterConfig fc) throws ServletException {
-        log.info("初始化自动登录过滤器");
+        log.info("初始化自动登录过滤器(Initialize the automatic login filter)");
         enabled = !SpringSecurityService.isSecurity();
         defaultUserName = PropertyHolder.getProperty("auto.login.username");
         if(enabled){
-            log.info("启用自动登录过滤器");
+            log.info("启用自动登录过滤器(Enable automatic login filter)");
         }else{            
-            log.info("禁用自动登录过滤器");
+            log.info("禁用自动登录过滤器(Disable automatic login filter)");
         }
     }
 
     @Override
     public void destroy() {
-        log.info("销毁自动登录过滤器");
+        log.info("销毁自动登录过滤器(Destroy the automatic login filter)");
     }
 }

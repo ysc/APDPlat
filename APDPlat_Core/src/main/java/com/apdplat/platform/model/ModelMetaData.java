@@ -22,7 +22,7 @@ public class ModelMetaData {
         if(des.get(modelName)!=null){
             return ;
         }
-        log.info("注册模型元数据，"+modelName+"="+model.getMetaData());
+        log.info("注册模型元数据(Register model metadata)，"+modelName+"="+model.getMetaData());
         des.put(modelName, model.getMetaData());
         metaData.put(modelName, model.getClass());
     }
@@ -30,7 +30,7 @@ public class ModelMetaData {
         modelName=modelName.toLowerCase();
         String value = des.get(modelName);
         if(value==null){
-           log.info("没有找到 "+modelName+" 的模型元数据"); 
+           log.info("没有找到(Not find model metadata) "+modelName+" 的模型元数据"); 
            return "";
         }
         return value;
