@@ -6,7 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 
 /**
- *中英双语日志解决方案
+ *日志输出支持多国语言切换解决方案
+ * Log output switching solutions support multiple languages
  * @author ysc
  */
 public class APDPlatLogger implements Logger{
