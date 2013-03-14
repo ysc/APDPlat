@@ -1,6 +1,7 @@
 package com.apdplat.module.index.service;
 
 import com.apdplat.module.index.model.IndexScheduleConfig;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.result.Page;
 import com.apdplat.platform.service.ServiceFacade;
 import java.text.ParseException;
@@ -12,8 +13,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -22,8 +21,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class IndexSchedulerService implements ApplicationListener {
+    protected static final APDPlatLogger log = new APDPlatLogger(IndexSchedulerService.class);
 
-    protected final Logger log = LoggerFactory.getLogger(getClass());
     private static SchedulerFactory sf = new StdSchedulerFactory();
     @Resource(name = "serviceFacade")
     protected ServiceFacade serviceFacade;
