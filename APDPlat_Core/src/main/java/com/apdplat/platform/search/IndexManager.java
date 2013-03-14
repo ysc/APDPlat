@@ -7,6 +7,7 @@ import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.util.ConvertUtils;
 import java.io.File;
@@ -18,8 +19,6 @@ import org.compass.core.CompassSession;
 import org.compass.core.CompassTemplate;
 import org.compass.gps.CompassGps;
 import org.compass.gps.CompassGpsException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class IndexManager {
-    protected static final Logger log = LoggerFactory.getLogger(IndexManager.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(IndexManager.class);
+    
     @Resource(name = "compassTemplate")
     private CompassTemplate compassTemplate;
     @Resource(name = "compassGps")

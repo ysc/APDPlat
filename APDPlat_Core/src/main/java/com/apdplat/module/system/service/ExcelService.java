@@ -1,5 +1,6 @@
 package com.apdplat.module.system.service;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,8 +9,6 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,8 +17,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExcelService {
+    protected static final APDPlatLogger log = new APDPlatLogger(ExcelService.class);
 
-    protected static final Logger log = LoggerFactory.getLogger(ExcelService.class);
     private static String outputFile = null;
 
     /**

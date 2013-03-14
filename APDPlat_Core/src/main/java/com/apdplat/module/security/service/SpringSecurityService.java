@@ -3,6 +3,7 @@ package com.apdplat.module.security.service;
 import com.apdplat.module.module.model.Command;
 import com.apdplat.module.module.service.ModuleService;
 import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.service.ServiceFacade;
 import com.apdplat.platform.util.FileUtils;
 import java.util.ArrayList;
@@ -13,8 +14,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
@@ -29,7 +28,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SpringSecurityService {
-    protected static final Logger log = LoggerFactory.getLogger(SpringSecurityService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(SpringSecurityService.class);
     @Resource(name = "filterSecurityInterceptor")
     private  FilterSecurityInterceptor filterSecurityInterceptor;
     @Resource(name="serviceFacade")

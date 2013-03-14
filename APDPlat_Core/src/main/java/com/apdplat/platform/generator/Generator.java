@@ -1,5 +1,6 @@
 package com.apdplat.platform.generator;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,8 +10,6 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 /**
@@ -18,7 +17,8 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
  * @author ysc
  */
 public abstract class Generator {
-    protected static final Logger log = LoggerFactory.getLogger(Generator.class);    
+    protected static final APDPlatLogger log = new APDPlatLogger(Generator.class);
+    
     protected static final String ENCODING = "utf-8";
     protected static final FreeMarkerConfigurationFactoryBean factory = new FreeMarkerConfigurationFactoryBean();
     protected static final Map<String,Model> actionToModel=new HashMap<>();  

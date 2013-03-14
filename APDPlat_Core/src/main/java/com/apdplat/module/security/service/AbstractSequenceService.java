@@ -1,6 +1,7 @@
 package com.apdplat.module.security.service;
 
 import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.ConvertUtils;
 import com.apdplat.platform.util.FileUtils;
 import java.io.File;
@@ -14,15 +15,13 @@ import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetFlags;
 import org.hyperic.sigar.NetInterfaceConfig;
 import org.hyperic.sigar.Sigar;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *机器码生成的通用服务
  * @author ysc
  */
 public abstract class AbstractSequenceService   implements SequenceService{
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final APDPlatLogger log = new APDPlatLogger(getClass());
     /**
      * 对一段String生成MD5摘要信息
      * @param message 要摘要的String

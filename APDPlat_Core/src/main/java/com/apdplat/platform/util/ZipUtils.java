@@ -1,7 +1,6 @@
 package com.apdplat.platform.util;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,15 +12,13 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *将文件或是文件夹打包压缩成zip格式
  * @author ysc
  */
 public class ZipUtils {
-    private static final Logger log = LoggerFactory.getLogger(ZipUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ZipUtils.class);
         
     private ZipUtils(){};
     

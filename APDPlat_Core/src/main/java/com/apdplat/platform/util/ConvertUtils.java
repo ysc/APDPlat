@@ -1,14 +1,13 @@
 package com.apdplat.platform.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.apdplat.platform.log.APDPlatLogger;
 
 /**
  *
  * @author ysc
  */
 public class ConvertUtils {
-    private static final Logger logger = LoggerFactory.getLogger(ConvertUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ConvertUtils.class);
 
     private ConvertUtils() {
     }

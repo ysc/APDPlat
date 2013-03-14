@@ -1,6 +1,7 @@
 package com.apdplat.module.system.action;
 
 import com.apdplat.platform.action.DefaultAction;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import com.apdplat.platform.util.Struts2Utils;
 import java.io.BufferedInputStream;
@@ -14,8 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 /**
@@ -26,7 +25,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class UploadImageAction extends DefaultAction {
-    protected static final Logger log = LoggerFactory.getLogger(UploadImageAction.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(UploadImageAction.class);
+    
     //上传
     private static int BUFFER_SIZE=1024*100*8;
     private static String uploadPath="/platform/upload";

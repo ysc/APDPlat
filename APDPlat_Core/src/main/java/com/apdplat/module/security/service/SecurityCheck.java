@@ -4,6 +4,7 @@ package com.apdplat.module.security.service;
  *
  * @author ysc
  */
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,14 +22,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 @Service
 public class SecurityCheck {
-    private static final Logger log = LoggerFactory.getLogger(SecurityCheck.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(SecurityCheck.class);
     private static String securityKeyName;
     private static String securityClspath;
     private static String sequenceKeyName;

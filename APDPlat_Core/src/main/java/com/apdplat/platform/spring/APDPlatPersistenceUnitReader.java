@@ -16,10 +16,10 @@
 package com.apdplat.platform.spring;
 
 import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.spi.PersistenceUnitTransactionType;
@@ -40,6 +40,7 @@ import org.springframework.util.xml.DomUtils;
 import org.springframework.util.xml.SimpleSaxErrorHandler;
 
 import java.lang.instrument.ClassFileTransformer;
+import java.net.URL;
 import java.security.ProtectionDomain;
 
 
@@ -53,7 +54,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.instrument.classloading.SimpleThrowawayClassLoader;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
-import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 /**
@@ -96,7 +96,7 @@ class APDPlatPersistenceUnitReader {
 	private static final String META_INF = "META-INF";
 
 
-	private final Log logger = LogFactory.getLog(getClass());
+        protected final APDPlatLogger logger = new APDPlatLogger(getClass());
 
 	private final ResourcePatternResolver resourcePatternResolver;
 
@@ -132,7 +132,7 @@ class APDPlatPersistenceUnitReader {
 	 * @return the resulting PersistenceUnitInfo instances
 	 */
 	public SpringPersistenceUnitInfo[] readPersistenceUnitInfos(String[] persistenceXmlLocations) {
-		ErrorHandler handler = new SimpleSaxErrorHandler(logger);
+		ErrorHandler handler = new SimpleSaxErrorHandler(LogFactory.getLog(getClass()));
 		List<SpringPersistenceUnitInfo> infos = new LinkedList<SpringPersistenceUnitInfo>();
 		String resourceLocation = null;
 		try {

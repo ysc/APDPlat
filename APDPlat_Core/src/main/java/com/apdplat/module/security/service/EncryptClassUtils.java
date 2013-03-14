@@ -1,5 +1,6 @@
 package com.apdplat.module.security.service;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,8 +19,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *此工具负责把
@@ -32,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @author ysc
  */
 public class EncryptClassUtils {
-    protected static final Logger log = LoggerFactory.getLogger(EncryptClassUtils.class);   
+    protected static final APDPlatLogger log = new APDPlatLogger(EncryptClassUtils.class);
     private static String sequenceKeyName;
     private static String securityKeyName;
     private static String winClspath;

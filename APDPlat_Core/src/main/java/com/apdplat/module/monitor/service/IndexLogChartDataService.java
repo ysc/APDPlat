@@ -3,19 +3,18 @@ package com.apdplat.module.monitor.service;
 import com.apdplat.module.monitor.model.IndexLog;
 import com.apdplat.module.monitor.model.IndexLogResult;
 import com.apdplat.platform.action.converter.DateTypeConverter;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class IndexLogChartDataService {
-    protected static final Logger log = LoggerFactory.getLogger(IndexLogChartDataService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(IndexLogChartDataService.class);
 
     public static LinkedHashMap<String,Long> getSequenceData(List<IndexLog> models){    
         Collections.sort(models, new Comparator(){

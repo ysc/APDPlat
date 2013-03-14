@@ -1,6 +1,7 @@
 package com.apdplat.module.security.service.filter;
 
 import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.ServletUtils;
 import com.apdplat.platform.util.SpringContextUtils;
 import com.octo.captcha.service.CaptchaService;
@@ -18,15 +19,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JCaptchaFilter implements Filter {
+    protected static final APDPlatLogger log = new APDPlatLogger(JCaptchaFilter.class);
+    
     public static final String PARAM_CAPTCHA_PARAMTER_NAME = "captchaParamterName";
     public static final String PARAM_FILTER_PROCESSES_URL = "filterProcessesUrl";
     public static final String DEFAULT_FILTER_PROCESSES_URL = "/j_spring_security_check";
     public static final String DEFAULT_CAPTCHA_PARAMTER_NAME = "j_captcha";
-    private static Logger log = LoggerFactory.getLogger(JCaptchaFilter.class);
     private String failureUrl;
     private String filterProcessesUrl = DEFAULT_FILTER_PROCESSES_URL;
     private String captchaParamterName = DEFAULT_CAPTCHA_PARAMTER_NAME;

@@ -1,18 +1,18 @@
 package com.apdplat.module.security.service.filter;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *IP地址访问限制
  * @author ysc
  */
 public class IPAccessControler {
-    protected static final Logger log = LoggerFactory.getLogger(IPAccessControler.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(IPAccessControler.class);
+    
     private Collection<String> allow;
     private Collection<String> deny;
 

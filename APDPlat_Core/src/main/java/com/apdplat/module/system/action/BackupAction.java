@@ -4,6 +4,7 @@ import com.apdplat.module.system.model.BackupScheduleConfig;
 import com.apdplat.module.system.service.backup.BackupSchedulerService;
 import com.apdplat.module.system.service.backup.BackupService;
 import com.apdplat.platform.action.DefaultAction;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import com.apdplat.platform.util.Struts2Utils;
 import com.apdplat.platform.util.ZipUtils;
@@ -14,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -23,7 +22,8 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class BackupAction extends DefaultAction {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected static final APDPlatLogger log = new APDPlatLogger(BackupAction.class);
+    
     private String date;
     @Resource(name="backupServiceExecuter")
     private BackupService backupService;    

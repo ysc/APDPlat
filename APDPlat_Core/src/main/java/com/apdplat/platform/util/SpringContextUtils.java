@@ -1,7 +1,6 @@
 package com.apdplat.platform.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.apdplat.platform.log.APDPlatLogger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SpringContextUtils implements ApplicationContextAware {
-        private static final Logger log = LoggerFactory.getLogger(SpringContextUtils.class);
+        protected static final APDPlatLogger log = new APDPlatLogger(SpringContextUtils.class);
 
 	private static ApplicationContext applicationContext;
 

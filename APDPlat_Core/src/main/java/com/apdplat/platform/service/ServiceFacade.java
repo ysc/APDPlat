@@ -5,13 +5,12 @@ import com.apdplat.platform.criteria.PageCriteria;
 import com.apdplat.platform.criteria.Property;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.dao.DaoFacade;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.result.Page;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -21,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public  class ServiceFacade{
-	protected  final  Logger log = LoggerFactory.getLogger(getClass());
+        protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    
 	@Resource(name="daoFacade")
 	private DaoFacade dao = null;
 

@@ -21,6 +21,7 @@
 package com.apdplat.platform.struts;
 
 import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import com.opensymphony.xwork2.ObjectFactory;
 import com.opensymphony.xwork2.ActionContext;
@@ -41,8 +42,6 @@ import com.opensymphony.xwork2.util.finder.Test;
 import com.opensymphony.xwork2.util.finder.UrlSet;
 import com.opensymphony.xwork2.util.finder.ClassLoaderInterface;
 import com.opensymphony.xwork2.util.finder.ClassLoaderInterfaceDelegate;
-import com.opensymphony.xwork2.util.logging.Logger;
-import com.opensymphony.xwork2.util.logging.LoggerFactory;
 import org.apache.struts2.StrutsConstants;
 import org.apache.struts2.StrutsException;
 import org.apache.struts2.convention.annotation.Action;
@@ -84,7 +83,8 @@ import org.springframework.core.io.FileSystemResource;
  * </p>
  */
 public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuilder {
-    private static final Logger LOG = LoggerFactory.getLogger(APDPlatPackageBasedActionConfigBuilder.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(APDPlatPackageBasedActionConfigBuilder.class);
+    
     private final Configuration configuration;
     private final ActionNameBuilder actionNameBuilder;
     private final ResultMapBuilder resultMapBuilder;
@@ -796,8 +796,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         actionConfig.methodName(actionMethod);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Creating action config for class [#0], name [#1] and package name [#2] in namespace [#3]",
-                    actionClass.toString(), actionName, pkgCfg.getName(), pkgCfg.getNamespace());
+            LOG.debug("Creating action config for class ["+actionClass.toString()+"], name ["+actionName+"] and package name ["+pkgCfg.getName()+"] in namespace ["+pkgCfg.getNamespace()+"]");
         }
 
         //build interceptors
@@ -846,8 +845,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
 
         for (ExceptionMapping exceptionMapping : exceptions) {
             if (LOG.isTraceEnabled())
-                LOG.trace("Mapping exception [#0] to result [#1] for action [#2]", exceptionMapping.exception(),
-                        exceptionMapping.result(), actionName);
+                LOG.trace("Mapping exception ["+exceptionMapping.exception()+"] to result ["+exceptionMapping.result()+"] for action ["+actionName+"]");
             ExceptionMappingConfig.Builder builder = new ExceptionMappingConfig.Builder(null, exceptionMapping
                     .exception(), exceptionMapping.result());
             if (exceptionMapping.params() != null)

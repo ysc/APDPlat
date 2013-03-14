@@ -16,6 +16,7 @@ package com.apdplat.platform.compass;
  * limitations under the License.
  */
 
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.search.IndexManager;
 import com.apdplat.platform.util.FileUtils;
 import java.io.File;
@@ -31,8 +32,6 @@ import java.util.Properties;
 import java.util.Set;
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.compass.core.Compass;
 import org.compass.core.CompassException;
 import org.compass.core.config.CompassConfiguration;
@@ -62,8 +61,7 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 
 public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, DisposableBean, BeanNameAware, ApplicationContextAware, BeanClassLoaderAware {
-
-    protected static final Log log = LogFactory.getLog(APDPlatLocalCompassBean.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(APDPlatLocalCompassBean.class);
 
     private Resource connection;
 

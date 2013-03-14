@@ -8,6 +8,7 @@ import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import java.io.File;
 import java.net.InetAddress;
@@ -17,15 +18,14 @@ import java.util.Date;
 import java.util.List;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public abstract class BackupService {  
-    protected static final Logger log = LoggerFactory.getLogger(MySQLBackupService.class);
+    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    
     protected static final StandardPBEStringEncryptor encryptor;
     protected static final String username;
     protected static final String password;

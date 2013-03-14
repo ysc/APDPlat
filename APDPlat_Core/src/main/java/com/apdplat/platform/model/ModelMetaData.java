@@ -1,17 +1,17 @@
 package com.apdplat.platform.model;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class ModelMetaData {
-    protected static final Logger log = LoggerFactory.getLogger(ModelMetaData.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ModelMetaData.class);
+    
     private static Map<String,String> des=new HashMap<>();
     private static Map<String,Class<? extends Model>> metaData=new HashMap<>();
     public static Map<String,String> getModelDes(){

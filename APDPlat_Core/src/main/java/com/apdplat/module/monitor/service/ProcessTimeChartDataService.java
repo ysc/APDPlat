@@ -3,6 +3,7 @@ package com.apdplat.module.monitor.service;
 import com.apdplat.module.monitor.model.ProcessTime;
 import com.apdplat.module.security.model.User;
 import com.apdplat.platform.action.converter.DateTypeConverter;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,15 +11,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class ProcessTimeChartDataService {
-    protected static final Logger log = LoggerFactory.getLogger(ProcessTimeChartDataService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ProcessTimeChartDataService.class);
   
 
     public static LinkedHashMap<String, Long> getProcessRate(List<ProcessTime> models) {    

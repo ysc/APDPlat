@@ -2,19 +2,18 @@ package com.apdplat.module.monitor.service;
 
 import com.apdplat.module.monitor.model.MemoryState;
 import com.apdplat.module.monitor.model.ProcessTime;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class MemoryStateChartDataService {
-    protected static final Logger log = LoggerFactory.getLogger(MemoryStateChartDataService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(MemoryStateChartDataService.class);
 
     public static List<MemoryState> getSequenceDataHH(List<MemoryState> models){    
         return getSequenceTimeData(models,"yyyy-MM-dd HH");

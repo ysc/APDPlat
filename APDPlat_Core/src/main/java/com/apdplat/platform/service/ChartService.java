@@ -1,5 +1,6 @@
 package com.apdplat.platform.service;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.IOException;
 import java.io.StringWriter;
 import org.jdom.Attribute;
@@ -7,16 +8,13 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public abstract class ChartService {
-
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final APDPlatLogger log = new APDPlatLogger(getClass());
 
     protected String formatXML(Element rootElement) {
         StringWriter writer = new StringWriter();

@@ -3,18 +3,17 @@ package com.apdplat.module.monitor.service;
 import com.apdplat.module.monitor.model.MemoryState;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.module.system.service.SystemListener;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class MemoryMonitorThread extends Thread{
-    protected static final Logger log = LoggerFactory.getLogger(MemoryMonitorThread.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(MemoryMonitorThread.class);
     public boolean running=true;
     private int circle=10;
     public MemoryMonitorThread(int circle){

@@ -4,15 +4,14 @@ package com.apdplat.module.security.service;
  *
  * @author ysc
  */
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 public class SecurityService {
-    private static final Logger log = LoggerFactory.getLogger(SecurityService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(SecurityService.class);
 
     public void checkSeq(String seq){
         if(StringUtils.isNotBlank(seq)){

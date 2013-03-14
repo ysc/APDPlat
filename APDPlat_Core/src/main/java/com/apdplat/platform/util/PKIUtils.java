@@ -1,5 +1,6 @@
 package com.apdplat.platform.util;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -19,14 +20,12 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
  * 
  * @author ysc
  */
 public class PKIUtils {
-    private static final Logger log = LoggerFactory.getLogger(PKIUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(PKIUtils.class);
        
     private PKIUtils(){}
     /**

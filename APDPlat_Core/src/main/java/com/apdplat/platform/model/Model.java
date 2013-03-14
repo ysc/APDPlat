@@ -6,6 +6,7 @@ import com.apdplat.platform.annotation.ModelAttrRef;
 import com.apdplat.platform.annotation.RenderIgnore;
 import com.apdplat.platform.annotation.SimpleDic;
 import com.apdplat.platform.annotation.TreeDic;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.ReflectionUtils;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -27,8 +28,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.compass.annotations.SearchableComponent;
 import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -43,7 +42,7 @@ public abstract class Model implements Serializable{
 
     @Transient
     @RenderIgnore
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final APDPlatLogger log = new APDPlatLogger(getClass());
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @SearchableId

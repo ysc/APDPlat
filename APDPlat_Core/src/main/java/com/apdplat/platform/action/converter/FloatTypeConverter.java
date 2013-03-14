@@ -5,15 +5,12 @@ package com.apdplat.platform.action.converter;
  * @author 杨尚川
  */
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class FloatTypeConverter extends StrutsTypeConverter
- {
-	protected static final  Logger log = LoggerFactory.getLogger(FloatTypeConverter.class);
-
+public class FloatTypeConverter extends StrutsTypeConverter{
+    protected static final APDPlatLogger log = new APDPlatLogger(FloatTypeConverter.class);
 
     @Override
     public Object convertFromString(Map context, String[] values, Class toClass) {

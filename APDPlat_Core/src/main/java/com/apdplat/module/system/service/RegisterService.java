@@ -1,5 +1,6 @@
 package com.apdplat.module.system.service;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.model.ModelMetaData;
 import com.apdplat.platform.result.Page;
@@ -9,8 +10,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -19,7 +18,8 @@ import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public abstract class RegisterService<T extends Model> implements ApplicationListener {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    
     @Resource(name="serviceFacade")
     protected ServiceFacade serviceFacade;
     @Resource(name="entityManagerFactory")

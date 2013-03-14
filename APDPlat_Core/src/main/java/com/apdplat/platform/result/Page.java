@@ -1,5 +1,6 @@
 package com.apdplat.platform.result;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.util.XMLFactory;
 import java.io.InputStream;
@@ -11,14 +12,12 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @XmlRootElement
 @XmlType(name = "Page")
 public class Page<T extends Model> implements Serializable {
+    protected static final APDPlatLogger log = new APDPlatLogger(Page.class);
 
-    protected static final Logger log = LoggerFactory.getLogger(Page.class);
     private long totalRecords = 0;
     private List<T> models = new ArrayList<>();
 

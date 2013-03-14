@@ -10,6 +10,7 @@ import com.apdplat.platform.criteria.Property;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.criteria.PropertyEditor;
 import com.apdplat.platform.criteria.Sequence;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.util.ReflectionUtils;
 import com.opensymphony.xwork2.ActionContext;
@@ -26,8 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @MappedSuperclass
 @Results({
@@ -39,7 +38,8 @@ import org.slf4j.LoggerFactory;
     @Result(name = "detail", type = "freemarker", location = "/_namespace_/_action_/detail.ftl"),
     @Result(name = "form", type = "freemarker", location = "/_namespace_/_action_/form.ftl")})
 public abstract class ActionSupport extends DataPrivilegeControl{
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    
     protected static final String LIST = "list";
     protected static final String FORM = "form";
     protected static final String INPUT = "input";

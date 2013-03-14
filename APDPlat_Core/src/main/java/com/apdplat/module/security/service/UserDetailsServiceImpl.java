@@ -7,6 +7,7 @@ import com.apdplat.platform.criteria.Operator;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.criteria.PropertyEditor;
 import com.apdplat.platform.filter.OpenEntityManagerInViewFilter;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.result.Page;
 import com.apdplat.platform.service.ServiceFacade;
 import com.apdplat.platform.util.FileUtils;
@@ -15,8 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,8 +25,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
-    protected static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(UserDetailsServiceImpl.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
     private static Map<String,String> messages = new HashMap<>();

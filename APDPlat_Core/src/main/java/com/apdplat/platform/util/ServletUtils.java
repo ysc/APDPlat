@@ -1,5 +1,6 @@
 package com.apdplat.platform.util;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Map;
@@ -8,13 +9,11 @@ import java.util.TreeMap;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 
 public class ServletUtils {
-        private static final Logger log = LoggerFactory.getLogger(ServletUtils.class);
+        protected static final APDPlatLogger log = new APDPlatLogger(ServletUtils.class);
         
         private ServletUtils(){};
 

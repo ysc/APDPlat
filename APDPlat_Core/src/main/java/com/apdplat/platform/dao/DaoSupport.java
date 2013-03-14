@@ -7,6 +7,7 @@ import com.apdplat.platform.criteria.PageCriteria;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.criteria.PropertyEditor;
 import com.apdplat.platform.criteria.Sequence;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.result.Page;
 import com.apdplat.platform.util.ReflectionUtils;
@@ -22,8 +23,6 @@ import org.compass.core.CompassHighlighter;
 import org.compass.core.CompassHits;
 import org.compass.core.CompassSession;
 import org.compass.core.CompassTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 通用的DAO操作支持类
@@ -31,8 +30,8 @@ import org.slf4j.LoggerFactory;
  *
  */
 public abstract class DaoSupport extends DataPrivilegeControl{
-
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    
     protected static final OrderCriteria defaultOrderCriteria = new OrderCriteria();
 
     static {

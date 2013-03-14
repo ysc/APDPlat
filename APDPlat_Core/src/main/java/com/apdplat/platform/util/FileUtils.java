@@ -1,5 +1,6 @@
 package com.apdplat.platform.util;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -16,8 +17,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Assert;
 
@@ -26,7 +25,7 @@ import org.springframework.util.Assert;
  * @author ysc
  */
 public class FileUtils {
-    private static final Logger log = LoggerFactory.getLogger(FileUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(FileUtils.class);
         
     private FileUtils(){};
     

@@ -6,6 +6,7 @@ import com.apdplat.module.security.service.OnlineUserService;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -17,16 +18,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class PerformanceFilter implements Filter {
-
-    protected static final Logger log = LoggerFactory.getLogger(PerformanceFilter.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(PerformanceFilter.class);
     private boolean enabled = false;
 
     @Override

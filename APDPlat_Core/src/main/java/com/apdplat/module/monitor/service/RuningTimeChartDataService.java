@@ -2,20 +2,19 @@ package com.apdplat.module.monitor.service;
 
 import com.apdplat.module.monitor.model.RuningTime;
 import com.apdplat.platform.action.converter.DateTypeConverter;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.ConvertUtils;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class RuningTimeChartDataService {
-    protected static final Logger log = LoggerFactory.getLogger(RuningTimeChartDataService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(RuningTimeChartDataService.class);
     
     public static LinkedHashMap<String,Long> getRuningSequence(List<RuningTime> models){
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();

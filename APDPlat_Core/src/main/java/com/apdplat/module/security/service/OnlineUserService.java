@@ -3,17 +3,15 @@ package com.apdplat.module.security.service;
 import com.apdplat.module.security.model.Org;
 import com.apdplat.module.security.model.Role;
 import com.apdplat.module.security.model.User;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.SpringContextUtils;
 import java.util.ArrayList;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 
 public class OnlineUserService{
-
-    protected static final Logger log = LoggerFactory.getLogger(OnlineUserService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(OnlineUserService.class);
 
     private static SessionRegistry sessionRegistry;
     public static String getUsername(String sessionID) {

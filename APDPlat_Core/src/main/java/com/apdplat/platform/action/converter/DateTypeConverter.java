@@ -1,13 +1,12 @@
 package com.apdplat.platform.action.converter;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 
@@ -17,8 +16,8 @@ import org.slf4j.LoggerFactory;
  */
 
 public class DateTypeConverter extends StrutsTypeConverter {
+    protected static final APDPlatLogger log = new APDPlatLogger(DateTypeConverter.class);
 
-    protected static final Logger log = LoggerFactory.getLogger(DateTypeConverter.class);
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     //暂时只考虑这几种日期格式
     public static final DateFormat[] ACCEPT_DATE_FORMATS = {

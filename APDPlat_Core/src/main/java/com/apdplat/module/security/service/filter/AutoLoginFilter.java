@@ -4,6 +4,7 @@ import com.apdplat.module.security.service.SpringSecurityService;
 import com.apdplat.module.security.service.UserDetailsServiceImpl;
 import com.apdplat.module.security.service.UserHolder;
 import com.apdplat.module.system.service.PropertyHolder;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.SpringContextUtils;
 import java.io.IOException;
 import java.util.Collection;
@@ -14,8 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -24,8 +23,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author ysc
  */
 public class AutoLoginFilter implements Filter {
-
-    protected static final Logger log = LoggerFactory.getLogger(AutoLoginFilter.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(AutoLoginFilter.class);
+    
     private UserDetailsServiceImpl userDetailsServiceImpl;
     private boolean enabled = false;
     private String defaultUserName;

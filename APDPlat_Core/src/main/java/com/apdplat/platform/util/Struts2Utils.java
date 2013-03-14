@@ -1,5 +1,6 @@
 package com.apdplat.platform.util;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
@@ -11,14 +12,12 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
 *Struts2工具类
 * @author 杨尚川
 */
 public class Struts2Utils {
-        private static final Logger log = LoggerFactory.getLogger(XMLUtils.class);
+        protected static final APDPlatLogger log = new APDPlatLogger(Struts2Utils.class);
         
         private Struts2Utils(){};
 
@@ -32,8 +31,6 @@ public class Struts2Utils {
 	private static final String XML_TYPE = "text/xml";
 	private static final String HTML_TYPE = "text/html";
 	private static final String JS_TYPE = "text/javascript";
-
-	private static Logger logger = LoggerFactory.getLogger(Struts2Utils.class);
 
 	public static HttpSession getSession() {
 		return ServletActionContext.getRequest().getSession();
@@ -85,7 +82,7 @@ public class Struts2Utils {
 			response.getWriter().flush();
 
 		} catch (IOException e) {
-			logger.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		}
 	}
 

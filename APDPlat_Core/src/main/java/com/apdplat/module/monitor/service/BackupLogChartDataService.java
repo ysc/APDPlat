@@ -3,19 +3,18 @@ package com.apdplat.module.monitor.service;
 import com.apdplat.module.monitor.model.BackupLog;
 import com.apdplat.module.monitor.model.BackupLogResult;
 import com.apdplat.platform.action.converter.DateTypeConverter;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
-public class BackupLogChartDataService {
-    protected static final Logger log = LoggerFactory.getLogger(BackupLogChartDataService.class);
+public class BackupLogChartDataService {    
+    protected static final APDPlatLogger log = new APDPlatLogger(BackupLogChartDataService.class);
 
     public static LinkedHashMap<String,Long> getSequenceData(List<BackupLog> models){    
         Collections.sort(models, new Comparator(){

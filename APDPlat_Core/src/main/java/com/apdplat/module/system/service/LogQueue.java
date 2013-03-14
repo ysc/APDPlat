@@ -1,12 +1,11 @@
 package com.apdplat.module.system.service;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.model.Model;
 import com.apdplat.platform.service.ServiceFacade;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +14,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LogQueue {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
+    protected static final APDPlatLogger log = new APDPlatLogger(LogQueue.class);
+    
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
     private static ConcurrentLinkedQueue <Model> logs =  new  ConcurrentLinkedQueue <>();

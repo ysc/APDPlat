@@ -1,5 +1,6 @@
 package com.apdplat.platform.util;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,14 +11,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
 *在XML和对象之间进行转换
 * @author 杨尚川
 */
 public class XMLFactory {
-    private static final Logger log = LoggerFactory.getLogger(XMLFactory.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(XMLFactory.class);
        
     private XMLFactory(){};
 

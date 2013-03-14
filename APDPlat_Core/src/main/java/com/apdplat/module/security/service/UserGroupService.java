@@ -1,16 +1,15 @@
 package com.apdplat.module.security.service;
 
 import com.apdplat.module.security.model.UserGroup;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.service.ServiceFacade;
 import java.util.List;
 import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserGroupService {
-    protected  final Logger log = LoggerFactory.getLogger(getClass());
+    protected static final APDPlatLogger log = new APDPlatLogger(UserGroupService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 

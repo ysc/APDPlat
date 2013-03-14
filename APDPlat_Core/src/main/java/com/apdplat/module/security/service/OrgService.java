@@ -5,13 +5,12 @@ import com.apdplat.platform.criteria.Criteria;
 import com.apdplat.platform.criteria.Operator;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.criteria.PropertyEditor;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.result.Page;
 import com.apdplat.platform.service.ServiceFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrgService {
-    protected static final Logger log = LoggerFactory.getLogger(OrgService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(OrgService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 

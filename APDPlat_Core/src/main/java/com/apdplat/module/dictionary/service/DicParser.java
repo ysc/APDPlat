@@ -2,6 +2,7 @@ package com.apdplat.module.dictionary.service;
 
 import com.apdplat.module.dictionary.model.Dic;
 import com.apdplat.module.dictionary.model.DicItem;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;
 import com.apdplat.platform.util.XMLFactory;
 import com.apdplat.platform.util.XMLUtils;
@@ -12,15 +13,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class DicParser {
-    protected static final Logger log = LoggerFactory.getLogger(DicParser.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(DicParser.class);
     private static final String dtdFile="/target/dic.dtd";
     /**
      * 返回所有Dic对象中dicItems不为空的Dic对象

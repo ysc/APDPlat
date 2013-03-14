@@ -1,18 +1,17 @@
 package com.apdplat.platform.util;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ysc
  */
 public class SortUtils {
-    private static final Logger log = LoggerFactory.getLogger(SortUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(SortUtils.class);
         
     private SortUtils(){};
     

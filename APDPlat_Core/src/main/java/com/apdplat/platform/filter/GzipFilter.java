@@ -1,5 +1,6 @@
 package com.apdplat.platform.filter;
 
+import com.apdplat.platform.log.APDPlatLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,8 +25,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides GZIP compression of responses.
@@ -150,7 +149,7 @@ class GenericResponseWrapper extends HttpServletResponseWrapper implements Seria
 
     private static final long serialVersionUID = -5976708169031065498L;
 
-    protected static final Logger log = LoggerFactory.getLogger(GenericResponseWrapper.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(GenericResponseWrapper.class);
     private int statusCode = SC_OK;
     private int contentLength;
     private String contentType;
@@ -355,8 +354,7 @@ class FilterServletOutputStream extends ServletOutputStream {
     }
 }
 class ResponseUtil {
-
-    protected static final Logger log = LoggerFactory.getLogger(ResponseUtil.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ResponseUtil.class);
 
 
 
@@ -461,7 +459,7 @@ abstract class Filter implements javax.servlet.Filter {
      * If a request attribute NO_FILTER is set, then filtering will be skipped
      */
     public static final String NO_FILTER = "NO_FILTER";
-    protected static final Logger log = LoggerFactory.getLogger(Filter.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(Filter.class);
 
     /**
      * The filter configuration.
@@ -517,7 +515,7 @@ abstract class Filter implements javax.servlet.Filter {
             }
 
         } catch (final Throwable throwable) {
-            logThrowable(throwable, httpRequest);
+            log.error("error",throwable);
         }
     }
 
@@ -530,34 +528,6 @@ abstract class Filter implements javax.servlet.Filter {
      */
     protected boolean filterNotDisabled(final HttpServletRequest httpRequest) {
         return httpRequest.getAttribute(NO_FILTER) == null;
-    }
-
-
-    private void logThrowable(final Throwable throwable, final HttpServletRequest httpRequest) throws ServletException {
-        StringBuffer messageBuffer = new StringBuffer("Throwable thrown during doFilter on request with URI: ")
-                    .append(httpRequest.getRequestURI())
-                    .append(" and Query: ")
-                    .append(httpRequest.getQueryString());
-        String message = messageBuffer.toString();
-        boolean matchFound = matches(throwable);
-        if (matchFound) {
-            try {
-                if (suppressStackTraces) {
-                    Method method = Logger.class.getMethod(exceptionsToLogDifferentlyLevel, new Class[]{Object.class});
-                    method.invoke(log, new Object[]{throwable.getMessage()});
-                } else {
-                    Method method = Logger.class.getMethod(exceptionsToLogDifferentlyLevel,
-                            new Class[]{Object.class, Throwable.class});
-                    method.invoke(log, new Object[]{throwable.getMessage(), throwable});
-                }
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                log.error("Could not invoke Log method for " + exceptionsToLogDifferentlyLevel, e);
-            }
-            throw new ServletException(message, throwable);
-        } else {
-
-            throw new ServletException(throwable);
-        }
     }
 
     /**

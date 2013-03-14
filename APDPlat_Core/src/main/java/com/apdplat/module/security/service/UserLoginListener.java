@@ -5,6 +5,7 @@ import com.apdplat.module.security.model.User;
 import com.apdplat.module.system.service.LogQueue;
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
+import com.apdplat.platform.log.APDPlatLogger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
@@ -15,16 +16,13 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 
 
 public class UserLoginListener implements HttpSessionAttributeListener,HttpSessionListener  {
-
-    protected static final Logger log = LoggerFactory.getLogger(UserLoginListener.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(UserLoginListener.class);
 
     private static Map<String,UserLogin> logs=new HashMap<>();
 

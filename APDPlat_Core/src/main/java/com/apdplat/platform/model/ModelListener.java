@@ -9,6 +9,7 @@ import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.module.system.service.SystemListener;
 import com.apdplat.platform.annotation.IgnoreBusinessLog;
 import com.apdplat.platform.annotation.IgnoreUser;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.search.IndexManager;
 import com.apdplat.platform.util.SpringContextUtils;
 import java.net.InetAddress;
@@ -22,15 +23,14 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import org.compass.annotations.Searchable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
  * 模型监听器
  * @author 杨尚川
  *
  */
 public class ModelListener {
-    protected  final static Logger log = LoggerFactory.getLogger(ModelListener.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ModelListener.class);
+    
     private static IndexManager indexManager=null;
     private static final boolean create;
     private static final boolean delete;

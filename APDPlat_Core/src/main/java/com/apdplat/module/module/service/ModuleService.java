@@ -11,6 +11,7 @@ import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.criteria.Operator;
 import com.apdplat.platform.criteria.PropertyCriteria;
 import com.apdplat.platform.criteria.PropertyEditor;
+import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.service.ServiceFacade;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,14 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ModuleService {
-
-    protected static final Logger log = LoggerFactory.getLogger(ModuleService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ModuleService.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
 
