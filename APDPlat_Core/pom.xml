@@ -8,6 +8,25 @@
     <packaging>jar</packaging>
     <version>2.2</version>
     <name>APDPlat_Core</name>
+    
+    <url>https://github.com/ysc/APDPlat</url>
+    <description>APDPlat是Application Product Development Platform的缩写，意为应用级产品开发平台。APDPlat的雏形可以追溯到2008年，并于4年后即2012年4月9日在GITHUB开源 。APDPlat在演化的过程中，经受住了众多项目的考验，一直追求简洁优雅，一直对架构、设计和代码进行重构优化。 APDPlat的用户群是广大的JAVA工程师，对于JAVA初级开发者，能从APDPlat中学到众多的架构设计原则及编码技巧，对于JAVA中高级开发者，能使用APDPlat从事基于B/S多层架构的管理信息系统的快速开发工作。APDPlat底层全部采用JAVA开源框架，开放透明，安全可靠。 </description>
+    <licenses>
+      <license>
+        <name>The Apache Software License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      </license>
+    </licenses>
+    <scm>
+          <url>https://github.com/ysc/APDPlat</url>
+          <connection>scm:git:git://github.com/ysc/APDPlat.git</connection>
+          <developerConnection>scm:git:git://github.com/ysc/APDPlat.git</developerConnection>
+          <tag>GITHUB APDPlat</tag>
+    </scm>
+    <issueManagement>
+          <url>https://github.com/ysc/APDPlat/issues</url>
+          <system>github.com</system>
+    </issueManagement>
     <mailingLists>
         <mailingList>
             <name>杨尚川（框架创始人）</name>
@@ -16,10 +35,12 @@
     </mailingLists>
     <developers>
         <developer>
-            <name>杨尚川</name>
+            <id>ysc</id>
+            <name>杨尚川（框架创始人）</name>
             <email>yang-shangchuan@qq.com</email>
         </developer>
     </developers>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
@@ -64,8 +85,7 @@
         <jcaptcha-all.version>1.0-RC6</jcaptcha-all.version>
         <drools-spring.version>5.2.0.M2</drools-spring.version>
         <dynamicreports-core.version>2.1.0</dynamicreports-core.version>
-        <sigar.version>1.6.4</sigar.version>
-        
+        <sigar.version>1.6.4</sigar.version>        
         
         <p6spy.version>1.3</p6spy.version>
         <mysql.version>5.1.18</mysql.version>
@@ -98,14 +118,6 @@
         <maven-testability-plugin.version>1.3.3</maven-testability-plugin.version>
         <versions-maven-plugin.version>1.1</versions-maven-plugin.version>
     </properties>
-    <scm>
-      <connection>
-        scm:svn:https://ysc/svn/apdplat2.2/trunk/APDPlat_Core
-      </connection>
-      <developerConnection>
-        scm:svn:https://ysc/svn/apdplat2.2/trunk/APDPlat_Core
-      </developerConnection>
-    </scm>
     <!-- 设定除中央仓库(repo1.maven.org/maven2/)外的其他仓库,按设定顺序进行查找. -->
     <repositories>
         <repository>
