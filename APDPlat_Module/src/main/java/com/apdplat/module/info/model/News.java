@@ -40,6 +40,7 @@ public class News extends Model{
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "news")
     @RenderIgnore
+    @SearchableComponent
     @ModelAttr("多语言内容")
     protected List<NewsContent> newsContents=new ArrayList<>();
     
