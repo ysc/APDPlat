@@ -62,11 +62,6 @@
         <junit.version>4.8.2</junit.version>
         <quartz.version>1.8.4</quartz.version>
         <jcaptcha-all.version>1.0-RC6</jcaptcha-all.version>
-        <jbpm-persistence-jpa.version>5.1.0.M1</jbpm-persistence-jpa.version>
-        <jbpm-bpmn2.version>5.1.0.M1</jbpm-bpmn2.version>
-        <jbpm-bam.version>5.1.0.M1</jbpm-bam.version>
-        <jbpm-workitems.version>5.1.0.M1</jbpm-workitems.version>
-        <jbpm-human-task.version>5.1.0.M1</jbpm-human-task.version>
         <drools-spring.version>5.2.0.M2</drools-spring.version>
         <dynamicreports-core.version>2.1.0</dynamicreports-core.version>
         <sigar.version>1.6.4</sigar.version>
@@ -678,94 +673,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- JBPM5 
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-persistence-jpa</artifactId>
-            <version>${jbpm-persistence-jpa.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.persistence</groupId>
-                    <artifactId>persistence-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-bpmn2</artifactId>
-            <version>${jbpm-bpmn2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.drools</groupId>
-            <artifactId>drools-spring</artifactId>
-            <version>${drools-spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate-annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.persistence</groupId>
-                    <artifactId>persistence-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-bam</artifactId>
-            <version>${jbpm-bam.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.persistence</groupId>
-                    <artifactId>persistence-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-workitems</artifactId>
-            <version>${jbpm-workitems.version}</version>
-        </dependency>  
-        <dependency>
-            <groupId>org.jbpm</groupId>
-            <artifactId>jbpm-human-task</artifactId>
-            <version>${jbpm-human-task.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.jboss.seam</groupId>
-                    <artifactId>jboss-seam</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>javax.persistence</groupId>
-                    <artifactId>persistence-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        
-        <dependency>  
-            <groupId>net.sourceforge.dynamicreports</groupId>  
-            <artifactId>dynamicreports-core</artifactId>  
-            <version>${dynamicreports-core.version}</version>  
-            <exclusions>                
-                <exclusion>
-                    <groupId>com.sun.xml.bind</groupId>
-                    <artifactId>jaxb-impl</artifactId>
-                </exclusion>        
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xml-apis</groupId>
-                    <artifactId>xml-apis</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>  
-        -->
         
         <dependency>
             <groupId>org.fusesource</groupId>
