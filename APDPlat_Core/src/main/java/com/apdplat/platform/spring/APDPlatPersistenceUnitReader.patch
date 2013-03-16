@@ -1,0 +1,317 @@
+bb4c8405abdd28ae55c5b5324a232917db4da4f9
+ APDPlatPersistenceUnitReader.java | 230 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 210 insertions(+), 20 deletions(-)
+
+diff --git a/APDPlatPersistenceUnitReader.java b/APDPlatPersistenceUnitReader.java
+index 50f23ff..731e0c1 100644
+--- a/APDPlatPersistenceUnitReader.java
++++ b/APDPlatPersistenceUnitReader.java
+@@ -13,12 +13,13 @@
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
++package com.apdplat.platform.spring;
+ 
+-package org.springframework.orm.jpa.persistenceunit;
+-
++import com.apdplat.module.system.service.PropertyHolder;
++import com.apdplat.platform.log.APDPlatLogger;
++import com.apdplat.platform.util.FileUtils;
+ import java.io.IOException;
+ import java.io.InputStream;
+-import java.net.URL;
+ import java.util.LinkedList;
+ import java.util.List;
+ import javax.persistence.spi.PersistenceUnitTransactionType;
+@@ -26,8 +27,6 @@ import javax.xml.parsers.DocumentBuilder;
+ import javax.xml.parsers.DocumentBuilderFactory;
+ import javax.xml.parsers.ParserConfigurationException;
+ 
+-import org.apache.commons.logging.Log;
+-import org.apache.commons.logging.LogFactory;
+ import org.w3c.dom.Document;
+ import org.w3c.dom.Element;
+ import org.xml.sax.ErrorHandler;
+@@ -36,12 +35,27 @@ import org.xml.sax.SAXException;
+ import org.springframework.core.io.Resource;
+ import org.springframework.core.io.support.ResourcePatternResolver;
+ import org.springframework.jdbc.datasource.lookup.DataSourceLookup;
+-import org.springframework.util.Assert;
+ import org.springframework.util.ResourceUtils;
+-import org.springframework.util.StringUtils;
+ import org.springframework.util.xml.DomUtils;
+ import org.springframework.util.xml.SimpleSaxErrorHandler;
+ 
++import java.lang.instrument.ClassFileTransformer;
++import java.net.URL;
++import java.security.ProtectionDomain;
++
++
++import org.apache.commons.logging.Log;
++import org.apache.commons.logging.LogFactory;
++
++import javax.persistence.spi.ClassTransformer;
++
++import org.springframework.core.DecoratingClassLoader;
++import org.springframework.core.io.FileSystemResource;
++import org.springframework.instrument.classloading.LoadTimeWeaver;
++import org.springframework.instrument.classloading.SimpleThrowawayClassLoader;
++import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
++import org.springframework.util.Assert;
++import org.springframework.util.StringUtils;
+ /**
+  * Internal helper class for reading <code>persistence.xml</code> files.
+  *
+@@ -49,7 +63,7 @@ import org.springframework.util.xml.SimpleSaxErrorHandler;
+  * @author Juergen Hoeller
+  * @since 2.0
+  */
+-class PersistenceUnitReader {
++class APDPlatPersistenceUnitReader {
+ 
+ 	private static final String PERSISTENCE_VERSION = "version";
+ 
+@@ -82,7 +96,7 @@ class PersistenceUnitReader {
+ 	private static final String META_INF = "META-INF";
+ 
+ 
+-	private final Log logger = LogFactory.getLog(getClass());
++        protected final APDPlatLogger logger = new APDPlatLogger(getClass());
+ 
+ 	private final ResourcePatternResolver resourcePatternResolver;
+ 
+@@ -90,12 +104,12 @@ class PersistenceUnitReader {
+ 
+ 
+ 	/**
+-	 * Create a new PersistenceUnitReader.
++	 * Create a new APDPlatPersistenceUnitReader.
+ 	 * @param resourcePatternResolver the ResourcePatternResolver to use for loading resources
+ 	 * @param dataSourceLookup the DataSourceLookup to resolve DataSource names in
+ 	 * <code>persistence.xml</code> files against
+ 	 */
+-	public PersistenceUnitReader(ResourcePatternResolver resourcePatternResolver, DataSourceLookup dataSourceLookup) {
++	public APDPlatPersistenceUnitReader(ResourcePatternResolver resourcePatternResolver, DataSourceLookup dataSourceLookup) {
+ 		Assert.notNull(resourcePatternResolver, "ResourceLoader must not be null");
+ 		Assert.notNull(dataSourceLookup, "DataSourceLookup must not be null");
+ 		this.resourcePatternResolver = resourcePatternResolver;
+@@ -118,7 +132,7 @@ class PersistenceUnitReader {
+ 	 * @return the resulting PersistenceUnitInfo instances
+ 	 */
+ 	public SpringPersistenceUnitInfo[] readPersistenceUnitInfos(String[] persistenceXmlLocations) {
+-		ErrorHandler handler = new SimpleSaxErrorHandler(logger);
++		ErrorHandler handler = new SimpleSaxErrorHandler(LogFactory.getLog(getClass()));
+ 		List<SpringPersistenceUnitInfo> infos = new LinkedList<SpringPersistenceUnitInfo>();
+ 		String resourceLocation = null;
+ 		try {
+@@ -234,7 +248,13 @@ class PersistenceUnitReader {
+ 		unitInfo.setPersistenceXMLSchemaVersion(version);
+ 
+ 		// set unit name
+-		unitInfo.setPersistenceUnitName(persistenceUnit.getAttribute(UNIT_NAME).trim());
++                logger.info("开始执行apdplat对spring jpa的定制修改1(1. Start to execute custom modifications  of APDPlat for Spring JPA )");
++                String unitName=persistenceUnit.getAttribute(UNIT_NAME).trim();
++                logger.info("占位符的内容为(Content of placeholder is): "+unitName);
++                //去掉${和}，从配置文件读取真正内容
++                unitName=PropertyHolder.getProperty(unitName.substring(2,unitName.length()-1));
++                logger.info("占位符对应的配置文件的内容为(Content of config file related to placeholder is): "+unitName);
++		unitInfo.setPersistenceUnitName(unitName);
+ 
+ 		// set transaction type
+ 		String txType = persistenceUnit.getAttribute(TRANSACTION_TYPE).trim();
+@@ -322,13 +342,22 @@ class PersistenceUnitReader {
+ 	protected void parseJarFiles(Element persistenceUnit, SpringPersistenceUnitInfo unitInfo) throws IOException {
+ 		List<Element> jars = DomUtils.getChildElementsByTagName(persistenceUnit, JAR_FILE_URL);
+ 		for (Element element : jars) {
+-			String value = DomUtils.getTextValue(element).trim();
+-			if (StringUtils.hasText(value)) {
+-				Resource[] resources = this.resourcePatternResolver.getResources(value);
+-				for (Resource resource : resources) {
+-					unitInfo.addJarFileUrl(resource.getURL());
+-				}
+-			}
++                        logger.info("开始执行apdplat对spring jpa的定制修改2(2. Start to execute custom modifications  of APDPlat for Spring JPA )");
++                        String jarHolder=DomUtils.getTextValue(element).trim();
++                        if(jarHolder==null || "".equals(jarHolder.trim())){
++                            continue;
++                        }
++                        logger.info("占位符的内容为(Content of placeholder is): "+jarHolder);
++                        //去掉${和}，从配置文件读取真正内容
++                        String realJars=PropertyHolder.getProperty(jarHolder.substring(2,jarHolder.length()-1));
++                        logger.info("占位符对应的配置文件的内容为(Content of config file related to placeholder is): "+realJars);
++                        String[] jarArray=realJars.split(",");
++                        for(String jar : jarArray){
++                            if (StringUtils.hasText(jar)) {
++                                FileSystemResource resource=new FileSystemResource(FileUtils.getAbsolutePath(jar));
++				unitInfo.addJarFileUrl(resource.getURL());
++                            }
++                        }
+ 		}
+ 	}
+ 
+@@ -346,4 +375,165 @@ class PersistenceUnitReader {
+ 		}
+ 	}
+ 
++}
++/**
++ * Subclass of {@link MutablePersistenceUnitInfo} that adds instrumentation hooks based on
++ * Spring's {@link org.springframework.instrument.classloading.LoadTimeWeaver} abstraction.
++ *
++ * <p>This class is restricted to package visibility, in contrast to its superclass.
++ *
++ * @author Rod Johnson
++ * @author Juergen Hoeller
++ * @author Costin Leau
++ * @since 2.0
++ * @see PersistenceUnitManager
++ */
++class SpringPersistenceUnitInfo extends MutablePersistenceUnitInfo {
++
++	private static final String DEFAULT_SHARED_CACHE_MODE_NAME = "UNSPECIFIED";
++
++	private static final String DEFAULT_VALIDATION_MODE_NAME = "AUTO";
++
++
++	private String sharedCacheModeName = DEFAULT_SHARED_CACHE_MODE_NAME;
++
++	private String validationModeName = DEFAULT_VALIDATION_MODE_NAME;
++
++	private LoadTimeWeaver loadTimeWeaver;
++
++	private ClassLoader classLoader;
++
++
++	public void setSharedCacheModeName(String sharedCacheModeName) {
++		this.sharedCacheModeName =
++				(StringUtils.hasLength(sharedCacheModeName) ? sharedCacheModeName : DEFAULT_SHARED_CACHE_MODE_NAME);
++	}
++
++	public String getSharedCacheModeName() {
++		return this.sharedCacheModeName;
++	}
++
++	public void setValidationModeName(String validationModeName) {
++		this.validationModeName =
++				(StringUtils.hasLength(validationModeName) ? validationModeName : DEFAULT_VALIDATION_MODE_NAME);
++	}
++
++	public String getValidationModeName() {
++		return this.validationModeName;
++	}
++
++
++	/**
++	 * Initialize this PersistenceUnitInfo with the LoadTimeWeaver SPI interface
++	 * used by Spring to add instrumentation to the current class loader.
++	 */
++	public void init(LoadTimeWeaver loadTimeWeaver) {
++		Assert.notNull(loadTimeWeaver, "LoadTimeWeaver must not be null");
++		this.loadTimeWeaver = loadTimeWeaver;
++		this.classLoader = loadTimeWeaver.getInstrumentableClassLoader();
++	}
++
++	/**
++	 * Initialize this PersistenceUnitInfo with the current class loader
++	 * (instead of with a LoadTimeWeaver).
++	 */
++	public void init(ClassLoader classLoader) {
++		Assert.notNull(classLoader, "ClassLoader must not be null");
++		this.classLoader = classLoader;
++	}
++
++
++	/**
++	 * This implementation returns the LoadTimeWeaver's instrumentable ClassLoader,
++	 * if specified.
++	 */
++	@Override
++	public ClassLoader getClassLoader() {
++		return this.classLoader;
++	}
++
++	/**
++	 * This implementation delegates to the LoadTimeWeaver, if specified.
++	 */
++	@Override
++	public void addTransformer(ClassTransformer classTransformer) {
++		if (this.loadTimeWeaver == null) {
++			throw new IllegalStateException("Cannot apply class transformer without LoadTimeWeaver specified");
++		}
++		this.loadTimeWeaver.addTransformer(new ClassFileTransformerAdapter(classTransformer));
++	}
++
++	/**
++	 * This implementation delegates to the LoadTimeWeaver, if specified.
++	 */
++	@Override
++	public ClassLoader getNewTempClassLoader() {
++		ClassLoader tcl = (this.loadTimeWeaver != null ? this.loadTimeWeaver.getThrowawayClassLoader() :
++				new SimpleThrowawayClassLoader(this.classLoader));
++		String packageToExclude = getPersistenceProviderPackageName();
++		if (packageToExclude != null && tcl instanceof DecoratingClassLoader) {
++			((DecoratingClassLoader) tcl).excludePackage(packageToExclude);
++		}
++		return tcl;
++	}
++
++}
++
++/**
++ * Simple adapter that implements the <code>java.lang.instrument.ClassFileTransformer</code>
++ * interface based on a JPA ClassTransformer which a JPA PersistenceProvider asks the
++ * PersistenceUnitInfo to install in the current runtime.
++ *
++ * @author Rod Johnson
++ * @since 2.0
++ * @see javax.persistence.spi.PersistenceUnitInfo#addTransformer(javax.persistence.spi.ClassTransformer)
++ */
++class ClassFileTransformerAdapter implements ClassFileTransformer {
++
++	private static final Log logger = LogFactory.getLog(ClassFileTransformerAdapter.class);
++
++	private final ClassTransformer classTransformer;
++
++
++	public ClassFileTransformerAdapter(ClassTransformer classTransformer) {
++		Assert.notNull(classTransformer, "ClassTransformer must not be null");
++		this.classTransformer = classTransformer;
++	}
++
++
++	public byte[] transform(
++			ClassLoader loader, String className, Class<?> classBeingRedefined,
++			ProtectionDomain protectionDomain, byte[] classfileBuffer) {
++
++		try {
++			byte[] transformed = this.classTransformer.transform(
++					loader, className, classBeingRedefined, protectionDomain, classfileBuffer);
++			if (transformed != null && logger.isDebugEnabled()) {
++				logger.debug("Transformer of class [" + this.classTransformer.getClass().getName() +
++						"] transformed class [" + className + "]; bytes in=" +
++						classfileBuffer.length + "; bytes out=" + transformed.length);
++			}
++			return transformed;
++		}
++		catch (ClassCircularityError ex) {
++			logger.error("Error weaving class [" + className + "] with " +
++					"transformer of class [" + this.classTransformer.getClass().getName() + "]", ex);
++			throw new IllegalStateException("Could not weave class [" + className + "]", ex);
++		}
++		catch (Throwable ex) {
++			if (logger.isWarnEnabled()) {
++				logger.warn("Error weaving class [" + className + "] with " +
++						"transformer of class [" + this.classTransformer.getClass().getName() + "]", ex);
++			}
++			// The exception will be ignored by the class loader, anyway...
++			throw new IllegalStateException("Could not weave class [" + className + "]", ex);
++		}
++	}
++
++
++	@Override
++	public String toString() {
++		return "Standard ClassFileTransformer wrapping JPA transformer: " + this.classTransformer;
++	}
++
+ }
