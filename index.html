@@ -9,6 +9,16 @@
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
     <title>APDPlat</title>
+    <!-- 百度统计异步代码是以异步加载形式加载了网站分析代码，使用该代码能够大幅提升您网站的打开速度（目前使用百度统计异步代码会导致百度统计图标和代码检查功能的失效） -->
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?4bf10cbd0589f0c5284ee25caeb7c847";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
   </head>
 
   <body>
@@ -109,13 +119,6 @@
               var pageTracker = _gat._getTracker("UA-39358116-1");
             pageTracker._trackPageview();
             } catch(err) {}
-          </script>
-          
-          <!--百度统计代码-->
-          <!-- ysc.github.com/APDPlat Baidu tongji analytics -->
-          <script type="text/javascript">
-            var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-            document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F4bf10cbd0589f0c5284ee25caeb7c847' type='text/javascript'%3E%3C/script%3E"));
           </script>
   </body>
 </html>
