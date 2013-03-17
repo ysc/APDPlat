@@ -8,16 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ *获取索引目录和索引文件
  * @author ysc
  */
 public class IndexFileService {
     private static final  File file;
     
     static{
+        //compass存放lucene索引的根目录
         file=new File(IndexManager.getIndexDir(),"index");
     }
-    
+    /**
+     * 获取所有对象对应的索引目录
+     * @return  索引目录名称列表
+     */
     public static List<IndexDir> getIndexDirs() {
         List<IndexDir> dirs=new ArrayList<>();
         
@@ -32,7 +36,11 @@ public class IndexFileService {
         
         return dirs;
     }
-
+    /**
+     * 获取某个对象的所有索引文件
+     * @param dir 索引对象的目录名称
+     * @return 索引文件列表
+     */
     public static List<File> getIndexFiles(String dir) {
         File dirFile=new File(file,dir);
         List<File> result=new ArrayList<>();

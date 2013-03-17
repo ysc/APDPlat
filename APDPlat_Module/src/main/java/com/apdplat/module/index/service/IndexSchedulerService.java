@@ -18,7 +18,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.stereotype.Service;
-
+/**
+ * 定时重建索引调度器服务
+ * @author ysc
+ */
 @Service
 public class IndexSchedulerService implements ApplicationListener {
     protected static final APDPlatLogger log = new APDPlatLogger(IndexSchedulerService.class);
@@ -29,6 +32,10 @@ public class IndexSchedulerService implements ApplicationListener {
     @Resource(name = "indexTask")
     private JobDetail indexTask;
 
+    /**
+     * 系统启动的时候获取配置文件,并判断是否需要执行定时重建索引服务
+     * @param event 
+     */
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof ContextRefreshedEvent) {
@@ -42,7 +49,10 @@ public class IndexSchedulerService implements ApplicationListener {
             }
         }
     }
-    
+    /**
+     * 获取索引调度配置文件
+     * @return 
+     */
     public IndexScheduleConfig getIndexScheduleConfig(){        
         Page<IndexScheduleConfig> page=serviceFacade.query(IndexScheduleConfig.class);
         if(page.getTotalRecords()==1){
@@ -51,7 +61,10 @@ public class IndexSchedulerService implements ApplicationListener {
         }
         return null;
     }
-
+    /**
+     * 取消定时重建索引服务
+     * @return 
+     */
     public String unSchedule(){        
         try {
             IndexScheduleConfig config=getIndexScheduleConfig();
@@ -75,7 +88,12 @@ public class IndexSchedulerService implements ApplicationListener {
             return tip;
         }
     }
-
+    /**
+     * 执行定时重建索引服务
+     * @param hour 小时（24小时制）
+     * @param minute 分钟
+     * @return 提示信息
+     */
     public String schedule(int hour, int minute) {
         IndexScheduleConfig scheduleConfig = getIndexScheduleConfig();
         if (scheduleConfig == null) {
