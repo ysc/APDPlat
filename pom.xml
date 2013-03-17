@@ -38,6 +38,10 @@
             <email>yang-shangchuan@qq.com</email>
         </developer>
     </developers>    
+	
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <modules>
           <module>APDPlat_Core</module>
