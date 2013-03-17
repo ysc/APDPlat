@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>KeyboardSimulator xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../apidocs/com/apdplat/platform/util/KeyboardSimulator.html">View Javadoc</a></div><pre>
+
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> com.apdplat.platform.util;
+<a class="jxr_linenumber" name="2" href="#2">2</a>   
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_javadoccomment"> * 传统图书馆借还书的时候是用扫描枪扫描用户的借书证来实现用户认证的</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_javadoccomment"> * 现在的无线城市建设已经分发了市民卡</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_javadoccomment"> * 需要将市民卡和图书馆的现有系统进行集成</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_javadoccomment"> * JAVA程序调用JNI接口读取市民卡中的身份证号码，之后利用本类的功能将身份证号码模拟键盘输入，实现条形码扫描枪的功能</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_javadoccomment"> * 之后图书馆用扫描枪扫描用户的借书卡和在读卡器上刷市民卡的效果是一样的</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_javadoccomment"> * @author ysc</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <strong class="jxr_keyword">import</strong> java.awt.AWTException;
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <strong class="jxr_keyword">import</strong> java.awt.Robot;
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <strong class="jxr_keyword">import</strong> java.awt.event.KeyEvent;
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="17" href="#17">17</a>  
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/apdplat/platform/util/KeyboardSimulator.html">KeyboardSimulator</a> {
+<a class="jxr_linenumber" name="19" href="#19">19</a>  
+<a class="jxr_linenumber" name="20" href="#20">20</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Robot robot = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="21" href="#21">21</a>  
+<a class="jxr_linenumber" name="22" href="#22">22</a>      <strong class="jxr_keyword">static</strong> {
+<a class="jxr_linenumber" name="23" href="#23">23</a>          <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="24" href="#24">24</a>              robot = <strong class="jxr_keyword">new</strong> Robot();
+<a class="jxr_linenumber" name="25" href="#25">25</a>          } <strong class="jxr_keyword">catch</strong> (AWTException ex) {
+<a class="jxr_linenumber" name="26" href="#26">26</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> RuntimeException(ex);
+<a class="jxr_linenumber" name="27" href="#27">27</a>          }
+<a class="jxr_linenumber" name="28" href="#28">28</a>      }
+<a class="jxr_linenumber" name="29" href="#29">29</a>  
+<a class="jxr_linenumber" name="30" href="#30">30</a>      <strong class="jxr_keyword">private</strong> <a href="../../../../com/apdplat/platform/util/KeyboardSimulator.html">KeyboardSimulator</a>() {
+<a class="jxr_linenumber" name="31" href="#31">31</a>          <em class="jxr_comment">//不可实例化</em>
+<a class="jxr_linenumber" name="32" href="#32">32</a>      }
+<a class="jxr_linenumber" name="33" href="#33">33</a>      
+<a class="jxr_linenumber" name="34" href="#34">34</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> input(String str){
+<a class="jxr_linenumber" name="35" href="#35">35</a>          <strong class="jxr_keyword">if</strong>(str!=<strong class="jxr_keyword">null</strong>){
+<a class="jxr_linenumber" name="36" href="#36">36</a>              <strong class="jxr_keyword">for</strong>(<strong class="jxr_keyword">char</strong> c : str.toCharArray()){
+<a class="jxr_linenumber" name="37" href="#37">37</a>                  pressKey(c);
+<a class="jxr_linenumber" name="38" href="#38">38</a>              }
+<a class="jxr_linenumber" name="39" href="#39">39</a>              robot.keyPress(KeyEvent.VK_ENTER);
+<a class="jxr_linenumber" name="40" href="#40">40</a>          }
+<a class="jxr_linenumber" name="41" href="#41">41</a>      }
+<a class="jxr_linenumber" name="42" href="#42">42</a>      <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="43" href="#43">43</a>  <em class="jxr_javadoccomment">     * 模拟按下按键</em>
+<a class="jxr_linenumber" name="44" href="#44">44</a>  <em class="jxr_javadoccomment">     * @param keyvalue</em>
+<a class="jxr_linenumber" name="45" href="#45">45</a>  <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="46" href="#46">46</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> pressKey(<strong class="jxr_keyword">int</strong> keyvalue) {
+<a class="jxr_linenumber" name="47" href="#47">47</a>          robot.keyPress(keyvalue); <em class="jxr_comment">// 按下按键</em>
+<a class="jxr_linenumber" name="48" href="#48">48</a>          robot.keyRelease(keyvalue); <em class="jxr_comment">// 释放按键</em>
+<a class="jxr_linenumber" name="49" href="#49">49</a>      }
+<a class="jxr_linenumber" name="50" href="#50">50</a>  
+<a class="jxr_linenumber" name="51" href="#51">51</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="52" href="#52">52</a>          input(<span class="jxr_string">"533001198510124839"</span>);
+<a class="jxr_linenumber" name="53" href="#53">53</a>      }
+<a class="jxr_linenumber" name="54" href="#54">54</a>  }
+</pre>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
+</html>
+

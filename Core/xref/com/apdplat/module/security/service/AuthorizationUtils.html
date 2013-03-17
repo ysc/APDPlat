@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>AuthorizationUtils xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../apidocs/com/apdplat/module/security/service/AuthorizationUtils.html">View Javadoc</a></div><pre>
+
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <strong class="jxr_keyword">package</strong> com.apdplat.module.security.service;
+<a class="jxr_linenumber" name="2" href="#2">2</a>   
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <strong class="jxr_keyword">import</strong> org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+<a class="jxr_linenumber" name="4" href="#4">4</a>   
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_javadoccomment"> *此工具负责根据用户的机器码来生成注册码</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_javadoccomment"> * @author ysc</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../com/apdplat/module/security/service/AuthorizationUtils.html">AuthorizationUtils</a> {
+<a class="jxr_linenumber" name="10" href="#10">10</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String args[]) <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="11" href="#11">11</a>          String code=<span class="jxr_string">"71F5-DA7F-495E-7F70-6D47-F3E6-3DC6-349A"</span>;
+<a class="jxr_linenumber" name="12" href="#12">12</a>          String authCode=auth(code);
+<a class="jxr_linenumber" name="13" href="#13">13</a>          System.out.println(<span class="jxr_string">"机器码："</span>+code);
+<a class="jxr_linenumber" name="14" href="#14">14</a>          System.out.println(<span class="jxr_string">"注册码："</span>+authCode);
+<a class="jxr_linenumber" name="15" href="#15">15</a>      }
+<a class="jxr_linenumber" name="16" href="#16">16</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String auth(String machineCode){
+<a class="jxr_linenumber" name="17" href="#17">17</a>          String newCode=<span class="jxr_string">"(yang-shangchuan@qq.com)["</span>+machineCode.toUpperCase()+<span class="jxr_string">"](APDPlat应用级产品开发平台)"</span>;
+<a class="jxr_linenumber" name="18" href="#18">18</a>          String code = <strong class="jxr_keyword">new</strong> Md5PasswordEncoder().encodePassword(newCode,<span class="jxr_string">"杨尚川"</span>).toUpperCase()+machineCode.length();
+<a class="jxr_linenumber" name="19" href="#19">19</a>          <strong class="jxr_keyword">return</strong> getSplitString(code);
+<a class="jxr_linenumber" name="20" href="#20">20</a>      }
+<a class="jxr_linenumber" name="21" href="#21">21</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String getSplitString(String str){ 
+<a class="jxr_linenumber" name="22" href="#22">22</a>          <strong class="jxr_keyword">return</strong> getSplitString(str, <span class="jxr_string">"-"</span>, 4);
+<a class="jxr_linenumber" name="23" href="#23">23</a>      }
+<a class="jxr_linenumber" name="24" href="#24">24</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> String getSplitString(String str, String split, <strong class="jxr_keyword">int</strong> length){        
+<a class="jxr_linenumber" name="25" href="#25">25</a>          <strong class="jxr_keyword">int</strong> len=str.length();
+<a class="jxr_linenumber" name="26" href="#26">26</a>          StringBuilder temp=<strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="27" href="#27">27</a>          <strong class="jxr_keyword">for</strong>(<strong class="jxr_keyword">int</strong> i=0;i&lt;len;i++){
+<a class="jxr_linenumber" name="28" href="#28">28</a>              <strong class="jxr_keyword">if</strong>(i%length==0 &amp;&amp; i&gt;0){
+<a class="jxr_linenumber" name="29" href="#29">29</a>                  temp.append(split);
+<a class="jxr_linenumber" name="30" href="#30">30</a>              }
+<a class="jxr_linenumber" name="31" href="#31">31</a>              temp.append(str.charAt(i));
+<a class="jxr_linenumber" name="32" href="#32">32</a>          }
+<a class="jxr_linenumber" name="33" href="#33">33</a>          String[] attrs=temp.toString().split(split);
+<a class="jxr_linenumber" name="34" href="#34">34</a>          StringBuilder finalMachineCode=<strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="35" href="#35">35</a>          <strong class="jxr_keyword">for</strong>(String attr : attrs){
+<a class="jxr_linenumber" name="36" href="#36">36</a>              <strong class="jxr_keyword">if</strong>(attr.length()==length){
+<a class="jxr_linenumber" name="37" href="#37">37</a>                  finalMachineCode.append(attr).append(split);
+<a class="jxr_linenumber" name="38" href="#38">38</a>              }
+<a class="jxr_linenumber" name="39" href="#39">39</a>          }
+<a class="jxr_linenumber" name="40" href="#40">40</a>          String result=finalMachineCode.toString().substring(0, finalMachineCode.toString().length()-1);
+<a class="jxr_linenumber" name="41" href="#41">41</a>          <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="42" href="#42">42</a>      }
+<a class="jxr_linenumber" name="43" href="#43">43</a>  }
+</pre>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
+</html>
+

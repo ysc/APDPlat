@@ -1,0 +1,487 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>APDPlatPersistenceUnitManager xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../apidocs/com/apdplat/platform/spring/APDPlatPersistenceUnitManager.html">View Javadoc</a></div><pre>
+
+<a class="jxr_linenumber" name="1" href="#1">1</a>   <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="2" href="#2">2</a>   <em class="jxr_comment"> * Copyright 2002-2010 the original author or authors.</em>
+<a class="jxr_linenumber" name="3" href="#3">3</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="4" href="#4">4</a>   <em class="jxr_comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
+<a class="jxr_linenumber" name="5" href="#5">5</a>   <em class="jxr_comment"> * you may not use this file except in compliance with the License.</em>
+<a class="jxr_linenumber" name="6" href="#6">6</a>   <em class="jxr_comment"> * You may obtain a copy of the License at</em>
+<a class="jxr_linenumber" name="7" href="#7">7</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="8" href="#8">8</a>   <em class="jxr_comment"> *      <a href="http://www.apache.org/licenses/LICENSE-2.0" target="alexandria_uri">http://www.apache.org/licenses/LICENSE-2.0</a></em>
+<a class="jxr_linenumber" name="9" href="#9">9</a>   <em class="jxr_comment"> *</em>
+<a class="jxr_linenumber" name="10" href="#10">10</a>  <em class="jxr_comment"> * Unless required by applicable law or agreed to in writing, software</em>
+<a class="jxr_linenumber" name="11" href="#11">11</a>  <em class="jxr_comment"> * distributed under the License is distributed on an "AS IS" BASIS,</em>
+<a class="jxr_linenumber" name="12" href="#12">12</a>  <em class="jxr_comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</em>
+<a class="jxr_linenumber" name="13" href="#13">13</a>  <em class="jxr_comment"> * See the License for the specific language governing permissions and</em>
+<a class="jxr_linenumber" name="14" href="#14">14</a>  <em class="jxr_comment"> * limitations under the License.</em>
+<a class="jxr_linenumber" name="15" href="#15">15</a>  <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="16" href="#16">16</a>  <strong class="jxr_keyword">package</strong> com.apdplat.platform.spring;
+<a class="jxr_linenumber" name="17" href="#17">17</a>  
+<a class="jxr_linenumber" name="18" href="#18">18</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="19" href="#19">19</a>  <strong class="jxr_keyword">import</strong> java.lang.reflect.InvocationHandler;
+<a class="jxr_linenumber" name="20" href="#20">20</a>  <strong class="jxr_keyword">import</strong> java.lang.reflect.Method;
+<a class="jxr_linenumber" name="21" href="#21">21</a>  <strong class="jxr_keyword">import</strong> java.lang.reflect.Proxy;
+<a class="jxr_linenumber" name="22" href="#22">22</a>  <strong class="jxr_keyword">import</strong> java.net.URL;
+<a class="jxr_linenumber" name="23" href="#23">23</a>  <strong class="jxr_keyword">import</strong> java.util.HashMap;
+<a class="jxr_linenumber" name="24" href="#24">24</a>  <strong class="jxr_keyword">import</strong> java.util.HashSet;
+<a class="jxr_linenumber" name="25" href="#25">25</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
+<a class="jxr_linenumber" name="26" href="#26">26</a>  <strong class="jxr_keyword">import</strong> java.util.Set;
+<a class="jxr_linenumber" name="27" href="#27">27</a>  <strong class="jxr_keyword">import</strong> javax.persistence.PersistenceException;
+<a class="jxr_linenumber" name="28" href="#28">28</a>  <strong class="jxr_keyword">import</strong> javax.persistence.spi.PersistenceUnitInfo;
+<a class="jxr_linenumber" name="29" href="#29">29</a>  <strong class="jxr_keyword">import</strong> javax.sql.DataSource;
+<a class="jxr_linenumber" name="30" href="#30">30</a>  
+<a class="jxr_linenumber" name="31" href="#31">31</a>  <strong class="jxr_keyword">import</strong> org.springframework.beans.factory.InitializingBean;
+<a class="jxr_linenumber" name="32" href="#32">32</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.ResourceLoaderAware;
+<a class="jxr_linenumber" name="33" href="#33">33</a>  <strong class="jxr_keyword">import</strong> org.springframework.context.weaving.LoadTimeWeaverAware;
+<a class="jxr_linenumber" name="34" href="#34">34</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.Resource;
+<a class="jxr_linenumber" name="35" href="#35">35</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.ResourceLoader;
+<a class="jxr_linenumber" name="36" href="#36">36</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+<a class="jxr_linenumber" name="37" href="#37">37</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.support.ResourcePatternResolver;
+<a class="jxr_linenumber" name="38" href="#38">38</a>  <strong class="jxr_keyword">import</strong> org.springframework.core.io.support.ResourcePatternUtils;
+<a class="jxr_linenumber" name="39" href="#39">39</a>  <strong class="jxr_keyword">import</strong> org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
+<a class="jxr_linenumber" name="40" href="#40">40</a>  <strong class="jxr_keyword">import</strong> org.springframework.instrument.classloading.LoadTimeWeaver;
+<a class="jxr_linenumber" name="41" href="#41">41</a>  <strong class="jxr_keyword">import</strong> org.springframework.jdbc.datasource.lookup.DataSourceLookup;
+<a class="jxr_linenumber" name="42" href="#42">42</a>  <strong class="jxr_keyword">import</strong> org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+<a class="jxr_linenumber" name="43" href="#43">43</a>  <strong class="jxr_keyword">import</strong> org.springframework.jdbc.datasource.lookup.MapDataSourceLookup;
+<a class="jxr_linenumber" name="44" href="#44">44</a>  <strong class="jxr_keyword">import</strong> org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
+<a class="jxr_linenumber" name="45" href="#45">45</a>  <strong class="jxr_keyword">import</strong> org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
+<a class="jxr_linenumber" name="46" href="#46">46</a>  <strong class="jxr_keyword">import</strong> org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
+<a class="jxr_linenumber" name="47" href="#47">47</a>  <strong class="jxr_keyword">import</strong> org.springframework.orm.jpa.persistenceunit.SmartPersistenceUnitInfo;
+<a class="jxr_linenumber" name="48" href="#48">48</a>  <strong class="jxr_keyword">import</strong> org.springframework.util.ClassUtils;
+<a class="jxr_linenumber" name="49" href="#49">49</a>  <strong class="jxr_keyword">import</strong> org.springframework.util.ObjectUtils;
+<a class="jxr_linenumber" name="50" href="#50">50</a>  
+<a class="jxr_linenumber" name="51" href="#51">51</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="52" href="#52">52</a>  <em class="jxr_javadoccomment"> * Default implementation of the {@link PersistenceUnitManager} interface.</em>
+<a class="jxr_linenumber" name="53" href="#53">53</a>  <em class="jxr_javadoccomment"> * Used as internal default by</em>
+<a class="jxr_linenumber" name="54" href="#54">54</a>  <em class="jxr_javadoccomment"> * {@link org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean}.</em>
+<a class="jxr_linenumber" name="55" href="#55">55</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="56" href="#56">56</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;Supports standard JPA scanning for &lt;code&gt;persistence.xml&lt;/code&gt; files,</em>
+<a class="jxr_linenumber" name="57" href="#57">57</a>  <em class="jxr_javadoccomment"> * with configurable file locations, JDBC DataSource lookup and load-time weaving.</em>
+<a class="jxr_linenumber" name="58" href="#58">58</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="59" href="#59">59</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;The default XML file location is &lt;code&gt;classpath*:META-INF/persistence.xml&lt;/code&gt;,</em>
+<a class="jxr_linenumber" name="60" href="#60">60</a>  <em class="jxr_javadoccomment"> * scanning for all matching files in the class path (as defined in the JPA specification).</em>
+<a class="jxr_linenumber" name="61" href="#61">61</a>  <em class="jxr_javadoccomment"> * DataSource names are by default interpreted as JNDI names, and no load time weaving</em>
+<a class="jxr_linenumber" name="62" href="#62">62</a>  <em class="jxr_javadoccomment"> * is available (which requires weaving to be turned off in the persistence provider).</em>
+<a class="jxr_linenumber" name="63" href="#63">63</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="64" href="#64">64</a>  <em class="jxr_javadoccomment"> * @author Juergen Hoeller</em>
+<a class="jxr_linenumber" name="65" href="#65">65</a>  <em class="jxr_javadoccomment"> * @since 2.0</em>
+<a class="jxr_linenumber" name="66" href="#66">66</a>  <em class="jxr_javadoccomment"> * @see #setPersistenceXmlLocations</em>
+<a class="jxr_linenumber" name="67" href="#67">67</a>  <em class="jxr_javadoccomment"> * @see #setDataSourceLookup</em>
+<a class="jxr_linenumber" name="68" href="#68">68</a>  <em class="jxr_javadoccomment"> * @see #setLoadTimeWeaver</em>
+<a class="jxr_linenumber" name="69" href="#69">69</a>  <em class="jxr_javadoccomment"> * @see org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean#setPersistenceUnitManager</em>
+<a class="jxr_linenumber" name="70" href="#70">70</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="71" href="#71">71</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitManager.html">APDPlatPersistenceUnitManager</a>
+<a class="jxr_linenumber" name="72" href="#72">72</a>  		<strong class="jxr_keyword">implements</strong> PersistenceUnitManager, ResourceLoaderAware, LoadTimeWeaverAware, InitializingBean {
+<a class="jxr_linenumber" name="73" href="#73">73</a>  
+<a class="jxr_linenumber" name="74" href="#74">74</a>  	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="75" href="#75">75</a>  <em class="jxr_javadoccomment">	 * Default location of the &lt;code&gt;persistence.xml&lt;/code&gt; file:</em>
+<a class="jxr_linenumber" name="76" href="#76">76</a>  <em class="jxr_javadoccomment">	 * "classpath*:META-INF/persistence.xml".</em>
+<a class="jxr_linenumber" name="77" href="#77">77</a>  <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="78" href="#78">78</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String DEFAULT_PERSISTENCE_XML_LOCATION = <span class="jxr_string">"classpath*:META-INF/persistence.xml"</span>;
+<a class="jxr_linenumber" name="79" href="#79">79</a>  
+<a class="jxr_linenumber" name="80" href="#80">80</a>  	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="81" href="#81">81</a>  <em class="jxr_javadoccomment">	 * Default location for the persistence unit root URL:</em>
+<a class="jxr_linenumber" name="82" href="#82">82</a>  <em class="jxr_javadoccomment">	 * "classpath:", indicating the root of the class path.</em>
+<a class="jxr_linenumber" name="83" href="#83">83</a>  <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="84" href="#84">84</a>  	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> String ORIGINAL_DEFAULT_PERSISTENCE_UNIT_ROOT_LOCATION = <span class="jxr_string">"classpath:"</span>;
+<a class="jxr_linenumber" name="85" href="#85">85</a>  
+<a class="jxr_linenumber" name="86" href="#86">86</a>  
+<a class="jxr_linenumber" name="87" href="#87">87</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> jpa2ApiPresent = ClassUtils.hasMethod(PersistenceUnitInfo.<strong class="jxr_keyword">class</strong>, <span class="jxr_string">"getSharedCacheMode"</span>);
+<a class="jxr_linenumber" name="88" href="#88">88</a>  
+<a class="jxr_linenumber" name="89" href="#89">89</a>  	<strong class="jxr_keyword">private</strong> String[] persistenceXmlLocations = <strong class="jxr_keyword">new</strong> String[] {DEFAULT_PERSISTENCE_XML_LOCATION};
+<a class="jxr_linenumber" name="90" href="#90">90</a>  
+<a class="jxr_linenumber" name="91" href="#91">91</a>  	<strong class="jxr_keyword">private</strong> String defaultPersistenceUnitRootLocation = ORIGINAL_DEFAULT_PERSISTENCE_UNIT_ROOT_LOCATION;
+<a class="jxr_linenumber" name="92" href="#92">92</a>  
+<a class="jxr_linenumber" name="93" href="#93">93</a>  	<strong class="jxr_keyword">private</strong> DataSourceLookup dataSourceLookup = <strong class="jxr_keyword">new</strong> JndiDataSourceLookup();
+<a class="jxr_linenumber" name="94" href="#94">94</a>  
+<a class="jxr_linenumber" name="95" href="#95">95</a>  	<strong class="jxr_keyword">private</strong> DataSource defaultDataSource;
+<a class="jxr_linenumber" name="96" href="#96">96</a>  
+<a class="jxr_linenumber" name="97" href="#97">97</a>  	<strong class="jxr_keyword">private</strong> PersistenceUnitPostProcessor[] persistenceUnitPostProcessors;
+<a class="jxr_linenumber" name="98" href="#98">98</a>  
+<a class="jxr_linenumber" name="99" href="#99">99</a>  	<strong class="jxr_keyword">private</strong> LoadTimeWeaver loadTimeWeaver;
+<a class="jxr_linenumber" name="100" href="#100">100</a> 
+<a class="jxr_linenumber" name="101" href="#101">101</a> 	<strong class="jxr_keyword">private</strong> ResourcePatternResolver resourcePatternResolver = <strong class="jxr_keyword">new</strong> PathMatchingResourcePatternResolver();
+<a class="jxr_linenumber" name="102" href="#102">102</a> 
+<a class="jxr_linenumber" name="103" href="#103">103</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Set&lt;String&gt; persistenceUnitInfoNames = <strong class="jxr_keyword">new</strong> HashSet&lt;String&gt;();
+<a class="jxr_linenumber" name="104" href="#104">104</a> 
+<a class="jxr_linenumber" name="105" href="#105">105</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Map&lt;String, PersistenceUnitInfo&gt; persistenceUnitInfos = <strong class="jxr_keyword">new</strong> HashMap&lt;String, PersistenceUnitInfo&gt;();
+<a class="jxr_linenumber" name="106" href="#106">106</a> 
+<a class="jxr_linenumber" name="107" href="#107">107</a> 
+<a class="jxr_linenumber" name="108" href="#108">108</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="109" href="#109">109</a> <em class="jxr_javadoccomment">	 * Specify the location of the &lt;code&gt;persistence.xml&lt;/code&gt; files to load.</em>
+<a class="jxr_linenumber" name="110" href="#110">110</a> <em class="jxr_javadoccomment">	 * These can be specified as Spring resource locations and/or location patterns.</em>
+<a class="jxr_linenumber" name="111" href="#111">111</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;Default is "classpath*:META-INF/persistence.xml".</em>
+<a class="jxr_linenumber" name="112" href="#112">112</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="113" href="#113">113</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setPersistenceXmlLocation(String persistenceXmlLocation) {
+<a class="jxr_linenumber" name="114" href="#114">114</a> 		<strong class="jxr_keyword">this</strong>.persistenceXmlLocations = <strong class="jxr_keyword">new</strong> String[] {persistenceXmlLocation};
+<a class="jxr_linenumber" name="115" href="#115">115</a> 	}
+<a class="jxr_linenumber" name="116" href="#116">116</a> 
+<a class="jxr_linenumber" name="117" href="#117">117</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="118" href="#118">118</a> <em class="jxr_javadoccomment">	 * Specify multiple locations of &lt;code&gt;persistence.xml&lt;/code&gt; files to load.</em>
+<a class="jxr_linenumber" name="119" href="#119">119</a> <em class="jxr_javadoccomment">	 * These can be specified as Spring resource locations and/or location patterns.</em>
+<a class="jxr_linenumber" name="120" href="#120">120</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;Default is "classpath*:META-INF/persistence.xml".</em>
+<a class="jxr_linenumber" name="121" href="#121">121</a> <em class="jxr_javadoccomment">	 * @param persistenceXmlLocations an array of Spring resource Strings</em>
+<a class="jxr_linenumber" name="122" href="#122">122</a> <em class="jxr_javadoccomment">	 * identifying the location of the &lt;code&gt;persistence.xml&lt;/code&gt; files to read</em>
+<a class="jxr_linenumber" name="123" href="#123">123</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="124" href="#124">124</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setPersistenceXmlLocations(String[] persistenceXmlLocations) {
+<a class="jxr_linenumber" name="125" href="#125">125</a> 		<strong class="jxr_keyword">this</strong>.persistenceXmlLocations = persistenceXmlLocations;
+<a class="jxr_linenumber" name="126" href="#126">126</a> 	}
+<a class="jxr_linenumber" name="127" href="#127">127</a> 
+<a class="jxr_linenumber" name="128" href="#128">128</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="129" href="#129">129</a> <em class="jxr_javadoccomment">	 * Set the default persistence unit root location, to be applied</em>
+<a class="jxr_linenumber" name="130" href="#130">130</a> <em class="jxr_javadoccomment">	 * if no unit-specific persistence unit root could be determined.</em>
+<a class="jxr_linenumber" name="131" href="#131">131</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;Default is "classpath:", that is, the root of the current class path</em>
+<a class="jxr_linenumber" name="132" href="#132">132</a> <em class="jxr_javadoccomment">	 * (nearest root directory). To be overridden if unit-specific resolution</em>
+<a class="jxr_linenumber" name="133" href="#133">133</a> <em class="jxr_javadoccomment">	 * does not work and the class path root is not appropriate either.</em>
+<a class="jxr_linenumber" name="134" href="#134">134</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="135" href="#135">135</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDefaultPersistenceUnitRootLocation(String defaultPersistenceUnitRootLocation) {
+<a class="jxr_linenumber" name="136" href="#136">136</a> 		<strong class="jxr_keyword">this</strong>.defaultPersistenceUnitRootLocation = defaultPersistenceUnitRootLocation;
+<a class="jxr_linenumber" name="137" href="#137">137</a> 	}
+<a class="jxr_linenumber" name="138" href="#138">138</a> 
+<a class="jxr_linenumber" name="139" href="#139">139</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="140" href="#140">140</a> <em class="jxr_javadoccomment">	 * Specify the JDBC DataSources that the JPA persistence provider is supposed</em>
+<a class="jxr_linenumber" name="141" href="#141">141</a> <em class="jxr_javadoccomment">	 * to use for accessing the database, resolving data source names in</em>
+<a class="jxr_linenumber" name="142" href="#142">142</a> <em class="jxr_javadoccomment">	 * &lt;code&gt;persistence.xml&lt;/code&gt; against Spring-managed DataSources.</em>
+<a class="jxr_linenumber" name="143" href="#143">143</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;The specified Map needs to define data source names for specific DataSource</em>
+<a class="jxr_linenumber" name="144" href="#144">144</a> <em class="jxr_javadoccomment">	 * objects, matching the data source names used in &lt;code&gt;persistence.xml&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="145" href="#145">145</a> <em class="jxr_javadoccomment">	 * If not specified, data source names will be resolved as JNDI names instead</em>
+<a class="jxr_linenumber" name="146" href="#146">146</a> <em class="jxr_javadoccomment">	 * (as defined by standard JPA).</em>
+<a class="jxr_linenumber" name="147" href="#147">147</a> <em class="jxr_javadoccomment">	 * @see org.springframework.jdbc.datasource.lookup.MapDataSourceLookup</em>
+<a class="jxr_linenumber" name="148" href="#148">148</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="149" href="#149">149</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDataSources(Map&lt;String, DataSource&gt; dataSources) {
+<a class="jxr_linenumber" name="150" href="#150">150</a> 		<strong class="jxr_keyword">this</strong>.dataSourceLookup = <strong class="jxr_keyword">new</strong> MapDataSourceLookup(dataSources);
+<a class="jxr_linenumber" name="151" href="#151">151</a> 	}
+<a class="jxr_linenumber" name="152" href="#152">152</a> 
+<a class="jxr_linenumber" name="153" href="#153">153</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="154" href="#154">154</a> <em class="jxr_javadoccomment">	 * Specify the JDBC DataSourceLookup that provides DataSources for the</em>
+<a class="jxr_linenumber" name="155" href="#155">155</a> <em class="jxr_javadoccomment">	 * persistence provider, resolving data source names in &lt;code&gt;persistence.xml&lt;/code&gt;</em>
+<a class="jxr_linenumber" name="156" href="#156">156</a> <em class="jxr_javadoccomment">	 * against Spring-managed DataSource instances.</em>
+<a class="jxr_linenumber" name="157" href="#157">157</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;Default is JndiDataSourceLookup, which resolves DataSource names as</em>
+<a class="jxr_linenumber" name="158" href="#158">158</a> <em class="jxr_javadoccomment">	 * JNDI names (as defined by standard JPA). Specify a BeanFactoryDataSourceLookup</em>
+<a class="jxr_linenumber" name="159" href="#159">159</a> <em class="jxr_javadoccomment">	 * instance if you want DataSource names to be resolved against Spring bean names.</em>
+<a class="jxr_linenumber" name="160" href="#160">160</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;Alternatively, consider passing in a map from names to DataSource instances</em>
+<a class="jxr_linenumber" name="161" href="#161">161</a> <em class="jxr_javadoccomment">	 * via the "dataSources" property. If the &lt;code&gt;persistence.xml&lt;/code&gt; file</em>
+<a class="jxr_linenumber" name="162" href="#162">162</a> <em class="jxr_javadoccomment">	 * does not define DataSource names at all, specify a default DataSource</em>
+<a class="jxr_linenumber" name="163" href="#163">163</a> <em class="jxr_javadoccomment">	 * via the "defaultDataSource" property.</em>
+<a class="jxr_linenumber" name="164" href="#164">164</a> <em class="jxr_javadoccomment">	 * @see org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup</em>
+<a class="jxr_linenumber" name="165" href="#165">165</a> <em class="jxr_javadoccomment">	 * @see org.springframework.jdbc.datasource.lookup.BeanFactoryDataSourceLookup</em>
+<a class="jxr_linenumber" name="166" href="#166">166</a> <em class="jxr_javadoccomment">	 * @see #setDataSources</em>
+<a class="jxr_linenumber" name="167" href="#167">167</a> <em class="jxr_javadoccomment">	 * @see #setDefaultDataSource</em>
+<a class="jxr_linenumber" name="168" href="#168">168</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="169" href="#169">169</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDataSourceLookup(DataSourceLookup dataSourceLookup) {
+<a class="jxr_linenumber" name="170" href="#170">170</a> 		<strong class="jxr_keyword">this</strong>.dataSourceLookup = (dataSourceLookup != <strong class="jxr_keyword">null</strong> ? dataSourceLookup : <strong class="jxr_keyword">new</strong> JndiDataSourceLookup());
+<a class="jxr_linenumber" name="171" href="#171">171</a> 	}
+<a class="jxr_linenumber" name="172" href="#172">172</a> 
+<a class="jxr_linenumber" name="173" href="#173">173</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="174" href="#174">174</a> <em class="jxr_javadoccomment">	 * Return the JDBC DataSourceLookup that provides DataSources for the</em>
+<a class="jxr_linenumber" name="175" href="#175">175</a> <em class="jxr_javadoccomment">	 * persistence provider, resolving data source names in &lt;code&gt;persistence.xml&lt;/code&gt;</em>
+<a class="jxr_linenumber" name="176" href="#176">176</a> <em class="jxr_javadoccomment">	 * against Spring-managed DataSource instances.</em>
+<a class="jxr_linenumber" name="177" href="#177">177</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="178" href="#178">178</a> 	<strong class="jxr_keyword">public</strong> DataSourceLookup getDataSourceLookup() {
+<a class="jxr_linenumber" name="179" href="#179">179</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.dataSourceLookup;
+<a class="jxr_linenumber" name="180" href="#180">180</a> 	}
+<a class="jxr_linenumber" name="181" href="#181">181</a> 
+<a class="jxr_linenumber" name="182" href="#182">182</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="183" href="#183">183</a> <em class="jxr_javadoccomment">	 * Specify the JDBC DataSource that the JPA persistence provider is supposed</em>
+<a class="jxr_linenumber" name="184" href="#184">184</a> <em class="jxr_javadoccomment">	 * to use for accessing the database if none has been specified in</em>
+<a class="jxr_linenumber" name="185" href="#185">185</a> <em class="jxr_javadoccomment">	 * &lt;code&gt;persistence.xml&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="186" href="#186">186</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;In JPA speak, a DataSource passed in here will be uses as "nonJtaDataSource"</em>
+<a class="jxr_linenumber" name="187" href="#187">187</a> <em class="jxr_javadoccomment">	 * on the PersistenceUnitInfo passed to the PersistenceProvider, provided that</em>
+<a class="jxr_linenumber" name="188" href="#188">188</a> <em class="jxr_javadoccomment">	 * none has been registered before.</em>
+<a class="jxr_linenumber" name="189" href="#189">189</a> <em class="jxr_javadoccomment">	 * @see javax.persistence.spi.PersistenceUnitInfo#getNonJtaDataSource()</em>
+<a class="jxr_linenumber" name="190" href="#190">190</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="191" href="#191">191</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setDefaultDataSource(DataSource defaultDataSource) {
+<a class="jxr_linenumber" name="192" href="#192">192</a> 		<strong class="jxr_keyword">this</strong>.defaultDataSource = defaultDataSource;
+<a class="jxr_linenumber" name="193" href="#193">193</a> 	}
+<a class="jxr_linenumber" name="194" href="#194">194</a> 
+<a class="jxr_linenumber" name="195" href="#195">195</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="196" href="#196">196</a> <em class="jxr_javadoccomment">	 * Return the JDBC DataSource that the JPA persistence provider is supposed</em>
+<a class="jxr_linenumber" name="197" href="#197">197</a> <em class="jxr_javadoccomment">	 * to use for accessing the database if none has been specified in</em>
+<a class="jxr_linenumber" name="198" href="#198">198</a> <em class="jxr_javadoccomment">	 * &lt;code&gt;persistence.xml&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="199" href="#199">199</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="200" href="#200">200</a> 	<strong class="jxr_keyword">public</strong> DataSource getDefaultDataSource() {
+<a class="jxr_linenumber" name="201" href="#201">201</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.defaultDataSource;
+<a class="jxr_linenumber" name="202" href="#202">202</a> 	}
+<a class="jxr_linenumber" name="203" href="#203">203</a> 
+<a class="jxr_linenumber" name="204" href="#204">204</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="205" href="#205">205</a> <em class="jxr_javadoccomment">	 * Set the PersistenceUnitPostProcessors to be applied to each</em>
+<a class="jxr_linenumber" name="206" href="#206">206</a> <em class="jxr_javadoccomment">	 * PersistenceUnitInfo that has been parsed by this manager.</em>
+<a class="jxr_linenumber" name="207" href="#207">207</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;Such post-processors can, for example, register further entity</em>
+<a class="jxr_linenumber" name="208" href="#208">208</a> <em class="jxr_javadoccomment">	 * classes and jar files, in addition to the metadata read in from</em>
+<a class="jxr_linenumber" name="209" href="#209">209</a> <em class="jxr_javadoccomment">	 * &lt;code&gt;persistence.xml&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="210" href="#210">210</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="211" href="#211">211</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setPersistenceUnitPostProcessors(PersistenceUnitPostProcessor[] postProcessors) {
+<a class="jxr_linenumber" name="212" href="#212">212</a> 		<strong class="jxr_keyword">this</strong>.persistenceUnitPostProcessors = postProcessors;
+<a class="jxr_linenumber" name="213" href="#213">213</a> 	}
+<a class="jxr_linenumber" name="214" href="#214">214</a> 
+<a class="jxr_linenumber" name="215" href="#215">215</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="216" href="#216">216</a> <em class="jxr_javadoccomment">	 * Return the PersistenceUnitPostProcessors to be applied to each</em>
+<a class="jxr_linenumber" name="217" href="#217">217</a> <em class="jxr_javadoccomment">	 * PersistenceUnitInfo that has been parsed by this manager.</em>
+<a class="jxr_linenumber" name="218" href="#218">218</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="219" href="#219">219</a> 	<strong class="jxr_keyword">public</strong> PersistenceUnitPostProcessor[] getPersistenceUnitPostProcessors() {
+<a class="jxr_linenumber" name="220" href="#220">220</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.persistenceUnitPostProcessors;
+<a class="jxr_linenumber" name="221" href="#221">221</a> 	}
+<a class="jxr_linenumber" name="222" href="#222">222</a> 
+<a class="jxr_linenumber" name="223" href="#223">223</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="224" href="#224">224</a> <em class="jxr_javadoccomment">	 * Specify the Spring LoadTimeWeaver to use for class instrumentation according</em>
+<a class="jxr_linenumber" name="225" href="#225">225</a> <em class="jxr_javadoccomment">	 * to the JPA class transformer contract.</em>
+<a class="jxr_linenumber" name="226" href="#226">226</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;It is not required to specify a LoadTimeWeaver: Most providers will be</em>
+<a class="jxr_linenumber" name="227" href="#227">227</a> <em class="jxr_javadoccomment">	 * able to provide a subset of their functionality without class instrumentation</em>
+<a class="jxr_linenumber" name="228" href="#228">228</a> <em class="jxr_javadoccomment">	 * as well, or operate with their VM agent specified on JVM startup.</em>
+<a class="jxr_linenumber" name="229" href="#229">229</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;In terms of Spring-provided weaving options, the most important ones are</em>
+<a class="jxr_linenumber" name="230" href="#230">230</a> <em class="jxr_javadoccomment">	 * InstrumentationLoadTimeWeaver, which requires a Spring-specific (but very general)</em>
+<a class="jxr_linenumber" name="231" href="#231">231</a> <em class="jxr_javadoccomment">	 * VM agent specified on JVM startup, and ReflectiveLoadTimeWeaver, which interacts</em>
+<a class="jxr_linenumber" name="232" href="#232">232</a> <em class="jxr_javadoccomment">	 * with an underlying ClassLoader based on specific extended methods being available</em>
+<a class="jxr_linenumber" name="233" href="#233">233</a> <em class="jxr_javadoccomment">	 * on it (for example, interacting with Spring's TomcatInstrumentableClassLoader).</em>
+<a class="jxr_linenumber" name="234" href="#234">234</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;&lt;b&gt;NOTE:&lt;/b&gt; As of Spring 2.5, the context's default LoadTimeWeaver (defined</em>
+<a class="jxr_linenumber" name="235" href="#235">235</a> <em class="jxr_javadoccomment">	 * as bean with name "loadTimeWeaver") will be picked up automatically, if available,</em>
+<a class="jxr_linenumber" name="236" href="#236">236</a> <em class="jxr_javadoccomment">	 * removing the need for LoadTimeWeaver configuration on each affected target bean.&lt;/b&gt;</em>
+<a class="jxr_linenumber" name="237" href="#237">237</a> <em class="jxr_javadoccomment">	 * Consider using the &lt;code&gt;context:load-time-weaver&lt;/code&gt; XML tag for creating</em>
+<a class="jxr_linenumber" name="238" href="#238">238</a> <em class="jxr_javadoccomment">	 * such a shared LoadTimeWeaver (autodetecting the environment by default).</em>
+<a class="jxr_linenumber" name="239" href="#239">239</a> <em class="jxr_javadoccomment">	 * @see org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver</em>
+<a class="jxr_linenumber" name="240" href="#240">240</a> <em class="jxr_javadoccomment">	 * @see org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver</em>
+<a class="jxr_linenumber" name="241" href="#241">241</a> <em class="jxr_javadoccomment">	 * @see org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader</em>
+<a class="jxr_linenumber" name="242" href="#242">242</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="243" href="#243">243</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
+<a class="jxr_linenumber" name="244" href="#244">244</a> 		<strong class="jxr_keyword">this</strong>.loadTimeWeaver = loadTimeWeaver;
+<a class="jxr_linenumber" name="245" href="#245">245</a> 	}
+<a class="jxr_linenumber" name="246" href="#246">246</a> 
+<a class="jxr_linenumber" name="247" href="#247">247</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="248" href="#248">248</a> <em class="jxr_javadoccomment">	 * Return the Spring LoadTimeWeaver to use for class instrumentation according</em>
+<a class="jxr_linenumber" name="249" href="#249">249</a> <em class="jxr_javadoccomment">	 * to the JPA class transformer contract.</em>
+<a class="jxr_linenumber" name="250" href="#250">250</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="251" href="#251">251</a> 	<strong class="jxr_keyword">public</strong> LoadTimeWeaver getLoadTimeWeaver() {
+<a class="jxr_linenumber" name="252" href="#252">252</a> 		<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.loadTimeWeaver;
+<a class="jxr_linenumber" name="253" href="#253">253</a> 	}
+<a class="jxr_linenumber" name="254" href="#254">254</a> 
+<a class="jxr_linenumber" name="255" href="#255">255</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setResourceLoader(ResourceLoader resourceLoader) {
+<a class="jxr_linenumber" name="256" href="#256">256</a> 		<strong class="jxr_keyword">this</strong>.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
+<a class="jxr_linenumber" name="257" href="#257">257</a> 	}
+<a class="jxr_linenumber" name="258" href="#258">258</a> 
+<a class="jxr_linenumber" name="259" href="#259">259</a> 
+<a class="jxr_linenumber" name="260" href="#260">260</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> afterPropertiesSet() {
+<a class="jxr_linenumber" name="261" href="#261">261</a> 		<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.loadTimeWeaver == <strong class="jxr_keyword">null</strong> &amp;&amp; InstrumentationLoadTimeWeaver.isInstrumentationAvailable()) {
+<a class="jxr_linenumber" name="262" href="#262">262</a> 			<strong class="jxr_keyword">this</strong>.loadTimeWeaver = <strong class="jxr_keyword">new</strong> InstrumentationLoadTimeWeaver(<strong class="jxr_keyword">this</strong>.resourcePatternResolver.getClassLoader());
+<a class="jxr_linenumber" name="263" href="#263">263</a> 		}
+<a class="jxr_linenumber" name="264" href="#264">264</a> 		preparePersistenceUnitInfos();
+<a class="jxr_linenumber" name="265" href="#265">265</a> 	}
+<a class="jxr_linenumber" name="266" href="#266">266</a> 
+<a class="jxr_linenumber" name="267" href="#267">267</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="268" href="#268">268</a> <em class="jxr_javadoccomment">	 * Prepare the PersistenceUnitInfos according to the configuration</em>
+<a class="jxr_linenumber" name="269" href="#269">269</a> <em class="jxr_javadoccomment">	 * of this manager: scanning for &lt;code&gt;persistence.xml&lt;/code&gt; files,</em>
+<a class="jxr_linenumber" name="270" href="#270">270</a> <em class="jxr_javadoccomment">	 * parsing all matching files, configurating and post-processing them.</em>
+<a class="jxr_linenumber" name="271" href="#271">271</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;PersistenceUnitInfos cannot be obtained before this preparation</em>
+<a class="jxr_linenumber" name="272" href="#272">272</a> <em class="jxr_javadoccomment">	 * method has been invoked.</em>
+<a class="jxr_linenumber" name="273" href="#273">273</a> <em class="jxr_javadoccomment">	 * @see #obtainDefaultPersistenceUnitInfo()</em>
+<a class="jxr_linenumber" name="274" href="#274">274</a> <em class="jxr_javadoccomment">	 * @see #obtainPersistenceUnitInfo(String)</em>
+<a class="jxr_linenumber" name="275" href="#275">275</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="276" href="#276">276</a> 	<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> preparePersistenceUnitInfos() {
+<a class="jxr_linenumber" name="277" href="#277">277</a> 		<strong class="jxr_keyword">this</strong>.persistenceUnitInfoNames.clear();
+<a class="jxr_linenumber" name="278" href="#278">278</a> 		<strong class="jxr_keyword">this</strong>.persistenceUnitInfos.clear();
+<a class="jxr_linenumber" name="279" href="#279">279</a> 		SpringPersistenceUnitInfo[] puis = readPersistenceUnitInfos();
+<a class="jxr_linenumber" name="280" href="#280">280</a> 		<strong class="jxr_keyword">for</strong> (SpringPersistenceUnitInfo pui : puis) {
+<a class="jxr_linenumber" name="281" href="#281">281</a> 			<strong class="jxr_keyword">if</strong> (pui.getPersistenceUnitRootUrl() == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="282" href="#282">282</a> 				pui.setPersistenceUnitRootUrl(determineDefaultPersistenceUnitRootUrl());
+<a class="jxr_linenumber" name="283" href="#283">283</a> 			}
+<a class="jxr_linenumber" name="284" href="#284">284</a> 			<strong class="jxr_keyword">if</strong> (pui.getNonJtaDataSource() == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="285" href="#285">285</a> 				pui.setNonJtaDataSource(<strong class="jxr_keyword">this</strong>.defaultDataSource);
+<a class="jxr_linenumber" name="286" href="#286">286</a> 			}
+<a class="jxr_linenumber" name="287" href="#287">287</a> 			<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.loadTimeWeaver != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="288" href="#288">288</a> 				pui.init(<strong class="jxr_keyword">this</strong>.loadTimeWeaver);
+<a class="jxr_linenumber" name="289" href="#289">289</a> 			}
+<a class="jxr_linenumber" name="290" href="#290">290</a> 			<strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="291" href="#291">291</a> 				pui.init(<strong class="jxr_keyword">this</strong>.resourcePatternResolver.getClassLoader());
+<a class="jxr_linenumber" name="292" href="#292">292</a> 			}
+<a class="jxr_linenumber" name="293" href="#293">293</a> 			postProcessPersistenceUnitInfo(pui);
+<a class="jxr_linenumber" name="294" href="#294">294</a> 			String name = pui.getPersistenceUnitName();
+<a class="jxr_linenumber" name="295" href="#295">295</a> 			<strong class="jxr_keyword">this</strong>.persistenceUnitInfoNames.add(name);
+<a class="jxr_linenumber" name="296" href="#296">296</a> 			PersistenceUnitInfo puiToStore = pui;
+<a class="jxr_linenumber" name="297" href="#297">297</a> 			<strong class="jxr_keyword">if</strong> (jpa2ApiPresent) {
+<a class="jxr_linenumber" name="298" href="#298">298</a> 				puiToStore = (PersistenceUnitInfo) Proxy.newProxyInstance(SmartPersistenceUnitInfo.<strong class="jxr_keyword">class</strong>.getClassLoader(),
+<a class="jxr_linenumber" name="299" href="#299">299</a> 						<strong class="jxr_keyword">new</strong> Class[] {SmartPersistenceUnitInfo.<strong class="jxr_keyword">class</strong>}, <strong class="jxr_keyword">new</strong> Jpa2PersistenceUnitInfoDecorator(pui));
+<a class="jxr_linenumber" name="300" href="#300">300</a> 			}
+<a class="jxr_linenumber" name="301" href="#301">301</a> 			<strong class="jxr_keyword">this</strong>.persistenceUnitInfos.put(name, puiToStore);
+<a class="jxr_linenumber" name="302" href="#302">302</a> 		}
+<a class="jxr_linenumber" name="303" href="#303">303</a> 	}
+<a class="jxr_linenumber" name="304" href="#304">304</a> 
+<a class="jxr_linenumber" name="305" href="#305">305</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="306" href="#306">306</a> <em class="jxr_javadoccomment">	 * Read all persistence unit infos from &lt;code&gt;persistence.xml&lt;/code&gt;,</em>
+<a class="jxr_linenumber" name="307" href="#307">307</a> <em class="jxr_javadoccomment">	 * as defined in the JPA specification.</em>
+<a class="jxr_linenumber" name="308" href="#308">308</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="309" href="#309">309</a> 	<strong class="jxr_keyword">private</strong> <a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitReader.html">SpringPersistenceUnitInfo</a>[] readPersistenceUnitInfos() {
+<a class="jxr_linenumber" name="310" href="#310">310</a> 		APDPlatPersistenceUnitReader reader = <strong class="jxr_keyword">new</strong> <a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitReader.html">APDPlatPersistenceUnitReader</a>(<strong class="jxr_keyword">this</strong>.resourcePatternResolver, <strong class="jxr_keyword">this</strong>.dataSourceLookup);
+<a class="jxr_linenumber" name="311" href="#311">311</a> 		<strong class="jxr_keyword">return</strong> reader.readPersistenceUnitInfos(<strong class="jxr_keyword">this</strong>.persistenceXmlLocations);
+<a class="jxr_linenumber" name="312" href="#312">312</a> 	}
+<a class="jxr_linenumber" name="313" href="#313">313</a> 
+<a class="jxr_linenumber" name="314" href="#314">314</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="315" href="#315">315</a> <em class="jxr_javadoccomment">	 * Try to determine the persistence unit root URL based on the given</em>
+<a class="jxr_linenumber" name="316" href="#316">316</a> <em class="jxr_javadoccomment">	 * "defaultPersistenceUnitRootLocation".</em>
+<a class="jxr_linenumber" name="317" href="#317">317</a> <em class="jxr_javadoccomment">	 * @return the persistence unit root URL to pass to the JPA PersistenceProvider</em>
+<a class="jxr_linenumber" name="318" href="#318">318</a> <em class="jxr_javadoccomment">	 * @see #setDefaultPersistenceUnitRootLocation</em>
+<a class="jxr_linenumber" name="319" href="#319">319</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="320" href="#320">320</a> 	<strong class="jxr_keyword">private</strong> URL determineDefaultPersistenceUnitRootUrl() {
+<a class="jxr_linenumber" name="321" href="#321">321</a> 		<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.defaultPersistenceUnitRootLocation == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="322" href="#322">322</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="323" href="#323">323</a> 		}
+<a class="jxr_linenumber" name="324" href="#324">324</a> 		<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="325" href="#325">325</a> 			Resource res = <strong class="jxr_keyword">this</strong>.resourcePatternResolver.getResource(<strong class="jxr_keyword">this</strong>.defaultPersistenceUnitRootLocation);
+<a class="jxr_linenumber" name="326" href="#326">326</a> 			<strong class="jxr_keyword">return</strong> res.getURL();
+<a class="jxr_linenumber" name="327" href="#327">327</a> 		}
+<a class="jxr_linenumber" name="328" href="#328">328</a> 		<strong class="jxr_keyword">catch</strong> (IOException ex) {
+<a class="jxr_linenumber" name="329" href="#329">329</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> PersistenceException(<span class="jxr_string">"Unable to resolve persistence unit root URL"</span>, ex);
+<a class="jxr_linenumber" name="330" href="#330">330</a> 		}
+<a class="jxr_linenumber" name="331" href="#331">331</a> 	}
+<a class="jxr_linenumber" name="332" href="#332">332</a> 
+<a class="jxr_linenumber" name="333" href="#333">333</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="334" href="#334">334</a> <em class="jxr_javadoccomment">	 * Return the specified PersistenceUnitInfo from this manager's cache</em>
+<a class="jxr_linenumber" name="335" href="#335">335</a> <em class="jxr_javadoccomment">	 * of processed persistence units, keeping it in the cache (i.e. not</em>
+<a class="jxr_linenumber" name="336" href="#336">336</a> <em class="jxr_javadoccomment">	 * 'obtaining' it for use but rather just accessing it for post-processing).</em>
+<a class="jxr_linenumber" name="337" href="#337">337</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;This can be used in {@link #postProcessPersistenceUnitInfo} implementations,</em>
+<a class="jxr_linenumber" name="338" href="#338">338</a> <em class="jxr_javadoccomment">	 * detecting existing persistence units of the same name and potentially merging them.</em>
+<a class="jxr_linenumber" name="339" href="#339">339</a> <em class="jxr_javadoccomment">	 * @param persistenceUnitName the name of the desired persistence unit</em>
+<a class="jxr_linenumber" name="340" href="#340">340</a> <em class="jxr_javadoccomment">	 * @return the PersistenceUnitInfo in mutable form, or &lt;code&gt;null&lt;/code&gt; if not available</em>
+<a class="jxr_linenumber" name="341" href="#341">341</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="342" href="#342">342</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> MutablePersistenceUnitInfo getPersistenceUnitInfo(String persistenceUnitName) {
+<a class="jxr_linenumber" name="343" href="#343">343</a> 		PersistenceUnitInfo pui = <strong class="jxr_keyword">this</strong>.persistenceUnitInfos.get(persistenceUnitName);
+<a class="jxr_linenumber" name="344" href="#344">344</a> 		<strong class="jxr_keyword">if</strong> (pui != <strong class="jxr_keyword">null</strong> &amp;&amp; Proxy.isProxyClass(pui.getClass())) {
+<a class="jxr_linenumber" name="345" href="#345">345</a> 			<em class="jxr_comment">// JPA 2.0 PersistenceUnitInfo decorator with a SpringPersistenceUnitInfo as target</em>
+<a class="jxr_linenumber" name="346" href="#346">346</a> 			Jpa2PersistenceUnitInfoDecorator dec = (Jpa2PersistenceUnitInfoDecorator) Proxy.getInvocationHandler(pui);
+<a class="jxr_linenumber" name="347" href="#347">347</a> 			<strong class="jxr_keyword">return</strong> dec.getTarget();
+<a class="jxr_linenumber" name="348" href="#348">348</a> 		}
+<a class="jxr_linenumber" name="349" href="#349">349</a> 		<strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="350" href="#350">350</a> 			<em class="jxr_comment">// Must be a raw JPA 1.0 SpringPersistenceUnitInfo instance</em>
+<a class="jxr_linenumber" name="351" href="#351">351</a> 			<strong class="jxr_keyword">return</strong> (MutablePersistenceUnitInfo) pui;
+<a class="jxr_linenumber" name="352" href="#352">352</a> 		}
+<a class="jxr_linenumber" name="353" href="#353">353</a> 	}
+<a class="jxr_linenumber" name="354" href="#354">354</a> 
+<a class="jxr_linenumber" name="355" href="#355">355</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="356" href="#356">356</a> <em class="jxr_javadoccomment">	 * Hook method allowing subclasses to customize each PersistenceUnitInfo.</em>
+<a class="jxr_linenumber" name="357" href="#357">357</a> <em class="jxr_javadoccomment">	 * &lt;p&gt;Default implementation delegates to all registered PersistenceUnitPostProcessors.</em>
+<a class="jxr_linenumber" name="358" href="#358">358</a> <em class="jxr_javadoccomment">	 * It is usually preferable to register further entity classes, jar files etc there</em>
+<a class="jxr_linenumber" name="359" href="#359">359</a> <em class="jxr_javadoccomment">	 * rather than in a subclass of this manager, to be able to reuse the post-processors.</em>
+<a class="jxr_linenumber" name="360" href="#360">360</a> <em class="jxr_javadoccomment">	 * @param pui the chosen PersistenceUnitInfo, as read from &lt;code&gt;persistence.xml&lt;/code&gt;.</em>
+<a class="jxr_linenumber" name="361" href="#361">361</a> <em class="jxr_javadoccomment">	 * Passed in as MutablePersistenceUnitInfo.</em>
+<a class="jxr_linenumber" name="362" href="#362">362</a> <em class="jxr_javadoccomment">	 * @see #setPersistenceUnitPostProcessors</em>
+<a class="jxr_linenumber" name="363" href="#363">363</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="364" href="#364">364</a> 	<strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo pui) {
+<a class="jxr_linenumber" name="365" href="#365">365</a> 		PersistenceUnitPostProcessor[] postProcessors = getPersistenceUnitPostProcessors();
+<a class="jxr_linenumber" name="366" href="#366">366</a> 		<strong class="jxr_keyword">if</strong> (postProcessors != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="367" href="#367">367</a> 			<strong class="jxr_keyword">for</strong> (PersistenceUnitPostProcessor postProcessor : postProcessors) {
+<a class="jxr_linenumber" name="368" href="#368">368</a> 				postProcessor.postProcessPersistenceUnitInfo(pui);
+<a class="jxr_linenumber" name="369" href="#369">369</a> 			}
+<a class="jxr_linenumber" name="370" href="#370">370</a> 		}
+<a class="jxr_linenumber" name="371" href="#371">371</a> 	}
+<a class="jxr_linenumber" name="372" href="#372">372</a> 
+<a class="jxr_linenumber" name="373" href="#373">373</a> 
+<a class="jxr_linenumber" name="374" href="#374">374</a>         @Override
+<a class="jxr_linenumber" name="375" href="#375">375</a> 	<strong class="jxr_keyword">public</strong> PersistenceUnitInfo obtainDefaultPersistenceUnitInfo() {
+<a class="jxr_linenumber" name="376" href="#376">376</a> 		<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.persistenceUnitInfoNames.isEmpty()) {
+<a class="jxr_linenumber" name="377" href="#377">377</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"No persistence units parsed from "</span> +
+<a class="jxr_linenumber" name="378" href="#378">378</a> 					ObjectUtils.nullSafeToString(<strong class="jxr_keyword">this</strong>.persistenceXmlLocations));
+<a class="jxr_linenumber" name="379" href="#379">379</a> 		}
+<a class="jxr_linenumber" name="380" href="#380">380</a> 		<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.persistenceUnitInfos.isEmpty()) {
+<a class="jxr_linenumber" name="381" href="#381">381</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"All persistence units from "</span> +
+<a class="jxr_linenumber" name="382" href="#382">382</a> 					ObjectUtils.nullSafeToString(<strong class="jxr_keyword">this</strong>.persistenceXmlLocations) + <span class="jxr_string">" already obtained"</span>);
+<a class="jxr_linenumber" name="383" href="#383">383</a> 		}
+<a class="jxr_linenumber" name="384" href="#384">384</a> 		<strong class="jxr_keyword">if</strong> (<strong class="jxr_keyword">this</strong>.persistenceUnitInfos.size() &gt; 1) {
+<a class="jxr_linenumber" name="385" href="#385">385</a> 			<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"No single default persistence unit defined in "</span> +
+<a class="jxr_linenumber" name="386" href="#386">386</a> 					ObjectUtils.nullSafeToString(<strong class="jxr_keyword">this</strong>.persistenceXmlLocations));
+<a class="jxr_linenumber" name="387" href="#387">387</a> 		}
+<a class="jxr_linenumber" name="388" href="#388">388</a> 		PersistenceUnitInfo pui = <strong class="jxr_keyword">this</strong>.persistenceUnitInfos.values().iterator().next();
+<a class="jxr_linenumber" name="389" href="#389">389</a> 		<strong class="jxr_keyword">this</strong>.persistenceUnitInfos.clear();
+<a class="jxr_linenumber" name="390" href="#390">390</a> 
+<a class="jxr_linenumber" name="391" href="#391">391</a>                 <em class="jxr_comment">//下面一行代码解决以下异常</em>
+<a class="jxr_linenumber" name="392" href="#392">392</a>                 pui.getJarFileUrls().remove(pui.getPersistenceUnitRootUrl());
+<a class="jxr_linenumber" name="393" href="#393">393</a>                 <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="394" href="#394">394</a> <em class="jxr_comment">                 * </em>
+<a class="jxr_linenumber" name="395" href="#395">395</a> <em class="jxr_comment">Caused by: org.hibernate.AssertionFailure: Cannot read files twice on NativeScanner</em>
+<a class="jxr_linenumber" name="396" href="#396">396</a> <em class="jxr_comment">        at org.hibernate.ejb.packaging.NativeScanner.getFilesInJar(NativeScanner.java:168)</em>
+<a class="jxr_linenumber" name="397" href="#397">397</a> <em class="jxr_comment">        at org.hibernate.ejb.Ejb3Configuration.addScannedEntries(Ejb3Configuration.java:497)</em>
+<a class="jxr_linenumber" name="398" href="#398">398</a> <em class="jxr_comment">        at org.hibernate.ejb.Ejb3Configuration.scanForClasses(Ejb3Configuration.java:851)</em>
+<a class="jxr_linenumber" name="399" href="#399">399</a> <em class="jxr_comment">                 */</em>
+<a class="jxr_linenumber" name="400" href="#400">400</a> 		<strong class="jxr_keyword">return</strong> pui;
+<a class="jxr_linenumber" name="401" href="#401">401</a> 	}
+<a class="jxr_linenumber" name="402" href="#402">402</a> 
+<a class="jxr_linenumber" name="403" href="#403">403</a>         @Override
+<a class="jxr_linenumber" name="404" href="#404">404</a> 	<strong class="jxr_keyword">public</strong> PersistenceUnitInfo obtainPersistenceUnitInfo(String persistenceUnitName) {
+<a class="jxr_linenumber" name="405" href="#405">405</a> 		PersistenceUnitInfo pui = <strong class="jxr_keyword">this</strong>.persistenceUnitInfos.remove(persistenceUnitName);
+<a class="jxr_linenumber" name="406" href="#406">406</a> 		<strong class="jxr_keyword">if</strong> (pui == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="407" href="#407">407</a> 			<strong class="jxr_keyword">if</strong> (!<strong class="jxr_keyword">this</strong>.persistenceUnitInfoNames.contains(persistenceUnitName)) {
+<a class="jxr_linenumber" name="408" href="#408">408</a> 				<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(
+<a class="jxr_linenumber" name="409" href="#409">409</a> 						<span class="jxr_string">"No persistence unit with name '"</span> + persistenceUnitName + <span class="jxr_string">"' found"</span>);
+<a class="jxr_linenumber" name="410" href="#410">410</a> 			}
+<a class="jxr_linenumber" name="411" href="#411">411</a> 			<strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="412" href="#412">412</a> 				<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(
+<a class="jxr_linenumber" name="413" href="#413">413</a> 						<span class="jxr_string">"Persistence unit with name '"</span> + persistenceUnitName + <span class="jxr_string">"' already obtained"</span>);
+<a class="jxr_linenumber" name="414" href="#414">414</a> 			}
+<a class="jxr_linenumber" name="415" href="#415">415</a> 		}
+<a class="jxr_linenumber" name="416" href="#416">416</a>                 <em class="jxr_comment">//下面一行代码解决以下异常</em>
+<a class="jxr_linenumber" name="417" href="#417">417</a>                 pui.getJarFileUrls().remove(pui.getPersistenceUnitRootUrl());
+<a class="jxr_linenumber" name="418" href="#418">418</a>                 <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="419" href="#419">419</a> <em class="jxr_comment">                 * </em>
+<a class="jxr_linenumber" name="420" href="#420">420</a> <em class="jxr_comment">Caused by: org.hibernate.AssertionFailure: Cannot read files twice on NativeScanner</em>
+<a class="jxr_linenumber" name="421" href="#421">421</a> <em class="jxr_comment">        at org.hibernate.ejb.packaging.NativeScanner.getFilesInJar(NativeScanner.java:168)</em>
+<a class="jxr_linenumber" name="422" href="#422">422</a> <em class="jxr_comment">        at org.hibernate.ejb.Ejb3Configuration.addScannedEntries(Ejb3Configuration.java:497)</em>
+<a class="jxr_linenumber" name="423" href="#423">423</a> <em class="jxr_comment">        at org.hibernate.ejb.Ejb3Configuration.scanForClasses(Ejb3Configuration.java:851)</em>
+<a class="jxr_linenumber" name="424" href="#424">424</a> <em class="jxr_comment">                 */</em>
+<a class="jxr_linenumber" name="425" href="#425">425</a> 		<strong class="jxr_keyword">return</strong> pui;
+<a class="jxr_linenumber" name="426" href="#426">426</a> 	}
+<a class="jxr_linenumber" name="427" href="#427">427</a> 
+<a class="jxr_linenumber" name="428" href="#428">428</a> 
+<a class="jxr_linenumber" name="429" href="#429">429</a> 	<em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="430" href="#430">430</a> <em class="jxr_javadoccomment">	 * Decorator that exposes a JPA 2.0 compliant PersistenceUnitInfo interface for a</em>
+<a class="jxr_linenumber" name="431" href="#431">431</a> <em class="jxr_javadoccomment">	 * JPA 1.0 based SpringPersistenceUnitInfo object, adapting the &lt;code&gt;getSharedCacheMode&lt;/code&gt;</em>
+<a class="jxr_linenumber" name="432" href="#432">432</a> <em class="jxr_javadoccomment">	 * and &lt;code&gt;getValidationMode&lt;/code&gt; methods from String names to enum return values.</em>
+<a class="jxr_linenumber" name="433" href="#433">433</a> <em class="jxr_javadoccomment">	 */</em>
+<a class="jxr_linenumber" name="434" href="#434">434</a> 	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitManager.html">Jpa2PersistenceUnitInfoDecorator</a> <strong class="jxr_keyword">implements</strong> InvocationHandler {
+<a class="jxr_linenumber" name="435" href="#435">435</a> 
+<a class="jxr_linenumber" name="436" href="#436">436</a> 		<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitReader.html">SpringPersistenceUnitInfo</a> target;
+<a class="jxr_linenumber" name="437" href="#437">437</a> 
+<a class="jxr_linenumber" name="438" href="#438">438</a> 		<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Enum&gt; sharedCacheModeEnum;
+<a class="jxr_linenumber" name="439" href="#439">439</a> 
+<a class="jxr_linenumber" name="440" href="#440">440</a> 		<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> Class&lt;? <strong class="jxr_keyword">extends</strong> Enum&gt; validationModeEnum;
+<a class="jxr_linenumber" name="441" href="#441">441</a> 
+<a class="jxr_linenumber" name="442" href="#442">442</a> 		@SuppressWarnings(<span class="jxr_string">"unchecked"</span>)
+<a class="jxr_linenumber" name="443" href="#443">443</a> 		<strong class="jxr_keyword">public</strong> <a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitManager.html">Jpa2PersistenceUnitInfoDecorator</a>(<a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitReader.html">SpringPersistenceUnitInfo</a> target) {
+<a class="jxr_linenumber" name="444" href="#444">444</a> 			<strong class="jxr_keyword">this</strong>.target = target;
+<a class="jxr_linenumber" name="445" href="#445">445</a> 			<strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="446" href="#446">446</a> 				<strong class="jxr_keyword">this</strong>.sharedCacheModeEnum = (Class&lt;? <strong class="jxr_keyword">extends</strong> Enum&gt;)
+<a class="jxr_linenumber" name="447" href="#447">447</a> 						ClassUtils.forName(<span class="jxr_string">"javax.persistence.SharedCacheMode"</span>, PersistenceUnitInfo.<strong class="jxr_keyword">class</strong>.getClassLoader());
+<a class="jxr_linenumber" name="448" href="#448">448</a> 				<strong class="jxr_keyword">this</strong>.validationModeEnum = (Class&lt;? <strong class="jxr_keyword">extends</strong> Enum&gt;)
+<a class="jxr_linenumber" name="449" href="#449">449</a> 						ClassUtils.forName(<span class="jxr_string">"javax.persistence.ValidationMode"</span>, PersistenceUnitInfo.<strong class="jxr_keyword">class</strong>.getClassLoader());
+<a class="jxr_linenumber" name="450" href="#450">450</a> 			}
+<a class="jxr_linenumber" name="451" href="#451">451</a> 			<strong class="jxr_keyword">catch</strong> (Exception ex) {
+<a class="jxr_linenumber" name="452" href="#452">452</a> 				<strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalStateException(<span class="jxr_string">"JPA 2.0 API enum types not present"</span>, ex);
+<a class="jxr_linenumber" name="453" href="#453">453</a> 			}
+<a class="jxr_linenumber" name="454" href="#454">454</a> 		}
+<a class="jxr_linenumber" name="455" href="#455">455</a> 
+<a class="jxr_linenumber" name="456" href="#456">456</a> 		<strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <a href="../../../../com/apdplat/platform/spring/APDPlatPersistenceUnitReader.html">SpringPersistenceUnitInfo</a> getTarget() {
+<a class="jxr_linenumber" name="457" href="#457">457</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">this</strong>.target;
+<a class="jxr_linenumber" name="458" href="#458">458</a> 		}
+<a class="jxr_linenumber" name="459" href="#459">459</a> 
+<a class="jxr_linenumber" name="460" href="#460">460</a> 		<strong class="jxr_keyword">public</strong> Object invoke(Object proxy, Method method, Object[] args) <strong class="jxr_keyword">throws</strong> Throwable {
+<a class="jxr_linenumber" name="461" href="#461">461</a> 			<strong class="jxr_keyword">if</strong> (method.getName().equals(<span class="jxr_string">"getSharedCacheMode"</span>)) {
+<a class="jxr_linenumber" name="462" href="#462">462</a> 				<strong class="jxr_keyword">return</strong> Enum.valueOf(<strong class="jxr_keyword">this</strong>.sharedCacheModeEnum, <strong class="jxr_keyword">this</strong>.target.getSharedCacheModeName());
+<a class="jxr_linenumber" name="463" href="#463">463</a> 			}
+<a class="jxr_linenumber" name="464" href="#464">464</a> 			<strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (method.getName().equals(<span class="jxr_string">"getValidationMode"</span>)) {
+<a class="jxr_linenumber" name="465" href="#465">465</a> 				<strong class="jxr_keyword">return</strong> Enum.valueOf(<strong class="jxr_keyword">this</strong>.validationModeEnum, <strong class="jxr_keyword">this</strong>.target.getValidationModeName());
+<a class="jxr_linenumber" name="466" href="#466">466</a> 			}
+<a class="jxr_linenumber" name="467" href="#467">467</a> 			<strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="468" href="#468">468</a> 				<strong class="jxr_keyword">return</strong> method.invoke(<strong class="jxr_keyword">this</strong>.target, args);
+<a class="jxr_linenumber" name="469" href="#469">469</a> 			}
+<a class="jxr_linenumber" name="470" href="#470">470</a> 		}
+<a class="jxr_linenumber" name="471" href="#471">471</a> 	}
+<a class="jxr_linenumber" name="472" href="#472">472</a> 
+<a class="jxr_linenumber" name="473" href="#473">473</a> }
+</pre>
+<hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
+</html>
+

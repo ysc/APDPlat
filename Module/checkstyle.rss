@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<rss version="0.91">
+  <channel>
+    <title>APDPlat_Module - Checkstyle report</title>
+    <link>https://github.com/ysc/APDPlat</link>
+    <description>APDPlat_Module - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2013</copyright>
+    <item>
+      <title>File: 16,
+             Errors: 845,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>https://github.com/ysc/APDPlat/checkstyle.html</link>
+      <description>
+        <p>Click <a href="https://github.com/ysc/APDPlat/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.index.service.IndexSchedulerService.java">com/apdplat/module/index/service/IndexSchedulerService.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  61
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.model.NewsContent.java">com/apdplat/module/info/model/NewsContent.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  45
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.model.InfoTypeContent.java">com/apdplat/module/info/model/InfoTypeContent.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  37
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.service.register.RegisteInfoType.java">com/apdplat/module/info/service/register/RegisteInfoType.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  48
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.index.action.SetupAction.java">com/apdplat/module/index/action/SetupAction.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  76
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.service.InfoTypeService.java">com/apdplat/module/info/service/InfoTypeService.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  85
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.index.action.StateAction.java">com/apdplat/module/index/action/StateAction.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  81
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.index.model.IndexDir.java">com/apdplat/module/index/model/IndexDir.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  16
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.model.InfoType.java">com/apdplat/module/info/model/InfoType.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  95
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.index.service.IndexFileService.java">com/apdplat/module/index/service/IndexFileService.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  52
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.index.model.IndexScheduleConfig.java">com/apdplat/module/index/model/IndexScheduleConfig.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  34
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.model.News.java">com/apdplat/module/info/model/News.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  104
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.action.InfoTypeAction.java">com/apdplat/module/info/action/InfoTypeAction.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  37
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.action.NewsAction.java">com/apdplat/module/info/action/NewsAction.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  65
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#com.apdplat.module.info.model.Lang.java">com/apdplat/module/info/model/Lang.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/ysc/APDPlat/checkstyle.html#web.apdplat.properties">web.apdplat.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

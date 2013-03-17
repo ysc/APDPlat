@@ -1,0 +1,7 @@
+com.apdplat.module.index.action
+com.apdplat.module.index.model
+com.apdplat.module.index.service
+com.apdplat.module.info.action
+com.apdplat.module.info.model
+com.apdplat.module.info.service
+com.apdplat.module.info.service.register
