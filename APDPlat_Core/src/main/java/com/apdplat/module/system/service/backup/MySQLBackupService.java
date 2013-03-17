@@ -1,9 +1,5 @@
 package com.apdplat.module.system.service.backup;
 
-/**
- *
- * @author ysc
- */
 import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.platform.action.converter.DateTypeConverter;
 import java.io.BufferedReader;
@@ -15,9 +11,17 @@ import java.io.OutputStreamWriter;
 import java.util.Date;
 import org.springframework.stereotype.Service;
 
+/**
+ *MySQL备份恢复实现
+ * @author ysc
+ */
 @Service("MYSQL")
 public class MySQLBackupService extends BackupService{
  
+    /**
+     * MySQL备份数据库实现
+     * @return 
+     */
     @Override
     public boolean backupImpl() {
         try {
@@ -47,6 +51,10 @@ public class MySQLBackupService extends BackupService{
         return false;
     }
 
+    /**
+     * MySQL恢复数据库实现
+     * @return 
+     */
     @Override
     public boolean restoreImpl(String date) {
         try {

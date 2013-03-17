@@ -12,13 +12,20 @@ import java.util.Date;
 import javax.annotation.Resource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.stereotype.Service;
-
+/**
+ * SQLServer备份恢复实现
+ * @author ysc
+ */
 @Service("SQL_SERVER")
 public class SQLServerBackupService extends BackupService{
     @Resource(name="dataSource")
     private BasicDataSource dataSource;
     @Resource(name="indexManager")
     private IndexManager indexManager;
+    /**
+     * SQLServer备份数据库实现
+     * @return 
+     */
     @Override
     public boolean backupImpl(){
         Connection con = null;
@@ -55,6 +62,10 @@ public class SQLServerBackupService extends BackupService{
             }
         }
     }
+    /**
+     * SQLServer恢复数据库实现
+     * @return 
+     */
     @Override
     public boolean restoreImpl(String date){
         Lock.setRestore(true);

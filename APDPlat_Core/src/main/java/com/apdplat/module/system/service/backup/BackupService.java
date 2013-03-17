@@ -20,7 +20,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
 /**
- *
+ *备份恢复服务定义
  * @author ysc
  */
 public abstract class BackupService {  
@@ -29,6 +29,7 @@ public abstract class BackupService {
     protected static final StandardPBEStringEncryptor encryptor;
     protected static final String username;
     protected static final String password;
+    //从配置文件中获取数据库用户名和密码，如果用户名和密码被加密，则解密
     static{
             EnvironmentStringPBEConfig config=new EnvironmentStringPBEConfig();
             config.setAlgorithm("PBEWithMD5AndDES");
@@ -51,7 +52,13 @@ public abstract class BackupService {
                 password=pwd;
             }
     }
-
+    /**
+     * 把备份和恢复的通用逻辑抽取出来，并执行日志记录工作
+     * @param type 备份或是恢复
+     * @param backup  true为备份，false为恢复
+     * @param date 数据库恢复到哪一个时间点
+     * @return 
+     */
     public boolean common(String type,boolean backup,String date){
         User user=UserHolder.getCurrentLoginUser();
         String ip=UserHolder.getCurrentUserLoginIp();
@@ -94,16 +101,36 @@ public abstract class BackupService {
         }
         return result;
     }
+    /**
+     * 备份数据库服务定义
+     * @return 
+     */
     public boolean backup(){
         return common(BackupLogType.BACKUP,true,null);
     }
+    /**
+     * 备份数据库具体实现，留给子类实现
+     * @return 
+     */
     public abstract boolean backupImpl();
-  
+    /**
+     * 恢复数据库服务定义
+     * @param date
+     * @return 
+     */
     public boolean restore(String date){
         return common(BackupLogType.RESTORE,false,date);
     }
+    /**
+     * 恢复数据库具体实现，留给子类实现
+     * @param date
+     * @return 
+     */
     public abstract boolean restoreImpl(String date);
-    
+    /**
+     * 获取备份文件保存的文件系统路径
+     * @return 备份文件存放路径
+     */
     public static String getPath(){
         String path="/WEB-INF/backup/"+PropertyHolder.getProperty("jpa.database")+"/";
         path=FileUtils.getAbsolutePath(path);
@@ -113,7 +140,10 @@ public abstract class BackupService {
         }
         return path;
     }
-    
+    /**
+     * 获取已经存在的备份文件列表
+     * @return  备份文件列表
+     */
     public List<String> getExistBackup(){
         List<String> result=new ArrayList<>();
         String path=getPath();
@@ -138,6 +168,11 @@ public abstract class BackupService {
 
         return result;
     }
+    /**
+     * 解密用户名和密码
+     * @param encryptedMessage 加密后的用户名或密码
+     * @return 解密后的用户名或密码
+     */
     protected static String decrypt(String encryptedMessage){
         String plain=encryptor.decrypt(encryptedMessage);
         return plain;

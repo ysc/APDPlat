@@ -18,7 +18,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.stereotype.Service;
-
+/**
+ * 在系统启动的时候，检查是否需要执行定时备份数据
+ * @author ysc
+ */
 @Service
 public class BackupSchedulerService implements ApplicationListener {
     protected static final APDPlatLogger log = new APDPlatLogger(BackupSchedulerService.class);
@@ -29,6 +32,10 @@ public class BackupSchedulerService implements ApplicationListener {
     @Resource(name = "backupTask")
     private JobDetail backupTask;
 
+    /**
+     * 系统启动的时候执行此方法
+     * @param event 
+     */
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof ContextRefreshedEvent) {
@@ -42,7 +49,10 @@ public class BackupSchedulerService implements ApplicationListener {
             }
         }
     }
-    
+    /**
+     * 获取备份数据库调度配置
+     * @return 备份数据库调度配置
+     */
     public BackupScheduleConfig getBackupScheduleConfig(){        
         Page<BackupScheduleConfig> page=serviceFacade.query(BackupScheduleConfig.class);
         if(page.getTotalRecords()==1){
@@ -51,7 +61,10 @@ public class BackupSchedulerService implements ApplicationListener {
         }
         return null;
     }
-
+    /**
+     * 取消定时备份任务
+     * @return  提示信息
+     */
     public String unSchedule(){        
         try {
             BackupScheduleConfig config=getBackupScheduleConfig();
@@ -75,7 +88,12 @@ public class BackupSchedulerService implements ApplicationListener {
             return tip;
         }
     }
-
+    /**
+     * 定时备份数据库（24小时制）
+     * @param hour 几点
+     * @param minute 几分
+     * @return 
+     */
     public String schedule(int hour, int minute) {
         BackupScheduleConfig scheduleConfig = getBackupScheduleConfig();
         if (scheduleConfig == null) {
