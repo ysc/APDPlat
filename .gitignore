@@ -13,3 +13,4 @@ APDPlat_Web/.project
 .settings/
 .classpath
 .project
+target/
