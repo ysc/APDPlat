@@ -36,7 +36,6 @@ public class SystemListener{
     private static final  boolean memoryMonitor;
     private static final  boolean runingMonitor;
     private static MemoryMonitorThread memoryMonitorThread;
-    private static final File tmpDir=new File(System.getProperty("java.io.tmpdir"));
     static{
         memoryMonitor=PropertyHolder.getBooleanProperty("monitor.memory");        
         if(memoryMonitor){
@@ -70,17 +69,6 @@ public class SystemListener{
         System.setProperty("basePackage", basePackage);        
     }
     public static void contextInitialized(ServletContextEvent sce) {
-        try{
-            org.apache.commons.io.FileUtils.deleteDirectory(tmpDir);
-            log.info("成功清除临时目录:"+tmpDir.getAbsolutePath());
-            log.info("Successed to clean temp directory:"+tmpDir.getAbsolutePath(), Locale.ENGLISH);
-        }catch(Exception e){
-            log.info("清除临时目录失败:"+tmpDir.getAbsolutePath(), e);
-            log.info("Failed to clean temp directory:"+tmpDir.getAbsolutePath(), e, Locale.ENGLISH);
-        }
-        if(!tmpDir.exists()){
-            tmpDir.mkdirs();
-        }
         contextPath=sce.getServletContext().getContextPath();
         log.info("启动【"+PropertyHolder.getProperty("app.name")+"】");
         log.info("Launch【"+PropertyHolder.getProperty("app.name")+"】", Locale.ENGLISH);
