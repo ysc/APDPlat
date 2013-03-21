@@ -1,5 +1,6 @@
 package com.apdplat.platform.log;
 
+import java.io.Serializable;
 import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,7 @@ import org.slf4j.Marker;
  * Log output switching solutions support multiple languages
  * @author ysc
  */
-public class APDPlatLogger implements Logger{
+public class APDPlatLogger implements Logger,Serializable{
     private static Locale configLanguage = null;
     private Logger log = null;
     
