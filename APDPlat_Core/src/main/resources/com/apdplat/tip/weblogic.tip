@@ -1,8 +1,0 @@
-1、需要将项目的WEB-INF\lib\antlr-2.7.6.jar拷贝到weblogic的wlserver/server/lib文件夹下面
-
-2、在domains\base_domain\bin里找到startWebLogic.cmd文件，找到
-
-set CLASSPATH=%SAVE_CLASSPATH%，在下面增加
-
-set PRE_CLASSPATH=%WL_HOME%\server\lib\antlr-2.7.6.jar  
-set CLASSPATH=%PRE_CLASSPATH%;%CLASSPATH%   
