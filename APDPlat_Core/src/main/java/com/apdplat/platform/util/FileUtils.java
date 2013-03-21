@@ -69,6 +69,7 @@ public class FileUtils {
      */
     public static String getAbsolutePath(String path){
         Assert.notNull(path);
+        //在windows下，如果路径包含：,为绝对路径，则不进行转换
         if(path.contains(":")){
             return path;
         }
