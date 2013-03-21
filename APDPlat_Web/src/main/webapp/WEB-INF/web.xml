@@ -141,7 +141,7 @@
     </filter-mapping>
     -->
 
-    CXF 配置  WEB服务
+    <!--CXF 配置  WEB服务-->
     <servlet>
         <description>WEB服务</description>
         <servlet-name>CXFServlet</servlet-name>
