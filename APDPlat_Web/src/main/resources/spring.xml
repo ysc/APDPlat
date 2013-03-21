@@ -10,4 +10,5 @@
     <import resource="classpath:/com/apdplat/spring.xml" />
     <import resource="classpath:/com/apdplat/security.xml" />
     <import resource="classpath:/com/apdplat/compass.xml" />
+    <import resource="classpath:/com/apdplat/ws.xml" />
 </beans>

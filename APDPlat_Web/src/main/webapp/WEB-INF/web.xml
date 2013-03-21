@@ -140,7 +140,7 @@
         <url-pattern>*.js</url-pattern>
     </filter-mapping>
     -->
-    <!--
+
     CXF 配置  WEB服务
     <servlet>
         <description>WEB服务</description>
@@ -151,7 +151,7 @@
         <servlet-name>CXFServlet</servlet-name>
         <url-pattern>/ws/*</url-pattern>
     </servlet-mapping>
-    -->
+
     <!--
     在线编辑器
     -->
