@@ -12,6 +12,8 @@ import org.slf4j.Marker;
  * @author ysc
  */
 public class APDPlatLogger implements Logger,Serializable{
+    private static final long serialVersionUID = 1L;
+
     private static Locale configLanguage = null;
     private Logger log = null;
     

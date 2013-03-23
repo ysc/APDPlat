@@ -39,6 +39,9 @@ import org.compass.annotations.SearchableProperty;
 @MappedSuperclass
 @EntityListeners(value = ModelListener.class)
 public abstract class Model implements Serializable{
+    @Transient
+    @RenderIgnore
+    private static final long serialVersionUID = 1L;
 
     @Transient
     @RenderIgnore

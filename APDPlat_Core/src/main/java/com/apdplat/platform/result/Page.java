@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType(name = "Page")
 public class Page<T extends Model> implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected static final APDPlatLogger log = new APDPlatLogger(Page.class);
 
     private long totalRecords = 0;
