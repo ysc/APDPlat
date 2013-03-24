@@ -18,6 +18,7 @@
     <listener>
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
+    <!--
     <filter>
         <filter-name>ResponseHeaderFilter</filter-name>
         <filter-class>com.apdplat.platform.filter.ResponseHeaderFilter</filter-class>
@@ -54,6 +55,7 @@
       <filter-name>ResponseHeaderFilter</filter-name>
       <url-pattern>*.css</url-pattern>
     </filter-mapping>
+    -->
     
     <filter>
         <description>记录请求的处理时间，为性能分析提供数据</description>
