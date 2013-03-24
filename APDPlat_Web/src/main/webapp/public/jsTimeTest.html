@@ -1,372 +1,363 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.1 Transitional//EN">
 
 <html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="Keywords" content="Javascript性能测试,各浏览器下Javascript性能测试" />
-	<meta http-equiv="Description" content="在各浏览器下Javascript性能测试，如IE6,IE7,IE8,FireFox 3,chrome等" />
-	<title>Javascript性能测试 Javascript performance test</title>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>各浏览器下Javascript性能测试</title>
+
+        <style type="text/css">
+            body, span{font-family: verdana, sans serif; font-size: 12px;}
+            input{margin-right: 20px;}
+            span{padding-left: 20px;}
+        </style>
+
+        <script type="text/javascript">
+		
+		
+            var start;
+            var end;
+            var forLoopTime = 0;
+            var addTime = 0;
+            var subtractTime = 0;
+            var multiplyTime = 0;
+            var divideTime = 0;
+            var divide2Time = 0;
+            var fromArrayTime = 0;
+            var parseIntTime = 0;
+            var varTime = 0;
+            var sinTime = 0;
+            var floorTime = 0;
+            var ifTime = 0;
+            var readGlobalTime = 0;
+            var concatStringsTime = 0;
+            var sortArrayTime = 0;
+		
+            gValue = 123;
+		
+            var continueAfter = false;
 	
-	<style>
-		body, span{font-family: verdana, sans serif; font-size: 12px;}
-		input{margin-right: 20px;}
-		span{padding-left: 20px;}
-	</style>
-
-	<script>
+            function testFor()
+            {
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    void(0);
+                }
+                end = new Date();
+                forLoopTime = end-start;
+                var textElem = document.createTextNode(forLoopTime + 'ms  ')
+                document.getElementById('forResult').appendChild(textElem);
+                completed();
+            }
 		
+            function testAdd()
+            {
+                var value1=123;
+                var value2=234;
+                var value3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = value1 + value2;
+                }
+                end = new Date();
+                addTime = end-start;
+                var textElem = document.createTextNode(addTime + 'ms  ')
+                document.getElementById('addResult').appendChild(textElem);
+                completed();
+            }
 		
-		var start;
-		var end;
-		var forLoopTime = 0;
-		var addTime = 0;
-		var subtractTime = 0;
-		var multiplyTime = 0;
-		var divideTime = 0;
-		var divide2Time = 0;
-		var fromArrayTime = 0;
-		var parseIntTime = 0;
-		var varTime = 0;
-		var sinTime = 0;
-		var floorTime = 0;
-		var ifTime = 0;
-		var readGlobalTime = 0;
-		var concatStringsTime = 0;
-		var sortArrayTime = 0;
+            function testSubtract()
+            {
+                var value1=123;
+                var value2=234;
+                var value3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = value2 - value1
+                }
+                end = new Date();
+                subtractTime = end-start;
+                var textElem = document.createTextNode(subtractTime + 'ms  ')
+                document.getElementById('subtractResult').appendChild(textElem);
+                completed();
+            }
 		
-		gValue = 123;
+            function testMultiply()
+            {	
+                var value1=123;
+                var value2=234;
+                var value3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = value2 * value1
+                }
+                end = new Date();
+                multiplyTime = end-start;
+                var textElem = document.createTextNode(multiplyTime + 'ms  ')
+                document.getElementById('multiplyResult').appendChild(textElem);
+                completed();
+            }
 		
-		var continueAfter = false;
-	
-		function testFor()
-		{
-			start = new Date();
-			for (var i=0; i<=1000000; i++)
-			{
-				void(0);
-			}
-			end = new Date();
-			forLoopTime = end-start;
-			var textElem = document.createTextNode(forLoopTime + 'ms  ')
-			document.getElementById('forResult').appendChild(textElem);
-			completed();
-		}
+            function testDivide()
+            {
+                var value1=123;
+                var value2=234;
+                var value3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = value2 / value1
+                }
+                end = new Date();
+                divideTime = end-start;
+                var textElem = document.createTextNode(divideTime + 'ms  ')
+                document.getElementById('divideResult').appendChild(textElem);
+                completed();
+            }
 		
-		function testAdd()
-		{
-				var value1=123;
-				var value2=234;
-				var value3;
-				start = new Date();
-				for (var i=0; i<=1000000; i++)
-				{
-					value3 = value1 + value2;
-				}
-				end = new Date();
-				addTime = end-start;
-				var textElem = document.createTextNode(addTime + 'ms  ')
-				document.getElementById('addResult').appendChild(textElem);
-				completed();
-		}
-		
-		function testSubtract()
-		{
-				var value1=123;
-				var value2=234;
-				var value3;
-				start = new Date();
-				for (var i=0; i<=1000000; i++)
-				{
-					value3 = value2 - value1
-				}
-				end = new Date();
-				subtractTime = end-start;
-				var textElem = document.createTextNode(subtractTime + 'ms  ')
-				document.getElementById('subtractResult').appendChild(textElem);
-				completed();
-		}
-		
-		function testMultiply()
-		{	
-				var value1=123;
-				var value2=234;
-				var value3;
-				start = new Date();
-				for (var i=0; i<=1000000; i++)
-				{
-					value3 = value2 * value1
-				}
-				end = new Date();
-				multiplyTime = end-start;
-				var textElem = document.createTextNode(multiplyTime + 'ms  ')
-				document.getElementById('multiplyResult').appendChild(textElem);
-				completed();
-		}
-		
-		function testDivide()
-		{
-				var value1=123;
-				var value2=234;
-				var value3;
-				start = new Date();
-				for (var i=0; i<=1000000; i++)
-				{
-					value3 = value2 / value1
-				}
-				end = new Date();
-				divideTime = end-start;
-				var textElem = document.createTextNode(divideTime + 'ms  ')
-				document.getElementById('divideResult').appendChild(textElem);
-				completed();
-		}
-		
-		function testDivide2()
-		{
-				var value1=123;
-				var value2=234;
-				var value3;
-				start = new Date();
-				var temp= (1 / value1);
-				for (var i=0; i<=1000000; i++)
-				{
-					value3 = value2 * temp
-				}
-				end = new Date();
-				divide2Time = end-start;
-				var textElem = document.createTextNode(divide2Time + 'ms  ')
-				document.getElementById('divide2Result').appendChild(textElem);
-				completed();
-		}
+            function testDivide2()
+            {
+                var value1=123;
+                var value2=234;
+                var value3;
+                start = new Date();
+                var temp= (1 / value1);
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = value2 * temp
+                }
+                end = new Date();
+                divide2Time = end-start;
+                var textElem = document.createTextNode(divide2Time + 'ms  ')
+                document.getElementById('divide2Result').appendChild(textElem);
+                completed();
+            }
 		
 		
 		
-		function testFromArray()
-		{
-				var value3;
-				var value4 = new Array(1,2,3,4,5,6,7,8,9,10)
-				start = new Date();
-				for (var i=0; i<=1000000; i++)
-				{
-					value3 = value4[6]
-				}
-				end = new Date();
-				fromArrayTime = end-start;
-				var textElem = document.createTextNode(fromArrayTime + 'ms  ')
-				document.getElementById('fromArrayResult').appendChild(textElem);
-				completed();
-		}
+            function testFromArray()
+            {
+                var value3;
+                var value4 = new Array(1,2,3,4,5,6,7,8,9,10)
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = value4[6]
+                }
+                end = new Date();
+                fromArrayTime = end-start;
+                var textElem = document.createTextNode(fromArrayTime + 'ms  ')
+                document.getElementById('fromArrayResult').appendChild(textElem);
+                completed();
+            }
 		
-		function testParseInt()
-		{
-				var value3;
-				start = new Date();
-				for (var i=0; i<=1000000; i++)
-				{
-					value3 = parseInt(123.23)
-				}
-				end = new Date();
-				parseIntTime = end-start;
-				var textElem = document.createTextNode(parseIntTime + 'ms  ')
-				document.getElementById('parseIntResult').appendChild(textElem);
-				completed();
-		}
+            function testParseInt()
+            {
+                var value3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = parseInt(123.23)
+                }
+                end = new Date();
+                parseIntTime = end-start;
+                var textElem = document.createTextNode(parseIntTime + 'ms  ')
+                document.getElementById('parseIntResult').appendChild(textElem);
+                completed();
+            }
 		
-		function testVar()
-		{
-				start = new Date();
-				for (var i=0; i<=1000000; i++)
-				{
-					var a=1; var b=2; var c=3;
-				}
-				end = new Date();
-				varTime = end-start;
-				var textElem = document.createTextNode(varTime + 'ms  ')
-				document.getElementById('varResult').appendChild(textElem);
-				completed();
+            function testVar()
+            {
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    var a=1; var b=2; var c=3;
+                }
+                end = new Date();
+                varTime = end-start;
+                var textElem = document.createTextNode(varTime + 'ms  ')
+                document.getElementById('varResult').appendChild(textElem);
+                completed();
 			
-		}
+            }
 		
-		function testSin()
-		{
-			var value3;
-			start = new Date();
-			for (var i=0; i<=1000000; i++)
-			{
-				value3 = Math.sin(.1)
-			}
-			end = new Date();
-			sinTime = end-start;
-			var textElem = document.createTextNode(sinTime + 'ms  ')
-			document.getElementById('sinResult').appendChild(textElem);
-			completed();			
-		}
+            function testSin()
+            {
+                var value3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = Math.sin(.1)
+                }
+                end = new Date();
+                sinTime = end-start;
+                var textElem = document.createTextNode(sinTime + 'ms  ')
+                document.getElementById('sinResult').appendChild(textElem);
+                completed();			
+            }
 		
-		function testFloor()
-		{
-			var value3;
-			start = new Date();
-			for (var i=0; i<=1000000; i++)
-			{
-				value3 = Math.floor(43.341)
-			}
-			end = new Date();
-			floorTime = end-start;
-			var textElem = document.createTextNode(floorTime + 'ms  ')
-			document.getElementById('floorResult').appendChild(textElem);
-			completed();			
-		}
+            function testFloor()
+            {
+                var value3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value3 = Math.floor(43.341)
+                }
+                end = new Date();
+                floorTime = end-start;
+                var textElem = document.createTextNode(floorTime + 'ms  ')
+                document.getElementById('floorResult').appendChild(textElem);
+                completed();			
+            }
 		
-		function testIf()
-		{
-			var value1=123;
-			start = new Date();
-			for (var i=0; i<=1000000; i++)
-			{
-				if (value1<12)
-				{
-					void(0);
-				}
-			}
-			end = new Date();
-			ifTime = end-start;
-			var textElem = document.createTextNode(ifTime + 'ms  ')
-			document.getElementById('ifResult').appendChild(textElem);
-			completed();			
-		}
+            function testIf()
+            {
+                var value1=123;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    if (value1<12)
+                    {
+                        void(0);
+                    }
+                }
+                end = new Date();
+                ifTime = end-start;
+                var textElem = document.createTextNode(ifTime + 'ms  ')
+                document.getElementById('ifResult').appendChild(textElem);
+                completed();			
+            }
 		
-		function testReadGlobal()
-		{
-			var value
-			start = new Date();
-			for (var i=0; i<=1000000; i++)
-			{
-				value = gValue;
-			}
-			end = new Date();
-			readGlobalTime = end-start;
-			var textElem = document.createTextNode(readGlobalTime + 'ms  ')
-			document.getElementById('readGlobalResult').appendChild(textElem);
-			completed();			
-		}
+            function testReadGlobal()
+            {
+                var value
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    value = gValue;
+                }
+                end = new Date();
+                readGlobalTime = end-start;
+                var textElem = document.createTextNode(readGlobalTime + 'ms  ')
+                document.getElementById('readGlobalResult').appendChild(textElem);
+                completed();			
+            }
 		
-		function testConcatStrings()
-		{
-			var string1 = 'abcdefghijklmnopqrstuvxyz'
-			var string2 = 'abcdefghijklmnopqrstuvxyz'
-			var string3;
-			start = new Date();
-			for (var i=0; i<=1000000; i++)
-			{
-				string3 = string1 + string2;
-			}
-			end = new Date();
-			concatStringsTime = end-start;
-			var textElem = document.createTextNode(concatStringsTime + 'ms  ')
-			document.getElementById('concatStringsResult').appendChild(textElem);
-			completed();			
-		}
+            function testConcatStrings()
+            {
+                var string1 = 'abcdefghijklmnopqrstuvxyz'
+                var string2 = 'abcdefghijklmnopqrstuvxyz'
+                var string3;
+                start = new Date();
+                for (var i=0; i<=100000000; i++)
+                {
+                    string3 = string1 + string2;
+                }
+                end = new Date();
+                concatStringsTime = end-start;
+                var textElem = document.createTextNode(concatStringsTime + 'ms  ')
+                document.getElementById('concatStringsResult').appendChild(textElem);
+                completed();			
+            }
 		
-		function testSortArray()
-		{
-			var theArray = new Array;
-			for(i=0; i<=10000; i++)
-				theArray[i] = parseInt(Math.random()*10000)
-			start = new Date();
-				theArray.sort();
-			end = new Date();
-			sortArrayTime = end-start;
-			var textElem = document.createTextNode(sortArrayTime + 'ms  ')
-			document.getElementById('sortArrayResult').appendChild(textElem);
-			completed();			
-		}
+            function testSortArray()
+            {
+                var theArray = new Array;
+                for(i=0; i<=10000; i++)
+                    theArray[i] = parseInt(Math.random()*10000)
+                start = new Date();
+                theArray.sort();
+                end = new Date();
+                sortArrayTime = end-start;
+                var textElem = document.createTextNode(sortArrayTime + 'ms  ')
+                document.getElementById('sortArrayResult').appendChild(textElem);
+                completed();			
+            }
 		
 		
-		function completed()
-		{
-			if(continueAfter)
-			{
-			if(forLoopTime==0)
-				setTimeout('testFor()',10);
-			else
-				if(addTime==0)
-					setTimeout('testAdd()',10);
-				else
-					if(subtractTime==0)
-						setTimeout('testSubtract()',10);
-					else
-						if(multiplyTime==0)
-							setTimeout('testMultiply()',10);
-						else
-							if(divideTime==0)
-								setTimeout('testDivide()',10);
-							else
-								if(divide2Time==0)
-									setTimeout('testDivide2()',10);
-								else
-									if(fromArrayTime==0)
-										setTimeout('testFromArray()',10);
-									else
-										if(parseIntTime==0)
-											setTimeout('testParseInt()',10);
-										else
-											if(varTime==0)
-												setTimeout('testVar()',10);
-											else
-												if(sinTime==0)
-													setTimeout('testSin()',10);
-												else
-													if(floorTime==0)
-														setTimeout('testFloor()',10);
-													else
-														if(ifTime==0)
-															setTimeout('testIf()',10);
-														else
-															if(readGlobalTime==0)
-																setTimeout('testReadGlobal()',10);
-															else
-																if(concatStringsTime==0)
-																	setTimeout('testConcatStrings()',10);
-																else
-																	if(sortArrayTime==0)
-																		setTimeout('testSortArray()',10);
-																	else	
-																		continueAfter=false;
-				}
+            function completed()
+            {
+                if(continueAfter)
+                {
+                    if(forLoopTime==0)
+                        setTimeout('testFor()',10);
+                    else
+                        if(addTime==0)
+                            setTimeout('testAdd()',10);
+                    else
+                        if(subtractTime==0)
+                            setTimeout('testSubtract()',10);
+                    else
+                        if(multiplyTime==0)
+                            setTimeout('testMultiply()',10);
+                    else
+                        if(divideTime==0)
+                            setTimeout('testDivide()',10);
+                    else
+                        if(divide2Time==0)
+                            setTimeout('testDivide2()',10);
+                    else
+                        if(fromArrayTime==0)
+                            setTimeout('testFromArray()',10);
+                    else
+                        if(parseIntTime==0)
+                            setTimeout('testParseInt()',10);
+                    else
+                        if(varTime==0)
+                            setTimeout('testVar()',10);
+                    else
+                        if(sinTime==0)
+                            setTimeout('testSin()',10);
+                    else
+                        if(floorTime==0)
+                            setTimeout('testFloor()',10);
+                    else
+                        if(ifTime==0)
+                            setTimeout('testIf()',10);
+                    else
+                        if(readGlobalTime==0)
+                            setTimeout('testReadGlobal()',10);
+                    else
+                        if(concatStringsTime==0)
+                            setTimeout('testConcatStrings()',10);
+                    else
+                        if(sortArrayTime==0)
+                            setTimeout('testSortArray()',10);
+                    else	
+                        continueAfter=false;
+                }
 			
-			if(forLoopTime!=0&&addTime!=0&&subtractTime!=0&&multiplyTime!=0&&divideTime!=0&&divide2Time!=0&&fromArrayTime!=0&&parseIntTime!=0&&varTime!=0&&sinTime!=0&&floorTime!=0&&ifTime!=0&&readGlobalTime!=0&&concatStringsTime!=0&&sortArrayTime!=0)
-			{			
-				averageTime = (forLoopTime+addTime+subtractTime+multiplyTime+divideTime+divide2Time+fromArrayTime+parseIntTime+varTime+sinTime+floorTime+ifTime+readGlobalTime+concatStringsTime+sortArrayTime)/15;
-				document.getElementById('averageResult').innerHTML = '<b>' + parseInt(averageTime) + 'ms</b>';
-			}
-		}
+                if(forLoopTime!=0&&addTime!=0&&subtractTime!=0&&multiplyTime!=0&&divideTime!=0&&divide2Time!=0&&fromArrayTime!=0&&parseIntTime!=0&&varTime!=0&&sinTime!=0&&floorTime!=0&&ifTime!=0&&readGlobalTime!=0&&concatStringsTime!=0&&sortArrayTime!=0)
+                {			
+                    averageTime = (forLoopTime+addTime+subtractTime+multiplyTime+divideTime+divide2Time+fromArrayTime+parseIntTime+varTime+sinTime+floorTime+ifTime+readGlobalTime+concatStringsTime+sortArrayTime)/15;
+                    document.getElementById('averageResult').innerHTML = '<b>' + parseInt(averageTime) + 'ms</b>';
+                }
+            }
 		
-	</script>
-</head>
+        </script>
+    </head>
 
-<body>
-<form>
-<input type="button" value="for-loop" onclick="testFor()">1000000 times:<span id="forResult"></span><br>
-<input type="button" value="add" onclick="testAdd()">1000000 times: <span id="addResult"></span><br>
-<input type="button" value="subtract" onclick="testSubtract()">1000000 times:<span id="subtractResult"></span><br>
-<input type="button" value="multiply" onclick="testMultiply()">1000000 times:<span id="multiplyResult"></span><br>
-<input type="button" value="divide" onclick="testDivide()">1000000 times:<span id="divideResult"></span><br>
-
-<input type="button" value="divide2" onclick="testDivide2()">1000000 times:<span id="divide2Result"></span><br>
-<input type="button" value="get value from array" onclick="testFromArray()">1000000 times:<span id="fromArrayResult"></span><br>
-<input type="button" value="parseInt()" onclick="testParseInt()">1000000 times:<span id="parseIntResult"></span><br>
-<input type="button" value="var" onclick="testVar()">1000000 times:<span id="varResult"></span><br>
-<input type="button" value="Math.sin()" onclick="testSin()">1000000 times:<span id="sinResult"></span><br>
-<input type="button" value="Math.floor()" onclick="testFloor()">1000000 times:<span id="floorResult"></span><br>
-<input type="button" value="if" onclick="testIf()">1000000 times:<span id="ifResult"></span><br>
-<input type="button" value="read global variable" onclick="testReadGlobal()">1000000 times:<span id="readGlobalResult"></span><br>
-<input type="button" value="concatenate strings" onclick="testConcatStrings()">1000000 times:<span id="concatStringsResult"></span><br>
-
-<input type="button" value="sort Array" onclick="testSortArray()"><span id="sortArrayResult"></span><br>
-<br>
-<input type="button" value="Run all tests" onclick="continueAfter=true;completed()">Average time: <span id="averageResult"></span>
-
-</form>
-
-
-</body>
+    <body>
+        <input type="button" value="for-loop" onclick="testFor()">100000000 times:<span id="forResult"></span><br>
+        <input type="button" value="add" onclick="testAdd()">100000000 times: <span id="addResult"></span><br>
+        <input type="button" value="subtract" onclick="testSubtract()">100000000 times:<span id="subtractResult"></span><br>
+        <input type="button" value="multiply" onclick="testMultiply()">100000000 times:<span id="multiplyResult"></span><br>
+        <input type="button" value="divide" onclick="testDivide()">100000000 times:<span id="divideResult"></span><br>
+        <input type="button" value="divide2" onclick="testDivide2()">100000000 times:<span id="divide2Result"></span><br>
+        <input type="button" value="get value from array" onclick="testFromArray()">100000000 times:<span id="fromArrayResult"></span><br>
+        <input type="button" value="parseInt()" onclick="testParseInt()">100000000 times:<span id="parseIntResult"></span><br>
+        <input type="button" value="var" onclick="testVar()">100000000 times:<span id="varResult"></span><br>
+        <input type="button" value="Math.sin()" onclick="testSin()">100000000 times:<span id="sinResult"></span><br>
+        <input type="button" value="Math.floor()" onclick="testFloor()">100000000 times:<span id="floorResult"></span><br>
+        <input type="button" value="if" onclick="testIf()">100000000 times:<span id="ifResult"></span><br>
+        <input type="button" value="read global variable" onclick="testReadGlobal()">100000000 times:<span id="readGlobalResult"></span><br>
+        <input type="button" value="concatenate strings" onclick="testConcatStrings()">100000000 times:<span id="concatStringsResult"></span><br>
+        <input type="button" value="sort Array" onclick="testSortArray()"><span id="sortArrayResult"></span><br>
+        <br>
+        <input type="button" value="Run all tests" onclick="continueAfter=true;completed()">Average time: <span id="averageResult"></span>
+    </body>
 </html>
