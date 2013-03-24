@@ -18,6 +18,42 @@
     <listener>
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
+    <filter>
+        <filter-name>ResponseHeaderFilter</filter-name>
+        <filter-class>com.apdplat.platform.filter.ResponseHeaderFilter</filter-class>
+        <init-param>
+          <param-name>expiresSeconds</param-name>
+          <param-value>2592000</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+      <filter-name>ResponseHeaderFilter</filter-name>
+      <url-pattern>*.png</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>ResponseHeaderFilter</filter-name>
+      <url-pattern>*.gif</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>ResponseHeaderFilter</filter-name>
+      <url-pattern>*.jpg</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>ResponseHeaderFilter</filter-name>
+      <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>ResponseHeaderFilter</filter-name>
+      <url-pattern>*.htm</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>ResponseHeaderFilter</filter-name>
+      <url-pattern>*.js</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>ResponseHeaderFilter</filter-name>
+      <url-pattern>*.css</url-pattern>
+    </filter-mapping>
     
     <filter>
         <description>记录请求的处理时间，为性能分析提供数据</description>
@@ -127,6 +163,7 @@
     </filter-mapping>
     <!--
     压缩CSS和JS
+    -->
     <filter>
         <filter-name>gzipFilter</filter-name>
         <filter-class>com.apdplat.platform.filter.GzipFilter</filter-class>
@@ -139,7 +176,10 @@
         <filter-name>gzipFilter</filter-name>
         <url-pattern>*.js</url-pattern>
     </filter-mapping>
-    -->
+    <filter-mapping>
+        <filter-name>gzipFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
 
     <!--CXF 配置  WEB服务-->
     <servlet>
