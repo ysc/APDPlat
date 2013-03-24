@@ -18,6 +18,7 @@
         <property name="initialSize" value="${pool.initialSize}" />
         <property name="maxActive" value="${pool.maxActive}" />
         <property name="maxIdle" value="${pool.maxIdle}" />
+        <property name="minIdle" value="${pool.minIdle}" />
         <property name="maxWait" value="${pool.maxWait}" />
         <property name="poolPreparedStatements" value="${pool.poolPreparedStatements}" />
         <property name="defaultAutoCommit" value="${pool.defaultAutoCommit}" />
