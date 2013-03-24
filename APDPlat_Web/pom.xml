@@ -48,13 +48,8 @@
         <apdplat.version>2.2</apdplat.version>
         <junit.version>4.8.2</junit.version>
         <javaee-api.version>6.0</javaee-api.version>
-        <!--2.3.1版和jboss6兼容-->
-        <cxf.version>2.3.1</cxf.version>
-        <!--2.4.0版和jboss6不兼容
-        <cxf.version>2.4.0</cxf.version>
-        -->
+
         <!-- WEB 模块 主要插件的版本定义 -->
-        <yuicompressor-maven-plugin>1.1</yuicompressor-maven-plugin>
         <maven-war-plugin.version>2.1.1</maven-war-plugin.version>
         <maven-antrun-plugin.version>1.6</maven-antrun-plugin.version>
         <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server>
