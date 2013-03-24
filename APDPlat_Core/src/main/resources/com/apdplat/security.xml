@@ -22,7 +22,7 @@
         <s:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="filterSecurityInterceptor" />
         <s:form-login login-page="${login.page}?state=login" default-target-url="${system.main.page}" authentication-failure-url="${login.fail.page}?state=login&amp;login_error=true" login-processing-url="/j_spring_security_check" />
         <s:access-denied-handler error-page="${deny.page}"/>  
-        <s:logout logout-success-url="${login.page}?state=logout" />
+        <s:logout logout-success-url="${logout.page}" />
         <s:session-management session-authentication-error-url="${login.page}?state=session-authentication-error" invalid-session-url="${login.page}?state=session-invalid" session-fixation-protection="none" > 
             <s:concurrency-control max-sessions="1" expired-url="${login.page}?state=session-expired" error-if-maximum-exceeded="false" session-registry-alias="sessionRegistry"/>
         </s:session-management>
@@ -66,7 +66,7 @@
     <bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
             <property name="captchaEngine" ref="captchaEngine"/>
             <!-- 
-            生成的图片过期时间 , 单位为秒
+            生成的图片过期��间 , 单位为秒
             -->
             <property name="minGuarantedStorageDelayInSeconds" value="300" />
     </bean>
