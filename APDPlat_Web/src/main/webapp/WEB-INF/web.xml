@@ -165,7 +165,6 @@
     </filter-mapping>
     <!--
     压缩CSS和JS
-    -->
     <filter>
         <filter-name>gzipFilter</filter-name>
         <filter-class>com.apdplat.platform.filter.GzipFilter</filter-class>
@@ -182,6 +181,7 @@
         <filter-name>gzipFilter</filter-name>
         <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
+    -->
 
     <!--CXF 配置  WEB服务-->
     <servlet>
