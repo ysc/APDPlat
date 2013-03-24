@@ -5,6 +5,7 @@ import com.apdplat.module.security.model.Role;
 import com.apdplat.module.security.model.User;
 import com.apdplat.module.security.service.RoleService;
 import com.apdplat.module.security.service.UserHolder;
+import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
@@ -66,11 +67,16 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
     public void prepareForDelete(Integer[] ids){
         User loginUser=UserHolder.getCurrentLoginUser();
         for(int id :ids){
-            Role role=service.retrieve(Role.class, id);
+            Role role=service.retrieve(Role.class, id);            
             boolean canDel=true;
             //获取拥有等待删除的角色的所有用户
             List<User> users=role.getUsers();
-            for(User user : users){
+            for(User user : users){                
+                if(PropertyHolder.getBooleanProperty("demo")){
+                    if(user.getUsername().equals("admin")){
+                        throw new RuntimeException("演示版本不能删除admin用户拥有的角色");
+                    }
+                }
                 if(loginUser.getId()==user.getId()){
                     canDel=false;
                 }

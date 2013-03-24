@@ -9,6 +9,7 @@ import com.apdplat.module.security.service.OnlineUserService;
 import com.apdplat.module.security.service.OrgService;
 import com.apdplat.module.security.service.PasswordEncoder;
 import com.apdplat.module.security.service.UserHolder;
+import com.apdplat.module.system.service.PropertyHolder;
 import com.apdplat.platform.action.ExtJSSimpleAction;
 import com.apdplat.platform.criteria.Operator;
 import com.apdplat.platform.criteria.Property;
@@ -265,7 +266,13 @@ public class UserAction extends ExtJSSimpleAction<User> {
     @Override
     public void prepareForDelete(Integer[] ids){
         User loginUser=UserHolder.getCurrentLoginUser();
-        for(int id :ids){
+        for(int id :ids){            
+            if(PropertyHolder.getBooleanProperty("demo")){
+                User toDeleteUser = service.retrieve(modelClass, id);
+                if(toDeleteUser.getUsername().equals("admin")){
+                    throw new RuntimeException("演示版本不能删除admin用户");
+                }
+            }
             if(loginUser.getId()==id){
                 throw new RuntimeException("用户不能删除自己");
             }
@@ -279,6 +286,14 @@ public class UserAction extends ExtJSSimpleAction<User> {
             result.put("message", "用户没有登录");
              Struts2Utils.renderJson(result);
             return null;
+        }
+        if(PropertyHolder.getBooleanProperty("demo")){
+            if(user.getUsername().equals("admin")){
+                result.put("success", false);
+                result.put("message", "演示版本admin用户不能更改密码");
+                Struts2Utils.renderJson(result);
+                return null;
+            }
         }
         oldPassword=PasswordEncoder.encode(oldPassword.trim(),user);
         if(oldPassword.equals(user.getPassword())){
