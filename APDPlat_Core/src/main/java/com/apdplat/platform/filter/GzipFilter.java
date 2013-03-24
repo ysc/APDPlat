@@ -61,42 +61,46 @@ public class GzipFilter extends Filter {
     @Override
     protected void doFilter(final HttpServletRequest request, final HttpServletResponse response,
                             final FilterChain chain) throws Exception {
-        if (!isIncluded(request) && acceptsEncoding(request, "gzip")) {
-            // Client accepts zipped content
-            if (log.isDebugEnabled()) {
-                log.debug(request.getRequestURL() + ". Writing with gzip compression");
+        try{
+            if (!isIncluded(request) && acceptsEncoding(request, "gzip")) {
+                // Client accepts zipped content
+                if (log.isDebugEnabled()) {
+                    log.debug(request.getRequestURL() + ". Writing with gzip compression");
+                }
+
+                // Create a gzip stream
+                final ByteArrayOutputStream compressed = new ByteArrayOutputStream();
+                final GenericResponseWrapper wrapper;
+                try (GZIPOutputStream gzout = new GZIPOutputStream(compressed)) {
+                    wrapper = new GenericResponseWrapper(response, gzout);
+                    chain.doFilter(request, wrapper);
+                    wrapper.flush();
+                }
+
+                //Saneness checks
+                byte[] compressedBytes = compressed.toByteArray();
+                boolean shouldGzippedBodyBeZero = ResponseUtil.shouldGzippedBodyBeZero(compressedBytes, request);
+                boolean shouldBodyBeZero = ResponseUtil.shouldBodyBeZero(request, wrapper.getStatus());
+                if (shouldGzippedBodyBeZero || shouldBodyBeZero) {
+                    compressedBytes = new byte[0];
+                }
+
+                // Write the zipped body
+                ResponseUtil.addGzipHeader(response);
+                response.setContentLength(compressedBytes.length);
+
+
+                response.getOutputStream().write(compressedBytes);
+            } else {
+                // Client does not accept zipped content - don't bother zipping
+                if (log.isDebugEnabled()) {
+                    log.debug(request.getRequestURL()
+                            + ". Writing without gzip compression because the request does not accept gzip.");
+                }
+                chain.doFilter(request, response);
             }
-
-            // Create a gzip stream
-            final ByteArrayOutputStream compressed = new ByteArrayOutputStream();
-            final GenericResponseWrapper wrapper;
-            try (GZIPOutputStream gzout = new GZIPOutputStream(compressed)) {
-                wrapper = new GenericResponseWrapper(response, gzout);
-                chain.doFilter(request, wrapper);
-                wrapper.flush();
-            }
-
-            //Saneness checks
-            byte[] compressedBytes = compressed.toByteArray();
-            boolean shouldGzippedBodyBeZero = ResponseUtil.shouldGzippedBodyBeZero(compressedBytes, request);
-            boolean shouldBodyBeZero = ResponseUtil.shouldBodyBeZero(request, wrapper.getStatus());
-            if (shouldGzippedBodyBeZero || shouldBodyBeZero) {
-                compressedBytes = new byte[0];
-            }
-
-            // Write the zipped body
-            ResponseUtil.addGzipHeader(response);
-            response.setContentLength(compressedBytes.length);
-
-
-            response.getOutputStream().write(compressedBytes);
-        } else {
-            // Client does not accept zipped content - don't bother zipping
-            if (log.isDebugEnabled()) {
-                log.debug(request.getRequestURL()
-                        + ". Writing without gzip compression because the request does not accept gzip.");
-            }
-            chain.doFilter(request, response);
+        }catch(Exception e){
+            log.info("增加zip压缩失败："+request.getRequestURI());
         }
     }
 
@@ -515,7 +519,7 @@ abstract class Filter implements javax.servlet.Filter {
             }
 
         } catch (final Throwable throwable) {
-            log.error("error",throwable);
+            log.info("增加zip压缩失败："+httpRequest.getRequestURI());
         }
     }
 
