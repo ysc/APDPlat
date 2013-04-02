@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 /**
  * 给JAVA源代码文件统一地添加licence信息头
- * 检查文件package、import、类级别注释、是否有public class * 
+ * 检查文件package、import、类级别注释、是否有public class
+ * 用到了Java7的新特性，强大
  * @author ysc
  */
 public class AddLicenceForJavaFile {
