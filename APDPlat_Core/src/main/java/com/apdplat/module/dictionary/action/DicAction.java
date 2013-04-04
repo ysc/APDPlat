@@ -25,6 +25,7 @@ import com.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -52,6 +53,7 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
         Dic dictionary=dicService.getDic(dic);
         if(dictionary==null){
             log.info("没有找到数据词典 "+dic);
+            log.info("Dictionary is NOT found"+dic,Locale.ENGLISH);
             return null;
         }
         if("true".equals(tree)){
