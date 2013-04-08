@@ -294,6 +294,14 @@ public class UserAction extends ExtJSSimpleAction<User> {
                 throw new RuntimeException("用户不能删除自己");
             }
         }
+    }   
+    @Override
+    protected void old(User model) {
+        if(PropertyHolder.getBooleanProperty("demo")){
+            if(model.getUsername().equals("admin")){
+                throw new RuntimeException("演示版本不能修改admin用户");
+            }
+        }
     }
     public String modifyPassword(){
         Map result=new HashMap();
