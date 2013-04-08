@@ -75,6 +75,14 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         }
         return null;
     }
+    @Override
+    protected void old(Role model) {
+        if(PropertyHolder.getBooleanProperty("demo")){
+            if(model.isSuperManager()){
+                throw new RuntimeException("演示版本不能修改具有超级管理员权限的角色");
+            }
+        }
+    }
     
     /**
      * 删除角色前，把该角色从所有引用该角色的用户中移除
