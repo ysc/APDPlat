@@ -43,14 +43,19 @@ public class SetupAction extends ExtJSActionSupport {
     
     public String query(){
         Map map=new HashMap();
-        IndexScheduleConfig config=indexSchedulerService.getIndexScheduleConfig();
-        
-        if(config!=null && config.isEnabled()){
-            map.put("state", "定时重建索引任务执行频率为每天，时间（24小时制）"+config.getScheduleHour()+":"+config.getScheduleMinute());
-            map.put("hour",config.getScheduleHour());
-            map.put("minute", config.getScheduleMinute());
+        try{
+            IndexScheduleConfig config=indexSchedulerService.getIndexScheduleConfig();
 
-        }else{
+            if(config!=null && config.isEnabled()){
+                map.put("state", "定时重建索引任务执行频率为每天，时间（24小时制）"+config.getScheduleHour()+":"+config.getScheduleMinute());
+                map.put("hour",config.getScheduleHour());
+                map.put("minute", config.getScheduleMinute());
+
+            }else{
+                map.put("state", "无定时调度任务");
+            }
+        }catch(Exception e){
+            log.error("无定时调度任务", e);
             map.put("state", "无定时调度任务");
         }
         
