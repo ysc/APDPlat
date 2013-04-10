@@ -13,8 +13,8 @@
     <description>APDPlat功能模块，可插拔，可替换</description>
     <licenses>
       <license>
-        <name>The Apache Software License, Version 2.0</name>
-        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <name>GNU GENERAL PUBLIC LICENSE, Version 3</name>
+        <url>http://www.gnu.org/licenses/gpl.txt</url>
       </license>
     </licenses>
     <scm>
