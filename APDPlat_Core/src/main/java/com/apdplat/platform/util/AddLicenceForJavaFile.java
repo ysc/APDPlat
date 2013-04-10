@@ -1,18 +1,21 @@
 /**
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * 
+ * APDPlat - Application Product Development Platform
+ * Copyright (c) 2013, 杨尚川
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  */
 
 package com.apdplat.platform.util;
@@ -33,20 +36,23 @@ public class AddLicenceForJavaFile {
 
     public static void main(String[] args) {
         String licence="/**\n" +
-" * Licensed to the Apache Software Foundation (ASF) under one or more\n" +
-" * contributor license agreements.  See the NOTICE file distributed with\n" +
-" * this work for additional information regarding copyright ownership.\n" +
-" * The ASF licenses this file to You under the Apache License, Version 2.0\n" +
-" * (the \"License\"); you may not use this file except in compliance with\n" +
-" * the License.  You may obtain a copy of the License at\n" +
-" *\n" +
-" *     http://www.apache.org/licenses/LICENSE-2.0\n" +
-" *\n" +
-" * Unless required by applicable law or agreed to in writing, software\n" +
-" * distributed under the License is distributed on an \"AS IS\" BASIS,\n" +
-" * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
-" * See the License for the specific language governing permissions and\n" +
-" * limitations under the License.\n" +
+" * \n" +
+" * APDPlat - Application Product Development Platform\n" +
+" * Copyright (c) 2013, 杨尚川\n" +
+" * \n" +
+" * This program is free software: you can redistribute it and/or modify\n" +
+" * it under the terms of the GNU General Public License as published by\n" +
+" * the Free Software Foundation, either version 3 of the License, or\n" +
+" * (at your option) any later version.\n" +
+" * \n" +
+" * This program is distributed in the hope that it will be useful,\n" +
+" * but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
+" * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" +
+" * GNU General Public License for more details.\n" +
+" * \n" +
+" * You should have received a copy of the GNU General Public License\n" +
+" * along with this program.  If not, see <http://www.gnu.org/licenses/>.\n" +
+" * \n" +
 " */";
         addLicenceForJavaFile(new File("D:\\Workspaces\\NetBeansProjects\\APDPlat"),licence);
         System.out.println("为 "+count+" 个Java源代码文件添加licence信息头");
@@ -118,7 +124,7 @@ public class AddLicenceForJavaFile {
                             wrong.add(path.getAbsolutePath());
                             return;
                         }
-                        try (FileWriter writer = new FileWriter(path)) {
+                        try (Writer writer = new OutputStreamWriter(new FileOutputStream(path),"utf-8")) {
                             writer.write(licence);
                             writer.write("\n\n");
                             writer.write(text);
