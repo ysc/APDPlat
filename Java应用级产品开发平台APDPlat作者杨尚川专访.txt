@@ -1,0 +1,128 @@
+﻿1.先来个自我介绍吧！
+
+    我叫杨尚川，2005年开始并一直从事JAVA开发。2010年开始NUTCH相关框架的研究，目前为独立咨询顾问，专注于大数据、搜索引擎等相关技术。
+
+2.APDPlat是什么？有哪些功能？
+
+    APDPlat是Application Product Development Platform的缩写，意为应用级产品开发平台。
+
+    对于一个平台来说，讲究成熟稳定，功能丰富，因此需要众多的框架来支持，而不是去重新发明轮子。
+
+    作为应用级产品的开发平台，APDPlat提供了应用容器、多模块架构、代码生成、安装程序、认证授权、备份恢复、数据字典、web service、系统监控、操作审计、统计图表、机器绑定、防止破解、数据安全、内置搜索、数据转换、maven支持、WEB组件、内容管理等功能。
+
+3.开发这个项目的初衷是什么？为什么会选择开源？
+
+    2008年我开发这个项目，最初的目的是为了方便自己做项目。之后一直持续重构，持续改进，特别是对简洁的追求，目前APDPlat只有不到一万五千行JAVA代码，其中还有很多代码是工具类或是为扩展做准备的代码。
+
+    2010年以后，我主要从事NUTCH相关的研发工作，而且APDPlat已经相对成熟，所以2012年我选择了在GitHub上面开源，希望能吸引更多的开发者，注入新鲜的血液， 同时也希望以码会友，共同交流。
+
+4.APDPlat的实现原理是什么？采用了哪些技术和框架？
+
+    APDPlat底层几乎全部采用JAVA开源框架，对Spring、Struts2、Compass做了定制修改，接管了系统启动和关闭的控制权，统一了配置文件，并实现了诸多平台级的功能，为应用级产品开发铺平了道路。
+
+    APDPlat用到的开源框架主要有：
+
+    1)、Web前端采用EXT JS。
+
+    2)、前端控制器采用Struts2。
+
+    3)、IOC容器采用Spring。
+
+    4)、ORM采用JPA，默认实现是Hibernate。
+
+    5)、内置搜索采用Compass，扩展方案采用Solr。
+
+    6)、认证授权采用SpringSecurity。
+
+    7)、代码生成采用Freemarker。
+
+    8)、日志组件采用SLF4J。
+
+    9)、调度组件采用Quartz。
+
+    10)、验证码采用Jcaptcha。
+
+    11)、Web Service采用CXF。
+
+    12)、SQL监控采用P6SPY。
+
+    13)、JS和CSS压缩采用YUI Compressor。
+
+    14)、JAVA代码混淆采用Allatori。
+
+    15)、获取系统信息采用Sigar。
+
+    16)、单元测试采用JUnit。
+
+    17)、配置文件加密采用Jasypt。
+
+    18)、缓存采用EhCache或是Memcached。
+
+    19)、数据库连接池采用CommonsDBCP。
+
+    20)、Office文档操作采用POI。
+
+5.很多类似平台都定位为“快速开发平台”，APDPlat的目标用户及定位是什么？（为什么说“APDPlat不是针对业务人员的快速开发平台”？）
+
+    APDPlat的目标用户是广大的JAVA工程师。
+
+    因为APDPlat是基于众多JAVA开源框架的，所以没有扎实的JAVA功底是驾驭不了的。对于JAVA的入门者或是初级工程师来说，可以把APDPlat当成一个案例来学习。只有熟练掌握JAVA技能的工程师才能使用APDPlat做到“快速开发”。
+
+    APDPlat并没有提供可视化的建模环境，所以它不是“针对业务人员的快速开发平台”。 
+
+6.与同类型的开发平台相比，你认为APDPlat的优势或特色是什么？
+
+    对于同类型的开发平台，我所知甚少，很难比较。
+
+    在我看来，APDPlat开箱即用，默认提供的功能不需修改立即可用，尤其适合研发能力相对薄弱的微小企业以及工作室。
+
+7.APDPlat的性能如何？
+
+    混淆优化JAVA代码，并使用“懒加载”以及“缓存”技术，JAVA代码的性能表现优异。
+
+    压缩优化CSS和JS，并启用HTTP  GZIP以及浏览器缓存，Web前端的性能也表现优异。
+
+8.有没有统计目前采用APDPlat平台开发的应用有多少？有哪些典型应用？
+
+    在GitHub开源后，目前APDPlat已经被Fork了170多次，至于用户开发了哪些应用，我还没有得到反馈。就我自己来说，典型应用主要是B/S架构的管理信息系统。
+
+9.如何基于APDPlat快速开发？
+
+    要想基于APDPlat实现快速开发，需要阅读APDPlat  Wiki，并有两个前提：一是需要对JPA有深入的理解，二是需要对EXT JS有深入的理解。
+
+10.目前APDPlat的开发团队有几个人？在GitHub上目前有多少正式提交成员？如何参与贡献？
+
+    APDPlat正在招募开发队员，目前的开发主要是我一个人。
+
+    在GitHub上面Fork APDPlat，增加功能或是BUG修复之后，使用GitHub的Pull Request可参与贡献。
+
+11.APDPlat的开源协议是什么？你对开源怎么理解？你如何看待国内的开源环境？
+
+    APDPlat采用GNU GENERAL PUBLIC LICENSE, Version 3作为开源协议。
+
+    开源的项目更让人放心，因为它公开、透明、安全、可控。参与开源项目需要持续地投入时间与精力，要有奉献与协作精神。
+
+    目前国内具有开源精神的人还不是很多，大家对如何使用开源项目很热衷，而参与开发的就少了。
+
+12.APDPlat的未来发展计划？
+
+    APDPlat将来要加入工作流、Android客户端、安装程序、完善现有的功能、BUG修复。
+
+13.另外，你还推出了一套Nutch相关框架视频教程，你对想学习Nutch的同学有什么建议？
+
+    《Nutch相关框架视频教程》是一系列的视频教程，详细讲解了跟Nutch相关的框架，这些框架主要有Lucene、Hadoop、Solr、Tika、Gora、HBase等，都是JAVA开源框架。
+
+    其中Nutch是网络爬虫、Lucene是全文检索工具包、Hadoop是分布式存储与计算、Solr是搜索服务器、Tika是内容分析工具包、Gora是ORM的大数据版、HBase是基于Hadoop的分布式数据库。
+
+    作为一个JAVA工程师，这些技术我相信大家都有所耳闻，尤其是Lucene，几乎可以应用到带有搜索功能的所有项目中。Solr基于Lucene，提供了更多的企业级特性。Tika可以从各种不同的文档中提取元数据和结构化文本内容。Nutch从一开始的搜索引擎演变为如今的网络爬虫，在进化过程中，产生了Hadoop、Tika和Gora三个项目，如今这三个项目都发展迅速，极其火爆，尤其是Hadoop，其已成为大数据和云计算的代名词。
+
+    我希望这套视频能对学习的同学起到抛砖引玉的作用，激发大家学习大数据、搜索引擎的热情。
+
+
+原文出自CSDN&ITEYE
+
+    CSDN：http://blog.csdn.net/blogdevteam/article/details/8770910
+
+    ITEYE: http://www.iteye.com/magazines/113
+
+Nutch相关框架视频教程：http://yangshangchuan.iteye.com/blog/1837935
