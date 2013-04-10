@@ -1,7 +1,7 @@
 /**
  * 
  * APDPlat - Application Product Development Platform
- * Copyright (c) 2013, 杨尚川
+ * Copyright (c) 2013, 杨尚川, yang-shangchuan@qq.com
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public class AddLicenceForJavaFile {
         String licence="/**\n" +
 " * \n" +
 " * APDPlat - Application Product Development Platform\n" +
-" * Copyright (c) 2013, 杨尚川\n" +
+" * Copyright (c) 2013, 杨尚川, yang-shangchuan@qq.com\n" +
 " * \n" +
 " * This program is free software: you can redistribute it and/or modify\n" +
 " * it under the terms of the GNU General Public License as published by\n" +
