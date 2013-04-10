@@ -35,7 +35,7 @@ public class TestWS {
     protected final APDPlatLogger log = new APDPlatLogger(getClass());
     @Resource(name="userServiceClient")
     private UserService userService;
-    @PostConstruct
+    //@PostConstruct
     public void testws(){
         new Thread(){            
             @Override
