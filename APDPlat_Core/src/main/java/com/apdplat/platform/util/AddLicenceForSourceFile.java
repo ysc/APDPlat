@@ -96,7 +96,7 @@ public class AddLicenceForSourceFile {
         processJspFile();
         processJsFile();
     }
-    private static void processJavaFile(){
+    public static void processJavaFile(){
         //重置计算器
         count = 0;
         fail = new ArrayList<>();
@@ -109,15 +109,17 @@ public class AddLicenceForSourceFile {
             for(String f : fail){
                 System.out.println("        "+f);
             }
+            throw new RuntimeException("失败：为Java源代码文件添加licence信息头");
         }
         if(wrong.size()>0){
             System.out.println("JAVA源代码错误个数 "+wrong.size());
             for(String w : wrong){
                 System.out.println("        "+w);
             }
+            throw new RuntimeException("错误：为Java源代码文件添加licence信息头");
         }        
     }
-    private static void processJspFile(){
+    public static void processJspFile(){
         //重置计算器
         count = 0;
         fail = new ArrayList<>();
@@ -130,15 +132,17 @@ public class AddLicenceForSourceFile {
             for(String f : fail){
                 System.out.println("        "+f);
             }
+            throw new RuntimeException("失败：为Jsp源代码文件添加licence信息头");
         }
         if(wrong.size()>0){
             System.out.println("Jsp源代码错误个数 "+wrong.size());
             for(String w : wrong){
                 System.out.println("        "+w);
             }
+            throw new RuntimeException("错误：为Jsp源代码文件添加licence信息头");
         }        
     }
-    private static void processJsFile(){
+    public static void processJsFile(){
         //重置计算器
         count = 0;
         fail = new ArrayList<>();
@@ -151,6 +155,7 @@ public class AddLicenceForSourceFile {
             for(String f : fail){
                 System.out.println("        "+f);
             }
+            throw new RuntimeException("失败：为JS源代码文件添加licence信息头");
         }    
     }
     /**
