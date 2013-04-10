@@ -20,10 +20,6 @@
 
 package com.apdplat.module.security.ws;
 
-/**
- *
- * @author 杨尚川
- */
 import com.apdplat.module.security.model.User;
 import com.apdplat.module.security.service.PasswordEncoder;
 import com.apdplat.module.security.service.UserDetailsServiceImpl;
