@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  *获取索引目录和索引文件
- * @author ysc
+ * @author 杨尚川
  */
 public class IndexFileService {
     private static final  File file;

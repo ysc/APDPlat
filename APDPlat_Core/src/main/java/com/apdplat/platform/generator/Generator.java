@@ -34,7 +34,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public abstract class Generator {
     protected static final APDPlatLogger log = new APDPlatLogger(Generator.class);

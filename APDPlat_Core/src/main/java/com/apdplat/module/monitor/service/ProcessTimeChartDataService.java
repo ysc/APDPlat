@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class ProcessTimeChartDataService {
     protected static final APDPlatLogger log = new APDPlatLogger(ProcessTimeChartDataService.class);

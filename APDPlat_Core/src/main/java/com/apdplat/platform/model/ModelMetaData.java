@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class ModelMetaData {
     protected static final APDPlatLogger log = new APDPlatLogger(ModelMetaData.class);

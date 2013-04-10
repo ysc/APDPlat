@@ -40,7 +40,7 @@ import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.stereotype.Service;
 /**
  * 定时重建索引调度器服务
- * @author ysc
+ * @author 杨尚川
  */
 @Service
 public class IndexSchedulerService implements ApplicationListener {

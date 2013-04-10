@@ -22,7 +22,7 @@ package com.apdplat.module.info.model;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public enum Lang {
     zh("zh"),en("en");

@@ -29,7 +29,7 @@ import org.slf4j.Marker;
 /**
  *日志输出支持多国语言切换解决方案
  * Log output switching solutions support multiple languages
- * @author ysc
+ * @author 杨尚川
  */
 public class APDPlatLogger implements Logger,Serializable{
     private static final long serialVersionUID = 1L;

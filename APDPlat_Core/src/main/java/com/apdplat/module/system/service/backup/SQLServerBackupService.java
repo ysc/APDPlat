@@ -34,7 +34,7 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.stereotype.Service;
 /**
  * SQLServer备份恢复实现
- * @author ysc
+ * @author 杨尚川
  */
 @Service("SQL_SERVER")
 public class SQLServerBackupService extends BackupService{

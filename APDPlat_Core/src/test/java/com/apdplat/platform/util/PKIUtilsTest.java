@@ -25,7 +25,7 @@ import org.junit.Test;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class PKIUtilsTest {
 

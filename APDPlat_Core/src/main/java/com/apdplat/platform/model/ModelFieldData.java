@@ -22,7 +22,7 @@ package com.apdplat.platform.model;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class ModelFieldData {
     private String english;

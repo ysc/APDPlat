@@ -40,7 +40,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class JsGenerator  extends Generator{    
     private final static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();

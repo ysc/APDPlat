@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *测试WEB SERVICE是否正常
- * @author ysc
+ * @author 杨尚川
  */
 @Service
 public class TestWS {

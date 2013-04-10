@@ -42,7 +42,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  *生成模型文件
- * @author ysc
+ * @author 杨尚川
  */
 public class ModelGenerator extends Generator {
     private final static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();

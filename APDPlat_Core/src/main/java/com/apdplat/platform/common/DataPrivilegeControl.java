@@ -26,7 +26,7 @@ import javax.persistence.Entity;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class DataPrivilegeControl {
     private static String[] excludes=null;

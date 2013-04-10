@@ -33,7 +33,7 @@ import javax.servlet.ServletResponse;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class Lock implements Filter {
     private static boolean restore=false;

@@ -33,7 +33,7 @@ import org.xml.sax.SAXException;
 
 /**
  *验证XML是否合法
- * @author ysc
+ * @author 杨尚川
  */
 public class XMLUtils {
     protected static final APDPlatLogger log = new APDPlatLogger(XMLUtils.class);

@@ -26,7 +26,7 @@ import org.jdom.Element;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public abstract class SingleService extends ChartService{
     

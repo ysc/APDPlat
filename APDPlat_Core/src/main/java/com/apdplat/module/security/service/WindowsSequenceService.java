@@ -27,7 +27,7 @@ import java.io.InputStreamReader;
 
 /**
  *在Windows平台上生成机器码
- * @author ysc
+ * @author 杨尚川
  */
 public final class WindowsSequenceService extends AbstractSequenceService{    
     @Override

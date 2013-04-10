@@ -31,7 +31,7 @@ import org.jdom.output.XMLOutputter;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public abstract class ChartService {
     protected final APDPlatLogger log = new APDPlatLogger(getClass());

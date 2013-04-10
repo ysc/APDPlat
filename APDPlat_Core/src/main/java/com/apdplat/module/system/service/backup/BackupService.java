@@ -41,7 +41,7 @@ import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
 /**
  *备份恢复服务定义
- * @author ysc
+ * @author 杨尚川
  */
 public abstract class BackupService {  
     protected final APDPlatLogger log = new APDPlatLogger(getClass());

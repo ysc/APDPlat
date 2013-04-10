@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 @Service
 public class BackupLogSingleService  extends SingleService{

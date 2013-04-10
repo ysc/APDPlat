@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 使用Filter来指定浏览器缓存或不缓存服务器数据
  * 此过滤器放在最前面，之后的过滤器可以覆盖该值
- * @author ysc
+ * @author 杨尚川
  */
 public class ResponseHeaderFilter implements javax.servlet.Filter {
     protected static final APDPlatLogger log = new APDPlatLogger(DicService.class);

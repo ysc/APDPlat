@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *执行备份恢复的服务，自动判断使用的是什么数据库，并找到该数据库备份恢复服务的实现并执行
- * @author ysc
+ * @author 杨尚川
  */
 @Service
 public class BackupServiceExecuter extends BackupService{  

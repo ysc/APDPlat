@@ -40,7 +40,7 @@ import org.springframework.scheduling.quartz.CronTriggerBean;
 import org.springframework.stereotype.Service;
 /**
  * 在系统启动的时候，检查是否需要执行定时备份数据
- * @author ysc
+ * @author 杨尚川
  */
 @Service
 public class BackupSchedulerService implements ApplicationListener {

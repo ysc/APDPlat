@@ -22,7 +22,7 @@ package com.apdplat.module.security.service;
 
 /**
  *在Linux平台上生成机器码
- * @author ysc
+ * @author 杨尚川
  */
 public class LinuxSequenceService  extends AbstractSequenceService{
     @Override

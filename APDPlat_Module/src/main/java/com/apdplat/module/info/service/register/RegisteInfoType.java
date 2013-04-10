@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *将初始数据导入数据库
- * @author ysc
+ * @author 杨尚川
  */
 @Service
 public class RegisteInfoType extends RegisterService<InfoType>{

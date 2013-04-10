@@ -48,7 +48,7 @@ import javax.crypto.spec.DESKeySpec;
  * SolarisSequenceService.class
  * SecurityService.class
  * 进行加密并放到WEB模块
- * @author ysc
+ * @author 杨尚川
  */
 public class EncryptClassUtils {
     protected static final APDPlatLogger log = new APDPlatLogger(EncryptClassUtils.class);

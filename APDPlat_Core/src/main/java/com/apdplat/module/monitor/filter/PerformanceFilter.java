@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class PerformanceFilter implements Filter {
     protected static final APDPlatLogger log = new APDPlatLogger(PerformanceFilter.class);

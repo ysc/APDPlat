@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  *IP地址访问限制
- * @author ysc
+ * @author 杨尚川
  */
 public class IPAccessControler {
     protected static final APDPlatLogger log = new APDPlatLogger(IPAccessControler.class);

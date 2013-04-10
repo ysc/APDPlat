@@ -22,7 +22,7 @@ package com.apdplat.module.monitor.model;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class BackupLogType {
     public static final String BACKUP="备份";

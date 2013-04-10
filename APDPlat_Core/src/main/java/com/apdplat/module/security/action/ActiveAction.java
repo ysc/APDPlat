@@ -30,7 +30,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 @Scope("prototype")
 @Controller

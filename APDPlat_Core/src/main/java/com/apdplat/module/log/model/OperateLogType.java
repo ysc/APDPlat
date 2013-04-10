@@ -22,7 +22,7 @@ package com.apdplat.module.log.model;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class OperateLogType {
     public static final String ADD="增加";

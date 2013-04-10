@@ -24,7 +24,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 /**
  *此工具负责根据用户的机器码来生成注册码
- * @author ysc
+ * @author 杨尚川
  */
 public class AuthorizationUtils {
     public static void main(String args[]) throws Exception {

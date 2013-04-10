@@ -30,7 +30,7 @@ import java.util.Date;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class MemoryMonitorThread extends Thread{
     protected static final APDPlatLogger log = new APDPlatLogger(MemoryMonitorThread.class);

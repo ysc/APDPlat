@@ -31,7 +31,7 @@ import java.io.OutputStream;
 /**
  *统计源代码行数
  * 将所有源代码写到一个文件
- * @author ysc
+ * @author 杨尚川
  */
 public class JavaSrcUtil {
 	

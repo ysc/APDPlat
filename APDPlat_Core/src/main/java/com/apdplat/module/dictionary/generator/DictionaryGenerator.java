@@ -37,7 +37,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class DictionaryGenerator extends Generator{
     private static Configuration freemarkerConfiguration = null;

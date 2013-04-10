@@ -22,7 +22,7 @@ package com.apdplat.platform.generator;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public interface MavenRunner {
     public void run(String workspaceModuleRootPath);

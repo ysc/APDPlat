@@ -28,7 +28,7 @@ import java.util.Set;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class SortUtils {
     protected static final APDPlatLogger log = new APDPlatLogger(SortUtils.class);

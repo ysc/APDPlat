@@ -38,7 +38,7 @@ import org.hyperic.sigar.Sigar;
 
 /**
  *机器码生成的通用服务
- * @author ysc
+ * @author 杨尚川
  */
 public abstract class AbstractSequenceService   implements SequenceService{
     protected final APDPlatLogger log = new APDPlatLogger(getClass());

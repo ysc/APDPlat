@@ -25,7 +25,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class PasswordEncoder {
     public static String encode(String password,User user){

@@ -33,7 +33,7 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * md5算法工具
- * @author ysc
+ * @author 杨尚川
  */
 public class MD5Util {
     private static final Log log = LogFactory.getLog(MD5Util.class);

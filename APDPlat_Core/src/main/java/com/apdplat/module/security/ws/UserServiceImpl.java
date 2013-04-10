@@ -22,7 +22,7 @@ package com.apdplat.module.security.ws;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 import com.apdplat.module.security.model.User;
 import com.apdplat.module.security.service.PasswordEncoder;
@@ -35,7 +35,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 /**
  * 用户认证服务实现
- * @author ysc
+ * @author 杨尚川
  */
 @Service
 @WebService(endpointInterface = "com.apdplat.module.security.ws.UserService")

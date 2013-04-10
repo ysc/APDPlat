@@ -31,7 +31,7 @@ import java.util.Map;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class OperateLogChartDataService {
     public static List<OperateStatistics> getData(List<OperateLog> models){

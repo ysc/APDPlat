@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *MySQL备份恢复实现
- * @author ysc
+ * @author 杨尚川
  */
 @Service("MYSQL")
 public class MySQLBackupService extends BackupService{

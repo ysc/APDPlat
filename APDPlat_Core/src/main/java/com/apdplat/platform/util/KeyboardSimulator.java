@@ -28,7 +28,7 @@ package com.apdplat.platform.util;
  * JAVA程序调用JNI接口读取市民卡中的身份证号码，之后利用本类的功能将身份证号码模拟键盘输入，实现条形码扫描枪的功能
  * 之后图书馆用扫描枪扫描用户的借书卡和在读卡器上刷市民卡的效果是一样的
  * 
- * @author ysc
+ * @author 杨尚川
  */
 import java.awt.AWTException;
 import java.awt.Robot;

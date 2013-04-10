@@ -35,7 +35,7 @@ import java.util.zip.ZipOutputStream;
 
 /**
  *将文件或是文件夹打包压缩成zip格式
- * @author ysc
+ * @author 杨尚川
  */
 public class ZipUtils {
     protected static final APDPlatLogger log = new APDPlatLogger(ZipUtils.class);

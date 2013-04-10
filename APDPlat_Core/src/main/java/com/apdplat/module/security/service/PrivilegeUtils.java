@@ -22,7 +22,7 @@ package com.apdplat.module.security.service;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class PrivilegeUtils {
     public static String process(String str){

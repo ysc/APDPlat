@@ -22,7 +22,7 @@ package com.apdplat.module.security.service;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 import com.apdplat.platform.log.APDPlatLogger;
 import com.apdplat.platform.util.FileUtils;

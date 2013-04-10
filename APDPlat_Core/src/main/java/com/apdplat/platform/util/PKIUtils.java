@@ -42,7 +42,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 /**
  * 
- * @author ysc
+ * @author 杨尚川
  */
 public class PKIUtils {
     protected static final APDPlatLogger log = new APDPlatLogger(PKIUtils.class);

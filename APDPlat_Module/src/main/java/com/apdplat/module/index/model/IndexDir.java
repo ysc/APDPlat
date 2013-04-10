@@ -22,7 +22,7 @@ package com.apdplat.module.index.model;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public class IndexDir {
     private String englishName;

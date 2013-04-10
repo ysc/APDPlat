@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  *
- * @author ysc
+ * @author 杨尚川
  */
 public interface ModuleFilter {
     public void filter(List<Module> subModules);
