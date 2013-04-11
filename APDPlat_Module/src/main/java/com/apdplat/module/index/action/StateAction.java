@@ -71,6 +71,7 @@ public class StateAction extends ExtJSActionSupport {
         List<File> indexes=IndexFileService.getIndexFiles(dir);
         log.info("获取 "+dir+" 的索引文件");
         log.info("索引文件数量为： "+indexes.size());
+        len=start+len;
         if(len>indexes.size()){
             len=indexes.size();
         }
@@ -82,7 +83,7 @@ public class StateAction extends ExtJSActionSupport {
         Map json = new HashMap();
         json.put("totalProperty", indexes.size());
         List<Map> result = new ArrayList<>();
-        renderJsonForQuery(result,indexes);
+        renderJsonForQuery(result,models);
         json.put("root", result);
         Struts2Utils.renderJson(json);
         return null;
