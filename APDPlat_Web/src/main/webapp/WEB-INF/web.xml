@@ -164,7 +164,7 @@
         <url-pattern>/struts/*</url-pattern>
     </filter-mapping>
     <!--
-    压缩CSS和JS
+    启用服务器Gzip，包括css、js、jsp、png、gif、jpg等文件
     <filter>
         <filter-name>gzipFilter</filter-name>
         <filter-class>com.apdplat.platform.filter.GzipFilter</filter-class>
@@ -180,6 +180,18 @@
     <filter-mapping>
         <filter-name>gzipFilter</filter-name>
         <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+        <filter-mapping>
+      <filter-name>gzipFilter</filter-name>
+      <url-pattern>*.png</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>gzipFilter</filter-name>
+      <url-pattern>*.gif</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+      <filter-name>gzipFilter</filter-name>
+      <url-pattern>*.jpg</url-pattern>
     </filter-mapping>
     -->
 
