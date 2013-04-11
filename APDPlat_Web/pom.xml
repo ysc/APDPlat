@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.apdplat</groupId>
+    <groupId>org.apdplat</groupId>
     <artifactId>APDPlat_Web</artifactId>
     <packaging>war</packaging>
     <version>2.3</version>
@@ -153,13 +153,13 @@
         </dependency>
         <!-- apdplat -->
         <dependency>
-            <groupId>com.apdplat</groupId>
+            <groupId>org.apdplat</groupId>
             <artifactId>APDPlat_Core</artifactId>
             <version>${apdplat.version}</version>
         </dependency>
         
         <dependency>
-            <groupId>com.apdplat</groupId>
+            <groupId>org.apdplat</groupId>
             <artifactId>APDPlat_Module</artifactId>
             <version>${apdplat.version}</version>
         </dependency>

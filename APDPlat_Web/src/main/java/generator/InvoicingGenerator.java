@@ -21,12 +21,12 @@
 package generator;
 
 
-import com.apdplat.platform.generator.ActionGenerator;
-import com.apdplat.platform.generator.MavenRunner;
-import com.apdplat.platform.generator.WindowsMavenRunner;
-import com.apdplat.platform.generator.WebGenerator;
-import com.apdplat.platform.generator.ModelGenerator;
-import com.apdplat.platform.generator.ModelGenerator.ModelInfo;
+import org.apdplat.platform.generator.ActionGenerator;
+import org.apdplat.platform.generator.MavenRunner;
+import org.apdplat.platform.generator.WindowsMavenRunner;
+import org.apdplat.platform.generator.WebGenerator;
+import org.apdplat.platform.generator.ModelGenerator;
+import org.apdplat.platform.generator.ModelGenerator.ModelInfo;
 import java.util.List;
 
 

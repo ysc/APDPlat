@@ -6,11 +6,11 @@
     </context-param>
     <listener>
         <description>经过定制的spring监听器</description>
-        <listener-class>com.apdplat.platform.spring.APDPlatContextLoaderListener</listener-class>
+        <listener-class>org.apdplat.platform.spring.APDPlatContextLoaderListener</listener-class>
     </listener>
     <listener>
         <description>用户登录注销监听</description>
-        <listener-class>com.apdplat.module.security.service.UserLoginListener</listener-class>
+        <listener-class>org.apdplat.module.security.service.UserLoginListener</listener-class>
     </listener>
     <listener>
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
@@ -21,7 +21,7 @@
     <!--
     <filter>
         <filter-name>ResponseHeaderFilter</filter-name>
-        <filter-class>com.apdplat.platform.filter.ResponseHeaderFilter</filter-class>
+        <filter-class>org.apdplat.platform.filter.ResponseHeaderFilter</filter-class>
         <init-param>
           <param-name>expiresSeconds</param-name>
           <param-value>2592000</param-value>
@@ -60,7 +60,7 @@
     <filter>
         <description>记录请求的处理时间，为性能分析提供数据</description>
         <filter-name>PerformanceFilter</filter-name>
-        <filter-class>com.apdplat.module.monitor.filter.PerformanceFilter</filter-class>
+        <filter-class>org.apdplat.module.monitor.filter.PerformanceFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>PerformanceFilter</filter-name>
@@ -70,7 +70,7 @@
     <filter>
         <description>在每一次请求到来的时候打开Jpa的实体管理器，在请求结束的时候关闭</description>
         <filter-name>OpenEntityManagerInViewFilter</filter-name>
-        <filter-class>com.apdplat.platform.filter.OpenEntityManagerInViewFilter</filter-class>
+        <filter-class>org.apdplat.platform.filter.OpenEntityManagerInViewFilter</filter-class>
         <init-param>
             <param-name>excludeSuffixs</param-name>
             <param-value>js,css,jpg,gif,png</param-value>
@@ -102,7 +102,7 @@
     <filter>
         <description>生成随机验证码</description>
         <filter-name>jcaptchaFilter</filter-name>
-        <filter-class>com.apdplat.module.security.service.filter.JCaptchaFilter</filter-class>
+        <filter-class>org.apdplat.module.security.service.filter.JCaptchaFilter</filter-class>
     </filter>
     <!-- jcaptcha图片生成URL. -->
     <filter-mapping>
@@ -128,7 +128,7 @@
     <filter>
         <description>在开发阶段，可使用自动登录功能，去除登录步骤，减少麻烦</description>
         <filter-name>autoLoginFilter</filter-name>
-        <filter-class>com.apdplat.module.security.service.filter.AutoLoginFilter</filter-class>
+        <filter-class>org.apdplat.module.security.service.filter.AutoLoginFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>autoLoginFilter</filter-name>
@@ -167,7 +167,7 @@
     启用服务器Gzip，包括css、js、jsp、png、gif、jpg等文件
     <filter>
         <filter-name>gzipFilter</filter-name>
-        <filter-class>com.apdplat.platform.filter.GzipFilter</filter-class>
+        <filter-class>org.apdplat.platform.filter.GzipFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>gzipFilter</filter-name>

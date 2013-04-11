@@ -18,7 +18,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-String contextPath=com.apdplat.module.system.service.SystemListener.getContextPath();
+String contextPath=org.apdplat.module.system.service.SystemListener.getContextPath();
 String jsessionid=session.getId();
 %>
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/extjs/css/ext-all.css"/>

@@ -17,13 +17,13 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page  import="com.apdplat.module.security.service.OnlineUserService"%>
-<%@page  import="com.apdplat.module.security.service.SpringSecurityService"%>
+<%@page  import="org.apdplat.module.security.service.OnlineUserService"%>
+<%@page  import="org.apdplat.module.security.service.SpringSecurityService"%>
 <%@page  import="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"%>
-<%@page  import="com.apdplat.module.security.service.UserDetailsServiceImpl"%>
-<%@page  import="com.apdplat.module.system.service.PropertyHolder"%>
+<%@page  import="org.apdplat.module.security.service.UserDetailsServiceImpl"%>
+<%@page  import="org.apdplat.module.system.service.PropertyHolder"%>
 <%@page  import="java.util.Collection"%>
-<%@page  import="com.apdplat.platform.util.FileUtils"%>
+<%@page  import="org.apdplat.platform.util.FileUtils"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <%
 response.addHeader("login","true");  
@@ -73,7 +73,7 @@ if(obj!=null){
         }
     }
  }
-String contextPath=com.apdplat.module.system.service.SystemListener.getContextPath();
+String contextPath=org.apdplat.module.system.service.SystemListener.getContextPath();
 String appName=PropertyHolder.getProperty("app.name");
 String requestCode="";
 if(FileUtils.existsFile("/WEB-INF/licence")){

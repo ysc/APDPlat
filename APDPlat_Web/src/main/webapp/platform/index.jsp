@@ -17,9 +17,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page  import="com.apdplat.module.security.model.User"%>
-<%@page  import="com.apdplat.module.security.service.UserHolder"%>
-<%@page  import="com.apdplat.module.system.service.PropertyHolder"%>
+<%@page  import="org.apdplat.module.security.model.User"%>
+<%@page  import="org.apdplat.module.security.service.UserHolder"%>
+<%@page  import="org.apdplat.module.system.service.PropertyHolder"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <%
 response.addHeader("login_success","true");  

@@ -20,9 +20,9 @@
       <Pattern>%d [%t] %-5p [%c] - %m%n</Pattern>j
     </layout>
   </appender>
-  <logger name="com.apdplat" level="INFO"/>
-  <logger name="com.apdplat.platform.filter" level="ERROR"/>
-  <logger name="com.apdplat.module.security.service.UserLoginListener" level="ERROR"/>
+  <logger name="org.apdplat" level="INFO"/>
+  <logger name="org.apdplat.platform.filter" level="ERROR"/>
+  <logger name="org.apdplat.module.security.service.UserLoginListener" level="ERROR"/>
   <root level="ERROR">
     <!--
     <appender-ref ref="logfile"/>

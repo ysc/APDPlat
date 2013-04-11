@@ -16,7 +16,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --%>
 
-<%@page  import="com.apdplat.module.security.service.SpringSecurityService"%>
+<%@page  import="org.apdplat.module.security.service.SpringSecurityService"%>
 <%   
  response.addHeader("accessDenied","true");  
  if(SpringSecurityService.isSecurity()){

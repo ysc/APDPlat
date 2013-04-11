@@ -7,8 +7,8 @@
     http://www.springframework.org/schema/tx       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
     http://www.springframework.org/schema/aop      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
     http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-    <import resource="classpath:/com/apdplat/spring.xml" />
-    <import resource="classpath:/com/apdplat/security.xml" />
-    <import resource="classpath:/com/apdplat/compass.xml" />
-    <import resource="classpath:/com/apdplat/ws.xml" />
+    <import resource="classpath:/org/apdplat/spring.xml" />
+    <import resource="classpath:/org/apdplat/security.xml" />
+    <import resource="classpath:/org/apdplat/compass.xml" />
+    <import resource="classpath:/org/apdplat/ws.xml" />
 </beans>

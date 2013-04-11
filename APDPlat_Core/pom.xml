@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.apdplat</groupId>
+    <groupId>org.apdplat</groupId>
     <artifactId>APDPlat_Core</artifactId>
     <packaging>jar</packaging>
     <version>2.3</version>
@@ -814,13 +814,13 @@
                     <excludes>
                         <exclude>**/uml/**</exclude>
                         <exclude>**/doc/**</exclude>
-                        <exclude>**/com/apdplat/module/security/service/WindowsSequenceService.class</exclude>
-                        <exclude>**/com/apdplat/module/security/service/LinuxSequenceService.class</exclude>
-                        <exclude>**/com/apdplat/module/security/service/SecurityService.class</exclude>
-                        <exclude>**/com/apdplat/module/security/service/EncryptClassUtils.class</exclude>
-                        <exclude>**/com/apdplat/module/security/service/AuthorizationUtils.class</exclude>
-                        <exclude>**/com/apdplat/tip/**</exclude>
-                        <exclude>**/com/apdplat/module/security/pki/**</exclude>
+                        <exclude>**/org/apdplat/module/security/service/WindowsSequenceService.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/LinuxSequenceService.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/SecurityService.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/EncryptClassUtils.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/AuthorizationUtils.class</exclude>
+                        <exclude>**/org/apdplat/tip/**</exclude>
+                        <exclude>**/org/apdplat/module/security/pki/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
