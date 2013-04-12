@@ -22,13 +22,15 @@ package org.apdplat.platform.util;
 
 import java.io.*;
 /**
- * 改变JAVA源代码的包名
+ * 改变APDPlat源代码的包名
  * 
  * 需要更改package
  * 需要更改import
+ * 需要更改/分割的类路径资源
  * 需要更改文件夹名称
+ * ......
  * 
- * @author ysc
+ * @author 杨尚川
  */
 public class ChangePackageName {
     private static int fileCount = 0;
