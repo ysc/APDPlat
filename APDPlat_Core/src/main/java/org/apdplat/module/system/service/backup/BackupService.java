@@ -34,6 +34,7 @@ import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -185,6 +186,10 @@ public abstract class BackupService {
             name=y+"-"+m+"-"+d+" "+h+":"+mm+":"+s;
             result.add(name);
         }
+        //按备份时间排序
+        Collections.sort(result);
+        //最新备份的在最前面
+        Collections.reverse(result);
 
         return result;
     }
