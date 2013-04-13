@@ -50,10 +50,7 @@
                 <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
                 <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
                 <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
-				<!--
-					<prop
-					key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>
-				-->
+                <prop key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>
             </props>
         </property>
     </bean>
