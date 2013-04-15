@@ -43,7 +43,7 @@ import org.springframework.security.web.util.AntUrlPathMatcher;
 import org.springframework.stereotype.Service;
 
 /**
- *
+ *Spring Security授权服务
  * @author 杨尚川
  */
 @Service
@@ -74,25 +74,50 @@ public class SpringSecurityService {
             log.info("当前系统禁用安全机制");
             return ;
         }
+        
+        
         log.info("开始初始化权限子系统...");
+        //核心对象，一切url和角色的绑定都围绕它进行
+        //指定了哪些url可以由哪些角色来访问
         LinkedHashMap<RequestKey, Collection<ConfigAttribute>> requestMap =new LinkedHashMap<>();
         
+        
+        //普通管理员
         SecurityConfig manager=new SecurityConfig("ROLE_MANAGER");
+        //超级管理员
         SecurityConfig superManager=new SecurityConfig("ROLE_SUPERMANAGER");
+        //value具有超级管理员 或是 普通管理员权限
+        //这里需要注意 文本大写表示的角色标识 要转换为ConfigAttribute的集合
+        //在绑定url路径和角色的关系的时候，url路径还分GET和POST两种情况
         Collection<ConfigAttribute> value=new ArrayList<>();
         value.add(manager);
         value.add(superManager);
+        
+        
+ //1、处理特殊的url访问规则       
+        //urls里面存放了特殊的URL访问规则
         Collection<String> urls=new LinkedHashSet<>(); 
+        //urlFiles为多个文本文件
         String[] urlFiles=PropertyHolder.getProperty("manager.default.url").split(",");
         for(String urlFile : urlFiles){
+            //获取url访问规则文本文件的内容
             Collection<String> url=FileUtils.getClassPathTextFileContent(urlFile);
             urls.addAll(url);
         }
+        //url为这样的格式：
+        //格式1：/**/login.jsp*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
+        //格式2：/**/platform/**
+        //格式1含义解释：匿名用户、普通管理员、超级管理员都可以访问的路径
+        //格式2含义解释：超级管理员 或是 普通管理员都可以访问的路径
         for(String url : urls){
+            //格式1：url中指定了只有特定角色才能访问
             if(url.contains("=")){
                 String[] attr=url.split("=");
+                //真正的url
                 url=attr[0];
+                //可有多个角色
                 String[] roles=attr[1].split(",");
+                //把多个角色转换为ConfigAttribute的集合
                 Collection<ConfigAttribute> v=new ArrayList<>();
                 for(String role : roles){
                     v.add(new SecurityConfig(role));
@@ -103,7 +128,9 @@ public class SpringSecurityService {
                 //GET
                 key=new RequestKey(url,"GET");
                 requestMap.put(key, v);
-            }else{
+            }
+            //格式2：超级管理员 或是 普通管理员都可以访问
+            else{
                 //POST
                 RequestKey key=new RequestKey(url,"POST");
                 requestMap.put(key, value);
@@ -113,12 +140,19 @@ public class SpringSecurityService {
             }
         }
 
+        
+ //2、动态指定系统中模块及命令的url访问规则 
+        //遍历所有的Command对象
         for(Command command : serviceFacade.query(Command.class).getModels()){
             List<String> paths=ModuleService.getCommandPath(command);
+            //命令访问路径到角色名称的映射
             Map<String,String> map=ModuleService.getCommandPathToRole(command);
             for(String path : paths){
+                //POST
                 RequestKey key=new RequestKey(path.toString().toLowerCase()+".action*","POST");
                 value=new ArrayList<>();
+                //要把路径转换为角色
+                //如：命令路径：/**/security/user!query 映射角色：_SECURITY_USER_QUERY
                 value.add(new SecurityConfig("ROLE_MANAGER"+map.get(path)));
                 value.add(superManager);
                 requestMap.put(key, value);
@@ -127,11 +161,16 @@ public class SpringSecurityService {
                 requestMap.put(key, value);
             }
         }
+        
+ //3、超级管理员对所有的POST操作具有权限
         RequestKey key=new RequestKey("/**","POST");
+        //value为超级管理员
         value=new ArrayList<>();
         value.add(superManager);
         requestMap.put(key, value);
-        //GET
+        
+        
+ //4、超级管理员对所有的GET操作具有权限
         key=new RequestKey("/**","GET");
         requestMap.put(key, value);        
 

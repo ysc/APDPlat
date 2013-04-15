@@ -42,7 +42,10 @@ import java.util.Map;
 import java.util.Stack;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-
+/**
+ * 模块服务
+ * @author 杨尚川
+ */
 @Service
 public class ModuleService {
     protected static final APDPlatLogger log = new APDPlatLogger(ModuleService.class);
@@ -289,9 +292,20 @@ public class ModuleService {
             }
         }
     }
-
+    /**
+     * 获取命令访问路径到角色名称的映射
+     * 规则：
+     * 1、去掉开头的/**
+     * 2、把/转换为_
+     * 3、把!转换为_
+     * 3、全部字母转换为大写
+     * @param command
+     * @return 
+     */
     public static Map<String, String> getCommandPathToRole(Command command) {
         Map<String, String> result = new HashMap<>();
+        //命令路径：/**/security/user!query
+        //映射角色：_SECURITY_USER_QUERY
         for (String path : getCommandPath(command)) {
             String role = path.toString().substring(3).replace("/", "_").replace("!", "_").toUpperCase();
             result.put(path, role);
@@ -299,9 +313,15 @@ public class ModuleService {
 
         return result;
     }
-
+    /**
+     * 获取浏览器要访问一个命令的完全路径
+     * @param command 命令
+     * @return 因为命令的依赖关系，可能会返回多个路径
+     */
     public static List<String> getCommandPath(Command command) {
         List<String> result = new ArrayList<>();
+        //command.update=updatePart,updateWhole 表示把update权限分配给用户的时候，用户自动获得updatePart,updateWhole的权限
+        //update只是一个逻辑的命令，用于统一指定一组命令，方便授权
         String dependency = PropertyHolder.getProperty("command." + command.getEnglish());
         String[] commands = null;
         if (dependency != null && !"".equals(dependency.trim())) {
@@ -309,19 +329,34 @@ public class ModuleService {
         } else {
             commands = new String[]{command.getEnglish()};
         }
+        
+        //APDPlat是支持任意多级的模块嵌套的，虽然目前的DEMO中只有两级
+        //对于以下的路径来说：
+        //http://apdplat.net/security/user!query.action
+        //query是命令
+        //user是模块
+        //security也是模块
+        
+        //倒数第一级模块，对以上例子来说，即为user模块
         Module module = command.getModule();
-        //上下文不把大写字母转换为小写字母+_
-        //String modulePath = PrivilegeUtils.process(getModulePath(module.getParentModule()));
+        //获取除了倒数第一级模块之外的模块访问路径表示，对以上例子来说，即为security/
         String modulePath = getModulePath(module.getParentModule());
+        //对模块名称进行处理，如：updatePart要转换为update-part，以符合struts2的规则，对以上例子来说，即为user
         String moduleName = PrivilegeUtils.process(module.getEnglish());
         for (String cmd : commands) {
             StringBuilder path = new StringBuilder();
+            //模块访问路径+模块名称+"!"+命令 即为浏览器要访问一个命令的完全路径
+            //如: /**/security/user!query
             path.append("/**/").append(modulePath).append(moduleName).append("!").append(cmd);
             result.add(path.toString());
         }
         return result;
     }
-
+    /**
+     * 获取该模块在浏览器中的访问路径表示
+     * @param module
+     * @return 
+     */
     public static String getModulePath(Module module) {
         StringBuilder str = new StringBuilder();
         Stack<Module> stack = new Stack<>();
@@ -332,7 +367,11 @@ public class ModuleService {
         }
         return str.toString();
     }
-
+    /**
+     * 用栈来表示模块的层级关系，从栈顶到栈底就像模块的依赖树一样
+     * @param module
+     * @param stack 
+     */
     private static void getModules(Module module, Stack<Module> stack) {
         //将当前模块加入堆栈
         stack.push(module);
