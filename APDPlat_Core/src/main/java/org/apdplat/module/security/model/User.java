@@ -310,32 +310,39 @@ public class User extends Model  implements UserDetails{
         Collection<GrantedAuthority> grantedAuthArray=new HashSet<>();
 
         log.debug("user privilege:");
-        if(this.roles != null && !this.roles.isEmpty()) {
-            log.debug("     roles:");
-            for (Role role : this.roles) {
-                for (String priv : role.getAuthorities()) {
-                    log.debug(priv);
-                    grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
-                }
-            }
-        }
-        if(this.userGroups != null && !this.userGroups.isEmpty()){
-            log.debug("     userGroups:");
-            for(UserGroup userGroup : this.userGroups){
-                for(Role role : userGroup.getRoles()){
+        //如果用户是超级管理员，则只需加入ROLE_SUPERMANAGER标识
+        //就不用对其他的权限对象进行检查
+        if(isSuperManager()){
+            grantedAuthArray.add(new GrantedAuthorityImpl("ROLE_SUPERMANAGER"));
+            log.debug("ROLE_SUPERMANAGER");
+        }else{
+            if(this.roles != null && !this.roles.isEmpty()) {
+                log.debug("     roles:");
+                for (Role role : this.roles) {
                     for (String priv : role.getAuthorities()) {
                         log.debug(priv);
                         grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
                     }
                 }
             }
-        }        
-        if(this.positions != null && !this.positions.isEmpty()) {
-            log.debug("     positions:");
-            for (Position position : this.positions) {
-                for (String priv : position.getAuthorities()) {
-                    log.debug(priv);
-                    grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+            if(this.userGroups != null && !this.userGroups.isEmpty()){
+                log.debug("     userGroups:");
+                for(UserGroup userGroup : this.userGroups){
+                    for(Role role : userGroup.getRoles()){
+                        for (String priv : role.getAuthorities()) {
+                            log.debug(priv);
+                            grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                        }
+                    }
+                }
+            }        
+            if(this.positions != null && !this.positions.isEmpty()) {
+                log.debug("     positions:");
+                for (Position position : this.positions) {
+                    for (String priv : position.getAuthorities()) {
+                        log.debug(priv);
+                        grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                    }
                 }
             }
         }

@@ -131,6 +131,20 @@ public class Role extends Model {
         List<String> result = new ArrayList<>();
         if (superManager) {
             result.add("ROLE_SUPERMANAGER");
+            //超级管理员只需要一个标识就够了
+            //事实上，一个角色如果是超级管理员，那么它的commands是为空的
+            //参考RoleAction的方法assemblyModelForCreate
+            //        if(model.isSuperManager()){
+            //            return;
+            //        }
+            //        model.setCommands(commands);
+            //参考RoleAction的方法assemblyModelForUpdate
+            //        if(model.isSuperManager()){
+            //            model.clearCommand();
+            //            return;
+            //        }
+            //当然，加入以下return语句逻辑更清晰
+            return result;
         }
         for (Command command : commands) {
             Map<String,String> map=ModuleService.getCommandPathToRole(command);
