@@ -7,9 +7,9 @@
     </layout>
   </appender>
   <appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>d:/logback/logs/logback.log</File>
+    <File>logs/logback.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">  
-      <FileNamePattern>d:/logback/logs/logback_%i.log</FileNamePattern>
+      <FileNamePattern>logs/logback_%i.log</FileNamePattern>
       <MinIndex>1</MinIndex>  
       <MaxIndex>10000</MaxIndex>
     </rollingPolicy>  
