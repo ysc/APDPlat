@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
+import org.apdplat.module.system.service.PropertyHolder;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -79,7 +80,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails load(String username) throws UsernameNotFoundException, DataAccessException {
         message = "密码不正确";
 
-        if(FileUtils.existsFile("/WEB-INF/licence")){
+        if(FileUtils.existsFile("/WEB-INF/licence") && PropertyHolder.getBooleanProperty("security")){
             Collection<String> reqs = FileUtils.getTextFileContent("/WEB-INF/licence");
             message="您还没有购买产品";
             if(reqs!=null && reqs.size()==1){
