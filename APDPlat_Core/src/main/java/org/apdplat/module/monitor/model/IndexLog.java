@@ -24,12 +24,13 @@ import org.apdplat.platform.generator.ActionGenerator;
 import org.apdplat.platform.annotation.IgnoreBusinessLog;
 import org.apdplat.platform.annotation.IgnoreUser;
 import org.apdplat.platform.annotation.ModelAttr;
-import org.apdplat.platform.model.Model;
 import org.apdplat.platform.util.ConvertUtils;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.apdplat.platform.model.Model;
+import org.compass.annotations.Index;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableProperty;
 import org.springframework.context.annotation.Scope;
@@ -78,6 +79,20 @@ public class IndexLog extends Model {
     @ModelAttr("操作结果")
     protected String operatingResult;
 
+    
+    //用户名不分词
+    @SearchableProperty(index=Index.NOT_ANALYZED)
+    @ModelAttr("用户名")
+    protected String username;    
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    
     public String getAppName() {
         return appName;
     }
