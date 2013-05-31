@@ -35,8 +35,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class LogQueue {
     protected static final APDPlatLogger log = new APDPlatLogger(LogQueue.class);
-    
-    @Resource(name = "serviceFacade")
+    //使用日志数据库
+    @Resource(name = "serviceFacadeForLog")
     private ServiceFacade serviceFacade;
     private static ConcurrentLinkedQueue <Model> logs =  new  ConcurrentLinkedQueue <>();
     private static int logQueueMax=Integer.parseInt(PropertyHolder.getProperty("logQueueMax"));
