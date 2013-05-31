@@ -41,12 +41,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import javax.annotation.Resource;
 import javax.persistence.MappedSuperclass;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.apdplat.platform.service.ServiceFacade;
 
 @MappedSuperclass
 @Results({
@@ -83,6 +85,17 @@ public abstract class ActionSupport extends DataPrivilegeControl{
     static {
         defaultOrderCriteria.addOrder(new Order("id", Sequence.DESC));
     }
+    
+    @Resource(name = "serviceFacade")
+    private ServiceFacade service;
+    /**
+     * 子类可重载使用特定的数据库服务
+     * @return 
+     */
+    public ServiceFacade getService(){
+        return service;
+    }
+    
     public Locale getLocale() {
         ActionContext ctx = ActionContext.getContext();
         if (ctx != null) {

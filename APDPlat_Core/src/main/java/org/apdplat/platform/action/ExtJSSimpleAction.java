@@ -56,8 +56,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupport implements Action {
     private boolean search=false;
-    @Resource(name = "serviceFacade")
-    protected ServiceFacade service;
     protected T model = null;
     protected Class<T> modelClass;
     protected Page<T> page = new Page<>();
@@ -88,12 +86,12 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         if(StringUtils.isNotBlank(getQueryString())){
             //搜索出所有数据   
             beforeSearch();
-            page=service.search(getQueryString(), null, modelClass);
+            page=getService().search(getQueryString(), null, modelClass);
             List<T> models=processSearchResult(page.getModels());
             page.setModels(models);
         }else{
             beforeQuery();
-            this.setPage(service.query(modelClass));
+            this.setPage(getService().query(modelClass));
         }
         //生成报表XML数据
         String data=generateReportData(page.getModels());
@@ -114,7 +112,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
 
     @Override
     protected User refreshUser(User user){
-        return service.retrieve(User.class, user.getId());
+        return getService().retrieve(User.class, user.getId());
     }
     @Override
     public String create() {
@@ -130,7 +128,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }
             assemblyModelForCreate(model);
             objectReference(model);
-            service.create(model);
+            getService().create(model);
             afterSuccessCreateModel(model);
         }catch(Exception e){
             log.error("创建模型失败",e);
@@ -155,7 +153,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     }
     @Override
     public String retrieve() {
-        this.setModel(service.retrieve(modelClass, model.getId()));
+        this.setModel(getService().retrieve(modelClass, model.getId()));
         if(model==null){
             Struts2Utils.renderText("false");
             return null;
@@ -175,7 +173,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     
     @Override
     public String updateForm() {
-        setModel(service.retrieve(modelClass, model.getId()));
+        setModel(getService().retrieve(modelClass, model.getId()));
         return null;
     }
 
@@ -186,7 +184,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             //此时的model里面存的值是从浏览器传输过来的
             List<Property> properties=getPartProperties(model);
             //此时的model里面存的值是从数据库里面加载的
-            model=service.retrieve(modelClass,model.getId());
+            model=getService().retrieve(modelClass,model.getId());
             
             //数据版本控制，防止多个用户同时修改一条数据，造成更新丢失问题
             if(version==null){
@@ -209,7 +207,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                         String[] attr=property.getName().replace(".",",").split(",");
                         if(attr.length==2){
                             Field field=ReflectionUtils.getDeclaredField(model, attr[0]);
-                            T change=service.retrieve((Class<T>)field.getType(), (Integer)property.getValue());
+                            T change=getService().retrieve((Class<T>)field.getType(), (Integer)property.getValue());
                             ReflectionUtils.setFieldValue(model, attr[0], change);
                         }
                      }
@@ -221,7 +219,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             now(model);
             //在更新前调用模板方法对模型进行处理
             assemblyModelForUpdate(model);
-            service.update(model);
+            getService().update(model);
             afterSuccessPartUpdateModel(model);
         }catch(Exception e){
             log.error("更新模型失败",e);
@@ -242,7 +240,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     public String updateWhole() {
         try{
             assemblyModelForUpdate(model);
-            service.update(model);
+            getService().update(model);
             afterSuccessWholeUpdateModel(model);
         }catch(Exception e){
             log.error("更新模型失败",e);
@@ -263,7 +261,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     public String delete() {
         try{
             prepareForDelete(getIds());
-            List<Integer> deletedIds=service.delete(modelClass, getIds());
+            List<Integer> deletedIds=getService().delete(modelClass, getIds());
             afterDelete(deletedIds);
         }catch(Exception e){
             log.info("删除数据出错",e);
@@ -283,7 +281,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             search();
             return null;
         }
-        this.setPage(service.query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
+        this.setPage(getService().query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
         Map json = new HashMap();
         json.put("totalProperty", page.getTotalRecords());
         List<Map> result = new ArrayList<>();
@@ -296,16 +294,16 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     public String export() {
         if(search){
             //导出全部搜索结果
-            page=service.search(getQueryString(), null, modelClass);
+            page=getService().search(getQueryString(), null, modelClass);
             List<T> models=processSearchResult(page.getModels());
             page.setModels(models);
             //导出当前页的搜索结果
-            //this.setPage(service.search(getQueryString(), getPageCriteria(), modelClass));
+            //this.setPage(getService().search(getQueryString(), getPageCriteria(), modelClass));
         }else{
             //导出全部数据
-            this.setPage(service.query(modelClass, null, buildPropertyCriteria(), buildOrderCriteria()));
+            this.setPage(getService().query(modelClass, null, buildPropertyCriteria(), buildOrderCriteria()));
             //导出当前页的数据
-            //this.setPage(service.query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
+            //this.setPage(getService().query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
         }
         List<List<String>> result = new ArrayList<>();
         renderForExport(result);
@@ -316,7 +314,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     private List<T> processSearchResult(List<T> models){
         List<T> result =  new ArrayList<>();
         for(T obj : models){
-            T t=service.retrieve(modelClass, obj.getId());
+            T t=getService().retrieve(modelClass, obj.getId());
             if(t!=null){
                 result.add(t);
             }
@@ -326,7 +324,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     @Override
     public String search() {
         beforeSearch();
-        page=service.search(getQueryString(), getPageCriteria(), modelClass);
+        page=getService().search(getQueryString(), getPageCriteria(), modelClass);
         //List<T> models=processSearchResult(page.getModels());
         //page.setModels(models);
 
@@ -615,7 +613,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                 }
                 int id=value.getId();
                 log.debug("id: "+id);
-                value=service.retrieve(value.getClass(), id);
+                value=getService().retrieve(value.getClass(), id);
                 ReflectionUtils.setFieldValue(model, field, value);
             }
         }
