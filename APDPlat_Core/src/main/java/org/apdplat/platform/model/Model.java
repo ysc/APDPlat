@@ -20,9 +20,7 @@
 
 package org.apdplat.platform.model;
 
-import org.apdplat.module.security.model.User;
 import org.apdplat.platform.annotation.ModelAttr;
-import org.apdplat.platform.annotation.ModelAttrRef;
 import org.apdplat.platform.annotation.RenderIgnore;
 import org.apdplat.platform.annotation.SimpleDic;
 import org.apdplat.platform.annotation.TreeDic;
@@ -38,7 +36,6 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -89,12 +86,6 @@ public abstract class Model implements Serializable{
         ModelMetaData.addMetaData(this);
     }
 
-    @ManyToOne
-    @SearchableComponent(prefix="ownerUser_")
-    @ModelAttr("数据所有者名称")
-    @ModelAttrRef("username")
-    protected User ownerUser;
-
     public List<String> getSearchProperties() {
         List<String> list=new ArrayList<>();
         //获取所有字段，包括继承的
@@ -115,19 +106,6 @@ public abstract class Model implements Serializable{
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public User getOwnerUser() {
-        return ownerUser;
-    }
-
-    public void setOwnerUser(User ownerUser) {
-        if(this.ownerUser==null){
-            this.ownerUser = ownerUser;
-        }else{
-            log.info("忽略设置OwnerUser");
-        }
-    }
-
 
     public Date getCreateTime() {
         return createTime;
