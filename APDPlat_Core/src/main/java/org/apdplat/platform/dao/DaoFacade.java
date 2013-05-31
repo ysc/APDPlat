@@ -36,15 +36,29 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public  class DaoFacade extends DaoSupport{
+        /**
+         * 使用默认数据库
+         */
+        public DaoFacade(){
+            super(MultiDatabase.APDPlat);
+        }
+        /**
+         * 使用默认日志数据库
+         * @param multiDatabase 
+         */
+        public DaoFacade(MultiDatabase multiDatabase){
+            super(multiDatabase);
+        }
+        
         public void clear(){
-            em.clear();
+            getEntityManager().clear();
         }
 
 	public <T extends Model> void create(T model) {
-		em.persist(model);
+		getEntityManager().persist(model);
 	}
 	public <T extends Model>  T retrieve(Class<T> modelClass,Integer modelId) {
-                T model=em.find(modelClass, modelId);
+                T model=getEntityManager().find(modelClass, modelId);
 
                 return model;
             /*
@@ -74,7 +88,7 @@ public  class DaoFacade extends DaoSupport{
 		update(model);
 	}
 	public <T extends Model>  void update(T model) {
-                em.merge(model);
+                getEntityManager().merge(model);
             /*
                 User user=UserHolder.getCurrentLoginUser();
                 if(user!=null && !user.isSuperManager() && needPrivilege(model.getClass())){
@@ -94,7 +108,7 @@ public  class DaoFacade extends DaoSupport{
 	public <T extends Model> void delete(Class<T> modelClass,Integer modelId) {
                 T model=retrieve(modelClass,modelId);
                 if(model!=null){
-                    em.remove(model);
+                    getEntityManager().remove(model);
                 }
                 /*
                 User user=UserHolder.getCurrentLoginUser();

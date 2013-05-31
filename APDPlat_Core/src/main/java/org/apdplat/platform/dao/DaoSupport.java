@@ -57,8 +57,11 @@ public abstract class DaoSupport extends DataPrivilegeControl{
     static {
         defaultOrderCriteria.addOrder(new Order("id", Sequence.DESC));
     }
-    @PersistenceContext
-    protected EntityManager em;
+    
+    public DaoSupport(MultiDatabase multiDatabase){
+        super(multiDatabase);
+    }
+    
     @Resource(name="compassTemplate")
     protected CompassTemplate compassTemplate;
 
@@ -99,7 +102,7 @@ public abstract class DaoSupport extends DataPrivilegeControl{
         StringBuilder jpql = new StringBuilder("select o from ");
         jpql.append(getEntityName(modelClass)).append(" o ").append(buildPropertyCriteria(propertyCriteria)).append(buildOrderCriteria(sortCriteria));
         log.debug("jpql:" + jpql);
-        Query query = em.createQuery(jpql.toString());
+        Query query = getEntityManager().createQuery(jpql.toString());
         //绑定属性过滤条件值
         bindingPropertyCriteria(query, propertyCriteria);
         //根据页面条件设置query参数
@@ -267,14 +270,14 @@ public abstract class DaoSupport extends DataPrivilegeControl{
      * @return
      */
     private Long getCount(Class<? extends Model> clazz, PropertyCriteria propertyCriteria) {
-        Query query = em.createQuery("select count(o.id) from " + getEntityName(clazz) + " o " + buildPropertyCriteria(propertyCriteria));
+        Query query = getEntityManager().createQuery("select count(o.id) from " + getEntityName(clazz) + " o " + buildPropertyCriteria(propertyCriteria));
         //绑定属性过滤条件值
         bindingPropertyCriteria(query, propertyCriteria);        
         setQueryCache(query);
         return (Long) query.getSingleResult();
     }
     public Long getCount(Class<? extends Model> clazz) {
-        Query query = em.createQuery("select count(o.id) from " + getEntityName(clazz) + " o ");
+        Query query = getEntityManager().createQuery("select count(o.id) from " + getEntityName(clazz) + " o ");
         return (Long) query.getSingleResult();
     }
 
@@ -333,9 +336,9 @@ public abstract class DaoSupport extends DataPrivilegeControl{
     private <T extends Model> T hightlight(Class<T> modelClass, CompassHits hits, int i) {
         T model = (T) hits.data(i);
         //在对模型进行高亮之前先从数据库加载模型
-        model = em.find(modelClass, model.getId());
+        model = getEntityManager().find(modelClass, model.getId());
         //防止高亮设置更新进入文档数据
-        em.detach(model);
+        getEntityManager().detach(model);
         CompassHighlighter highlighter = hits.highlighter(i);
         //高亮处理
         for (String searchProperty : model.getSearchProperties()) {

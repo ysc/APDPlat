@@ -35,21 +35,26 @@ public abstract class AbstractDao<T extends Model> extends DaoSupport implements
 	protected Class<T> modelClass;
 	
 	public AbstractDao(){
+            super(MultiDatabase.APDPlat);
+            this.modelClass = ReflectionUtils.getSuperClassGenricType(getClass());
+        }
+        public AbstractDao(MultiDatabase multiDatabase){
+            super(multiDatabase);
             this.modelClass = ReflectionUtils.getSuperClassGenricType(getClass());
         }
     
 	@Override
 	public void create(T model) {
-		em.persist(model);
+		getEntityManager().persist(model);
 	}
 	@Override
 	public T retrieve(Integer modelId) {
-		return em.find(modelClass, modelId);
+		return getEntityManager().find(modelClass, modelId);
 	}
 
 	@Override
 	public void update(T model) {
-		em.merge(model);
+		getEntityManager().merge(model);
 	}
 
 	@Override
@@ -63,7 +68,7 @@ public abstract class AbstractDao<T extends Model> extends DaoSupport implements
 
 	@Override
 	public void delete(Integer modelId) {
-		em.remove(em.getReference(modelClass, modelId));
+		getEntityManager().remove(getEntityManager().getReference(modelClass, modelId));
 	}
 
 	@Override

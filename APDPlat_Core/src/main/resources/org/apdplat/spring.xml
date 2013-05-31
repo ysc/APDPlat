@@ -24,9 +24,26 @@
         <property name="defaultAutoCommit" value="${pool.defaultAutoCommit}" />
     </bean>
 
+    <bean id="dataSourceForLog" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${db.forlog.driver}" />
+        <property name="url" value="${db.forlog.url}" />
+        <property name="username" value="${db.forlog.username}" />
+        <property name="password" value="${db.forlog.password}" />
+
+        <property name="initialSize" value="${pool.initialSize}" />
+        <property name="maxActive" value="${pool.maxActive}" />
+        <property name="maxIdle" value="${pool.maxIdle}" />
+        <property name="minIdle" value="${pool.minIdle}" />
+        <property name="maxWait" value="${pool.maxWait}" />
+        <property name="poolPreparedStatements" value="${pool.poolPreparedStatements}" />
+        <property name="defaultAutoCommit" value="${pool.defaultAutoCommit}" />
+    </bean>
         <!-- 用p6spy 在console显示变量绑定后的真实sql 与ResultSet,方便开发 
     <bean id="dataSourceSpy" class="com.p6spy.engine.spy.P6DataSource">
         <constructor-arg index="0" ref="dataSource"/>
+    </bean>
+    <bean id="dataSourceForLogSpy" class="com.p6spy.engine.spy.P6DataSource">
+        <constructor-arg index="0" ref="dataSourceForLog"/>
     </bean>
     -->
 
@@ -55,11 +72,42 @@
         </property>
     </bean>
 
+    <bean id="entityManagerFactoryForLog" class="org.apdplat.platform.spring.APDPlatLocalContainerEntityManagerFactoryBean">
+        <property name="persistenceXmlLocation" value="classpath*:org/apdplat/jpa2_for_log.xml" />
+        <property name="dataSource" ref="${dataSourceForLog}" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database" value="${jpa.database}" />
+                <property name="showSql" value="${jpa.show_sql}" />
+                <property name="generateDdl" value="${jpa.generateDdl}" />
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
+                <prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+                <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+                <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
+                <prop key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
 
+    <bean id="transactionManagerForLog" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactoryForLog" />
+    </bean>
+
     <tx:annotation-driven transaction-manager="transactionManager" />
+    
+    <tx:annotation-driven transaction-manager="transactionManagerForLog" />
 
 	<!-- Spring属性文件解密组件  -->
     <bean id="propertyConfigurer" class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
@@ -109,5 +157,15 @@
         <property name="targetMethod">
             <value>backup</value>
         </property>
+    </bean>
+    
+    <bean id="serviceFacadeForLog" class="org.apdplat.platform.service.ServiceFacade">
+        <property name="dao" ref="daoFacadeForLog"/>
+    </bean>
+    
+    <bean id="daoFacadeForLog" class="org.apdplat.platform.dao.DaoFacade">
+        <constructor-arg>
+            <value type="org.apdplat.platform.dao.MultiDatabase">APDPlatForLog</value>
+        </constructor-arg>
     </bean>
 </beans>

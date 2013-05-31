@@ -40,10 +40,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public  class ServiceFacade{
-        protected final APDPlatLogger log = new APDPlatLogger(getClass());
+        protected final APDPlatLogger log = new APDPlatLogger(getClass());   
     
 	@Resource(name="daoFacade")
-	private DaoFacade dao = null;
+	private DaoFacade dao = null;     
+
+        public void setDao(DaoFacade dao) {
+            this.dao = dao;
+        }
 
         public void clear(){
             dao.clear();

@@ -23,15 +23,24 @@ package org.apdplat.platform.common;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.model.Model;
 import javax.persistence.Entity;
+import org.apdplat.platform.dao.EntityManagerHolder;
+import org.apdplat.platform.dao.MultiDatabase;
 
 /**
  *
  * @author 杨尚川
  */
-public class DataPrivilegeControl {
+public abstract class DataPrivilegeControl extends EntityManagerHolder{
     private static String[] excludes=null;
     static{
         excludes=PropertyHolder.getProperty("data.privilege.control.exclude").split(",");
+    }
+    
+    public DataPrivilegeControl(){
+        super(MultiDatabase.APDPlat);
+    }
+    public DataPrivilegeControl(MultiDatabase multiDatabase){
+        super(multiDatabase);
     }
 
     protected boolean needPrivilege(String modelClass){

@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 public class OpenEntityManagerInViewFilter extends org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter {
         public static HttpServletRequest request;
 	public static final String EXCLUDE_SUFFIXS_NAME = "excludeSuffixs";
+	public static final String ENTITY_MANAGER_FACTORY_BEAN_NAME = "entityManagerFactoryBeanName";
 
 	private static final String[] DEFAULT_EXCLUDE_SUFFIXS = { ".js", ".css", ".jpg", ".gif" };
 
@@ -51,9 +52,12 @@ public class OpenEntityManagerInViewFilter extends org.springframework.orm.jpa.s
 
 	@Override
 	protected void initFilterBean() throws ServletException {
+		String entityManagerFactoryBeanName = getFilterConfig().getInitParameter(ENTITY_MANAGER_FACTORY_BEAN_NAME);
+		if (StringUtils.isNotBlank(entityManagerFactoryBeanName)) {
+                    setEntityManagerFactoryBeanName(entityManagerFactoryBeanName);
+                }
 
 		String excludeSuffixStr = getFilterConfig().getInitParameter(EXCLUDE_SUFFIXS_NAME);
-
 		if (StringUtils.isNotBlank(excludeSuffixStr)) {
 			excludeSuffixs = excludeSuffixStr.split(",");
 			//处理匹配字符串为".后缀名"
