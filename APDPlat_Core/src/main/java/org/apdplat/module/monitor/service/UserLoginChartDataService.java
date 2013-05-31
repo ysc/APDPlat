@@ -35,11 +35,10 @@ public class UserLoginChartDataService {
         LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(UserLogin item : models){
-            User user=item.getOwnerUser();
-            String username="匿名用户";
-            if(user!=null){
-                username=user.getUsername();
-            }
+            String username=item.getUsername();
+            if(username == null){
+                username = "匿名用户";
+            }            
             Long value=temp.get(username);
             if(value==null){
                 value=item.getOnlineTime();
@@ -59,11 +58,11 @@ public class UserLoginChartDataService {
         LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(UserLogin item : models){
-            User user=item.getOwnerUser();
-            String username="匿名用户";
-            if(user!=null){
-                username=user.getUsername();
+            String username=item.getUsername();
+            if(username == null){
+                username = "匿名用户";
             }
+            
             Long value=temp.get(username);
             if(value==null){
                 value=1l;

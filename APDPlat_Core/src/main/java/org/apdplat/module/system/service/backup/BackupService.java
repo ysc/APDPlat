@@ -88,7 +88,7 @@ public abstract class BackupService {
         
         if(enableBackup){
             backupLog=new BackupLog();
-            backupLog.setOwnerUser(user);
+            backupLog.setUsername(user.getUsername());
             backupLog.setLoginIP(ip);
             try {
                 backupLog.setServerIP(InetAddress.getLocalHost().getHostAddress());

@@ -38,11 +38,10 @@ public class OperateLogChartDataService {
         Map<String,OperateStatistics> temp=new HashMap<>();
         //将日志数据转换为统计报表数据
         for(OperateLog item : models){
-            User user=item.getOwnerUser();
-            String username="匿名用户";
-            if(user!=null){
-                username=user.getUsername();
-            }
+            String username=item.getUsername();
+            if(username == null){
+                username = "匿名用户";
+            }            
             OperateStatistics sta=temp.get(username);
             if(sta==null){
                 sta=new OperateStatistics();

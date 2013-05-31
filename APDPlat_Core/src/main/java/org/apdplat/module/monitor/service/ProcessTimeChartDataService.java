@@ -106,10 +106,9 @@ public class ProcessTimeChartDataService {
         LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(ProcessTime item : models){
-            User user=item.getOwnerUser();
-            String username="匿名用户";
-            if(user!=null){
-                username=user.getUsername();
+            String username=item.getUsername();
+            if(username == null){
+                username = "匿名用户";
             }
             
             Long value=temp.get(username);

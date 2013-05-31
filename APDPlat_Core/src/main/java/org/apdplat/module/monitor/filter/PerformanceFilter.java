@@ -61,7 +61,7 @@ public class PerformanceFilter implements Filter {
 		long end=System.currentTimeMillis();
                 User user=OnlineUserService.getUser(req.getSession().getId());
                 ProcessTime logger=new ProcessTime();
-                logger.setOwnerUser(user);
+                logger.setUsername(user.getUsername());
                 logger.setUserIP(req.getRemoteAddr());
                 try {
                     logger.setServerIP(InetAddress.getLocalHost().getHostAddress());

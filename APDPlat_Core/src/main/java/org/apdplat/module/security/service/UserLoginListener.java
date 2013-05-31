@@ -78,7 +78,7 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
                     } catch (UnknownHostException e) {
                         log.error("记录登录日志出错",e);
                     }
-                    userLogin.setOwnerUser(user);
+                    userLogin.setUsername(user.getUsername());
                     logs.put(user.getUsername(), userLogin);
                 }else{
                     log.info("用户 "+user.getUsername()+" 的登录日志已经被记录过，用户在未注销前又再次登录，忽略此登录");

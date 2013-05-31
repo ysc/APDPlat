@@ -75,7 +75,7 @@ public class IndexManager {
         final IndexLog indexLog=new IndexLog();
         if(indexMonitor){
             User user=UserHolder.getCurrentLoginUser();
-            indexLog.setOwnerUser(user);
+            indexLog.setUsername(user.getUsername());
             indexLog.setLoginIP(UserHolder.getCurrentUserLoginIp());
             try {
                 indexLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
