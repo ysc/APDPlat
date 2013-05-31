@@ -54,7 +54,7 @@ var namespace='log';
             getItems : function(){
                 var items=[{
                         xtype: 'combo',
-                        id:'search_ownerUser_username',
+                        id:'search_username',
                         store:userStore,
                         emptyText:'请选择',
                         mode:'remote',
@@ -110,10 +110,10 @@ var namespace='log';
             callback : function(){               
                     var data=[];
 
-                    var search_ownerUser_username=parent.Ext.getCmp('search_ownerUser_username').getValue();
-                    if(search_ownerUser_username!=""){
-                        search_ownerUser_username=' +ownerUser_username:'+search_ownerUser_username;
-                        data.push(search_ownerUser_username);
+                    var search_username=parent.Ext.getCmp('search_username').getValue();
+                    if(search_username!=""){
+                        search_username=' +username:'+search_username;
+                        data.push(search_username);
                     }
 
                     var search_operatingType=parent.Ext.getCmp('search_operatingType').getValue();
@@ -150,7 +150,7 @@ var namespace='log';
             getFields: function(){
                 var fields=[
  				{name: 'id'},
-				{name: 'ownerUser'},
+				{name: 'username'},
 				{name: 'loginIP'},
 				{name: 'serverIP'},
 				{name: 'operatingTime'},
@@ -163,7 +163,7 @@ var namespace='log';
             getColumns: function(){
                 var columns=[
  				{header: "编号", width: 10, dataIndex: 'id', sortable: true},
-				{header: "用户名称", width: 20, dataIndex: 'ownerUser', sortable: true},
+				{header: "用户名称", width: 20, dataIndex: 'username', sortable: true},
 				{header: "登录IP地址", width: 20, dataIndex: 'loginIP', sortable: true},
 				{header: "服务器IP地址", width: 20, dataIndex: 'serverIP', sortable: true},
 				{header: "操作时间", width: 20, dataIndex: 'operatingTime', sortable: true},

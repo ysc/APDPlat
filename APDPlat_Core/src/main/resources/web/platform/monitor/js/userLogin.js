@@ -54,7 +54,7 @@ var namespace='monitor';
             getItems : function(){
                 var items=[{
                         xtype: 'combo',
-                        id:'search_ownerUser_username',
+                        id:'search_username',
                         store:userStore,
                         emptyText:'请选择',
                         mode:'remote',
@@ -87,10 +87,10 @@ var namespace='monitor';
             callback : function(){               
                     var data=[];
 
-                    var search_ownerUser_username=parent.Ext.getCmp('search_ownerUser_username').getValue();
-                    if(search_ownerUser_username!=""){
-                        search_ownerUser_username=' +ownerUser_username:'+search_ownerUser_username;
-                        data.push(search_ownerUser_username);
+                    var search_username=parent.Ext.getCmp('search_username').getValue();
+                    if(search_username!=""){
+                        search_username=' +username:'+search_username;
+                        data.push(search_username);
                     }
 
                     var search_startLoginTime=parent.Ext.getCmp('search_startLoginTime').value;
@@ -115,7 +115,7 @@ var namespace='monitor';
             getFields: function(){
                 var fields=[
  				{name: 'id'},
-				{name: 'ownerUser_username'},
+				{name: 'username'},
 				{name: 'loginIP'},
 				{name: 'serverIP'},
 				{name: 'loginTime'},
@@ -127,7 +127,7 @@ var namespace='monitor';
             getColumns: function(){
                 var columns=[
  				{header: "编号", width: 10, dataIndex: 'id', sortable: true},
- 				{header: "用户名称", width: 10, dataIndex: 'ownerUser_username', sortable: true},
+ 				{header: "用户名称", width: 10, dataIndex: 'username', sortable: true},
 				{header: "登录IP地址", width: 20, dataIndex: 'loginIP', sortable: true},
 				{header: "服务器IP地址", width: 20, dataIndex: 'serverIP', sortable: true},
 				{header: "登录时间", width: 20, dataIndex: 'loginTime', sortable: true},
