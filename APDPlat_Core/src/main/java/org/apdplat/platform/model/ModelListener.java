@@ -93,9 +93,12 @@ public class ModelListener {
     @PrePersist
     public void prePersist(Model model) {
         User user=UserHolder.getCurrentLoginUser();
-        if(user!=null && model.getOwnerUser()==null && !model.getClass().isAnnotationPresent(IgnoreUser.class)){
-            //设置数据的拥有者
-            model.setOwnerUser(user);
+        if(model instanceof SimpleModel){
+            SimpleModel simpleModel = (SimpleModel)model;
+            if(user!=null && simpleModel.getOwnerUser()==null && !model.getClass().isAnnotationPresent(IgnoreUser.class)){
+                //设置数据的拥有者
+                simpleModel.setOwnerUser(user);
+            }
         }
         //设置创建时间
         model.setCreateTime(new Date());
@@ -115,7 +118,9 @@ public class ModelListener {
             User user=UserHolder.getCurrentLoginUser();
             String ip=UserHolder.getCurrentUserLoginIp();
             OperateLog operateLog=new OperateLog();
-            operateLog.setOwnerUser(user);
+            if(user != null){
+                operateLog.setUsername(user.getUsername());
+            }
             operateLog.setLoginIP(ip);
             try {
                 operateLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
