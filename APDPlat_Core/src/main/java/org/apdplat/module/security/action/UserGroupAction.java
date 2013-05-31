@@ -57,7 +57,7 @@ public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
     public void prepareForDelete(Integer[] ids){
         User loginUser=UserHolder.getCurrentLoginUser();
         for(int id :ids){
-            UserGroup userGroup=service.retrieve(UserGroup.class, id);
+            UserGroup userGroup=getService().retrieve(UserGroup.class, id);
             boolean canDel=true;
             //获取拥有等待删除的角色的所有用户
             List<User> users=userGroup.getUsers();
@@ -71,7 +71,7 @@ public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
             }
             for(User user : users){
                 user.removeUserGroup(userGroup);
-                service.update(user);
+                getService().update(user);
             }
         }
     }
@@ -100,7 +100,7 @@ public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
             String[] attr=id.split("-");
             if(attr.length==2){
                 if("role".equals(attr[0])){
-                    Role role=service.retrieve(Role.class, Integer.parseInt(attr[1]));
+                    Role role=getService().retrieve(Role.class, Integer.parseInt(attr[1]));
                     roles.add(role);
                 }
             }

@@ -68,7 +68,7 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     public PropertyCriteria buildPropertyCriteria(){
         PropertyCriteria propertyCriteria=new PropertyCriteria();
         if(infoTypeId>0){
-            InfoType obj=service.retrieve(InfoType.class, infoTypeId);
+            InfoType obj=getService().retrieve(InfoType.class, infoTypeId);
             //获取orgId的所有子机构的ID
             List<Integer> infoTypeIds=InfoTypeService.getChildIds(obj);
             //加上orgId
@@ -93,7 +93,7 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     protected void renderJsonForQuery(List result) {
         for (News news : page.getModels()) {
             //重新刷新，否则取不到News.newsContents，因为使用了延迟加载
-            news=service.retrieve(modelClass, news.getId());
+            news=getService().retrieve(modelClass, news.getId());
             Map temp = new HashMap();
             render(temp,news);
 

@@ -95,7 +95,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
     public void prepareForDelete(Integer[] ids){
         User loginUser=UserHolder.getCurrentLoginUser();
         for(int id :ids){
-            Role role=service.retrieve(Role.class, id);            
+            Role role=getService().retrieve(Role.class, id);            
             boolean canDel=true;
             //获取拥有等待删除的角色的所有用户
             List<User> users=role.getUsers();
@@ -114,7 +114,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             }
             for(User user : users){
                 user.removeRole(role);
-                service.update(user);
+                getService().update(user);
             }
         }
     }
@@ -151,7 +151,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             String[] attr=id.split("-");
             if(attr.length==2){
                 if("command".equals(attr[0])){
-                    Command command=service.retrieve(Command.class, Integer.parseInt(attr[1]));
+                    Command command=getService().retrieve(Command.class, Integer.parseInt(attr[1]));
                     commands.add(command);
                 }
             }

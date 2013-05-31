@@ -86,7 +86,7 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
         public void prepareForDelete(Integer[] ids){
             User loginUser=UserHolder.getCurrentLoginUser();
             for(int id :ids){
-                Position position=service.retrieve(Position.class, id);
+                Position position=getService().retrieve(Position.class, id);
                 boolean canDel=true;
                 //获取拥有等待删除的角色的所有用户
                 List<User> users=position.getUsers();
@@ -100,7 +100,7 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
                 }
                 for(User user : users){
                     user.removePosition(position);
-                    service.update(user);
+                    getService().update(user);
                 }
             }
         }
@@ -129,7 +129,7 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
                 String[] attr=id.split("-");
                 if(attr.length==2){
                     if("command".equals(attr[0])){
-                        Command command=service.retrieve(Command.class, Integer.parseInt(attr[1]));
+                        Command command=getService().retrieve(Command.class, Integer.parseInt(attr[1]));
                         commands.add(command);
                     }
                 }
