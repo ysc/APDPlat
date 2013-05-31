@@ -23,7 +23,6 @@ package org.apdplat.module.security.model;
 import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelCollRef;
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +40,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.model.SimpleModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -52,7 +52,7 @@ uniqueConstraints = {
     @UniqueConstraint(columnNames = {"userGroupName"})})
 @XmlRootElement
 @XmlType(name = "UserGroup")
-public class UserGroup extends Model {
+public class UserGroup extends SimpleModel {
     @Column(length=40)
     @ModelAttr("用户组名称")
     protected String userGroupName;

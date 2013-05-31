@@ -23,7 +23,6 @@ package org.apdplat.module.dictionary.model;
 import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelAttrRef;
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -38,6 +37,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableProperty;
 import org.hibernate.annotations.Cache;
@@ -55,7 +55,7 @@ import org.springframework.stereotype.Component;
 @XmlType(name = "Dic")
 @Searchable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
-public class Dic extends Model {
+public class Dic extends SimpleModel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentDic")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 

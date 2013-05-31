@@ -26,7 +26,6 @@ import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelAttrRef;
 import org.apdplat.platform.annotation.ModelCollRef;
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
 import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.SpringContextUtils;
 import java.util.ArrayList;
@@ -48,6 +47,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
@@ -64,7 +64,7 @@ uniqueConstraints = {
     @UniqueConstraint(columnNames = {"username"})})
 @XmlRootElement
 @XmlType(name = "User")
-public class User extends Model  implements UserDetails{
+public class User extends SimpleModel  implements UserDetails{
     @ManyToOne
     @SearchableComponent(prefix="org_")
     @ModelAttr("组织架构")

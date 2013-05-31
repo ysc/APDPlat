@@ -23,7 +23,6 @@ package org.apdplat.module.module.model;
 import org.apdplat.module.module.service.ModuleService;
 import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelAttrRef;
-import org.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -38,6 +37,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.model.SimpleModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.context.annotation.Scope;
@@ -52,7 +52,7 @@ import org.springframework.stereotype.Component;
 @XmlRootElement
 @XmlType(name = "Module")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
-public class Module extends Model {
+public class Module extends SimpleModel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentModule")
     @OrderBy("orderNum ASC")

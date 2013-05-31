@@ -24,7 +24,6 @@ import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelAttrRef;
 import org.apdplat.platform.annotation.RenderIgnore;
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -33,6 +32,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableComponent;
 import org.springframework.context.annotation.Scope;
@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Component
 @Searchable
-public class News extends Model{
+public class News extends SimpleModel{
     @Transient
     @ModelAttr("语言")
     protected String lang="zh";

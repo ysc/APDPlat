@@ -22,7 +22,6 @@ package org.apdplat.module.info.model;
 
 import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,6 +29,7 @@ import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableProperty;
 import org.springframework.context.annotation.Scope;
@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
 @Component
 @XmlType(name = "InfoTypeContent")
 @Searchable
-public class InfoTypeContent extends Model{
+public class InfoTypeContent extends SimpleModel{
     @ManyToOne
     @ModelAttr("新闻类别")
     protected InfoType infoType;

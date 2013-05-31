@@ -22,12 +22,12 @@ package org.apdplat.module.info.model;
 
 import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableProperty;
 import org.springframework.context.annotation.Scope;
@@ -37,7 +37,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Component
 @Searchable
-public class NewsContent extends Model{
+public class NewsContent extends SimpleModel{
     @ManyToOne
     @ModelAttr("新闻")
     protected News news;

@@ -23,12 +23,12 @@ package org.apdplat.module.module.model;
 import org.apdplat.module.module.service.ModuleService;
 import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelAttrRef;
-import org.apdplat.platform.model.Model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.model.SimpleModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.context.annotation.Scope;
@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
 @Component
 @XmlType(name = "Command")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
-public class Command extends Model {
+public class Command extends SimpleModel {
 
     @ManyToOne
     @ModelAttr("所属模块")

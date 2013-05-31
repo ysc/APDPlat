@@ -24,7 +24,6 @@ import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelAttrRef;
 import org.apdplat.platform.annotation.RenderIgnore;
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -40,6 +39,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableComponent;
 import org.compass.annotations.SearchableProperty;
@@ -52,7 +52,7 @@ import org.springframework.stereotype.Component;
 @XmlRootElement
 @XmlType(name = "Org")
 @Searchable
-public class Org extends Model{
+public class Org extends SimpleModel{
     @SearchableProperty
     @ModelAttr("组织架构名称")
     protected String orgName;
