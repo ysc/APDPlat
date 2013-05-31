@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -47,6 +48,14 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
     @Resource(name="operateTyeCategoryService")
     private OperateTyeCategoryService operateTyeCategoryService;
     private String category;
+    //使用日志数据库
+    @Resource(name = "serviceFacadeForLog")
+    private ServiceFacade service;
+    
+    @Override
+    public ServiceFacade getService(){
+        return service;
+    }
     @Override
     public String query(){
         LogQueue.getLogQueue().saveLog();
