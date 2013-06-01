@@ -19,6 +19,9 @@
                 <bean class="org.compass.spring.device.SpringSyncTransactionGpsDeviceWrapper">
                     <property name="gpsDevice" ref="jpaGpsDevice" />
                 </bean>
+                <bean class="org.compass.spring.device.SpringSyncTransactionGpsDeviceWrapper">
+                    <property name="gpsDevice" ref="jpaGpsDeviceForLog" />
+                </bean>
             </list>
         </property>
     </bean>
@@ -50,6 +53,12 @@
             <value>jpaDevice</value>
         </property>
         <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <bean id="jpaGpsDeviceForLog" class="org.compass.gps.device.jpa.JpaGpsDevice">
+        <property name="name">
+            <value>jpaDeviceForLog</value>
+        </property>
+        <property name="entityManagerFactory" ref="entityManagerFactoryForLog" />
     </bean>
     <bean id="compassTemplate" class="org.compass.core.CompassTemplate">
         <property name="compass" ref="compass" />
