@@ -405,6 +405,8 @@ public class UserAction extends ExtJSSimpleAction<User> {
     @Override
     protected void renderJsonForQuery(List result) {
         for (User user : page.getModels()) {
+            //重新加载，避免出现延迟加载错误
+            user = getService().retrieve(modelClass, user.getId());
             Map temp = new HashMap();
             render(temp,user);
 
