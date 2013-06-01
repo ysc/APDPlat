@@ -8,6 +8,12 @@ APDPlat倡导的是我为人人，人人为我的开源奉献协作精神。一�
 
 APDPlat不是针对【业务人员】的【快速开发平台】，而是针对【JAVA工程师】的【应用级产品开发平台】，我们希望加入APDPlat的朋友对coding有激情，追求coding的艺术，所以不愿意看代码的或是看不懂代码的就不适合使用APDPlat。
 
+<p><a href="http://apdplat.org" target="_blank">APDPlat官方网站</a></p>
+
+<p><a href="http://apdplat.net" target="_blank">APDPlat演示站点</a></p>
+
+<p><a href="http://github.com/ysc/APDPlat/wiki" target="_blank">APDPlat相关文档</a></p>
+
 APDPlat的主要特性如下：
 
 1、100%的面向对象分析与设计
