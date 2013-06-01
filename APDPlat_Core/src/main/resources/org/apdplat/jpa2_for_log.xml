@@ -3,6 +3,18 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
     version="1.0">
     <persistence-unit name="${persistenceUnitForLog}">
-    	<jar-file>${scan.jars}</jar-file>
+    	<!--
+        因为使用了多数据库，所以要手动指定模型，而不能扫描，因为扫描会对所有模型建表
+        <jar-file>${scan.jars}</jar-file>
+        -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        
+        <class>org.apdplat.module.log.model.OperateLog</class>
+        <class>org.apdplat.module.monitor.model.BackupLog</class>
+        <class>org.apdplat.module.monitor.model.IndexLog</class>
+        <class>org.apdplat.module.monitor.model.MemoryState</class>
+        <class>org.apdplat.module.monitor.model.ProcessTime</class>
+        <class>org.apdplat.module.monitor.model.RuningTime</class>
+        <class>org.apdplat.module.monitor.model.UserLogin</class>
     </persistence-unit>
 </persistence>

@@ -3,6 +3,26 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
     version="1.0">
     <persistence-unit name="${persistenceUnit}">
-    	<jar-file>${scan.jars}</jar-file>
+    	<!--
+        因为使用了多数据库，所以要手动指定模型，而不能扫描，因为扫描会对所有模型建表
+        <jar-file>${scan.jars}</jar-file>
+        -->
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        
+        <class>org.apdplat.module.dictionary.model.Dic</class>
+        <class>org.apdplat.module.dictionary.model.DicItem</class>
+        <class>org.apdplat.module.module.model.Command</class>
+        <class>org.apdplat.module.module.model.Module</class>
+        <class>org.apdplat.module.security.model.Org</class>
+        <class>org.apdplat.module.security.model.Position</class>
+        <class>org.apdplat.module.security.model.Role</class>
+        <class>org.apdplat.module.security.model.User</class>
+        <class>org.apdplat.module.security.model.UserGroup</class>
+        <class>org.apdplat.module.system.model.BackupScheduleConfig</class>
+        <class>org.apdplat.module.index.model.IndexScheduleConfig</class>
+        <class>org.apdplat.module.info.model.InfoType</class>
+        <class>org.apdplat.module.info.model.InfoTypeContent</class>
+        <class>org.apdplat.module.info.model.News</class>
+        <class>org.apdplat.module.info.model.NewsContent</class>
     </persistence-unit>
 </persistence>
