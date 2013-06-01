@@ -49,6 +49,7 @@ import org.springframework.stereotype.Component;
 @Searchable
 @XmlRootElement
 @XmlType(name = "Position")
+@Database
 public class Position extends SimpleModel{
 
     @SearchableProperty

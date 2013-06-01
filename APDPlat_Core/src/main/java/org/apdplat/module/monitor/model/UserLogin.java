@@ -30,6 +30,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.Model;
 import org.compass.annotations.Index;
 import org.compass.annotations.Searchable;
@@ -49,6 +50,7 @@ import org.springframework.stereotype.Component;
 @Searchable
 @IgnoreBusinessLog
 @IgnoreUser
+@Database("log")
 public class UserLogin extends Model {
     public String getOnlineTimeStr(){
         return ConvertUtils.getTimeDes(onlineTime);

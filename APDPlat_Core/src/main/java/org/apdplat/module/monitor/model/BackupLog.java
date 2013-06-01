@@ -30,6 +30,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.apdplat.platform.annotation.Database;
 import org.compass.annotations.Index;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableProperty;
@@ -47,6 +48,7 @@ import org.springframework.stereotype.Component;
 @Searchable
 @IgnoreBusinessLog
 @IgnoreUser
+@Database("log")
 public class BackupLog extends Model {
     public String getProcessTimeStr(){
         return ConvertUtils.getTimeDes(processTime);

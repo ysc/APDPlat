@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableProperty;
@@ -55,6 +56,7 @@ import org.springframework.stereotype.Component;
 @XmlType(name = "Dic")
 @Searchable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
+@Database
 public class Dic extends SimpleModel {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parentDic")

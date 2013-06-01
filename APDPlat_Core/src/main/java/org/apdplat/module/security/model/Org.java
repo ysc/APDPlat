@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableComponent;
@@ -52,6 +53,7 @@ import org.springframework.stereotype.Component;
 @XmlRootElement
 @XmlType(name = "Org")
 @Searchable
+@Database
 public class Org extends SimpleModel{
     @SearchableProperty
     @ModelAttr("组织架构名称")

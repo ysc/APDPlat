@@ -28,6 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableComponent;
@@ -46,6 +47,7 @@ import org.springframework.stereotype.Component;
 @XmlType(name = "DicItem")
 @Searchable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE) 
+@Database
 public class DicItem extends SimpleModel {
 
     @ManyToOne

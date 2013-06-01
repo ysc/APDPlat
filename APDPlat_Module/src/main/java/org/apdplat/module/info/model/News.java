@@ -32,6 +32,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.Searchable;
 import org.compass.annotations.SearchableComponent;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Component
 @Searchable
+@Database
 public class News extends SimpleModel{
     @Transient
     @ModelAttr("语言")

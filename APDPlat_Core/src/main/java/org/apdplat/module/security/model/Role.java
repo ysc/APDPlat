@@ -52,6 +52,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.SearchableComponent;
 import org.springframework.context.annotation.Scope;
@@ -65,6 +66,7 @@ uniqueConstraints = {
     @UniqueConstraint(columnNames = {"roleName"})})
 @XmlRootElement
 @XmlType(name = "Role")
+@Database
 public class Role extends SimpleModel {
     @Column(length=40)
     @ModelAttr("角色名")

@@ -22,6 +22,7 @@ package org.apdplat.module.index.model;
 
 import org.apdplat.platform.annotation.IgnoreBusinessLog;
 import javax.persistence.Entity;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Component
 @IgnoreBusinessLog
+@Database
 public class IndexScheduleConfig extends SimpleModel{
     protected int scheduleHour=2;
     protected int scheduleMinute=2;

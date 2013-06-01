@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -52,6 +53,7 @@ uniqueConstraints = {
     @UniqueConstraint(columnNames = {"userGroupName"})})
 @XmlRootElement
 @XmlType(name = "UserGroup")
+@Database
 public class UserGroup extends SimpleModel {
     @Column(length=40)
     @ModelAttr("用户组名称")

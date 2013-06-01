@@ -47,6 +47,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.*;
 import org.springframework.context.annotation.Scope;
@@ -64,6 +65,7 @@ uniqueConstraints = {
     @UniqueConstraint(columnNames = {"username"})})
 @XmlRootElement
 @XmlType(name = "User")
+@Database
 public class User extends SimpleModel  implements UserDetails{
     @ManyToOne
     @SearchableComponent(prefix="org_")
