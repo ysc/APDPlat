@@ -38,8 +38,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import org.apdplat.platform.util.SpringContextUtils;
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
+import org.springframework.orm.jpa.EntityManagerHolder;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 /**
  * 系统启动和关闭的监听器,由Spring来调用
  * @author 杨尚川
@@ -166,11 +172,33 @@ public class SystemListener{
         }
         
         if(LogQueue.getLogQueue()!=null){
-                LogQueue.getLogQueue().saveLog();
+            //在关闭系统的时候，保存日志数据需要打开日志数据库em
+            EntityManagerFactory entityManagerFactoryForLog = SpringContextUtils.getBean("entityManagerFactoryForLog");
+            openEntityManagerForLog(entityManagerFactoryForLog);
+            LogQueue.getLogQueue().saveLog();
+            closeEntityManagerForLog(entityManagerFactoryForLog);
         }
         deregisterDrivers();
         log.info("卸载JDBC驱动");
         log.info("Uninstalled JDBC driver", Locale.ENGLISH);
+    }    
+    /**
+     * 打开日志数据库em
+     * @param entityManagerFactory 
+     */
+    private static void openEntityManagerForLog(EntityManagerFactory entityManagerFactory){        
+        EntityManager em = entityManagerFactory.createEntityManager();
+        TransactionSynchronizationManager.bindResource(entityManagerFactory, new EntityManagerHolder(em));
+        log.info("打开ForLog实体管理器");
+    }
+    /**
+     * 关闭日志数据库em
+     * @param entityManagerFactory 
+     */
+    private static void closeEntityManagerForLog(EntityManagerFactory entityManagerFactory){
+        EntityManagerHolder emHolder = (EntityManagerHolder)TransactionSynchronizationManager.unbindResource(entityManagerFactory);
+        log.info("关闭ForLog实体管理器");
+        EntityManagerFactoryUtils.closeEntityManager(emHolder.getEntityManager());
     }
     public static String getContextPath() {
         return contextPath;
