@@ -122,6 +122,7 @@ var namespace='monitor';
                 var callbacks=[GridBaseModel.advancedsearch,GridBaseModel.showall,GridBaseModel.chart];
             
                 GridBaseModel.show(contextPath, namespace, action, pageSize, this.getFields(), this.getColumns(), commands,tips,callbacks);
+                GridBaseModel.onRowDblClick=function(){};
             }
         }
     } ();
