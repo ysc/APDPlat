@@ -57,15 +57,6 @@
     </filter-mapping>
     -->
     
-    <filter>
-        <description>记录请求的处理时间，为性能分析提供数据</description>
-        <filter-name>PerformanceFilter</filter-name>
-        <filter-class>org.apdplat.module.monitor.filter.PerformanceFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PerformanceFilter</filter-name>
-        <url-pattern>*.action</url-pattern>
-    </filter-mapping>
     <!-- 对于每一个数据库，都需要一个OpenEntityManagerInViewFilter  -->
     <!-- 默认数据库 -->
     <filter>
@@ -214,6 +205,16 @@
       <url-pattern>*.jpg</url-pattern>
     </filter-mapping>
     -->
+    <!-- 性能过滤器放置到最后 -->
+    <filter>
+        <description>记录请求的处理时间，为性能分析提供数据</description>
+        <filter-name>PerformanceFilter</filter-name>
+        <filter-class>org.apdplat.module.monitor.filter.PerformanceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PerformanceFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
 
     <!--CXF 配置  WEB服务-->
     <servlet>
