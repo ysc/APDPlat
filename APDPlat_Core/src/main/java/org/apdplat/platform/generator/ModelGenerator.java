@@ -283,6 +283,7 @@ public class ModelGenerator extends Generator {
 
         private String name;
         private String type;
+        private int length;
         private String des;
         private boolean searchable = false;
         private String map = MapType.validType("None");
@@ -344,6 +345,14 @@ public class ModelGenerator extends Generator {
 
         public void setType(String type) {
             this.type = type;
+        }
+
+        public int getLength() {
+            return length;
+        }
+
+        public void setLength(int length) {
+            this.length = length;
         }
 
         public String getAttrRef() {
@@ -511,20 +520,39 @@ public class ModelGenerator extends Generator {
                                 attr.setType(AttrType.validType("String"));
                             }
                         }
-                        //是否为搜索字段
+                        //字段长度（只针对string类型）
                         oneCell = oneRow.getCell(3);
+                        if (oneCell != null) {
+                            if(oneCell.getCellType() == HSSFCell.CELL_TYPE_STRING){
+                                String cellValue = oneCell.getStringCellValue();
+                                if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                    try{
+                                        int length=Integer.parseInt(cellValue);
+                                        attr.setLength(length);
+                                    }catch(Exception e){
+                                        log.error("字段长度不是数值："+cellValue);
+                                    }
+                                }
+                            }
+                            if(oneCell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                                double length = oneCell.getNumericCellValue();
+                                attr.setLength((int)length);
+                            }                            
+                        }
+                        //是否为搜索字段
+                        oneCell = oneRow.getCell(4);
                         if (oneCell != null) {
                             boolean cellValue = oneCell.getBooleanCellValue();
                             attr.setSearchable(cellValue);
                         }
                         //是否忽略渲染到页面表格
-                        oneCell = oneRow.getCell(4);
+                        oneCell = oneRow.getCell(5);
                         if (oneCell != null) {
                             boolean cellValue = oneCell.getBooleanCellValue();
                             attr.setRenderIgnore(cellValue);
                         }
                         //字段的下拉菜单类型
-                        oneCell = oneRow.getCell(5);
+                        oneCell = oneRow.getCell(6);
                         if (oneCell != null) {
                             String cellValue = oneCell.getStringCellValue();
                             if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
@@ -532,7 +560,7 @@ public class ModelGenerator extends Generator {
                             }
                         }
                         //字段的映射类型
-                        oneCell = oneRow.getCell(6);
+                        oneCell = oneRow.getCell(7);
                         if (oneCell != null) {
                             String cellValue = oneCell.getStringCellValue();
                             if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
@@ -540,7 +568,7 @@ public class ModelGenerator extends Generator {
                             }
                         }
                         //映射对象渲染字段
-                        oneCell = oneRow.getCell(7);
+                        oneCell = oneRow.getCell(8);
                         if (oneCell != null) {
                             String cellValue = oneCell.getStringCellValue();
                             if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {

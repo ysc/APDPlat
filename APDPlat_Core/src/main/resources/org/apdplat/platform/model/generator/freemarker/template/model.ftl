@@ -21,7 +21,7 @@
 package ${modelInfo.modelPackage};
 
 import org.apdplat.platform.generator.ActionGenerator;
-import org.apdplat.platform.model.Model;
+import org.apdplat.platform.model.SimpleModel;
 import org.apdplat.platform.annotation.*;
 <#if modelInfo.hasDicItem>
 import org.apdplat.module.dictionary.model.DicItem;
@@ -51,7 +51,7 @@ import javax.xml.bind.annotation.XmlType;
 @Searchable
 @XmlRootElement
 @XmlType(name = "${modelInfo.modelEnglish}")
-public class ${modelInfo.modelEnglish} extends Model{
+public class ${modelInfo.modelEnglish} extends SimpleModel{
 
 <#list modelInfo.attrs as attr>
     <#if attr.renderIgnore>
@@ -62,6 +62,9 @@ public class ${modelInfo.modelEnglish} extends Model{
     @SearchableProperty
         </#if>
     @ModelAttr("${attr.des}")
+        <#if attr.type == 'String' && attr.length gt 0>
+    @Column(length=${attr.length})
+        </#if>
     protected ${attr.type} ${attr.name};
     </#if>
     <#if attr.dic == 'SimpleDic' || attr.dic == 'TreeDic'>
