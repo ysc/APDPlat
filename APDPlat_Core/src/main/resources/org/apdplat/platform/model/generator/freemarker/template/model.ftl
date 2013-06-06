@@ -83,6 +83,12 @@ public class ${modelInfo.modelEnglish} extends SimpleModel{
         <#if attr.searchable && attr.type == 'Time'>
     @SearchableProperty(format = "yyyy-MM-dd_HH:mm:ss")
         </#if>
+        <#if attr.type == 'Date'>
+    @RenderDate
+        </#if>
+        <#if attr.type == 'Time'>
+    @RenderTime
+        </#if>
     @Temporal(TemporalType.TIMESTAMP)
     @ModelAttr("${attr.des}")
     protected Date ${attr.name};

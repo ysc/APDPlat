@@ -30,7 +30,6 @@ import org.apdplat.platform.annotation.RenderIgnore;
 import org.apdplat.platform.criteria.Property;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.result.Page;
-import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.ReflectionUtils;
 import org.apdplat.platform.util.SpringContextUtils;
 import org.apdplat.platform.util.Struts2Utils;
@@ -47,6 +46,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import org.apache.commons.lang.StringUtils;
+import org.apdplat.platform.annotation.RenderDate;
+import org.apdplat.platform.annotation.RenderTime;
 
 /**
  *
@@ -566,7 +567,11 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                 value="";
             }
             if("Timestamp".equals(valueClass) || "Date".equals(valueClass)){
-                value=DateTypeConverter.toDefaultDateTime((Date)value);
+                if(field.isAnnotationPresent(RenderDate.class)){
+                    value=DateTypeConverter.toDefaultDate((Date)value);
+                }else if(field.isAnnotationPresent(RenderTime.class)){
+                    value=DateTypeConverter.toDefaultDateTime((Date)value);
+                }
             }
             //处理下拉菜单
             if("DicItem".equals(valueClass)){
