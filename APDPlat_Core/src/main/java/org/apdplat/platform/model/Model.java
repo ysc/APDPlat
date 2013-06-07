@@ -159,6 +159,21 @@ public abstract class Model implements Serializable{
     public String toString() {
         return this.getMetaData() + this.getId();
     }
+    public List<ModelFieldData> getAllRenderModelAttr(){
+        List<ModelFieldData> list=new ArrayList<>();
+        //获取所有字段，包括继承的
+        List<Field> fields = ReflectionUtils.getDeclaredFields(this);
+        for (Field field : fields) {
+            if(field.isAnnotationPresent(RenderIgnore.class)){
+                continue;
+            }
+            ModelFieldData data=getFieldData(field);
+            if(data!=null){
+                list.add(data);
+            }
+        }
+        return list;
+    }
     public List<ModelFieldData> getAllModelAttr(){
         List<ModelFieldData> list=new ArrayList<>();
         //获取所有字段，包括继承的

@@ -117,7 +117,7 @@ public class JsGenerator  extends Generator{
         log.info("开始生成JS");
         
         Map<String, Object> context = new HashMap<>();
-        List<ModelFieldData> attrs=model.getAllModelAttr();
+        List<ModelFieldData> attrs=model.getAllRenderModelAttr();
         
         int baseHeight=120;
         //添加，分为两列
