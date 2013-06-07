@@ -107,6 +107,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
     }
 
     public String execute() {
+        log.info("调用了action的默认execute方法");
         return null;
     }
 
