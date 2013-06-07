@@ -290,6 +290,7 @@ public class ModelGenerator extends Generator {
         private String attrRef = "None";
         private boolean renderIgnore = false;
         private String dic = DicType.validType("None");
+        private String dicName;
 
         public String getDic() {
             return dic;
@@ -297,6 +298,14 @@ public class ModelGenerator extends Generator {
 
         public void setDic(String dic) {
             this.dic = dic;
+        }
+
+        public String getDicName() {
+            return dicName;
+        }
+
+        public void setDicName(String dicName) {
+            this.dicName = dicName;
         }
 
         public boolean isRenderIgnore() {
@@ -365,7 +374,7 @@ public class ModelGenerator extends Generator {
 
         @Override
         public String toString() {
-            return "Attr{" + "name=" + name + ", type=" + type + ", des=" + des + ", searchable=" + searchable + ", map=" + map + ", attrRef=" + attrRef + ", renderIgnore=" + renderIgnore + ", dic=" + dic + '}';
+            return "Attr{" + "name=" + name + ", type=" + type + ", length=" + length + ", des=" + des + ", searchable=" + searchable + ", map=" + map + ", attrRef=" + attrRef + ", renderIgnore=" + renderIgnore + ", dic=" + dic + ", dicName=" + dicName + '}';
         }
     }
 
@@ -559,8 +568,16 @@ public class ModelGenerator extends Generator {
                                 attr.setDic(DicType.validType(cellValue));
                             }
                         }
-                        //字段的映射类型
+                        //下拉菜单对应的数据字典
                         oneCell = oneRow.getCell(7);
+                        if (oneCell != null) {
+                            String cellValue = oneCell.getStringCellValue();
+                            if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
+                                attr.setDicName(cellValue);
+                            }
+                        }
+                        //字段的映射类型
+                        oneCell = oneRow.getCell(8);
                         if (oneCell != null) {
                             String cellValue = oneCell.getStringCellValue();
                             if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
@@ -568,7 +585,7 @@ public class ModelGenerator extends Generator {
                             }
                         }
                         //映射对象渲染字段
-                        oneCell = oneRow.getCell(8);
+                        oneCell = oneRow.getCell(9);
                         if (oneCell != null) {
                             String cellValue = oneCell.getStringCellValue();
                             if (cellValue != null && !"".equals(cellValue.trim()) && !"null".equals(cellValue.trim().toLowerCase())) {
@@ -580,6 +597,13 @@ public class ModelGenerator extends Generator {
                         }
                         if("DicItem".equals(attr.getType())){
                             modelInfo.setHasDicItem(true);
+                            //如果指定了类型为DicItem，则默认的dic为SimpleDic
+                            if(!"SimpleDic".equals(attr.getDic()) && !"TreeDic".equals(attr.getDic())){
+                                attr.setDic("SimpleDic");
+                            }
+                            if(attr.getDicName() == null || "".equals(attr.getDicName())){
+                                attr.setDicName(attr.getName());
+                            }
                         }
                         modelInfo.addAttr(attr);
                     }

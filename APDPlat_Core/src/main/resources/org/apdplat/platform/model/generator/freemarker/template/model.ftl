@@ -73,7 +73,7 @@ public class ${modelInfo.modelEnglish} extends SimpleModel{
     @SearchableComponent(prefix="${attr.name}_")
         </#if>
     @ModelAttr("${attr.des}")
-    @${attr.dic}("${attr.name}")
+    @${attr.dic}("${attr.dicName}")
     protected ${attr.type} ${attr.name};
     </#if>
     <#if attr.type == 'Date' || attr.type == 'Time'>
