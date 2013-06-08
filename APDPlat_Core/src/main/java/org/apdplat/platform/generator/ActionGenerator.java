@@ -220,15 +220,20 @@ public class ActionGenerator extends Generator{
      * @param workspaceModuleBasePath 开发时模块的根路径
      */
     private static void generateFromModel(Class clazz,String workspaceModuleBasePath) {
-        String p=clazz.getPackage().getName();
-        p=p.replace(".model","");
+        String packageName=clazz.getPackage().getName();
+        String p=packageName.replace(".model","");
         int index=p.lastIndexOf(".");
         String _package=p.substring(0,index);
+        //最低层命名空间
         String actionNamespace=p.substring(index+1);
         String model=clazz.getSimpleName();
         String actionName=model+"Action";
         String actionPackage=_package+"."+actionNamespace+".action";
         String modelPackage=_package+"."+actionNamespace+".model";
+        //完整命名空间
+        //获取namespace
+        int indexOf = packageName.indexOf(".module.");
+        actionNamespace = packageName.substring(indexOf).replace(".module.", "").replace(".model", "").replace(".", "/");
         
         //普通情况下一个模型对应一个Action，如果某些模型不需要Action（即没有在module.xml中进行声明），则忽略生成此模型对应的Action
         //从module.xml中查找该model是否配置在模块文件中
