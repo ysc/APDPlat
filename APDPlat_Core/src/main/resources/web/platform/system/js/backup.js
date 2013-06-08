@@ -103,7 +103,7 @@ var namespace='system';
                             }]
                     },{
                             xtype: 'fieldset',
-                            title: '定时重建状态',
+                            title: '定时备份状态',
                             collapsible: false,
                             defaults: {
                                 anchor:"95%"
@@ -117,7 +117,7 @@ var namespace='system';
                             }]
                     },{
                             xtype: 'fieldset',
-                            title: '定时重建时间（24小时制）',
+                            title: '定时备份时间（24小时制）',
                             collapsible: false,
                             items: [{
                                         xtype:'numberfield',
