@@ -575,6 +575,9 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }
             //处理下拉菜单
             if("DicItem".equals(valueClass)){
+                //当修改数据的时候，需要该值
+                data.put(fieldName+"Id", ReflectionUtils.getFieldValue(value, "id").toString());
+                
                 value = ReflectionUtils.getFieldValue(value, "name");
             }
             data.put(fieldName, value.toString());

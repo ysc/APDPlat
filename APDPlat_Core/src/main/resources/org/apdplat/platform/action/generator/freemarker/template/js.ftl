@@ -479,6 +479,9 @@
             },
 
             show: function(model) {
+<#list dicNames as dicName>
+                ${dicName}Store.load();
+</#list>
                 <#if labelWidth gt 80>
                 ModifyBaseModel.getLabelWidth=function(){
                     return ${labelWidth};
