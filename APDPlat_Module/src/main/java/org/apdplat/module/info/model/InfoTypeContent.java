@@ -45,8 +45,8 @@ import org.springframework.stereotype.Component;
 public class InfoTypeContent extends SimpleModel{
     @ManyToOne
     @ModelAttr("新闻类别")
-    protected InfoType infoType;
-    
+    protected InfoType infoType;    
+    @ModelAttr("多国语言")
     @Enumerated(EnumType.STRING) 
     protected Lang lang;
     
