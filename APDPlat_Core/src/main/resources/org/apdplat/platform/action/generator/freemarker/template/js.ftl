@@ -449,6 +449,7 @@
                                                 editable:       false,
                                                 cls : 'attr',
                                                 hiddenName: 'model.${modelAttr.english}.id',
+                                                value: model.${modelAttr.english}Id,
                                                 fieldLabel: '${modelAttr.chinese}',
                                                 allowBlank: false,
                                                 blankText : '${modelAttr.chinese}不能为空'
