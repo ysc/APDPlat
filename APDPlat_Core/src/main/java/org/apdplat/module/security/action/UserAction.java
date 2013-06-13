@@ -154,6 +154,12 @@ public class UserAction extends ExtJSSimpleAction<User> {
             if(!StringUtils.isBlank(password)){
                 for(int id : ids){
                     User user=getService().retrieve(User.class, id);
+                    if(PropertyHolder.getBooleanProperty("demo")){
+                        if(user.getUsername().equals("admin")){
+                            Struts2Utils.renderText("演示版本不能重置admin用户的密码");
+                            return null;
+                        }
+                    }
                     user.setPassword(PasswordEncoder.encode(password,user));
                     getService().update(user);
                 }
