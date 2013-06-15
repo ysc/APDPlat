@@ -34,14 +34,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LogQueue {
-    protected static final APDPlatLogger log = new APDPlatLogger(LogQueue.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(LogQueue.class);
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
     private ServiceFacade serviceFacade;
     private static ConcurrentLinkedQueue <Model> logs =  new  ConcurrentLinkedQueue <>();
     private static int logQueueMax=Integer.parseInt(PropertyHolder.getProperty("logQueueMax"));
-    public static synchronized void addLog(Model log){
-        logs.add(log);
+    public static synchronized void addLog(Model LOG){
+        logs.add(LOG);
         if(logs.size()>logQueueMax){
             queue.saveLog();
         }
@@ -57,7 +57,7 @@ public class LogQueue {
     public synchronized void saveLog(){
         int len=logs.size();
         int success=0;
-        log.info("保存前队列中的日志数目为(Num. of log before saving in the queue)："+len);
+        LOG.info("保存前队列中的日志数目为(Num. of LOG before saving in the queue)："+len);
         try{
             for(int i=0;i<len;i++){
                 Model model = logs.remove();
@@ -65,13 +65,13 @@ public class LogQueue {
                     serviceFacade.create(model);
                     success++;
                 }catch(Exception e){
-                    log.error("保存日志失败(Failed to save log):"+model.getMetaData(),e);
+                    LOG.error("保存日志失败(Failed to save LOG):"+model.getMetaData(),e);
                 }
             }
         } catch (Exception e) {
-            log.error("保存日志抛出异常(Saving log exception)",e);
+            LOG.error("保存日志抛出异常(Saving LOG exception)",e);
         }
-        log.info("成功保存(Success to save) "+success+" 条日志(log)");
-        log.info("保存后队列中的日志数目为(Num. of log after saving in the queue)："+logs.size());
+        LOG.info("成功保存(Success to save) "+success+" 条日志(LOG)");
+        LOG.info("保存后队列中的日志数目为(Num. of LOG after saving in the queue)："+logs.size());
     }
 }

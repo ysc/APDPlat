@@ -44,7 +44,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BackupSchedulerService implements ApplicationListener {
-    protected static final APDPlatLogger log = new APDPlatLogger(BackupSchedulerService.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(BackupSchedulerService.class);
 
     private static SchedulerFactory sf = new StdSchedulerFactory();
     @Resource(name = "serviceFacade")
@@ -59,13 +59,13 @@ public class BackupSchedulerService implements ApplicationListener {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof ContextRefreshedEvent) {
-            log.info("spring容器初始化完成, 开始检查是否需要启动定时备份数据调度器");
+            LOG.info("spring容器初始化完成, 开始检查是否需要启动定时备份数据调度器");
             BackupScheduleConfig config = getBackupScheduleConfig();
             if (config != null && config.isEnabled()) {
                 schedule(config.getScheduleHour(),config.getScheduleMinute());
-                log.info("启动定时备份数据调度器");
+                LOG.info("启动定时备份数据调度器");
             }else{
-                log.info("没有设置定时备份数据任务");
+                LOG.info("没有设置定时备份数据任务");
             }
         }
     }
@@ -91,20 +91,20 @@ public class BackupSchedulerService implements ApplicationListener {
             if(config!=null){
                 config.setEnabled(false);
                 serviceFacade.update(config);
-                log.info("禁用定时重建配置对象");
+                LOG.info("禁用定时重建配置对象");
             }else{
                 String tip="还没有设置定时备份数据任务";
-                log.info(tip);
+                LOG.info(tip);
                 return tip;
             }
             Scheduler sched = sf.getScheduler();
             sched.deleteJob(backupTask.getName(), "DEFAULT");
             String tip="删除定时备份数据任务，任务名为：" + backupTask.getName() + ",全名为: " + backupTask.getFullName();
-            log.info(tip);
+            LOG.info(tip);
             return tip;
         } catch (SchedulerException ex) {
             String tip="删除定时备份数据任务失败，原因："+ex.getMessage();
-            log.info(tip);
+            LOG.info(tip);
             return tip;
         }
     }
@@ -144,13 +144,13 @@ public class BackupSchedulerService implements ApplicationListener {
             sched.scheduleJob(backupTask, trigger);
             sched.start();
             String tip = "删除上一次的任务，任务名为：" + backupTask.getName() + ",全名为: " + backupTask.getFullName();
-            log.info(tip);
+            LOG.info(tip);
             String taskState = "定时备份数据任务执行频率为每天，时间（24小时制）" + hour + ":" + minute;
-            log.info(taskState);
+            LOG.info(taskState);
             return taskState;
         } catch (ParseException | SchedulerException e) {
             String tip = "定时备份数据设置失败，原因：" + e.getMessage();
-            log.info(tip,e);
+            LOG.info(tip,e);
             return tip;
         }
     }

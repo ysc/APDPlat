@@ -47,7 +47,7 @@ import org.springframework.util.ReflectionUtils;
 
 @Service
 public class SecurityCheck {
-    protected static final APDPlatLogger log = new APDPlatLogger(SecurityCheck.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(SecurityCheck.class);
     private static String securityKeyName;
     private static String securityClspath;
     private static String sequenceKeyName;
@@ -63,7 +63,7 @@ public class SecurityCheck {
         if(System.getProperty("os.name").toLowerCase().indexOf("solaris")!=-1){
             osName="Solaris";
         }
-        log.debug("osName: "+osName); 
+        LOG.debug("osName: "+osName); 
         sequenceKeyName="/org/apdplat/module/security/service/SequenceKey";
         sequenceClspath="/org/apdplat/module/security/service/"+osName+"SequenceService";
     
@@ -112,7 +112,7 @@ public class SecurityCheck {
             }.loadClass(className);
             return (T)obj;
         } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | ClassNotFoundException e) {
-            log.debug("加载类失败",e);
+            LOG.debug("加载类失败",e);
         } 
         return null;
     }
@@ -124,28 +124,28 @@ public class SecurityCheck {
             String seq=method.invoke(obj).toString();
             return seq;
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            log.debug("获取机器码钥失败",e);
+            LOG.debug("获取机器码钥失败",e);
         }
         return "";
     }
     @PostConstruct
     public static  void check(){
-        log.debug("开始进行安全检查");        
+        LOG.debug("开始进行安全检查");        
         String seq="";
         try{
             seq=getSequence();
-            log.debug("机器指纹："+seq);
+            LOG.debug("机器指纹："+seq);
         }catch(Exception e){
-            log.debug("安全检查失败",e);
+            LOG.debug("安全检查失败",e);
         }
         try {
             Class clazz=loadClass(securityKeyName,securityClspath,"org.apdplat.module.security.service.SecurityService");
             Object obj=clazz.newInstance();
             Method method=ReflectionUtils.findMethod(clazz, "checkSeq",String.class);
             method.invoke(obj,seq);
-            log.debug("安全检查完成");
+            LOG.debug("安全检查完成");
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            log.debug("安全检查出错",e);
+            LOG.debug("安全检查出错",e);
         }
     }
 }

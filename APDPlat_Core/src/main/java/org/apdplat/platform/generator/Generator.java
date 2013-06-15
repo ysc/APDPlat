@@ -37,7 +37,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
  * @author 杨尚川
  */
 public abstract class Generator {
-    protected static final APDPlatLogger log = new APDPlatLogger(Generator.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(Generator.class);
     
     protected static final String ENCODING = "utf-8";
     protected static final FreeMarkerConfigurationFactoryBean factory = new FreeMarkerConfigurationFactoryBean();
@@ -63,15 +63,15 @@ public abstract class Generator {
 
             writer.write(content);
             writer.flush();
-            log.info("生成的文件为(Generated file is)："+file.getAbsolutePath());
+            LOG.info("生成的文件为(Generated file is)："+file.getAbsolutePath());
         } catch (IOException e) {
-            log.error("生成数据字典出错(Error in generate data dictionary)",e);
+            LOG.error("生成数据字典出错(Error in generate data dictionary)",e);
         } finally {
             if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException e) {
-                    log.info(e.getMessage());
+                    LOG.info(e.getMessage());
                 }
             }
         }

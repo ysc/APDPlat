@@ -30,7 +30,7 @@ import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 public class IntegerTypeConverter extends StrutsTypeConverter{
-    protected static final APDPlatLogger log = new APDPlatLogger(IntegerTypeConverter.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(IntegerTypeConverter.class);
 
     @Override
     public Object convertFromString(Map context, String[] values, Class toClass) {
@@ -40,7 +40,7 @@ public class IntegerTypeConverter extends StrutsTypeConverter{
         try{
             return Integer.parseInt(values[0].trim());
         }catch(Exception e){
-            log.info("字符串:"+values[0].trim()+"转换为数字失败");
+            LOG.info("字符串:"+values[0].trim()+"转换为数字失败");
         }
         return 0;
     }

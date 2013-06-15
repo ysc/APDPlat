@@ -49,7 +49,7 @@ import org.compass.annotations.Searchable;
  *
  */
 public class ModelListener {
-    protected static final APDPlatLogger log = new APDPlatLogger(ModelListener.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(ModelListener.class);
     
     private static IndexManager indexManager=null;
     private static final boolean create;
@@ -57,23 +57,23 @@ public class ModelListener {
     private static final boolean update;
     
     static{
-        create=PropertyHolder.getBooleanProperty("log.create");
-        delete=PropertyHolder.getBooleanProperty("log.delete");
-        update=PropertyHolder.getBooleanProperty("log.update");
+        create=PropertyHolder.getBooleanProperty("LOG.create");
+        delete=PropertyHolder.getBooleanProperty("LOG.delete");
+        update=PropertyHolder.getBooleanProperty("LOG.update");
         if(create){
-            log.info("启用添加数据日志(Enable add data log)");
+            LOG.info("启用添加数据日志(Enable add data LOG)");
         }else{
-            log.info("禁用添加数据日志(Disable add data log)");
+            LOG.info("禁用添加数据日志(Disable add data LOG)");
         }
         if(delete){
-            log.info("启用删除数据日志(Enable delete data log)");
+            LOG.info("启用删除数据日志(Enable delete data LOG)");
         }else{
-            log.info("禁用删除数据日志(Disable delete data log)");
+            LOG.info("禁用删除数据日志(Disable delete data LOG)");
         }
         if(update){
-            log.info("启用更新数据日志(Enable update data log)");
+            LOG.info("启用更新数据日志(Enable update data LOG)");
         }else{
-            log.info("禁用更新数据日志(Disable update data log)");
+            LOG.info("禁用更新数据日志(Disable update data LOG)");
         }
     }
 
@@ -81,9 +81,9 @@ public class ModelListener {
         if(indexManager==null){
             indexManager=SpringContextUtils.getBean("indexManager");
             if(indexManager==null){
-                log.info("实时索引不可用(Real-time index is not available)");
+                LOG.info("实时索引不可用(Real-time index is not available)");
             }else{
-                log.info("实时索引开启(Launch real-time index)");
+                LOG.info("实时索引开启(Launch real-time index)");
             }
         }
         

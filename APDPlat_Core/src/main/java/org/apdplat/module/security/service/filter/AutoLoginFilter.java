@@ -43,7 +43,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author 杨尚川
  */
 public class AutoLoginFilter implements Filter {
-    protected static final APDPlatLogger log = new APDPlatLogger(AutoLoginFilter.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(AutoLoginFilter.class);
     
     private UserDetailsServiceImpl userDetailsServiceImpl;
     private boolean enabled = false;
@@ -62,7 +62,7 @@ public class AutoLoginFilter implements Filter {
                 UserHolder.saveUserDetailsToContext(userDetails, (HttpServletRequest) request);
                 Collection<GrantedAuthority> auth=userDetails.getAuthorities();
                 for(GrantedAuthority au : auth){
-                    log.info("\t"+au.getAuthority());
+                    LOG.info("\t"+au.getAuthority());
                 }
             }
         }
@@ -72,18 +72,18 @@ public class AutoLoginFilter implements Filter {
 
     @Override
     public void init(FilterConfig fc) throws ServletException {
-        log.info("初始化自动登录过滤器(Initialize the automatic login filter)");
+        LOG.info("初始化自动登录过滤器(Initialize the automatic LOGin filter)");
         enabled = !SpringSecurityService.isSecurity();
-        defaultUserName = PropertyHolder.getProperty("auto.login.username");
+        defaultUserName = PropertyHolder.getProperty("auto.LOGin.username");
         if(enabled){
-            log.info("启用自动登录过滤器(Enable automatic login filter)");
+            LOG.info("启用自动登录过滤器(Enable automatic LOGin filter)");
         }else{            
-            log.info("禁用自动登录过滤器(Disable automatic login filter)");
+            LOG.info("禁用自动登录过滤器(Disable automatic LOGin filter)");
         }
     }
 
     @Override
     public void destroy() {
-        log.info("销毁自动登录过滤器(Destroy the automatic login filter)");
+        LOG.info("销毁自动登录过滤器(Destroy the automatic LOGin filter)");
     }
 }

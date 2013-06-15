@@ -42,7 +42,7 @@ public class JspGenerator  extends Generator{
         try {
             freemarkerConfiguration = factory.createConfiguration();
         } catch (IOException | TemplateException e) {
-            log.error("初始化模板错误",e);
+            LOG.error("初始化模板错误",e);
         }
     }
     /**
@@ -56,8 +56,8 @@ public class JspGenerator  extends Generator{
         
         String templateName="jsp.ftl";
 
-        log.info("开始生成Jsp");
-        log.info("workspaceWebBasePath：" + workspaceWebBasePath);
+        LOG.info("开始生成Jsp");
+        LOG.info("workspaceWebBasePath：" + workspaceWebBasePath);
         //准备数据
         int level=modulePath.split("/").length;
         String parentDir="";
@@ -76,12 +76,12 @@ public class JspGenerator  extends Generator{
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             result=saveFile(workspaceWebBasePath, modulePath, module, content);
         } catch (IOException | TemplateException e) {
-            log.error("生成JSP错误",e);
+            LOG.error("生成JSP错误",e);
         }
         if(result){
-            log.info("Jsp生成成功");
+            LOG.info("Jsp生成成功");
         }else{
-            log.info("忽略生成Jsp");
+            LOG.info("忽略生成Jsp");
         }
     }
     /**
@@ -113,7 +113,7 @@ public class JspGenerator  extends Generator{
                     jsFile.createNewFile();
                     saveFile(jsFile,JsGenerator.getContent(modulePath,module));
                 } catch (IOException e) {
-                    log.error("生成JSP错误",e);
+                    LOG.error("生成JSP错误",e);
                 }
             }
             //生成JSP文件
@@ -124,10 +124,10 @@ public class JspGenerator  extends Generator{
                     saveFile(jspFile,content);
                     return true;
                 } catch (IOException e) {
-                    log.error("生成JSP错误",e);
+                    LOG.error("生成JSP错误",e);
                 }
             }else{
-                log.info("源文件已经存在，请删除 "+jspFile.getAbsolutePath()+" 后再执行命令");                
+                LOG.info("源文件已经存在，请删除 "+jspFile.getAbsolutePath()+" 后再执行命令");                
             }
             return false;
     }

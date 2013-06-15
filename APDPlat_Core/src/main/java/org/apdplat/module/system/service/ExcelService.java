@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExcelService {
-    protected static final APDPlatLogger log = new APDPlatLogger(ExcelService.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(ExcelService.class);
 
     private static String outputFile = null;
 
@@ -74,7 +74,7 @@ public class ExcelService {
                         j++;
                     }
                 }catch(Exception e){
-                    log.error("生成EXCEL出错",e);
+                    LOG.error("生成EXCEL出错",e);
                 }
             }
             File dir = new File(outputFile);
@@ -85,9 +85,9 @@ public class ExcelService {
                 workbook.write(out);
                 out.flush();
             }
-            log.info("共导出" + (rowNum - 1) + "条数据");
+            LOG.info("共导出" + (rowNum - 1) + "条数据");
         } catch (Exception e) {
-            log.error("生成EXCEL出错",e);
+            LOG.error("生成EXCEL出错",e);
         }
         return path + "/" + xlsName;
     }

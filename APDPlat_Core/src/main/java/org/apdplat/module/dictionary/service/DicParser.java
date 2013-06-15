@@ -39,7 +39,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class DicParser {
-    protected static final APDPlatLogger log = new APDPlatLogger(DicParser.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(DicParser.class);
     private static final String dtdFile="/target/dic.dtd";
     /**
      * 返回所有Dic对象中dicItems不为空的Dic对象
@@ -76,34 +76,34 @@ public class DicParser {
                 InputStream in = null;
                 try {
                     URL url=ps.nextElement();
-                    log.info("找到数据字典描述文件(Find data dictionary description file)："+url.getPath());
+                    LOG.info("找到数据字典描述文件(Find data dictionary description file)："+url.getPath());
                     in = url.openStream();
                     byte[] data=FileUtils.readAll(in);
                     String xml=new String(data,"utf-8");
-                    log.info("将DTD文件替换为绝对路径(Replace DID file into absolute path)");
+                    LOG.info("将DTD文件替换为绝对路径(Replace DID file into absolute path)");
                     xml=xml.replace("dic.dtd", FileUtils.getAbsolutePath(dtdFile));
-                    log.info("将数据字典文件读取到字节数组中，长度为(Load data dictionary into byte array, the length is)："+data.length);
+                    LOG.info("将数据字典文件读取到字节数组中，长度为(Load data dictionary into byte array, the length is)："+data.length);
                     ByteArrayInputStream bin=new ByteArrayInputStream(xml.getBytes("utf-8"));    
-                    log.info("注册dic.xml文件(Register dic.xml file)");
-                    log.info("验证dic.xml文件(Verify dic.xml file )");
+                    LOG.info("注册dic.xml文件(Register dic.xml file)");
+                    LOG.info("验证dic.xml文件(Verify dic.xml file )");
                     //校验文件
                     verifyFile(bin);
                     // 解析数据字典
                     parseDic(xml,dics);
                 }catch(Exception e)
                 {
-                    log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
+                    LOG.error("解析数据字典出错(Error in parsing the data dictionary)",e);
                 }
                 finally {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
+                        LOG.error("解析数据字典出错(Error in parsing the data dictionary)",e);
                     }
                 }
             }            
         }catch(Exception e){
-            log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
+            LOG.error("解析数据字典出错(Error in parsing the data dictionary)",e);
         }
         return dics;
     }    
@@ -141,36 +141,36 @@ public class DicParser {
                 InputStream in = null;
                 try {
                     URL url=ps.nextElement();
-                    log.info("找到数据字典DTD文件(Find data dictionary DID file)："+url.getPath());
+                    LOG.info("找到数据字典DTD文件(Find data dictionary DID file)："+url.getPath());
                     in = url.openStream();
                     byte[] data=FileUtils.readAll(in);
-                    log.info("将DTD复制到(Copy DID to)："+dtdFile);
+                    LOG.info("将DTD复制到(Copy DID to)："+dtdFile);
                     FileUtils.createAndWriteFile(dtdFile, data);
                 }catch(Exception e)
                 {
-                    log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
+                    LOG.error("解析数据字典出错(Error in parsing the data dictionary)",e);
                 }
                 finally {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
+                        LOG.error("解析数据字典出错(Error in parsing the data dictionary)",e);
                     }
                 }
             }else{
-                log.info("没有找到数据字典DTD文件(Miss the data dictionary DID file)");
+                LOG.info("没有找到数据字典DTD文件(Miss the data dictionary DID file)");
             }            
         }catch(Exception e){
-            log.error("解析数据字典出错(Error in parsing the data dictionary)",e);
+            LOG.error("解析数据字典出错(Error in parsing the data dictionary)",e);
         }
     }
     private static void verifyFile(InputStream in){    
         boolean pass=XMLUtils.validateXML(in);
         if(!pass){
-            log.info("验证没有通过，请参考dic.dtd文件(Validation failed, please refer to dic.dtd file)");
+            LOG.info("验证没有通过，请参考dic.dtd文件(Validation failed, please refer to dic.dtd file)");
             return ;
         }
-        log.info("验证通过(Validation succeed)");
+        LOG.info("验证通过(Validation succeed)");
     }
     private static void print(Dic dic,String pre){
         System.out.println(pre+dic.getChinese()+":"+dic.getEnglish());

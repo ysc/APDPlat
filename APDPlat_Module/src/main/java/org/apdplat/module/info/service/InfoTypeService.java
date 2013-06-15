@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InfoTypeService {
-    protected static final APDPlatLogger log = new APDPlatLogger(InfoTypeService.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(InfoTypeService.class);
 
     public static List<Integer> getChildIds(InfoType obj) {
         List<Integer> ids=new ArrayList<>();
@@ -60,7 +60,7 @@ public class InfoTypeService {
         infoType.setLang(lang);
         
         if(infoType==null){
-            log.error("获取根新闻类别失败！");
+            LOG.error("获取根新闻类别失败！");
             return "";
         }
         StringBuilder json=new StringBuilder();
@@ -83,7 +83,7 @@ public class InfoTypeService {
     public String toJson(int infoTypeId, String lang){
         InfoType infoType=serviceFacade.retrieve(InfoType.class, infoTypeId);
         if(infoType==null){
-            log.error("获取ID为 "+infoType+" 的新闻类别失败！");
+            LOG.error("获取ID为 "+infoType+" 的新闻类别失败！");
             return "";
         }
         List<InfoType> child=infoType.getChild();
@@ -122,7 +122,7 @@ public class InfoTypeService {
                 return page.getModels().get(0).getInfoType();
             }
         }catch(Exception e){
-            log.error("获取ROOT失败",e);
+            LOG.error("获取ROOT失败",e);
         }
         return null;
     }

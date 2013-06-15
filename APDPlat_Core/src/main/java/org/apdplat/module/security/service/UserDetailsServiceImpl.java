@@ -46,7 +46,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    protected static final APDPlatLogger log = new APDPlatLogger(UserDetailsServiceImpl.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(UserDetailsServiceImpl.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
     private static Map<String,String> messages = new HashMap<>();
@@ -55,7 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public synchronized static String getMessage(String username) {
         String result = messages.get(username);
-        log.debug("username "+username+" getMessage:"+result);
+        LOG.debug("username "+username+" getMessage:"+result);
         messages.clear();
         return result;
     }
@@ -72,7 +72,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw e;
         }
         finally{
-            log.debug("messages put "+username+":"+message);
+            LOG.debug("messages put "+username+":"+message);
             messages.put(TextEscapeUtils.escapeEntities(username), message);
         }
     }
@@ -86,11 +86,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if(reqs!=null && reqs.size()==1){
                 message+=":"+reqs.iterator().next().toString();
             }
-            log.info(message);
+            LOG.info(message);
             throw new UsernameNotFoundException(message);
         }
         if (StringUtils.isBlank(username)) {
-            log.info("请输入用户名");
+            LOG.info("请输入用户名");
             message = "请输入用户名";
             throw new UsernameNotFoundException("请输入用户名");
         }
@@ -114,7 +114,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
         if (page.getTotalRecords() != 1) {
-            log.info("用户账号不存在: " + username);
+            LOG.info("用户账号不存在: " + username);
             message = "用户账号不存在";
             throw new UsernameNotFoundException("用户账号不存在");
         }

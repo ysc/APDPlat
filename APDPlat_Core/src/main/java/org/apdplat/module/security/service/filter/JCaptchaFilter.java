@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 
 public class JCaptchaFilter implements Filter {
-    protected static final APDPlatLogger log = new APDPlatLogger(JCaptchaFilter.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(JCaptchaFilter.class);
     
     public static final String PARAM_CAPTCHA_PARAMTER_NAME = "captchaParamterName";
     public static final String PARAM_FILTER_PROCESSES_URL = "filterProcessesUrl";
@@ -59,13 +59,13 @@ public class JCaptchaFilter implements Filter {
     }
 
     protected void initParameters(final FilterConfig fConfig) {
-        failureUrl = PropertyHolder.getProperty("login.page")+"?state=checkCodeError";
-        if("true".equals(PropertyHolder.getProperty("login.code"))){
-            log.info("启用登录验证码机制");
+        failureUrl = PropertyHolder.getProperty("LOGin.page")+"?state=checkCodeError";
+        if("true".equals(PropertyHolder.getProperty("LOGin.code"))){
+            LOG.info("启用登录验证码机制");
             filter=true;
         }else{
             filter=false;
-            log.info("禁用登录验证码机制");
+            LOG.info("禁用登录验证码机制");
         }
         if (StringUtils.isNotBlank(fConfig.getInitParameter(PARAM_FILTER_PROCESSES_URL))) {
             filterProcessesUrl = fConfig.getInitParameter(PARAM_FILTER_PROCESSES_URL);
@@ -120,12 +120,12 @@ public class JCaptchaFilter implements Filter {
             ImageIO.write(challenge, "png", out);
             out.flush();
         } catch (IOException | CaptchaServiceException e) {
-            log.error("生成验证码出错",e);
+            LOG.error("生成验证码出错",e);
         } finally {
             try {
                 out.close();
             } catch (IOException e) {
-                log.error("生成验证码出错",e);
+                LOG.error("生成验证码出错",e);
             }
         }
     }

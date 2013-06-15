@@ -27,7 +27,7 @@ import org.apdplat.platform.log.APDPlatLogger;
  * @author 杨尚川
  */
 public class ConvertUtils {
-    protected static final APDPlatLogger log = new APDPlatLogger(ConvertUtils.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(ConvertUtils.class);
 
     private ConvertUtils() {
     }

@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoleService {
-    protected static final APDPlatLogger log = new APDPlatLogger(RoleService.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(RoleService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 
@@ -71,7 +71,7 @@ public class RoleService {
     public String toRootJson(boolean recursion){
         Role rootRole=getRootRole();
         if(rootRole==null){
-            log.error("获取根角色失败！");
+            LOG.error("获取根角色失败！");
             return "";
         }
         StringBuilder json=new StringBuilder();
@@ -100,7 +100,7 @@ public class RoleService {
     public String toJson(int roleId, boolean recursion){
         Role role=serviceFacade.retrieve(Role.class, roleId);
         if(role==null){
-            log.error("获取ID为 "+roleId+" 的角色失败！");
+            LOG.error("获取ID为 "+roleId+" 的角色失败！");
             return "";
         }
         List<Role> child=role.getChild();
