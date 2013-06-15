@@ -24,10 +24,10 @@ import org.apdplat.platform.log.APDPlatLogger;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -256,7 +256,11 @@ class GenericResponseWrapper extends HttpServletResponseWrapper implements Seria
     @Override
     public PrintWriter getWriter() {
         if (writer == null) {
-            writer = new PrintWriter(outstr, true);
+            try {
+                writer = new PrintWriter(new OutputStreamWriter(outstr, "UTF-8"));
+            } catch (UnsupportedEncodingException ex) {
+                LOG.error("gzip构造PrintWriter失败："+ex);                
+            }
         }
         return writer;
     }
