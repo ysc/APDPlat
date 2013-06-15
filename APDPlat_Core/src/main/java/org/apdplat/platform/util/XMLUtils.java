@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
  * @author 杨尚川
  */
 public class XMLUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(XMLUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(XMLUtils.class);
 
     private XMLUtils() {
     }
@@ -55,7 +55,7 @@ public class XMLUtils {
             InputStream in = new FileInputStream(xmlPath);
             return validateXML(in);
         } catch (FileNotFoundException ex) {
-            LOG.error("构造XML文件失败", ex);
+            log.error("构造XML文件失败", ex);
         }
         return false;
     }
@@ -72,7 +72,7 @@ public class XMLUtils {
             builder.parse(new InputSource(in));
             return true;
         } catch (ParserConfigurationException | SAXException | IOException ex) {
-            LOG.error("验证XML失败",ex);
+            log.error("验证XML失败",ex);
         }
         return false;
     }

@@ -41,7 +41,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class ModuleParser {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ModuleParser.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ModuleParser.class);
     private static final String dtdFile="/target/module.dtd";
     private static final String disableModules=PropertyHolder.getProperty("module.disable");
     /**
@@ -49,7 +49,7 @@ public class ModuleParser {
      * @return 
      */
     public static List<Module> getRootModules(){
-        LOG.info("module.disable:"+disableModules);
+        log.info("module.disable:"+disableModules);
         List<Module> modules=new ArrayList<>();
         try{
             Enumeration<URL> ps = Thread.currentThread().getContextClassLoader().getResources("META-INF/services/module.xml");
@@ -57,24 +57,24 @@ public class ModuleParser {
                 InputStream in = null;
                 try {
                     URL url=ps.nextElement();
-                    LOG.info("找到模块描述文件："+url.getPath());
+                    log.info("找到模块描述文件："+url.getPath());
                     in = url.openStream();
                     Module root=getRootModule(in);
                     modules.add(root);
                 }catch(Exception e)
                 {
-                    LOG.error("获取根模块出错",e);
+                    log.error("获取根模块出错",e);
                 }
                 finally {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        LOG.error("获取根模块出错",e);
+                        log.error("获取根模块出错",e);
                     }
                 }
             }            
         }catch(Exception e){
-            LOG.error("获取根模块出错",e);
+            log.error("获取根模块出错",e);
         }
         
         return modules;
@@ -90,19 +90,19 @@ public class ModuleParser {
         try {
             byte[] data=FileUtils.readAll(in);
             String xml=new String(data,"utf-8");
-            LOG.info("将DTD文件替换为绝对路径");
+            log.info("将DTD文件替换为绝对路径");
             xml=xml.replace("module.dtd", FileUtils.getAbsolutePath(dtdFile));
-            LOG.info("将模块文件读取到字节数组中，长度为："+data.length);
+            log.info("将模块文件读取到字节数组中，长度为："+data.length);
             ByteArrayInputStream bin=new ByteArrayInputStream(xml.getBytes("utf-8"));    
-            LOG.info("注册module.xml文件");
-            LOG.info("验证module.xml文件");
+            log.info("注册module.xml文件");
+            log.info("验证module.xml文件");
             //校验文件
             verifyFile(bin);
             // 解析模块
             Module module=parseModule(xml);
             return module;
         } catch (UnsupportedEncodingException e) {
-            LOG.error("获取根模块出错",e);
+            log.error("获取根模块出错",e);
         }
         return null;
     }
@@ -130,11 +130,11 @@ public class ModuleParser {
         for(Module m : module.getSubModules()){            
             //根据参数module.hide来设置模块
             if(disableModules.contains(m.getEnglish())){
-                LOG.info("禁用: "+m.getChinese());
+                log.info("禁用: "+m.getChinese());
                 toDelete.add(m);                
                 continue;
             }else{
-                LOG.info("启用: "+m.getChinese());
+                log.info("启用: "+m.getChinese());
             }
             m.setParentModule(module);
             if(m.getOrderNum()==0){
@@ -153,36 +153,36 @@ public class ModuleParser {
                 InputStream in = null;
                 try {
                     URL url=ps.nextElement();
-                    LOG.info("找到模块DTD文件："+url.getPath());
+                    log.info("找到模块DTD文件："+url.getPath());
                     in = url.openStream();
                     byte[] data=FileUtils.readAll(in);
-                    LOG.info("将DTD复制到："+dtdFile);
+                    log.info("将DTD复制到："+dtdFile);
                     FileUtils.createAndWriteFile(dtdFile, data);
                 }catch(Exception e)
                 {
-                    LOG.error("获取根模块出错",e);
+                    log.error("获取根模块出错",e);
                 }
                 finally {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        LOG.error("获取根模块出错",e);
+                        log.error("获取根模块出错",e);
                     }
                 }
             }else{
-                LOG.info("没有找到模块DTD文件");
+                log.info("没有找到模块DTD文件");
             }            
         }catch(Exception e){
-            LOG.error("获取根模块出错",e);
+            log.error("获取根模块出错",e);
         }
     }
     private static void verifyFile(InputStream in){    
         boolean pass=XMLUtils.validateXML(in);
         if(!pass){
-            LOG.info("验证没有通过，请参考module.dtd文件");
+            log.info("验证没有通过，请参考module.dtd文件");
             return ;
         }
-        LOG.info("验证通过");
+        log.info("验证通过");
     }
     private static void print(Module module,String pre){
         System.out.println(pre+module.getChinese()+":"+module.getEnglish()+":"+module.getOrderNum()+":"+module.isDisplay());

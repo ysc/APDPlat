@@ -38,7 +38,7 @@ import java.util.zip.ZipOutputStream;
  * @author 杨尚川
  */
 public class ZipUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ZipUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ZipUtils.class);
         
     private ZipUtils(){};
     
@@ -68,18 +68,18 @@ public class ZipUtils {
                 //去掉subDir
                 name=name.replace(subDir,"").trim();
                 if(name.length()<2){
-                    LOG.debug(name+" 长度 < 2");
+                    log.debug(name+" 长度 < 2");
                     continue;
                 }
                 if(entry.isDirectory()){
                     File dir=new File(base,name);
                     if(!dir.exists()){
                         dir.mkdirs();
-                        LOG.debug("创建目录");
+                        log.debug("创建目录");
                     }else{
-                        LOG.debug("目录已经存在");
+                        log.debug("目录已经存在");
                     }
-                    LOG.debug(name+" 是目录");
+                    log.debug(name+" 是目录");
                 }else{
                     File file=new File(base,name);
                     if(file.exists() && force){
@@ -88,17 +88,17 @@ public class ZipUtils {
                     if(!file.exists()){
                         InputStream in=zip.getInputStream(entry);
                         FileUtils.copyFile(in,file);
-                        LOG.debug("创建文件");
+                        log.debug("创建文件");
                     }else{
-                        LOG.debug("文件已经存在");
+                        log.debug("文件已经存在");
                     }
-                    LOG.debug(name+" 不是目录");
+                    log.debug(name+" 不是目录");
                 }
             }
         } catch (ZipException ex) {
-            LOG.error("文件解压失败",ex);
+            log.error("文件解压失败",ex);
         } catch (IOException ex) {
-            LOG.error("文件操作失败",ex);
+            log.error("文件操作失败",ex);
         }
     }
     
@@ -115,14 +115,14 @@ public class ZipUtils {
             zos = new ZipOutputStream(fos);
             writeZip(new File(sourcePath), "", zos);
         } catch (FileNotFoundException e) {
-            LOG.error("创建ZIP文件失败",e);
+            log.error("创建ZIP文件失败",e);
         } finally {
             try {
                 if (zos != null) {
                     zos.close();
                 }
             } catch (IOException e) {
-                LOG.error("创建ZIP文件失败",e);
+                log.error("创建ZIP文件失败",e);
             }
 
         }
@@ -151,16 +151,16 @@ public class ZipUtils {
                     
                 
                 } catch (FileNotFoundException e) {
-                    LOG.error("创建ZIP文件失败",e);
+                    log.error("创建ZIP文件失败",e);
                 } catch (IOException e) {
-                    LOG.error("创建ZIP文件失败",e);
+                    log.error("创建ZIP文件失败",e);
                 }finally{
                     try {
                         if(fis!=null){
                             fis.close();
                         }
                     }catch(IOException e){
-                        LOG.error("创建ZIP文件失败",e);
+                        log.error("创建ZIP文件失败",e);
                     }
                 }
             }

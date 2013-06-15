@@ -47,13 +47,13 @@ public class DictionaryGenerator extends Generator{
         try {
             freemarkerConfiguration = factory.createConfiguration();
         } catch (IOException | TemplateException e) {
-            LOG.error("生成数据字典出错",e);
+            log.error("生成数据字典出错",e);
         }
     }
 
     public static void generateDic(String workspaceWebBasePath) {
-        LOG.info("开始生成数据字典JS代码");
-        LOG.info("runtimingWebBasePath：" + FileUtils.getAbsolutePath("/"));
+        log.info("开始生成数据字典JS代码");
+        log.info("runtimingWebBasePath：" + FileUtils.getAbsolutePath("/"));
         //准备数据
         Map<String, Object> context = new HashMap<>();
         List<Dic> dics=DicParser.getLeafDics();
@@ -65,9 +65,9 @@ public class DictionaryGenerator extends Generator{
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             saveDicFile(workspaceWebBasePath, templateName, content);
         } catch (IOException | TemplateException e) {
-            LOG.error("生成数据字典出错",e);
+            log.error("生成数据字典出错",e);
         }
-        LOG.info("数据字典代码生成成功");
+        log.info("数据字典代码生成成功");
     }
 
     private static void saveDicFile(String workspaceWebBasePath, String templateName, String content) {
@@ -84,7 +84,7 @@ public class DictionaryGenerator extends Generator{
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                LOG.error("生成数据字典出错",e);
+                log.error("生成数据字典出错",e);
             }
             saveFile(file,content);
     }

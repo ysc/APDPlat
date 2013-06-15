@@ -37,7 +37,7 @@ import org.apache.struts2.ServletActionContext;
 * @author 杨尚川
 */
 public class Struts2Utils {
-        protected static final APDPlatLogger LOG = new APDPlatLogger(Struts2Utils.class);
+        protected static final APDPlatLogger log = new APDPlatLogger(Struts2Utils.class);
         
         private Struts2Utils(){};
 
@@ -102,7 +102,7 @@ public class Struts2Utils {
 			response.getWriter().flush();
 
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 		}
 	}
 
@@ -193,7 +193,7 @@ public class Struts2Utils {
                     out.flush();
                 }
             } catch (IOException e) {
-                LOG.error("渲染图像失败",e);
+                log.error("渲染图像失败",e);
             }
         }
 

@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
  * @author 杨尚川
  */
 public class IPAccessControler {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(IPAccessControler.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(IPAccessControler.class);
     
     private Collection<String> allow;
     private Collection<String> deny;
@@ -51,17 +51,17 @@ public class IPAccessControler {
         try{
             String ip = getIpAddr(request);
             if(ip==null){
-                LOG.info("无法获取到访问者的IP");
+                log.info("无法获取到访问者的IP");
                 return true;
             }
 
             if (hasMatch(ip, deny)) {
-                LOG.info("ip: "+ip+" 位于黑名单中");
+                log.info("ip: "+ip+" 位于黑名单中");
                 return true;
             }
 
             if (!allow.isEmpty() && !hasMatch(ip, allow)) {
-                LOG.info("ip: "+ip+" 没有位于白名单中");
+                log.info("ip: "+ip+" 没有位于白名单中");
                 return true;
             }
         }catch(Exception e){}

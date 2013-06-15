@@ -44,7 +44,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class IndexSchedulerService implements ApplicationListener {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(IndexSchedulerService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(IndexSchedulerService.class);
 
     private static SchedulerFactory sf = new StdSchedulerFactory();
     @Resource(name = "serviceFacade")
@@ -59,13 +59,13 @@ public class IndexSchedulerService implements ApplicationListener {
     @Override
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof ContextRefreshedEvent) {
-            LOG.info("spring容器初始化完成, 开始检查是否需要启动定时索引调度器");
+            log.info("spring容器初始化完成, 开始检查是否需要启动定时索引调度器");
             IndexScheduleConfig config = getIndexScheduleConfig();
             if (config != null && config.isEnabled()) {
                 schedule(config.getScheduleHour(),config.getScheduleMinute());
-                LOG.info("启动定时重建索引调度器");
+                log.info("启动定时重建索引调度器");
             }else{
-                LOG.info("没有设置定时重建索引任务");
+                log.info("没有设置定时重建索引任务");
             }
         }
     }
@@ -91,20 +91,20 @@ public class IndexSchedulerService implements ApplicationListener {
             if(config!=null){
                 config.setEnabled(false);
                 serviceFacade.update(config);
-                LOG.info("禁用定时重建配置对象");
+                log.info("禁用定时重建配置对象");
             }else{
                 String tip="还没有设置定时重建索引任务";
-                LOG.info(tip);
+                log.info(tip);
                 return tip;
             }
             Scheduler sched = sf.getScheduler();
             sched.deleteJob(indexTask.getName(), "DEFAULT");
             String tip="删除定时重建索引任务，任务名为：" + indexTask.getName() + ",全名为: " + indexTask.getFullName();
-            LOG.info(tip);
+            log.info(tip);
             return tip;
         } catch (SchedulerException ex) {
             String tip="删除定时重建索引任务失败，原因："+ex.getMessage();
-            LOG.info(tip);
+            log.info(tip);
             return tip;
         }
     }
@@ -144,13 +144,13 @@ public class IndexSchedulerService implements ApplicationListener {
             sched.scheduleJob(indexTask, trigger);
             sched.start();
             String tip = "删除上一次的任务，任务名为：" + indexTask.getName() + ",全名为: " + indexTask.getFullName();
-            LOG.info(tip);
+            log.info(tip);
             String taskState = "定时重建索引任务执行频率为每天，时间（24小时制）" + hour + ":" + minute;
-            LOG.info(taskState);
+            log.info(taskState);
             return taskState;
         } catch (ParseException | SchedulerException ex) {
             String tip = "定时重建索引设置失败，原因：" + ex.getMessage();
-            LOG.info(tip,ex);
+            log.info(tip,ex);
             return tip;
         }
     }

@@ -51,7 +51,7 @@ import javax.crypto.spec.DESKeySpec;
  * @author 杨尚川
  */
 public class EncryptClassUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(EncryptClassUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(EncryptClassUtils.class);
     private static String sequenceKeyName;
     private static String securityKeyName;
     private static String winClspath;
@@ -92,7 +92,7 @@ public class EncryptClassUtils {
                 fo.write(rawKeyData);
             }
         } catch (NoSuchAlgorithmException | IOException e) {
-            LOG.error("创建私钥失败",e);
+            log.error("创建私钥失败",e);
         }
     }
 
@@ -125,7 +125,7 @@ public class EncryptClassUtils {
                 fo.write(encryptedData);
             }
         } catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException | IOException e) {
-            LOG.error("加密失败",e);
+            log.error("加密失败",e);
         }
     }
 
@@ -146,7 +146,7 @@ public class EncryptClassUtils {
                 out.write(buffer, 0, n);
             }
         } catch (IOException e) {
-            LOG.error("读取数据失败",e);
+            log.error("读取数据失败",e);
         }
         return out.toByteArray();
     }

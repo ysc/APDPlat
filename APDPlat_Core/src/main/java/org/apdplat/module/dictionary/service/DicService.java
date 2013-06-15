@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DicService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(DicService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(DicService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
     
@@ -47,7 +47,7 @@ public class DicService {
         if(dics!=null && dics.size()==1){
             return dics.get(0);
         }
-        LOG.error("有多个根词典!");
+        log.error("有多个根词典!");
         return null;
     }
 
@@ -72,7 +72,7 @@ public class DicService {
 
         List<Dic> page=serviceFacade.query(Dic.class, null, propertyCriteria).getModels();
         if(page.isEmpty()){
-            LOG.error("没有找到ID等于"+id+"的字典");
+            log.error("没有找到ID等于"+id+"的字典");
             return null;
         }
         return page.get(0);

@@ -33,7 +33,7 @@ import org.springframework.util.Assert;
 
 
 public class ServletUtils {
-        protected static final APDPlatLogger LOG = new APDPlatLogger(ServletUtils.class);
+        protected static final APDPlatLogger log = new APDPlatLogger(ServletUtils.class);
         
         private ServletUtils(){};
 

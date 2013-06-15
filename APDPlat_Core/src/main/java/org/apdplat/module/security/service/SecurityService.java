@@ -31,21 +31,21 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 public class SecurityService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SecurityService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(SecurityService.class);
 
     public void checkSeq(String seq){
         if(StringUtils.isNotBlank(seq)){
-            LOG.debug("机器码为："+seq);
+            log.debug("机器码为："+seq);
             if(valide(seq)){
                 authSuccess();
-                LOG.debug("产品已经取得合法授权");
+                log.debug("产品已经取得合法授权");
             }else{
-                LOG.debug("产品没有取得授权");
+                log.debug("产品没有取得授权");
                 authFail(seq);
             }
         }else{
-            LOG.debug("机器码获取失败");
-            LOG.debug("产品没有取得授权");
+            log.debug("机器码获取失败");
+            log.debug("产品没有取得授权");
             authFail(seq);
         }
     }
@@ -97,7 +97,7 @@ public class SecurityService {
                 }
             }
         }catch(Exception e){
-            LOG.debug("安全检查出错",e);
+            log.debug("安全检查出错",e);
         }
         return false;
     }

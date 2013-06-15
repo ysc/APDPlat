@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ModuleService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ModuleService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ModuleService.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
 
@@ -62,7 +62,7 @@ public class ModuleService {
         if(roots!=null && roots.size()==1){
             return roots.get(0);
         }
-        LOG.error("有多个根模块!");
+        log.error("有多个根模块!");
         return null;
     }
 
@@ -87,7 +87,7 @@ public class ModuleService {
 
         List<Module> page = serviceFacade.query(Module.class, null, propertyCriteria).getModels();
         if (page.isEmpty()) {
-            LOG.error("没有找到ID等于" + id + "的模块");
+            log.error("没有找到ID等于" + id + "的模块");
             return null;
         }
         return page.get(0);
@@ -155,7 +155,7 @@ public class ModuleService {
     public String toRootJsonForEdit(){
         Module m=getRootModule();
         if(m==null){
-            LOG.error("获取根功能菜单失败！");
+            log.error("获取根功能菜单失败！");
             return "";
         }
         StringBuilder json=new StringBuilder();
@@ -393,21 +393,21 @@ public class ModuleService {
         List<String> commons = new ArrayList<>();
         for (Method method : ExtJSSimpleAction.class.getMethods()) {
             commons.add(method.getName());
-            LOG.info("common method: " + method.getName());
+            log.info("common method: " + method.getName());
         }
         for (Command command : module.getCommands()) {
             String dependency = PropertyHolder.getProperty("command." + command.getEnglish());
             if (dependency != null && !"".equals(dependency.trim())) {
                 for (String c : dependency.split(",")) {
                     if (!commons.contains(c)) {
-                        LOG.info("被依赖的方法不存在，通常情况下，被依赖的方法应该是通用方法，应该存在");
-                        LOG.info("不存在通用方法: " + c);
+                        log.info("被依赖的方法不存在，通常情况下，被依赖的方法应该是通用方法，应该存在");
+                        log.info("不存在通用方法: " + c);
                     }
                 }
             } else {
                 if (!commons.contains(command.getEnglish())) {
                     special.add(command);
-                    LOG.info("special method:"+command.getEnglish());
+                    log.info("special method:"+command.getEnglish());
                 }
             }
         }
@@ -457,7 +457,7 @@ public class ModuleService {
         List<Module> leaf = new ArrayList<>(); 
         for(Module module : getAllModule(rootModule)){
             if(module.getCommands().isEmpty()){
-                LOG.info(module.getChinese()+" 模块不是叶子模块");
+                log.info(module.getChinese()+" 模块不是叶子模块");
             }else{
                 leaf.add(module);
             }

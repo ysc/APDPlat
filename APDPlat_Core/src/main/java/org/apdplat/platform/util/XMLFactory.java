@@ -36,7 +36,7 @@ import javax.xml.bind.Unmarshaller;
 * @author 杨尚川
 */
 public class XMLFactory {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(XMLFactory.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(XMLFactory.class);
        
     private XMLFactory(){};
 

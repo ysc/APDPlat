@@ -52,7 +52,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  *
  */
 public class SystemListener{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SystemListener.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(SystemListener.class);
     
     private static boolean running=false;
     
@@ -65,19 +65,19 @@ public class SystemListener{
     static{
         memoryMonitor=PropertyHolder.getBooleanProperty("monitor.memory");        
         if(memoryMonitor){
-            LOG.info("启用内存监视日志");
-            LOG.info("Enable memory monitor LOG", Locale.ENGLISH);
+            log.info("启用内存监视日志");
+            log.info("Enable memory monitor log", Locale.ENGLISH);
         }else{
-            LOG.info("禁用内存监视日志");
-            LOG.info("Disable memory monitor LOG", Locale.ENGLISH);
+            log.info("禁用内存监视日志");
+            log.info("Disable memory monitor log", Locale.ENGLISH);
         }
         runingMonitor=PropertyHolder.getBooleanProperty("monitor.runing");
         if(runingMonitor){
-            LOG.info("启用系统运行日志");
-            LOG.info("Enable system LOG", Locale.ENGLISH);
+            log.info("启用系统运行日志");
+            log.info("Enable system log", Locale.ENGLISH);
         }else{
-            LOG.info("禁用系统运行日志");
-            LOG.info("Disable system LOG", Locale.ENGLISH);
+            log.info("禁用系统运行日志");
+            log.info("Disable system log", Locale.ENGLISH);
         }
     }
 
@@ -96,10 +96,10 @@ public class SystemListener{
     }
     public static void contextInitialized(ServletContextEvent sce) {
         contextPath=sce.getServletContext().getContextPath();
-        LOG.info("启动【"+PropertyHolder.getProperty("app.name")+"】");
-        LOG.info("Launch【"+PropertyHolder.getProperty("app.name")+"】", Locale.ENGLISH);
-        LOG.info("应用上下文:"+contextPath);
-        LOG.info("App context:"+contextPath, Locale.ENGLISH);
+        log.info("启动【"+PropertyHolder.getProperty("app.name")+"】");
+        log.info("Launch【"+PropertyHolder.getProperty("app.name")+"】", Locale.ENGLISH);
+        log.info("应用上下文:"+contextPath);
+        log.info("App context:"+contextPath, Locale.ENGLISH);
         ServletContext sc=sce.getServletContext();
         basePath=sc.getRealPath("/");
         if(!basePath.endsWith(File.separator)){
@@ -107,17 +107,17 @@ public class SystemListener{
         }
         //整个系统中的文件操作都以basePath为基础
         FileUtils.setBasePath(basePath);
-        LOG.info("basePath:"+basePath);
+        log.info("basePath:"+basePath);
         String userDir = System.getProperty("user.dir");
-        LOG.info("user.dir:"+userDir);
+        log.info("user.dir:"+userDir);
         userDir=FileUtils.getAbsolutePath("/WEB-INF/classes/data/");
         System.setProperty("user.dir", userDir);
-        LOG.info("将user.dir重新设置为:"+userDir);
-        LOG.info("Reset user directory:"+userDir, Locale.ENGLISH);
+        log.info("将user.dir重新设置为:"+userDir);
+        log.info("Reset user directory:"+userDir, Locale.ENGLISH);
         
         String encoding=System.getProperty("file.encoding"); 
-        LOG.info("你的操作系统所用的编码file.encoding："+encoding);
-        LOG.info("Encoding of your OS is file.encoding："+encoding, Locale.ENGLISH);
+        log.info("你的操作系统所用的编码file.encoding："+encoding);
+        log.info("Encoding of your OS is file.encoding："+encoding, Locale.ENGLISH);
         
         //为spring的配置做预处理
         prepareForSpring();
@@ -127,14 +127,14 @@ public class SystemListener{
         DictionaryGenerator.generateDic(basePath);
         
         if(runingMonitor){
-            LOG.info("记录服务器启动日志");
-            LOG.info("Recording the server boot logging", Locale.ENGLISH);
+            log.info("记录服务器启动日志");
+            log.info("Recording the server boot logging", Locale.ENGLISH);
             runingTime=new RuningTime();
             try {
                 runingTime.setServerIP(InetAddress.getLocalHost().getHostAddress());
             } catch (UnknownHostException e) {
-                LOG.error("记录服务器启动日志出错", e);
-                LOG.error("Failed to record the server boot logging", e, Locale.ENGLISH);
+                log.error("记录服务器启动日志出错", e);
+                log.error("Failed to record the server boot logging", e, Locale.ENGLISH);
             }
             runingTime.setAppName(contextPath);
             runingTime.setOsName(System.getProperty("os.name"));
@@ -146,8 +146,8 @@ public class SystemListener{
             runingTime.setStartupTime(new Date());
         }
         if(memoryMonitor){
-            LOG.info("启动内存监视线程");
-            LOG.info("Enable memory monitor thread", Locale.ENGLISH);
+            log.info("启动内存监视线程");
+            log.info("Enable memory monitor thread", Locale.ENGLISH);
             int circle=PropertyHolder.getIntProperty("monitor.memory.circle");
             memoryMonitorThread=new MemoryMonitorThread(circle);
             memoryMonitorThread.start();
@@ -158,15 +158,15 @@ public class SystemListener{
         UserLoginListener.forceAllUserOffline();
         
         if(runingMonitor){
-            LOG.info("记录服务器关闭日志");
-            LOG.info("Recording the server shutdown logging", Locale.ENGLISH);             
+            log.info("记录服务器关闭日志");
+            log.info("Recording the server shutdown logging", Locale.ENGLISH);             
             runingTime.setShutdownTime(new Date());
             runingTime.setRuningTime(runingTime.getShutdownTime().getTime()-runingTime.getStartupTime().getTime());
             LogQueue.addLog(runingTime);
         }
         if(memoryMonitor){
-            LOG.info("停止内存监视线程");
-            LOG.info("Stop memory monitor thread", Locale.ENGLISH);
+            log.info("停止内存监视线程");
+            log.info("Stop memory monitor thread", Locale.ENGLISH);
             memoryMonitorThread.running=false;
             memoryMonitorThread.interrupt();
         }
@@ -179,8 +179,8 @@ public class SystemListener{
             closeEntityManagerForLog(entityManagerFactoryForLog);
         }
         deregisterDrivers();
-        LOG.info("卸载JDBC驱动");
-        LOG.info("Uninstalled JDBC driver", Locale.ENGLISH);
+        log.info("卸载JDBC驱动");
+        log.info("Uninstalled JDBC driver", Locale.ENGLISH);
     }    
     /**
      * 打开日志数据库em
@@ -189,7 +189,7 @@ public class SystemListener{
     private static void openEntityManagerForLog(EntityManagerFactory entityManagerFactory){        
         EntityManager em = entityManagerFactory.createEntityManager();
         TransactionSynchronizationManager.bindResource(entityManagerFactory, new EntityManagerHolder(em));
-        LOG.info("打开ForLog实体管理器");
+        log.info("打开ForLog实体管理器");
     }
     /**
      * 关闭日志数据库em
@@ -197,7 +197,7 @@ public class SystemListener{
      */
     private static void closeEntityManagerForLog(EntityManagerFactory entityManagerFactory){
         EntityManagerHolder emHolder = (EntityManagerHolder)TransactionSynchronizationManager.unbindResource(entityManagerFactory);
-        LOG.info("关闭ForLog实体管理器");
+        log.info("关闭ForLog实体管理器");
         EntityManagerFactoryUtils.closeEntityManager(emHolder.getEntityManager());
     }
     public static String getContextPath() {
@@ -211,8 +211,8 @@ public class SystemListener{
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException e) {
-                LOG.warn("卸载JDBC驱动失败："+driver, e);
-                LOG.warn("Fail to uninstall JDBC driver："+driver, e, Locale.ENGLISH);
+                log.warn("卸载JDBC驱动失败："+driver, e);
+                log.warn("Fail to uninstall JDBC driver："+driver, e, Locale.ENGLISH);
             }
         }
     }
@@ -231,26 +231,26 @@ public class SystemListener{
                     }
                     String jar=file.substring(start, end);
                     modules.append(jar).append(",");
-                    LOG.info("注册模块："+jar);
-                    LOG.info("Register module："+jar, Locale.ENGLISH);
+                    log.info("注册模块："+jar);
+                    log.info("Register module："+jar, Locale.ENGLISH);
                     extractWebFromModule(jar);
                     extractDataFromModule(jar);
                 }else{
-                    LOG.warn("在非jar包中找到META-INF/services/module.xml");
-                    LOG.warn("Find META-INF/services/module.xml in non-jar", Locale.ENGLISH);
+                    log.warn("在非jar包中找到META-INF/services/module.xml");
+                    log.warn("Find META-INF/services/module.xml in non-jar", Locale.ENGLISH);
                 }
             }
         } catch (IOException e) {
-            LOG.error("注册模块出错", e);
-            LOG.error("Failed to register module", e, Locale.ENGLISH);
+            log.error("注册模块出错", e);
+            log.error("Failed to register module", e, Locale.ENGLISH);
         }
         if(modules.length()>0){
             modules=modules.deleteCharAt(modules.length()-1);
         }
         //从配置文件中获取属性
         String scanJars=PropertyHolder.getProperty("scan.jars");
-        LOG.info("注册模块前，scanJars: "+scanJars);
-        LOG.info("Before register，scanJars: "+scanJars, Locale.ENGLISH);
+        log.info("注册模块前，scanJars: "+scanJars);
+        log.info("Before register，scanJars: "+scanJars, Locale.ENGLISH);
         if(scanJars!=null && !"".equals(scanJars.trim())){
             scanJars=scanJars+","+modules.toString();
         }else{
@@ -262,27 +262,27 @@ public class SystemListener{
         System.setProperty("scan.jars", scanJars);
         //设置回配置属性
         PropertyHolder.setProperty("scan.jars", scanJars);
-        LOG.info("注册模块后，scanJars: "+scanJars);
-        LOG.info("After register，scanJars: "+scanJars, Locale.ENGLISH);
+        log.info("注册模块后，scanJars: "+scanJars);
+        log.info("After register，scanJars: "+scanJars, Locale.ENGLISH);
     }
 
     private static void extractWebFromModule(String jar) {
-        LOG.info("从模块："+jar+" 中提取web资源");
-        LOG.info("Extract web resource from："+jar, Locale.ENGLISH);
+        log.info("从模块："+jar+" 中提取web资源");
+        log.info("Extract web resource from："+jar, Locale.ENGLISH);
         String loc=FileUtils.getAbsolutePath("/");
         jar=FileUtils.getAbsolutePath(jar);
         ZipUtils.unZip(jar, "web", loc, true);
-        LOG.info("jar："+jar);
-        LOG.info("loc："+loc);
+        log.info("jar："+jar);
+        log.info("loc："+loc);
     }
 
     private static void extractDataFromModule(String jar) {
-        LOG.info("从模块："+jar+" 中提取数据");
-        LOG.info("Extract data from："+jar, Locale.ENGLISH);
+        log.info("从模块："+jar+" 中提取数据");
+        log.info("Extract data from："+jar, Locale.ENGLISH);
         String loc=FileUtils.getAbsolutePath("/WEB-INF/classes/data/");
         jar=FileUtils.getAbsolutePath(jar);
         ZipUtils.unZip(jar, "data/init", loc, true);
-        LOG.info("jar："+jar);
-        LOG.info("loc："+loc);
+        log.info("jar："+jar);
+        log.info("loc："+loc);
     }
 }

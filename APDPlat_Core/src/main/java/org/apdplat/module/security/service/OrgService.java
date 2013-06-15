@@ -39,7 +39,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrgService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(OrgService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(OrgService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 
@@ -75,7 +75,7 @@ public class OrgService {
     public String toRootJson(){
         Org rootOrg=getRootOrg();
         if(rootOrg==null){
-            LOG.error("获取根组织架构失败！");
+            log.error("获取根组织架构失败！");
             return "";
         }
         StringBuilder json=new StringBuilder();
@@ -98,7 +98,7 @@ public class OrgService {
     public String toJson(int orgId){
         Org org=serviceFacade.retrieve(Org.class, orgId);
         if(org==null){
-            LOG.error("获取ID为 "+orgId+" 的组织架构失败！");
+            log.error("获取ID为 "+orgId+" 的组织架构失败！");
             return "";
         }
         List<Org> child=org.getChild();

@@ -34,7 +34,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class RuningTimeChartDataService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(RuningTimeChartDataService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(RuningTimeChartDataService.class);
     
     public static LinkedHashMap<String,Long> getRuningSequence(List<RuningTime> models){
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
@@ -84,18 +84,18 @@ public class RuningTimeChartDataService {
         });
         RuningTime first=models.get(0);
         RuningTime latest=models.get(models.size()-1);
-        LOG.debug("系统首次启动时间："+DateTypeConverter.toDefaultDateTime(first.getStartupTime()));
-        LOG.debug("系统最后关闭时间："+DateTypeConverter.toDefaultDateTime(latest.getShutdownTime()));
+        log.debug("系统首次启动时间："+DateTypeConverter.toDefaultDateTime(first.getStartupTime()));
+        log.debug("系统最后关闭时间："+DateTypeConverter.toDefaultDateTime(latest.getShutdownTime()));
         long totalTime=latest.getShutdownTime().getTime()-first.getStartupTime().getTime();
-        LOG.debug("系统总时间："+latest.getShutdownTime().getTime()+"-"+first.getStartupTime().getTime()+"="+totalTime);
+        log.debug("系统总时间："+latest.getShutdownTime().getTime()+"-"+first.getStartupTime().getTime()+"="+totalTime);
         long runingTime=0;
         for(RuningTime item : models){
-            LOG.debug("      增加系统运行时间："+item.getRuningTime());
+            log.debug("      增加系统运行时间："+item.getRuningTime());
             runingTime+=item.getRuningTime();
         }
-        LOG.debug("系统运行时间："+runingTime);
+        log.debug("系统运行时间："+runingTime);
         long stopTime=totalTime-runingTime;
-        LOG.debug("系统停机时间："+stopTime);
+        log.debug("系统停机时间："+stopTime);
         data.put("运行时间", runingTime);
         data.put("停机时间", -stopTime);
         

@@ -84,8 +84,8 @@ public class GzipFilter extends Filter {
         try{
             if (!isIncluded(request) && acceptsEncoding(request, "gzip")) {
                 // Client accepts zipped content
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(request.getRequestURL() + ". Writing with gzip compression");
+                if (log.isDebugEnabled()) {
+                    log.debug(request.getRequestURL() + ". Writing with gzip compression");
                 }
 
                 // Create a gzip stream
@@ -113,14 +113,14 @@ public class GzipFilter extends Filter {
                 response.getOutputStream().write(compressedBytes);
             } else {
                 // Client does not accept zipped content - don't bother zipping
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(request.getRequestURL()
+                if (log.isDebugEnabled()) {
+                    log.debug(request.getRequestURL()
                             + ". Writing without gzip compression because the request does not accept gzip.");
                 }
                 chain.doFilter(request, response);
             }
         }catch(Exception e){
-            LOG.info("增加zip压缩失败："+request.getRequestURI());
+            log.info("增加zip压缩失败："+request.getRequestURI());
         }
     }
 
@@ -134,8 +134,8 @@ public class GzipFilter extends Filter {
         final String uri = (String) request.getAttribute("javax.servlet.include.request_uri");
         final boolean includeRequest = !(uri == null);
 
-        if (includeRequest && LOG.isDebugEnabled()) {
-            LOG.debug(request.getRequestURL() + " resulted in an include request. This is unusable, because" +
+        if (includeRequest && log.isDebugEnabled()) {
+            log.debug(request.getRequestURL() + " resulted in an include request. This is unusable, because" +
                     "the response will be assembled into the overrall response. Not gzipping.");
         }
         return includeRequest;
@@ -173,7 +173,7 @@ class GenericResponseWrapper extends HttpServletResponseWrapper implements Seria
 
     private static final long serialVersionUID = -5976708169031065498L;
 
-    protected static final APDPlatLogger LOG = new APDPlatLogger(GenericResponseWrapper.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(GenericResponseWrapper.class);
     private int statusCode = SC_OK;
     private int contentLength;
     private String contentType;
@@ -378,7 +378,7 @@ class FilterServletOutputStream extends ServletOutputStream {
     }
 }
 class ResponseUtil {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ResponseUtil.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ResponseUtil.class);
 
 
 
@@ -413,8 +413,8 @@ class ResponseUtil {
 
         //Check for 0 length body
         if (compressedBytes.length == EMPTY_GZIPPED_CONTENT_SIZE) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(request.getRequestURL() + " resulted in an empty response.");
+            if (log.isDebugEnabled()) {
+                log.debug(request.getRequestURL() + " resulted in an empty response.");
             }
             return true;
         } else {
@@ -440,8 +440,8 @@ class ResponseUtil {
 
         //Check for NO_CONTENT
         if (responseStatus == HttpServletResponse.SC_NO_CONTENT) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(request.getRequestURL() + " resulted in a " + HttpServletResponse.SC_NO_CONTENT
+            if (log.isDebugEnabled()) {
+                log.debug(request.getRequestURL() + " resulted in a " + HttpServletResponse.SC_NO_CONTENT
                         + " response. Removing message body in accordance with RFC2616.");
             }
             return true;
@@ -449,8 +449,8 @@ class ResponseUtil {
 
         //Check for NOT_MODIFIED
         if (responseStatus == HttpServletResponse.SC_NOT_MODIFIED) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(request.getRequestURL() + " resulted in a " + HttpServletResponse.SC_NOT_MODIFIED
+            if (log.isDebugEnabled()) {
+                log.debug(request.getRequestURL() + " resulted in a " + HttpServletResponse.SC_NOT_MODIFIED
                         + " response. Removing message body in accordance with RFC2616.");
             }
             return true;
@@ -483,7 +483,7 @@ abstract class Filter implements javax.servlet.Filter {
      * If a request attribute NO_FILTER is set, then filtering will be skipped
      */
     public static final String NO_FILTER = "NO_FILTER";
-    protected static final APDPlatLogger LOG = new APDPlatLogger(Filter.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(Filter.class);
 
     /**
      * The filter configuration.
@@ -491,7 +491,7 @@ abstract class Filter implements javax.servlet.Filter {
     protected FilterConfig filterConfig;
 
     /**
-     * The exceptions to LOG differently, as a comma separated list
+     * The exceptions to log differently, as a comma separated list
      */
     protected String exceptionsToLogDifferently;
 
@@ -505,7 +505,7 @@ abstract class Filter implements javax.servlet.Filter {
     /**
      * Most {@link Throwable}s in Web applications propagate to the user. Usually they are logged where they first
      * happened. Printing the stack trace once a {@link Throwable} as propagated to the servlet is sometimes
-     * just clutters the LOG.
+     * just clutters the log.
      * <p/>
      * This field corresponds to an init-param of the same name. If set to true stack traces will be suppressed.
      */
@@ -539,7 +539,7 @@ abstract class Filter implements javax.servlet.Filter {
             }
 
         } catch (final Throwable throwable) {
-            LOG.info("增加zip压缩失败："+httpRequest.getRequestURI());
+            log.info("增加zip压缩失败："+httpRequest.getRequestURI());
         }
     }
 
@@ -559,7 +559,7 @@ abstract class Filter implements javax.servlet.Filter {
      * Chained Exception matches an entry in the exceptionsToLogDifferently list
      *
      * @param throwable
-     * @return true if the class name of any of the throwables is found in the exceptions to LOG differently
+     * @return true if the class name of any of the throwables is found in the exceptions to log differently
      */
     private boolean matches(Throwable throwable) {
         if (exceptionsToLogDifferently == null) {
@@ -597,7 +597,7 @@ abstract class Filter implements javax.servlet.Filter {
             // Attempt to initialise this filter
             doInit();
         } catch (final Exception e) {
-            LOG.error("Could not initialise servlet filter.", e);
+            log.error("Could not initialise servlet filter.", e);
             throw new ServletException("Could not initialise servlet filter.", e);
         }
     }
@@ -607,8 +607,8 @@ abstract class Filter implements javax.servlet.Filter {
         String level = config.getInitParameter("exceptionsToLogDifferentlyLevel");
         String suppressStackTracesString = config.getInitParameter("suppressStackTraces");
         suppressStackTraces = Boolean.valueOf(suppressStackTracesString).booleanValue();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Suppression of stack traces enabled for " + this.getClass().getName());
+        if (log.isDebugEnabled()) {
+            log.debug("Suppression of stack traces enabled for " + this.getClass().getName());
         }
 
         if (exceptions != null) {
@@ -616,8 +616,8 @@ abstract class Filter implements javax.servlet.Filter {
             validateLevel(level);
             exceptionsToLogDifferentlyLevel = level;
             exceptionsToLogDifferently = exceptions;
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Different logging levels configured for " + this.getClass().getName());
+            if (log.isDebugEnabled()) {
+                log.debug("Different logging levels configured for " + this.getClass().getName());
             }
         }
     }
@@ -683,7 +683,7 @@ abstract class Filter implements javax.servlet.Filter {
      * @param request
      */
     protected void logRequestHeaders(final HttpServletRequest request) {
-        if (LOG.isDebugEnabled()) {
+        if (log.isDebugEnabled()) {
             Map headers = new HashMap();
             Enumeration enumeration = request.getHeaderNames();
             StringBuilder logLine = new StringBuilder();
@@ -694,7 +694,7 @@ abstract class Filter implements javax.servlet.Filter {
                 headers.put(name, headerValue);
                 logLine.append(": ").append(name).append(" -> ").append(headerValue);
             }
-            LOG.debug(logLine.toString());
+            log.debug(logLine.toString());
         }
     }
 

@@ -42,7 +42,7 @@ import org.springframework.util.Assert;
  * @author 杨尚川
  */
 public class ReflectionUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ReflectionUtils.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ReflectionUtils.class);
     
     private ReflectionUtils(){};
 
@@ -74,7 +74,7 @@ public class ReflectionUtils {
      * 获取某个路径下的指定的Package下的所有类，不包括<code>outsides</code>中的
      */
     public static List<Class<?>> getClasses(File dir, String pk, String[] outsides) throws ClassNotFoundException {
-        LOG.debug("  Dir: {}, PK: {}", new Object[]{dir, pk});
+        log.debug("  Dir: {}, PK: {}", new Object[]{dir, pk});
         List<Class<?>> classes = new ArrayList<>();
         if (!dir.exists()) {
             return classes;
@@ -88,12 +88,12 @@ public class ReflectionUtils {
             if (name.endsWith(".class")) {
                 Class<?> clazz = null;
                 String clazzName = thisPk + name.substring(0, name.length() - 6);
-                LOG.debug("Class: {}", clazzName);
+                log.debug("Class: {}", clazzName);
                 if (outsides == null || outsides.length == 0 || !ArrayUtils.contains(outsides, clazzName)) {
                     try {
                         clazz = Class.forName(clazzName);
                     } catch (Throwable e) {
-                        LOG.error("实例化失败",e);
+                        log.error("实例化失败",e);
                     }
                     if (clazz != null) {
                         classes.add(clazz);
@@ -152,7 +152,7 @@ public class ReflectionUtils {
         try {
             result = field.get(object);
         } catch (IllegalAccessException e) {
-            LOG.error("不可能抛出的异常{}", e.getMessage());
+            log.error("不可能抛出的异常{}", e.getMessage());
         }
         return result;
     }
@@ -174,7 +174,7 @@ public class ReflectionUtils {
                 Method method=object.getClass().getMethod(methodName);
                 return method.invoke(object);
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                LOG.error("Could not exec method [" + methodName + "] on target [" + object + "]", ex);
+                log.error("Could not exec method [" + methodName + "] on target [" + object + "]", ex);
             }
         }
         return null;
@@ -204,19 +204,19 @@ public class ReflectionUtils {
         Type genType = clazz.getGenericSuperclass();
 
         if (!(genType instanceof ParameterizedType)) {
-            LOG.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
+            log.warn(clazz.getSimpleName() + "'s superclass not ParameterizedType");
             return Object.class;
         }
 
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 
         if (index >= params.length || index < 0) {
-            LOG.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
+            log.warn("Index: " + index + ", Size of " + clazz.getSimpleName() + "'s Parameterized Type: "
                     + params.length);
             return Object.class;
         }
         if (!(params[index] instanceof Class)) {
-            LOG.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
+            log.warn(clazz.getSimpleName() + " not set the actual class on superclass generic parameter");
             return Object.class;
         }
         return (Class) params[index];
@@ -231,7 +231,7 @@ public class ReflectionUtils {
         try {
             field.set(object, value);
         } catch (IllegalAccessException e) {
-            LOG.error("不可能抛出的异常:{}", e.getMessage());
+            log.error("不可能抛出的异常:{}", e.getMessage());
         }
     }
 
@@ -252,7 +252,7 @@ public class ReflectionUtils {
                 Method method=object.getClass().getMethod(methodName,value.getClass());
                 method.invoke(object,value);
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                LOG.error("Could not exec method [" + methodName + "] on target [" + object + "]",ex);
+                log.error("Could not exec method [" + methodName + "] on target [" + object + "]",ex);
             }
         }
     }

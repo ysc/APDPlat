@@ -37,7 +37,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class ProcessTimeChartDataService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ProcessTimeChartDataService.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(ProcessTimeChartDataService.class);
   
 
     public static LinkedHashMap<String, Long> getProcessRate(List<ProcessTime> models) {    
@@ -57,18 +57,18 @@ public class ProcessTimeChartDataService {
         }
         ProcessTime first=models.get(0);
         ProcessTime latest=models.get(models.size()-1);
-        LOG.debug("首次请求时间："+DateTypeConverter.toDefaultDateTime(first.getStartTime()));
-        LOG.debug("最后请求时间："+DateTypeConverter.toDefaultDateTime(latest.getEndTime()));
+        log.debug("首次请求时间："+DateTypeConverter.toDefaultDateTime(first.getStartTime()));
+        log.debug("最后请求时间："+DateTypeConverter.toDefaultDateTime(latest.getEndTime()));
         long totalTime=latest.getEndTime().getTime()-first.getStartTime().getTime();
-        LOG.debug("系统总时间："+latest.getEndTime().getTime()+"-"+first.getStartTime().getTime()+"="+totalTime);
+        log.debug("系统总时间："+latest.getEndTime().getTime()+"-"+first.getStartTime().getTime()+"="+totalTime);
         long processTime=0;
         for(ProcessTime item : models){
-            LOG.debug("      增加请求处理时间："+item.getProcessTime());
+            log.debug("      增加请求处理时间："+item.getProcessTime());
             processTime+=item.getProcessTime();
         }
-        LOG.debug("处理请求时间："+processTime);
+        log.debug("处理请求时间："+processTime);
         long waitTime=totalTime-processTime;
-        LOG.debug("系统空闲时间："+waitTime);
+        log.debug("系统空闲时间："+waitTime);
         data.put("处理请求时间", processTime);
         data.put("系统空闲时间", -waitTime);
         

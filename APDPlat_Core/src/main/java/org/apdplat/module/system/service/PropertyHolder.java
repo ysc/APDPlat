@@ -26,7 +26,7 @@ import java.util.Properties;
 import org.springframework.core.io.ClassPathResource;
 
 public class PropertyHolder {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(PropertyHolder.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(PropertyHolder.class);
     private static Properties props = new Properties();
 
     static {
@@ -46,38 +46,38 @@ public class PropertyHolder {
             try{
                 cr = new ClassPathResource(systemConfig);
                 props.load(cr.getInputStream());
-                LOG.info("装入主配置文件:"+systemConfig);
-                LOG.info("Main profile is loaded: "+systemConfig, Locale.ENGLISH);
+                log.info("装入主配置文件:"+systemConfig);
+                log.info("Main profile is loaded: "+systemConfig, Locale.ENGLISH);
             }catch(Exception e){
-                LOG.info("装入主配置文件"+systemConfig+"失败!", e);
-                LOG.info("Failed to load main profile "+systemConfig+"!", e, Locale.ENGLISH);
+                log.info("装入主配置文件"+systemConfig+"失败!", e);
+                log.info("Failed to load main profile "+systemConfig+"!", e, Locale.ENGLISH);
             }
             try{
                 cr = new ClassPathResource(localConfig);
                 props.load(cr.getInputStream());
-                LOG.info("装入自定义主配置文件："+localConfig);
-                LOG.info("Custom main profile is loaded: "+localConfig, Locale.ENGLISH);
+                log.info("装入自定义主配置文件："+localConfig);
+                log.info("Custom main profile is loaded: "+localConfig, Locale.ENGLISH);
             }catch(Exception e){
-                LOG.info("装入自定义主配置文件"+localConfig+"失败！", e);
-                LOG.info("Failed to load custom main profile "+localConfig+"！", e, Locale.ENGLISH);
+                log.info("装入自定义主配置文件"+localConfig+"失败！", e);
+                log.info("Failed to load custom main profile "+localConfig+"！", e, Locale.ENGLISH);
             }            
             try{
                 cr = new ClassPathResource(dbConfig);
                 props.load(cr.getInputStream());
-                LOG.info("装入数据库配置文件："+dbConfig);
-                LOG.info("Database profile is loaded："+dbConfig);
+                log.info("装入数据库配置文件："+dbConfig);
+                log.info("Database profile is loaded："+dbConfig);
             }catch(Exception e){
-                LOG.info("装入数据库配置文件"+dbConfig+"失败！", e);
-                LOG.info("Failed to load database profile "+dbConfig+"！", e, Locale.ENGLISH);
+                log.info("装入数据库配置文件"+dbConfig+"失败！", e);
+                log.info("Failed to load database profile "+dbConfig+"！", e, Locale.ENGLISH);
             }      
             try{  
                 cr = new ClassPathResource(localDBConfig);
                 props.load(cr.getInputStream());
-                LOG.info("装入自定义数据库配置文件："+localDBConfig);
-                LOG.info("Custom database profile is loaded："+localDBConfig, Locale.ENGLISH);
+                log.info("装入自定义数据库配置文件："+localDBConfig);
+                log.info("Custom database profile is loaded："+localDBConfig, Locale.ENGLISH);
             }catch(Exception e){
-                LOG.info("装入自定义数据库配置文件"+localDBConfig+"失败！",e);
-                LOG.info("Failed to load custom database profile "+localDBConfig+"！", e, Locale.ENGLISH);
+                log.info("装入自定义数据库配置文件"+localDBConfig+"失败！",e);
+                log.info("Failed to load custom database profile "+localDBConfig+"！", e, Locale.ENGLISH);
             }      
             
             String extendPropertyFiles = props.getProperty("extend.property.files");
@@ -87,22 +87,22 @@ public class PropertyHolder {
                     try{  
                         cr = new ClassPathResource(file);
                         props.load(cr.getInputStream());
-                        LOG.info("装入扩展配置文件："+file);
-                        LOG.info("Extend profile is loaded："+file, Locale.ENGLISH);
+                        log.info("装入扩展配置文件："+file);
+                        log.info("Extend profile is loaded："+file, Locale.ENGLISH);
                     }catch(Exception e){
-                        LOG.info("装入扩展配置文件"+file+"失败！",e);
-                        LOG.info("Failed to load extend profile"+file+"失败！",e, Locale.ENGLISH);
+                        log.info("装入扩展配置文件"+file+"失败！",e);
+                        log.info("Failed to load extend profile"+file+"失败！",e, Locale.ENGLISH);
                     }      
                 }
             }    
-            LOG.info("系统配置属性装载完毕");
-            LOG.info("System configuration properties finished loading", Locale.ENGLISH);
-            LOG.info("******************属性列表***************************");
-            LOG.info("******************Properties List********************", Locale.ENGLISH);
+            log.info("系统配置属性装载完毕");
+            log.info("System configuration properties finished loading", Locale.ENGLISH);
+            log.info("******************属性列表***************************");
+            log.info("******************Properties List********************", Locale.ENGLISH);
             for(String propertyName : props.stringPropertyNames()){
-                LOG.info("  "+propertyName+" = "+props.getProperty(propertyName));
+                log.info("  "+propertyName+" = "+props.getProperty(propertyName));
             }
-            LOG.info("***********************************************************");
+            log.info("***********************************************************");
             
             //指定日志输出语言
             APDPlatLogger.setConfigLanguage(getLogLanguage());
@@ -112,7 +112,7 @@ public class PropertyHolder {
      * @return 
      */
     public static Locale getLogLanguage(){
-       String language = getProperty("LOG.locale.language");
+       String language = getProperty("log.locale.language");
        return Locale.forLanguageTag(language);
     }
 

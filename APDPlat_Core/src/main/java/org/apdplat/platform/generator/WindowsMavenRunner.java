@@ -33,11 +33,11 @@ import java.io.InputStreamReader;
  * @author 杨尚川
  */
 public class WindowsMavenRunner implements MavenRunner{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(WindowsMavenRunner.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(WindowsMavenRunner.class);
 
     @Override
     public void run(String workspaceModuleRootPath) {
-        LOG.info("workspaceModuleRootPath:"+workspaceModuleRootPath);
+        log.info("workspaceModuleRootPath:"+workspaceModuleRootPath);
         StringBuilder cmd=new StringBuilder();
         cmd.append("cd ")
            .append(workspaceModuleRootPath.substring(1).replace("/", "\\"))
@@ -46,10 +46,10 @@ public class WindowsMavenRunner implements MavenRunner{
            .append("\n")
            .append("mvn clean install");
         File file=FileUtils.createAndWriteFile("target/install.bat", cmd.toString());
-        LOG.info("命令：");
-        LOG.info(cmd.toString());
-        LOG.info("命令文件："+file.getAbsolutePath());
-        LOG.info("开始执行命令：");
+        log.info("命令：");
+        log.info(cmd.toString());
+        log.info("命令文件："+file.getAbsolutePath());
+        log.info("开始执行命令：");
         Runtime runtime = Runtime.getRuntime();
         try {
             Process child = runtime.exec(file.getAbsolutePath());
@@ -61,9 +61,9 @@ public class WindowsMavenRunner implements MavenRunner{
                 System.out.println(line);
                 line=reader.readLine();
             }
-            LOG.info("编译刚才生成的模型文件成功");
+            log.info("编译刚才生成的模型文件成功");
         } catch (IOException ex) {
-            LOG.info("命令执行失败: "+cmd.toString());
+            log.info("命令执行失败: "+cmd.toString());
         }
     }
     

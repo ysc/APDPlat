@@ -36,7 +36,7 @@ import org.apache.struts2.util.StrutsTypeConverter;
  */
 
 public class DateTypeConverter extends StrutsTypeConverter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(DateTypeConverter.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(DateTypeConverter.class);
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     //暂时只考虑这几种日期格式
@@ -54,7 +54,7 @@ public class DateTypeConverter extends StrutsTypeConverter {
             try {
                 return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(values[0]);
             } catch (ParseException e) {
-                LOG.error("转换失败",e);
+                log.error("转换失败",e);
             }
         }
         for (DateFormat format : ACCEPT_DATE_FORMATS) {
@@ -64,7 +64,7 @@ public class DateTypeConverter extends StrutsTypeConverter {
                 continue;
             }
         }
-        LOG.debug("can not format date string:" + values[0]);
+        log.debug("can not format date string:" + values[0]);
         return null;
     }
 
@@ -76,7 +76,7 @@ public class DateTypeConverter extends StrutsTypeConverter {
         try {
             r = new SimpleDateFormat("yyyy-MM-dd").parse(date);
         } catch (ParseException ex) {
-            LOG.debug(date + "转换成日期失败");
+            log.debug(date + "转换成日期失败");
         }
         return r;
     }
@@ -110,7 +110,7 @@ public class DateTypeConverter extends StrutsTypeConverter {
         try {
             return new SimpleDateFormat("yyyy-MM-dd").parse(date);
         } catch (Exception ex) {
-            LOG.debug(ex.getMessage());
+            log.debug(ex.getMessage());
         }
         return null;
     }
@@ -118,7 +118,7 @@ public class DateTypeConverter extends StrutsTypeConverter {
         try {
             return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
         } catch (Exception ex) {
-            LOG.debug(ex.getMessage());
+            log.debug(ex.getMessage());
         }
         return null;
     }

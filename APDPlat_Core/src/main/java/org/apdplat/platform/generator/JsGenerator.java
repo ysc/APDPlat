@@ -54,7 +54,7 @@ public class JsGenerator  extends Generator{
         try {
             freemarkerConfiguration = factory.createConfiguration();
         } catch (IOException | TemplateException e) {
-            LOG.error("初始化模板错误",e);
+            log.error("初始化模板错误",e);
         }
 
         try {
@@ -93,12 +93,12 @@ public class JsGenerator  extends Generator{
                             System.out.println(clazz);
                         }
                     } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                        LOG.error("生成JS错误",e);
+                        log.error("生成JS错误",e);
                     }
                 }
             }
         } catch (Exception e) {
-            LOG.error("生成JS错误",e);
+            log.error("生成JS错误",e);
         }
         
     }
@@ -116,7 +116,7 @@ public class JsGenerator  extends Generator{
         
         String templateName="js.ftl";
 
-        LOG.info("开始生成JS");
+        log.info("开始生成JS");
         
         Map<String, Object> context = new HashMap<>();
         List<ModelFieldData> attrs=model.getAllRenderModelAttr();
@@ -214,12 +214,12 @@ public class JsGenerator  extends Generator{
         try {
             Template template = freemarkerConfiguration.getTemplate(templateName, ENCODING);
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
-            LOG.info("生成JS成功");
+            log.info("生成JS成功");
             return content;
         } catch (IOException | TemplateException e) {
-            LOG.error("生成JS错误",e);
+            log.error("生成JS错误",e);
         }
-        LOG.info("生成JS失败");
+        log.info("生成JS失败");
         return "";
     }
     /**

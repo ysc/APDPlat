@@ -54,7 +54,7 @@ public class ModelGenerator extends Generator {
         try {
             freemarkerConfiguration = factory.createConfiguration();
         } catch (IOException | TemplateException e) {
-            LOG.error("初始化模板错误",e);
+            log.error("初始化模板错误",e);
         }
     }
     /**
@@ -67,21 +67,21 @@ public class ModelGenerator extends Generator {
         List<InputStream> ins=new ArrayList<>();
         try{
             String pattern="classpath*:generator/"+module+"/*.xls";
-            LOG.info("模式："+pattern);
+            log.info("模式："+pattern);
             Resource[] rs= resourcePatternResolver.getResources(pattern);
-            LOG.info("扫描到的数量为："+rs.length);
+            log.info("扫描到的数量为："+rs.length);
 
             for(Resource r : rs){
                 try {
                     InputStream in=r.getInputStream();
-                    LOG.info("文件："+r.getFile().getAbsolutePath());
+                    log.info("文件："+r.getFile().getAbsolutePath());
                     ins.add(in);
                 } catch (Exception e) {
-                    LOG.error("生成MODEL错误",e);
+                    log.error("生成MODEL错误",e);
                 }
             }
         }catch(Exception e){
-            LOG.error("生成MODEL错误",e);
+            log.error("生成MODEL错误",e);
         }
         return ins;
     }
@@ -111,15 +111,15 @@ public class ModelGenerator extends Generator {
     private static void generate(List<ModelInfo> modelInfos,String moduleProjectName){
         for (ModelInfo modelInfo : modelInfos) {
             generate(modelInfo, moduleProjectName);
-            LOG.info("-----------------------------------------------------------------------------");
-            LOG.info("包："+modelInfo.getModelPackage());
-            LOG.info("模型中文名称："+modelInfo.getModelChinese());
-            LOG.info("模型英文名称："+modelInfo.getModelEnglish());
+            log.info("-----------------------------------------------------------------------------");
+            log.info("包："+modelInfo.getModelPackage());
+            log.info("模型中文名称："+modelInfo.getModelChinese());
+            log.info("模型英文名称："+modelInfo.getModelEnglish());
 
             for (Attr attr : modelInfo.getAttrs()) {
-                LOG.info("        " + attr.toString());
+                log.info("        " + attr.toString());
             }
-            LOG.info("-----------------------------------------------------------------------------");
+            log.info("-----------------------------------------------------------------------------");
         }
     }
     /**
@@ -132,8 +132,8 @@ public class ModelGenerator extends Generator {
         
         String templateName = "model.ftl";
 
-        LOG.info("开始生成Model");
-        LOG.info("workspaceModuleBasePath：" + workspaceModuleBasePath);
+        log.info("开始生成Model");
+        log.info("workspaceModuleBasePath：" + workspaceModuleBasePath);
 
         Map<String, Object> context = new HashMap<>();
         context.put("modelInfo", modelInfo);
@@ -146,12 +146,12 @@ public class ModelGenerator extends Generator {
             String modelName = modelInfo.getModelEnglish();
             result = saveFile(workspaceModuleBasePath, modelPath, modelName, content);
         } catch (IOException | TemplateException e) {
-            LOG.error("生成MODEL错误",e);
+            log.error("生成MODEL错误",e);
         }
         if (result) {
-            LOG.info("Model生成成功");
+            log.info("Model生成成功");
         } else {
-            LOG.info("忽略生成Model");
+            log.info("忽略生成Model");
         }
     }
     /**
@@ -176,10 +176,10 @@ public class ModelGenerator extends Generator {
             try {
                 file.createNewFile();
             } catch (IOException e) {
-                LOG.error("生成MODEL错误",e);
+                log.error("生成MODEL错误",e);
             }
         } else {
-            LOG.info("源文件已经存在，请删除 " + file.getAbsolutePath() + " 后在执行命令");
+            log.info("源文件已经存在，请删除 " + file.getAbsolutePath() + " 后在执行命令");
             return false;
         }
         saveFile(file, content);
@@ -470,7 +470,7 @@ public class ModelGenerator extends Generator {
                 try {
                     HSSFRow row = sheet.getRow(2);
                     if (row == null) {
-                        LOG.info("发现不合法的工作表：" + sheet.getSheetName());
+                        log.info("发现不合法的工作表：" + sheet.getSheetName());
                         continue;
                     }
                     HSSFCell cell = row.getCell(1);
@@ -539,7 +539,7 @@ public class ModelGenerator extends Generator {
                                         int length=Integer.parseInt(cellValue);
                                         attr.setLength(length);
                                     }catch(Exception e){
-                                        LOG.error("字段长度不是数值："+cellValue);
+                                        log.error("字段长度不是数值："+cellValue);
                                     }
                                 }
                             }
@@ -609,11 +609,11 @@ public class ModelGenerator extends Generator {
                     }
                     models.add(modelInfo);
                 } catch (Exception e) {
-                    LOG.error("解析工作表:" + sheet.getSheetName() + " 失败",e);
+                    log.error("解析工作表:" + sheet.getSheetName() + " 失败",e);
                 }
             }
         } catch (IOException e) {
-            LOG.error("生成MODEL错误",e);
+            log.error("生成MODEL错误",e);
         }
         return models;
     }

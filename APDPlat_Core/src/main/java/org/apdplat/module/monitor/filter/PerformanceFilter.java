@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author 杨尚川
  */
 public class PerformanceFilter implements Filter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(PerformanceFilter.class);
+    protected static final APDPlatLogger log = new APDPlatLogger(PerformanceFilter.class);
     private boolean enabled = false;
 
     @Override
@@ -60,48 +60,48 @@ public class PerformanceFilter implements Filter {
         if (enabled && filter(req)) {
 		long end=System.currentTimeMillis();
                 User user=OnlineUserService.getUser(req.getSession().getId());
-                ProcessTime LOGger=new ProcessTime();
-                LOGger.setUsername(user.getUsername());
-                LOGger.setUserIP(req.getRemoteAddr());
+                ProcessTime logger=new ProcessTime();
+                logger.setUsername(user.getUsername());
+                logger.setUserIP(req.getRemoteAddr());
                 try {
-                    LOGger.setServerIP(InetAddress.getLocalHost().getHostAddress());
+                    logger.setServerIP(InetAddress.getLocalHost().getHostAddress());
                 } catch (UnknownHostException ex) {
-                    LOG.error("保存日志出错(Error in saving LOG)",ex);
+                    log.error("保存日志出错(Error in saving log)",ex);
                 }
-                LOGger.setAppName(SystemListener.getContextPath());
-                String resource=req.getRequestURI().replace(LOGger.getAppName(), "");
-                LOGger.setResource(resource);
-                LOGger.setStartTime(new Date(start));
-                LOGger.setEndTime(new Date(end));
-                LOGger.setProcessTime(end-start);
-                LogQueue.addLog(LOGger);
+                logger.setAppName(SystemListener.getContextPath());
+                String resource=req.getRequestURI().replace(logger.getAppName(), "");
+                logger.setResource(resource);
+                logger.setStartTime(new Date(start));
+                logger.setEndTime(new Date(end));
+                logger.setProcessTime(end-start);
+                LogQueue.addLog(logger);
         }
     }
 
     @Override
     public void init(FilterConfig fc) throws ServletException {
-        LOG.info("初始化性能过滤器(Initialize the filter performance)");
+        log.info("初始化性能过滤器(Initialize the filter performance)");
         enabled = PropertyHolder.getBooleanProperty("monitor.performance");
         if(enabled){
-            LOG.info("启用性能分析日志(Enable performance analyzing LOG)");
+            log.info("启用性能分析日志(Enable performance analyzing log)");
         }else{            
-            LOG.info("禁用性能分析日志(Disable performance analyzing LOG)");
+            log.info("禁用性能分析日志(Disable performance analyzing log)");
         }
     }
 
     @Override
     public void destroy() {
-        LOG.info("销毁性能过滤器(Destroy the filter performance)");
+        log.info("销毁性能过滤器(Destroy the filter performance)");
     }
 
     private boolean filter(HttpServletRequest req) {
         String path=req.getRequestURI();
-        if(path.contains("/LOG/")){
-            LOG.info("路径包含/LOG/,不执行性能分析(/LOG/ in path, not execute performance analysis) "+path);
+        if(path.contains("/log/")){
+            log.info("路径包含/log/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
             return false;
         }
         if(path.contains("/monitor/")){
-            LOG.info("路径包含/monitor/,不执行性能分析(/LOG/ in path, not execute performance analysis) "+path);
+            log.info("路径包含/monitor/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
             return false;
         }
         return true;
