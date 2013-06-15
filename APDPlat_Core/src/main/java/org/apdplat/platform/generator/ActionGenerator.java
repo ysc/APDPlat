@@ -54,7 +54,7 @@ public class ActionGenerator extends Generator{
         try {
             freemarkerConfiguration = factory.createConfiguration();
         } catch (IOException | TemplateException e) {
-            log.error("初始化模板错误",e);
+            LOG.error("初始化模板错误",e);
         }
     }
     /**
@@ -137,14 +137,14 @@ public class ActionGenerator extends Generator{
                 generateFromModule(specialCommands,actionPackage,actionNamespace,actionName,workspaceModuleBasePath,actionPath);
             }
         } catch (FileNotFoundException e) {
-            log.error("生成ACTION错误",e);
+            LOG.error("生成ACTION错误",e);
         }
     }
     private static void generateFromModule(List<Command> specialCommands, String actionPackage, String actionNamespace, String actionName, String workspaceModuleBasePath, String actionPath) {
         String templateName="action_special.ftl";
 
-        log.info("开始生成Action");
-        log.info("workspaceModuleBasePath：" + workspaceModuleBasePath);
+        LOG.info("开始生成Action");
+        LOG.info("workspaceModuleBasePath：" + workspaceModuleBasePath);
         //准备数据        
         Map<String, Object> context = new HashMap<>();
         context.put("actionPackage", actionPackage);
@@ -158,12 +158,12 @@ public class ActionGenerator extends Generator{
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             result=saveFile(workspaceModuleBasePath, actionPath, actionName, content);
         } catch (IOException | TemplateException e) {
-            log.error("生成ACTION错误",e);
+            LOG.error("生成ACTION错误",e);
         }
         if(result){
-            log.info("Action生成成功");
+            LOG.info("Action生成成功");
         }else{
-            log.info("忽略生成Action");
+            LOG.info("忽略生成Action");
         }
     }
     private static String findPackageName(String workspaceModuleBasePath){
@@ -240,7 +240,7 @@ public class ActionGenerator extends Generator{
         String shortModel=Character.toLowerCase(model.charAt(0))+model.substring(1);
         Module m=ModuleService.getModuleFromXml(shortModel);
         if(m==null){
-            log.info(shortModel+" 没有在module.xml中进行声明，忽略生成Action");
+            LOG.info(shortModel+" 没有在module.xml中进行声明，忽略生成Action");
             return ;
         }        
         //添加自定义的方法
@@ -287,7 +287,7 @@ public class ActionGenerator extends Generator{
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, context);
             result=saveFile(workspaceModuleBasePath, actionPath, actionName, content);
         } catch (IOException | TemplateException e) {
-            log.error("生成ACTION错误",e);
+            LOG.error("生成ACTION错误",e);
         }
         if(result){
             System.out.println("Action生成成功");
@@ -317,10 +317,10 @@ public class ActionGenerator extends Generator{
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
-                    log.error("生成ACTION错误",e);
+                    LOG.error("生成ACTION错误",e);
                 }
             }else{
-                log.info("源文件已经存在，请删除 "+file.getAbsolutePath()+" 后在执行命令");
+                LOG.info("源文件已经存在，请删除 "+file.getAbsolutePath()+" 后在执行命令");
                 return false;
             }
             saveFile(file,content);

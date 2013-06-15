@@ -196,8 +196,8 @@ public class UserAction extends ExtJSSimpleAction<User> {
         }
         
         List<User> users=OnlineUserService.getUser(o,r);
-        log.info("获取在线用户,start: "+start+",len:"+len);
-        log.info("在线用户的总数为： "+users.size());
+        LOG.info("获取在线用户,start: "+start+",len:"+len);
+        LOG.info("在线用户的总数为： "+users.size());
         if(len>users.size()){
             len=users.size();
         }

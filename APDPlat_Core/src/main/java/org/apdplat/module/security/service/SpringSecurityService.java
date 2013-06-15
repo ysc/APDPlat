@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SpringSecurityService {
-    protected static final APDPlatLogger log = new APDPlatLogger(SpringSecurityService.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(SpringSecurityService.class);
     @Resource(name = "filterSecurityInterceptor")
     private  FilterSecurityInterceptor filterSecurityInterceptor;
     @Resource(name="serviceFacade")
@@ -71,12 +71,12 @@ public class SpringSecurityService {
     public  void initSecurityConfigInfo(){
         String security=PropertyHolder.getProperty("security");
         if(security==null || !"true".equals(security.trim())){
-            log.info("当前系统禁用安全机制");
+            LOG.info("当前系统禁用安全机制");
             return ;
         }
         
         
-        log.info("开始初始化权限子系统...");
+        LOG.info("开始初始化权限子系统...");
         //核心对象，一切url和角色的绑定都围绕它进行
         //指定了哪些url可以由哪些角色来访问
         LinkedHashMap<RequestKey, Collection<ConfigAttribute>> requestMap =new LinkedHashMap<>();
@@ -178,13 +178,13 @@ public class SpringSecurityService {
         
         filterSecurityInterceptor.setSecurityMetadataSource(source);
 
-        log.debug("system privilege info:\n");
+        LOG.debug("system privilege info:\n");
         for(Map.Entry<RequestKey, Collection<ConfigAttribute>> entry : requestMap.entrySet()){
-            log.debug(entry.getKey().toString());
+            LOG.debug(entry.getKey().toString());
             for(ConfigAttribute att : entry.getValue()){
-                log.debug("\t"+att.toString());
+                LOG.debug("\t"+att.toString());
             }
         }
-        log.info("完成初始化权限子系统...");
+        LOG.info("完成初始化权限子系统...");
     }
 }

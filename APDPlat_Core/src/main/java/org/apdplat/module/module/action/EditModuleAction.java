@@ -62,7 +62,7 @@ public class EditModuleAction extends ExtJSSimpleAction<Module> {
                     String json=moduleService.toJsonForEdit(module);
                     Struts2Utils.renderJson(json);
                 }catch(Exception e){
-                    log.error("获取根模块出错",e);
+                    LOG.error("获取根模块出错",e);
                 }
             }
             

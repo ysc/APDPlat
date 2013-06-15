@@ -60,7 +60,7 @@ public class InfoTypeAction extends ExtJSSimpleAction<InfoType> {
     //修改模型的时候，在修改内容之前先设置语言
     @Override
     protected void old(InfoType model) {
-        log.info("控制器设置语言："+lang);
+        LOG.info("控制器设置语言："+lang);
         model.setLang(lang);
     }
 

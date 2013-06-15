@@ -67,10 +67,10 @@ public final class WindowsSequenceService extends AbstractSequenceService{
             }
             file.delete();
         } catch (Throwable e) {
-            log.error("生成HDSerial失败", e);
+            LOG.error("生成HDSerial失败", e);
         }
         if (result.trim().length() < 1 || result == null) {
-            log.info("无磁盘ID被读取");
+            LOG.info("无磁盘ID被读取");
             result = "";
         }
 
@@ -105,10 +105,10 @@ public final class WindowsSequenceService extends AbstractSequenceService{
             }
             file.delete();
         } catch (Throwable e) {
-            log.error("生成CPUSerial失败", e);
+            LOG.error("生成CPUSerial失败", e);
         }
         if (result.trim().length() < 1 || result == null) {
-            log.info("无CPU_ID被读取");
+            LOG.info("无CPU_ID被读取");
             result = "";
         }
         return result.trim();

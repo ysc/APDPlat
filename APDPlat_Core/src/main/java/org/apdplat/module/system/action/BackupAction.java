@@ -42,7 +42,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class BackupAction extends DefaultAction {
-    protected static final APDPlatLogger log = new APDPlatLogger(BackupAction.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(BackupAction.class);
     
     private String date;
     @Resource(name="backupServiceExecuter")
@@ -105,7 +105,7 @@ public class BackupAction extends DefaultAction {
     }
     public String download(){        
         if(date==null || "".equals(date.trim())){
-            log.info("请指定下载备份数据库的时间点");
+            LOG.info("请指定下载备份数据库的时间点");
             return null;
         }
         date= date.replace(" ", "-").replace(":", "-");
@@ -126,7 +126,7 @@ public class BackupAction extends DefaultAction {
     }
     public String restore(){
         if(date==null || "".equals(date.trim())){
-            log.info("请指定恢复数据库到哪一个时间点");
+            LOG.info("请指定恢复数据库到哪一个时间点");
             return null;
         }
         date= date.replace(" ", "-").replace(":", "-");

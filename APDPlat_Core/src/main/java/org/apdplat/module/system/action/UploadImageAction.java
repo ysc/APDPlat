@@ -45,7 +45,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class UploadImageAction extends DefaultAction {
-    protected static final APDPlatLogger log = new APDPlatLogger(UploadImageAction.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(UploadImageAction.class);
     
     //上传
     private static int BUFFER_SIZE=1024*100*8;
@@ -130,7 +130,7 @@ public class UploadImageAction extends DefaultAction {
                     }
             }
         } catch (Exception e) {
-            log.error("生成验证码出错",e);
+            LOG.error("生成验证码出错",e);
         }
    }
 

@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public  class ServiceFacade{
-        protected final APDPlatLogger log = new APDPlatLogger(getClass());   
+        protected final APDPlatLogger LOG = new APDPlatLogger(getClass());   
     
 	@Resource(name="daoFacade")
 	private DaoFacade dao = null;     
@@ -89,7 +89,7 @@ public  class ServiceFacade{
 				this.delete(modelClass,modelId);
                                 ids.add(modelId);
 			}catch(Exception e){
-				log.error("删除模型出错",e);
+				LOG.error("删除模型出错",e);
 			}
 		}
                 return ids;

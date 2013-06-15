@@ -69,8 +69,8 @@ public class StateAction extends ExtJSActionSupport {
         }
        
         List<File> indexes=IndexFileService.getIndexFiles(dir);
-        log.info("获取 "+dir+" 的索引文件");
-        log.info("索引文件数量为： "+indexes.size());
+        LOG.info("获取 "+dir+" 的索引文件");
+        LOG.info("索引文件数量为： "+indexes.size());
         len=start+len;
         if(len>indexes.size()){
             len=indexes.size();

@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author 杨尚川
  */
 public class PerformanceFilter implements Filter {
-    protected static final APDPlatLogger log = new APDPlatLogger(PerformanceFilter.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(PerformanceFilter.class);
     private boolean enabled = false;
 
     @Override
@@ -66,7 +66,7 @@ public class PerformanceFilter implements Filter {
                 try {
                     logger.setServerIP(InetAddress.getLocalHost().getHostAddress());
                 } catch (UnknownHostException ex) {
-                    log.error("保存日志出错(Error in saving log)",ex);
+                    LOG.error("保存日志出错(Error in saving log)",ex);
                 }
                 logger.setAppName(SystemListener.getContextPath());
                 String resource=req.getRequestURI().replace(logger.getAppName(), "");
@@ -80,28 +80,28 @@ public class PerformanceFilter implements Filter {
 
     @Override
     public void init(FilterConfig fc) throws ServletException {
-        log.info("初始化性能过滤器(Initialize the filter performance)");
+        LOG.info("初始化性能过滤器(Initialize the filter performance)");
         enabled = PropertyHolder.getBooleanProperty("monitor.performance");
         if(enabled){
-            log.info("启用性能分析日志(Enable performance analyzing log)");
+            LOG.info("启用性能分析日志(Enable performance analyzing log)");
         }else{            
-            log.info("禁用性能分析日志(Disable performance analyzing log)");
+            LOG.info("禁用性能分析日志(Disable performance analyzing log)");
         }
     }
 
     @Override
     public void destroy() {
-        log.info("销毁性能过滤器(Destroy the filter performance)");
+        LOG.info("销毁性能过滤器(Destroy the filter performance)");
     }
 
     private boolean filter(HttpServletRequest req) {
         String path=req.getRequestURI();
         if(path.contains("/log/")){
-            log.info("路径包含/log/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
+            LOG.info("路径包含/log/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
             return false;
         }
         if(path.contains("/monitor/")){
-            log.info("路径包含/monitor/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
+            LOG.info("路径包含/monitor/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
             return false;
         }
         return true;

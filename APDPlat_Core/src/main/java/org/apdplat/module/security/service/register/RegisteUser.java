@@ -42,14 +42,14 @@ public class RegisteUser extends RegisterService<User>{
     @Override
     protected void registe() {
         String xml="/data/user.xml";
-        log.info("注册【"+xml+"】文件");
-        log.info("验证【"+xml+"】文件");
+        LOG.info("注册【"+xml+"】文件");
+        LOG.info("验证【"+xml+"】文件");
         boolean pass=XMLUtils.validateXML(xml);
         if(!pass){
-            log.info("验证没有通过，请参考dtd文件");
+            LOG.info("验证没有通过，请参考dtd文件");
             return ;
         }
-        log.info("验证通过");
+        LOG.info("验证通过");
         Page<User> page=Page.newInstance(User.class, RegisteUser.class.getResourceAsStream(xml));
         if(page!=null){
             for(User user : page.getModels()){

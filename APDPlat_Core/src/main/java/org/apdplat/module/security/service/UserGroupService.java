@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserGroupService {
-    protected static final APDPlatLogger log = new APDPlatLogger(UserGroupService.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(UserGroupService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 

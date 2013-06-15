@@ -60,14 +60,14 @@ public class RegisteModule extends RegisterService<Module>{
     @Override
     protected void registeSuccess() {
         if(registed){
-            log.info("模块、命令数据注册完毕，重新初始化权限信息");
+            LOG.info("模块、命令数据注册完毕，重新初始化权限信息");
             springSecurityService.initSecurityConfigInfo();
         }else{
-            log.info("模块、命令数据没有变化");
+            LOG.info("模块、命令数据没有变化");
         }
-        log.info("重新生成/platform/css/module.css");
+        LOG.info("重新生成/platform/css/module.css");
         reGenerateModuleCss();
-        log.info("重新生成/platform/css/operation.css");
+        LOG.info("重新生成/platform/css/operation.css");
         reGenerateCommandCss();
     }
     @PostConstruct
@@ -94,7 +94,7 @@ public class RegisteModule extends RegisterService<Module>{
                 .append("}");
         }
         FileUtils.createAndWriteFile("/platform/css/module.css", css.toString());
-        log.info("module css:"+css);
+        LOG.info("module css:"+css);
     }
 
     @PostConstruct
@@ -127,7 +127,7 @@ public class RegisteModule extends RegisterService<Module>{
                 .append("}");
         }
         FileUtils.createAndWriteFile("/platform/css/operation.css", css.toString());
-        log.info("operation css:"+css);
+        LOG.info("operation css:"+css);
     }
     /**
      * 每一次启动的时候都要检查所有的模块是否已经注册
@@ -148,57 +148,57 @@ public class RegisteModule extends RegisterService<Module>{
     private void registeModule(Module module){
         Page<Module> page=serviceFacade.query(Module.class);
         if(page.getTotalRecords()==0){
-            log.info("第一次注册第一个模块: "+module.getChinese());            
+            LOG.info("第一次注册第一个模块: "+module.getChinese());            
             serviceFacade.create(module);
             registed=true;
             //保存根模块
             rootModule=module;
             data.add(module);
         }else{
-            log.info("以前已经注册过模块");
-            log.info("查找出根模块");
+            LOG.info("以前已经注册过模块");
+            LOG.info("查找出根模块");
             Module root=null;
             Module existRoot=moduleService.getRootModule();
             if(existRoot!=null){
                 root=existRoot;
-                log.info("找到以前导入的根模块: "+root.getChinese());
+                LOG.info("找到以前导入的根模块: "+root.getChinese());
             }else{
-                log.info("没有找到以前导入的根模块");
+                LOG.info("没有找到以前导入的根模块");
                 if(rootModule!=null){
-                    log.info("使用本次导入的根模块");
+                    LOG.info("使用本次导入的根模块");
                     root=rootModule;
                 }
             }
             if(root!=null){
-                log.info("将第一次以后的模块的根模块设置为第一次注册的根模块");
+                LOG.info("将第一次以后的模块的根模块设置为第一次注册的根模块");
                 for(Module subModule : module.getSubModules()){
                     if(hasRegisteModule(subModule)){
-                        log.info("模块 "+subModule.getChinese()+" 在此前已经被注册过，此次忽略，检查其子模块");                        
+                        LOG.info("模块 "+subModule.getChinese()+" 在此前已经被注册过，此次忽略，检查其子模块");                        
                         registeSubModule(subModule);
                         continue;
                     }
                     //确保后续注册的模块的顺序在最后
                     subModule.setOrderNum(subModule.getOrderNum()+(int)page.getTotalRecords());
                     subModule.setParentModule(root);
-                    log.info("注册后续模块: "+subModule.getChinese());
+                    LOG.info("注册后续模块: "+subModule.getChinese());
                     serviceFacade.create(subModule);
                     registed=true;
                     data.add(subModule);
                 }
             }else{
-                log.info("没有找到根模块，注册失败！");
+                LOG.info("没有找到根模块，注册失败！");
             }
         }
     }
     private void registeSubModule(Module module){        
-        log.info("模块 "+module.getChinese()+" 在此前已经被注册过，检查其命令");
+        LOG.info("模块 "+module.getChinese()+" 在此前已经被注册过，检查其命令");
         chechCommand(module);
         for(Module sub : module.getSubModules()){
             if(hasRegisteModule(sub)){
-                log.info("模块 "+sub.getChinese()+" 在此前已经被注册过，此次忽略，检查其子模块");
+                LOG.info("模块 "+sub.getChinese()+" 在此前已经被注册过，此次忽略，检查其子模块");
                 registeSubModule(sub);
             }else{
-                log.info("注册后续模块: "+sub.getChinese());
+                LOG.info("注册后续模块: "+sub.getChinese());
                 //重新从数据库中查询出模块，参数中的模块是从XML中解析出来的
                 sub.setParentModule(moduleService.getModule(module.getEnglish()));
                 serviceFacade.create(sub);
@@ -219,7 +219,7 @@ public class RegisteModule extends RegisterService<Module>{
                 if(!existCommands.contains(command.getEnglish())){
                     command.setModule(existsModule);
                     serviceFacade.create(command);
-                    log.info("注册新增命令: "+command.getChinese()+" ,模块："+existsModule.getChinese());
+                    LOG.info("注册新增命令: "+command.getChinese()+" ,模块："+existsModule.getChinese());
                 }
             }
         }

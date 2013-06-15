@@ -54,7 +54,7 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
     public String store(){
         Dic dictionary=dicService.getDic(dic);
         if(dictionary==null){
-            log.info("没有找到数据词典 "+dic);
+            LOG.info("没有找到数据词典 "+dic);
             return null;
         }
         if("true".equals(tree)){

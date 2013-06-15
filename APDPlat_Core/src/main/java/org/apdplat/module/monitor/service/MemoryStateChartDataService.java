@@ -33,7 +33,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class MemoryStateChartDataService {
-    protected static final APDPlatLogger log = new APDPlatLogger(MemoryStateChartDataService.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(MemoryStateChartDataService.class);
 
     public static List<MemoryState> getSequenceDataHH(List<MemoryState> models){    
         return getSequenceTimeData(models,"yyyy-MM-dd HH");

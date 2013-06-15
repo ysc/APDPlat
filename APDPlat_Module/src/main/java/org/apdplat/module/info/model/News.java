@@ -82,8 +82,8 @@ public class News extends SimpleModel{
     }
     //setTitle方法依赖于setLang方法先执行
     public void setTitle(String title){
-        log.info("设置标题");
-        log.info("模型语言："+lang);
+        LOG.info("设置标题");
+        LOG.info("模型语言："+lang);
         NewsContent newsContent = getNewsContent();
         newsContent.setTitle(title);
     }
@@ -98,8 +98,8 @@ public class News extends SimpleModel{
     }
     //setContent方法依赖于setLang方法先执行
     public void setContent(String content){
-        log.info("设置内容");
-        log.info("模型语言："+lang);
+        LOG.info("设置内容");
+        LOG.info("模型语言："+lang);
         NewsContent newsContent = getNewsContent();
         newsContent.setContent(content);
     }

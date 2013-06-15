@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 @WebService(endpointInterface = "org.apdplat.module.security.ws.UserService")
 public class UserServiceImpl implements UserService{
-    protected static final APDPlatLogger log = new APDPlatLogger(UserServiceImpl.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(UserServiceImpl.class);
     @Resource(name = "userDetailsServiceImpl")
     private UserDetailsServiceImpl userDetailsServiceImpl;
     
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService{
                 }
             }
         }catch(UsernameNotFoundException | DataAccessException e){
-            log.info("没有获取到用户信息："+username);
+            LOG.info("没有获取到用户信息："+username);
         }
         return null;
     }

@@ -41,7 +41,7 @@ import org.hyperic.sigar.Sigar;
  * @author 杨尚川
  */
 public abstract class AbstractSequenceService   implements SequenceService{
-    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
     /**
      * 对一段String生成MD5摘要信息
      * @param message 要摘要的String
@@ -51,12 +51,12 @@ public abstract class AbstractSequenceService   implements SequenceService{
         message += "{apdplat}";
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            log.debug("MD5摘要长度：" + md.getDigestLength());
+            LOG.debug("MD5摘要长度：" + md.getDigestLength());
             byte[] b = md.digest(message.getBytes("utf-8"));
             String md5 = ConvertUtils.byte2HexString(b)+message.length();
             return getSplitString(md5);
         } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            log.error("MD5摘要失败",e);
+            LOG.error("MD5摘要失败",e);
         }
         return null;
     }
@@ -106,7 +106,7 @@ public abstract class AbstractSequenceService   implements SequenceService{
     protected String getSigarSequence(String osName) {
         try {
             File libFile = new File(FileUtils.getAbsolutePath("/WEB-INF/lib/"+PropertyHolder.getProperty("libsigar."+osName)));
-            log.debug("libsigar."+osName+" : "+libFile.getAbsolutePath());
+            LOG.debug("libsigar."+osName+" : "+libFile.getAbsolutePath());
             
             System.load(libFile.getAbsolutePath());
             Set<String> result = new HashSet<>();
@@ -120,7 +120,7 @@ public abstract class AbstractSequenceService   implements SequenceService{
                 }
                 String mac = cfg.getHwaddr();
                 result.add(mac);
-                log.debug("mac: " + mac);
+                LOG.debug("mac: " + mac);
             }
             if(result.size()<1){
                 return null;
@@ -128,26 +128,26 @@ public abstract class AbstractSequenceService   implements SequenceService{
             Properties props = System.getProperties();
             String javaVersion = props.getProperty("java.version");
             result.add(javaVersion);
-            log.debug("Java的运行环境版本：    " + javaVersion);
+            LOG.debug("Java的运行环境版本：    " + javaVersion);
             String javaVMVersion = props.getProperty("java.vm.version");
             result.add(javaVMVersion);
-            log.debug("Java的虚拟机实现版本：    " + props.getProperty("java.vm.version"));
+            LOG.debug("Java的虚拟机实现版本：    " + props.getProperty("java.vm.version"));
             String osVersion = props.getProperty("os.version");
             result.add(osVersion);
-            log.debug("操作系统的版本：    " + props.getProperty("os.version"));
+            LOG.debug("操作系统的版本：    " + props.getProperty("os.version"));
 
             Mem mem = sigar.getMem();
             // 内存总量
             String totalMem = mem.getTotal() / 1024L + "K av";
-            log.debug("内存总量:    " + totalMem);
+            LOG.debug("内存总量:    " + totalMem);
             result.add(totalMem);
 
-            log.debug("result:    " + result);
+            LOG.debug("result:    " + result);
             String machineCode = getMD5(result.toString());
 
             return machineCode;
         } catch (Throwable ex) {
-            log.error("生成 "+osName+" 平台下的机器码失败", ex);
+            LOG.error("生成 "+osName+" 平台下的机器码失败", ex);
         }
         return null;
     }

@@ -98,8 +98,8 @@ public class InfoType extends SimpleModel{
     }
     //setInfoTypeName方法依赖于setLang方法先执行
     public void setInfoTypeName(String infoTypeName){
-        log.info("设置新闻类别名称");
-        log.info("模型语言："+lang);
+        LOG.info("设置新闻类别名称");
+        LOG.info("模型语言："+lang);
         InfoTypeContent infoTypeContent = getInfoTypeContent();
         infoTypeContent.setInfoTypeName(infoTypeName);
     }

@@ -58,7 +58,7 @@ public class SetupAction extends ExtJSActionSupport {
                 map.put("state", "无定时调度任务");
             }
         }catch(Exception e){
-            log.error("无定时调度任务", e);
+            LOG.error("无定时调度任务", e);
             map.put("state", "无定时调度任务");
         }
         

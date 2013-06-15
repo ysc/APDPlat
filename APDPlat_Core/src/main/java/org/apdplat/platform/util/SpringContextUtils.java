@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SpringContextUtils implements ApplicationContextAware {
-        protected static final APDPlatLogger log = new APDPlatLogger(SpringContextUtils.class);
+        protected static final APDPlatLogger LOG = new APDPlatLogger(SpringContextUtils.class);
 
 	private static ApplicationContext applicationContext;
 

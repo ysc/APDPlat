@@ -63,10 +63,10 @@ public class MySQLBackupService extends BackupService{
                 }
                 writer.flush();
             }
-            log.debug("备份到："+path);
+            LOG.debug("备份到："+path);
             return true;
         } catch (Exception e) {
-            log.error("备份出错",e);
+            LOG.error("备份出错",e);
         }
         return false;
     }
@@ -94,10 +94,10 @@ public class MySQLBackupService extends BackupService{
                 }
                 writer.flush();
             }
-            log.debug("从 "+path+" 恢复");
+            LOG.debug("从 "+path+" 恢复");
             return true;
         } catch (Exception e) {
-            log.error("恢复出错",e);
+            LOG.error("恢复出错",e);
         }
         return false;
     }

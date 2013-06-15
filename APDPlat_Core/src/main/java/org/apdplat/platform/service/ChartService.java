@@ -34,7 +34,7 @@ import org.jdom.output.XMLOutputter;
  * @author 杨尚川
  */
 public abstract class ChartService {
-    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
 
     protected String formatXML(Element rootElement) {
         StringWriter writer = new StringWriter();
@@ -44,7 +44,7 @@ public abstract class ChartService {
             outputter.setFormat(Format.getPrettyFormat());
             outputter.output(chartDocument, writer);
         } catch (IOException e) {
-            log.error("保生成XML出错",e);
+            LOG.error("保生成XML出错",e);
         }
         return writer.toString();
     }

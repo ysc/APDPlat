@@ -45,7 +45,7 @@ import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
  * @author 杨尚川
  */
 public abstract class BackupService {  
-    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
     
     protected static final StandardPBEStringEncryptor encryptor;
     protected static final String username;
@@ -93,7 +93,7 @@ public abstract class BackupService {
             try {
                 backupLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
             } catch (UnknownHostException e) {
-                log.error("记录备份日志出错",e);
+                LOG.error("记录备份日志出错",e);
             }
             backupLog.setAppName(SystemListener.getContextPath());
             backupLog.setStartTime(new Date());
@@ -107,7 +107,7 @@ public abstract class BackupService {
                 result=restoreImpl(date);   
             }                     
         }catch(Exception e){            
-            log.error("备份出错",e);
+            LOG.error("备份出错",e);
         }
         
         if(enableBackup){

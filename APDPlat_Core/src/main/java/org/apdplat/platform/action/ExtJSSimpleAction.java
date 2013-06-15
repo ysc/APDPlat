@@ -79,7 +79,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                 modelClass=(Class<T>)model.getClass();
             }
         }catch(Exception e){
-            log.error("initModel fail");
+            LOG.error("initModel fail");
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         //生成报表XML数据
         String data=generateReportData(page.getModels());
         if(StringUtils.isBlank(data)){
-            log.info("生成的报表数据为空");
+            LOG.info("生成的报表数据为空");
             return null;
         }
         Struts2Utils.renderXml(data);
@@ -132,7 +132,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             getService().create(model);
             afterSuccessCreateModel(model);
         }catch(Exception e){
-            log.error("创建模型失败",e);
+            LOG.error("创建模型失败",e);
             afterFailCreateModel(model);
 
             map=new HashMap();
@@ -189,13 +189,13 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             
             //数据版本控制，防止多个用户同时修改一条数据，造成更新丢失问题
             if(version==null){
-                log.info("前台界面没有传递版本信息");
+                LOG.info("前台界面没有传递版本信息");
                 throw new RuntimeException("您的数据没有版本信息");
             }else{
-                log.info("前台界面传递了版本信息,version="+version);
+                LOG.info("前台界面传递了版本信息,version="+version);
             }
             if(version!=model.getVersion()){
-                log.info("当前数据的版本为 "+model.getVersion()+",您的版本为 "+version);
+                LOG.info("当前数据的版本为 "+model.getVersion()+",您的版本为 "+version);
                 throw new RuntimeException("您的数据已过期，请重新修改");
             }
             
@@ -223,7 +223,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             getService().update(model);
             afterSuccessPartUpdateModel(model);
         }catch(Exception e){
-            log.error("更新模型失败",e);
+            LOG.error("更新模型失败",e);
             afterFailPartUpdateModel(model);
             map=new HashMap();
             map.put("success", false);
@@ -244,7 +244,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             getService().update(model);
             afterSuccessWholeUpdateModel(model);
         }catch(Exception e){
-            log.error("更新模型失败",e);
+            LOG.error("更新模型失败",e);
             afterFailWholeUpdateModel(model);
             Struts2Utils.renderText("false");
             return null;
@@ -265,7 +265,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             List<Integer> deletedIds=getService().delete(modelClass, getIds());
             afterDelete(deletedIds);
         }catch(Exception e){
-            log.info("删除数据出错",e);
+            LOG.info("删除数据出错",e);
             Struts2Utils.renderText(e.getMessage());
             return null;
         }
@@ -514,7 +514,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         String fieldName = field.getName();
         try{
             if(field.isAnnotationPresent(Lob.class)){
-                log.debug("字段["+fieldName+"]为大对象，忽略生成JSON字段");
+                LOG.debug("字段["+fieldName+"]为大对象，忽略生成JSON字段");
                 return;
             }
             Object value = ReflectionUtils.getFieldValue(obj, field);
@@ -529,7 +529,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                 Collection col=(Collection)value;
                 String colStr="";
                 if(col!=null){
-                    log.debug("处理集合,字段为："+field.getName()+",大小为："+col.size());
+                    LOG.debug("处理集合,字段为："+field.getName()+",大小为："+col.size());
                     if(col.size()>0){
                         StringBuilder str=new StringBuilder();
                         for(Object m : col){
@@ -539,14 +539,14 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                         colStr=str.toString();
                     }
                 }else{
-                    log.debug("处理集合失败，"+value+" 不能转换为集合");
+                    LOG.debug("处理集合失败，"+value+" 不能转换为集合");
                 }
                 data.put(fieldName, colStr);
                 return ;
             }
             //处理复杂对象类型
             if(field.isAnnotationPresent(ModelAttrRef.class)){
-                log.debug("处理对象,字段为："+field.getName());
+                LOG.debug("处理对象,字段为："+field.getName());
                 ModelAttrRef ref = field.getAnnotation(ModelAttrRef.class);
                 String fieldRef = ref.value();
                 //加入复杂对象的ID
@@ -582,7 +582,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }
             data.put(fieldName, value.toString());
         }catch(Exception e){
-            log.error("获取字段值失败",e);
+            LOG.error("获取字段值失败",e);
         }
     }
     public T getModel() {
@@ -613,14 +613,14 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         Field[] fields = model.getClass().getDeclaredFields();//获得对象方法集合
         for (Field field : fields) {// 遍历该数组
             if(field.isAnnotationPresent(ManyToOne.class) || field.isAnnotationPresent(OneToOne.class)){
-                log.debug(model.getMetaData()+" 有ManyToOne 或 OneToOne映射，字段为"+field.getName());
+                LOG.debug(model.getMetaData()+" 有ManyToOne 或 OneToOne映射，字段为"+field.getName());
                 Model value=(Model)ReflectionUtils.getFieldValue(model, field);
                 if(value==null){
-                    log.debug(model.getMetaData()+" 的字段"+field.getName()+"没有值，忽略处理");
+                    LOG.debug(model.getMetaData()+" 的字段"+field.getName()+"没有值，忽略处理");
                     continue;
                 }
                 int id=value.getId();
-                log.debug("id: "+id);
+                LOG.debug("id: "+id);
                 value=getService().retrieve(value.getClass(), id);
                 ReflectionUtils.setFieldValue(model, field, value);
             }

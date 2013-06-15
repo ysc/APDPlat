@@ -30,7 +30,7 @@ import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 public class LongTypeConverter extends StrutsTypeConverter{
-    protected static final APDPlatLogger log = new APDPlatLogger(LongTypeConverter.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(LongTypeConverter.class);
 
 
     @Override
@@ -41,7 +41,7 @@ public class LongTypeConverter extends StrutsTypeConverter{
         try{
             return Long.parseLong(values[0].trim());
         }catch(Exception e){
-            log.info("字符串:"+values[0].trim()+"转换为数字失败");
+            LOG.info("字符串:"+values[0].trim()+"转换为数字失败");
         }
         return 0;
     }

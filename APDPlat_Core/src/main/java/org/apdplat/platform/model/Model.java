@@ -62,7 +62,7 @@ public abstract class Model implements Serializable{
 
     @Transient
     @RenderIgnore
-    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @SearchableId

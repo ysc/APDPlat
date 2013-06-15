@@ -38,14 +38,14 @@ public class RegisteRole extends RegisterService<Role>{
     @Override
     public void registe() {
         String xml="/data/role.xml";
-        log.info("注册【"+xml+"】文件");
-        log.info("验证【"+xml+"】文件");
+        LOG.info("注册【"+xml+"】文件");
+        LOG.info("验证【"+xml+"】文件");
         boolean pass=XMLUtils.validateXML(xml);
         if(!pass){
-            log.info("验证没有通过，请参考dtd文件");
+            LOG.info("验证没有通过，请参考dtd文件");
             return ;
         }
-        log.info("验证通过");
+        LOG.info("验证通过");
         XMLFactory factory=new XMLFactory(Role.class);
         role=factory.unmarshal(RegisteRole.class.getResourceAsStream(xml));
         

@@ -60,7 +60,7 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     }
     @Override
     protected void old(News model) {
-        log.info("控制器设置语言："+lang);
+        LOG.info("控制器设置语言："+lang);
         model.setLang(lang);
     }
     //方式二：使用IN语句

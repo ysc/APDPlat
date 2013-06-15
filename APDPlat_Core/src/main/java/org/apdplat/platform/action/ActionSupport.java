@@ -60,7 +60,7 @@ import org.apdplat.platform.service.ServiceFacade;
     @Result(name = "detail", type = "freemarker", location = "/_namespace_/_action_/detail.ftl"),
     @Result(name = "form", type = "freemarker", location = "/_namespace_/_action_/form.ftl")})
 public abstract class ActionSupport extends DataPrivilegeControl{
-    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
     
     protected static final String LIST = "list";
     protected static final String FORM = "form";
@@ -101,13 +101,13 @@ public abstract class ActionSupport extends DataPrivilegeControl{
         if (ctx != null) {
             return ctx.getLocale();
         } else {
-            log.debug("Action context not initialized");
+            LOG.debug("Action context not initialized");
             return null;
         }
     }
 
     public String execute() {
-        log.info("调用了action的默认execute方法");
+        LOG.info("调用了action的默认execute方法");
         return null;
     }
 
@@ -198,7 +198,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
             //:号用来分割属性内部的类型、属性名、操作符、属性值
             String[] propInfo = prop.split(":");
             if(propInfo.length!=3){
-                log.error("属性过滤器错误："+prop);
+                LOG.error("属性过滤器错误："+prop);
                 continue;
             }
 
@@ -301,7 +301,7 @@ public abstract class ActionSupport extends DataPrivilegeControl{
                 Class<?> fieldType = ReflectionUtils.getDeclaredField(model, fieldName).getType();
                 Object fieldValue;
                 if (fieldType != propertyEditor.getPropertyType().getValue()) {
-                    log.debug(fieldType + "!=" + propertyEditor.getPropertyType().getValue());
+                    LOG.debug(fieldType + "!=" + propertyEditor.getPropertyType().getValue());
                     fieldValue = propertyEditor.getProperty().getValue().toString();
                 } else {
                     fieldValue = propertyEditor.getProperty().getValue();

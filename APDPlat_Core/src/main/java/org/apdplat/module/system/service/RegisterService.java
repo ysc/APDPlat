@@ -38,7 +38,7 @@ import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public abstract class RegisterService<T extends Model> implements ApplicationListener {
-    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
     
     @Resource(name="serviceFacade")
     protected ServiceFacade serviceFacade;
@@ -50,26 +50,26 @@ public abstract class RegisterService<T extends Model> implements ApplicationLis
     public void onApplicationEvent(ApplicationEvent event){
         if(event instanceof ContextRefreshedEvent){
             this.modelClass = ReflectionUtils.getSuperClassGenricType(getClass());
-            log.info("spring容器初始化完成, 开始检查 "+ModelMetaData.getMetaData(this.modelClass.getSimpleName()) +" 是否需要初始化数据");
+            LOG.info("spring容器初始化完成, 开始检查 "+ModelMetaData.getMetaData(this.modelClass.getSimpleName()) +" 是否需要初始化数据");
             if(shouldRegister()){
-                log.info("需要初始化 "+ModelMetaData.getMetaData(this.modelClass.getSimpleName()));
+                LOG.info("需要初始化 "+ModelMetaData.getMetaData(this.modelClass.getSimpleName()));
                 openEntityManager();
                 registe();
                 closeEntityManager();
                 registeSuccess();
             }else{
-                log.info("不需要初始化 "+ModelMetaData.getMetaData(this.modelClass.getSimpleName()));
+                LOG.info("不需要初始化 "+ModelMetaData.getMetaData(this.modelClass.getSimpleName()));
             }
         }
     }
     private void openEntityManager(){        
         EntityManager em = entityManagerFactory.createEntityManager();
         TransactionSynchronizationManager.bindResource(entityManagerFactory, new EntityManagerHolder(em));
-        log.info("打开实体管理器");
+        LOG.info("打开实体管理器");
     }
     private void closeEntityManager(){
         EntityManagerHolder emHolder = (EntityManagerHolder)TransactionSynchronizationManager.unbindResource(entityManagerFactory);
-        log.info("关闭实体管理器");
+        LOG.info("关闭实体管理器");
         EntityManagerFactoryUtils.closeEntityManager(emHolder.getEntityManager());
     }
     protected void registeSuccess(){

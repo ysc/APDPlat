@@ -49,7 +49,7 @@ public abstract class SimpleModel extends Model{
         if(this.ownerUser==null){
             this.ownerUser = ownerUser;
         }else{
-            log.info("忽略设置OwnerUser");
+            LOG.info("忽略设置OwnerUser");
         }
     }
 }

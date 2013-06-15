@@ -31,7 +31,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 public class UserHolder {
-    protected static final APDPlatLogger log = new APDPlatLogger(UserHolder.class);
+    protected static final APDPlatLogger LOG = new APDPlatLogger(UserHolder.class);
 
     public static boolean hasLogin() {
         if (getCurrentLoginUser() == null) {

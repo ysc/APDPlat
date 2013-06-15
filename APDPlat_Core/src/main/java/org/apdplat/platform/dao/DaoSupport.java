@@ -50,7 +50,7 @@ import org.compass.core.CompassTemplate;
  *
  */
 public abstract class DaoSupport extends DataPrivilegeControl{
-    protected final APDPlatLogger log = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
     
     protected static final OrderCriteria defaultOrderCriteria = new OrderCriteria();
 
@@ -101,7 +101,7 @@ public abstract class DaoSupport extends DataPrivilegeControl{
         //根据属性过滤条件、排序条件构造jpql查询语句
         StringBuilder jpql = new StringBuilder("select o from ");
         jpql.append(getEntityName(modelClass)).append(" o ").append(buildPropertyCriteria(propertyCriteria)).append(buildOrderCriteria(sortCriteria));
-        log.debug("jpql:" + jpql);
+        LOG.debug("jpql:" + jpql);
         Query query = getEntityManager().createQuery(jpql.toString());
         //绑定属性过滤条件值
         bindingPropertyCriteria(query, propertyCriteria);
@@ -286,8 +286,8 @@ public abstract class DaoSupport extends DataPrivilegeControl{
         Compass compass = compassTemplate.getCompass();
         CompassSession session=compass.openSession();
         CompassHits hits=  session.find(queryString);
-        log.info("命中:"+hits.getLength());
-        log.info("查询字符串:"+queryString);
+        LOG.info("命中:"+hits.getLength());
+        LOG.info("查询字符串:"+queryString);
         if(pageCriteria!=null){
             int start = (pageCriteria.getPage()-1) * pageCriteria.getSize();
             int end = (pageCriteria.getPage()-1) * pageCriteria.getSize() + pageCriteria.getSize();
@@ -347,13 +347,13 @@ public abstract class DaoSupport extends DataPrivilegeControl{
                 if (StringUtils.isNotBlank(value)) {
                     try {
                         ReflectionUtils.setFieldValue(model, searchProperty, value);
-                        log.debug("给对象【" + model.getMetaData() +" : "+model.getId()+ "】的【" + searchProperty + "】属性添加高亮成功");
+                        LOG.debug("给对象【" + model.getMetaData() +" : "+model.getId()+ "】的【" + searchProperty + "】属性添加高亮成功");
                     } catch (Exception e) {
-                        log.debug("添加高亮，给对象【" + model.getMetaData() + "】设置属性【" + searchProperty + "】失败,值为:【" + value + "】");
+                        LOG.debug("添加高亮，给对象【" + model.getMetaData() + "】设置属性【" + searchProperty + "】失败,值为:【" + value + "】");
                     }
                 }
             } catch (Exception e) {
-                log.debug("处理" + searchProperty + "高亮抛出异常，忽略");
+                LOG.debug("处理" + searchProperty + "高亮抛出异常，忽略");
             }
         }
         return model;
