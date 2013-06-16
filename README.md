@@ -1,3 +1,5 @@
+<p><a href="https://github.com/ysc/APDPlat/wiki/%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97" target="_blank">APDPlat入门指南</a></p>
+
 APDPlat是Application Product Development Platform的缩写，意为应用级产品开发平台。 
 
 APDPlat的雏形可以追溯到2008年，并于4年后即2012年4月9日在GITHUB开源 。APDPlat在演化的过程中，经受住了众多项目的考验，一直追求简洁优雅，一直对架构、设计和代码进行重构优化。 
@@ -7,12 +9,6 @@ APDPlat的用户群是广大的JAVA工程师，对于JAVA初级开发者，能�
 APDPlat倡导的是我为人人，人人为我的开源奉献协作精神。一切以提高技术为宗旨，一切以把coding当成艺术为指导。
 
 APDPlat不是针对【业务人员】的【快速开发平台】，而是针对【JAVA工程师】的【应用级产品开发平台】，我们希望加入APDPlat的朋友对coding有激情，追求coding的艺术，所以不愿意看代码的或是看不懂代码的就不适合使用APDPlat。
-
-<p><a href="http://apdplat.org" target="_blank">APDPlat官方网站</a></p>
-
-<p><a href="http://apdplat.net" target="_blank">APDPlat演示站点</a></p>
-
-<p><a href="http://github.com/ysc/APDPlat/wiki" target="_blank">APDPlat相关文档</a></p>
 
 APDPlat的主要特性如下：
 
