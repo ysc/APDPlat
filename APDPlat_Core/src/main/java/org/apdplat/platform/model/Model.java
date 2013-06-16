@@ -43,6 +43,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlTransient;
+import org.apdplat.platform.annotation.ModelAttrRef;
 import org.compass.annotations.SearchableComponent;
 import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
@@ -254,6 +255,7 @@ public abstract class Model implements Serializable{
         data.setEnglish(english);
         data.setSimpleDic("");
         data.setTreeDic("");
+        data.setManyToOneRef("");
         if(field.isAnnotationPresent(SimpleDic.class)){
             String dic=field.getAnnotation(SimpleDic.class).value();
             data.setSimpleDic(dic);
@@ -264,6 +266,10 @@ public abstract class Model implements Serializable{
         }
         if(field.isAnnotationPresent(ManyToOne.class)){
             data.setManyToOne(true);
+            if(field.isAnnotationPresent(ModelAttrRef.class)){
+                String manyToOneRef=field.getAnnotation(ModelAttrRef.class).value();
+                data.setManyToOneRef(manyToOneRef);
+            }
         }
         String valueClass=field.getType().getSimpleName();
         if("Timestamp".equals(valueClass) || "Date".equals(valueClass)){
