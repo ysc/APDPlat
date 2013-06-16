@@ -30,6 +30,15 @@ public class ModelFieldData {
     private String type;
     private String simpleDic;
     private String treeDic;
+    private boolean manyToOne;
+
+    public boolean isManyToOne() {
+        return manyToOne;
+    }
+
+    public void setManyToOne(boolean manyToOne) {
+        this.manyToOne = manyToOne;
+    }
 
     public String getSimpleDic() {
         return simpleDic;

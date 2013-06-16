@@ -204,7 +204,12 @@
                                                 xtype:'numberfield',
         </#if>
                                                 cls : 'attr',
+
+        <#if modelAttr.manyToOne>
+                                                name: 'model.${modelAttr.english}.id',
+        <#else>
                                                 name: 'model.${modelAttr.english}',
+        </#if>
                                                 fieldLabel: '${modelAttr.chinese}',
                                                 allowBlank: false,
                                                 blankText : '${modelAttr.chinese}不能为空'
@@ -267,7 +272,11 @@
                                                 xtype:'numberfield',
         </#if>
                                                 cls : 'attr',
+        <#if modelAttr.manyToOne>
+                                                name: 'model.${modelAttr.english}.id',
+        <#else>
                                                 name: 'model.${modelAttr.english}',
+        </#if>
                                                 fieldLabel: '${modelAttr.chinese}',
                                                 allowBlank: false,
                                                 blankText : '${modelAttr.chinese}不能为空'
@@ -357,8 +366,13 @@
                                                 xtype:'numberfield',
         </#if>
                                                 cls : 'attr',
+        <#if modelAttr.manyToOne>
+                                                name: 'model.${modelAttr.english}.id',
+                                                value: model.${modelAttr.english}_id,
+        <#else>
                                                 name: 'model.${modelAttr.english}',
                                                 value: model.${modelAttr.english},
+        </#if>
                                                 fieldLabel: '${modelAttr.chinese}',
                                                 allowBlank: false,
                                                 blankText : '${modelAttr.chinese}不能为空'
@@ -424,8 +438,13 @@
                                                 xtype:'numberfield',
         </#if>
                                                 cls : 'attr',
+        <#if modelAttr.manyToOne>
+                                                name: 'model.${modelAttr.english}.id',
+                                                value: model.${modelAttr.english}_id,
+        <#else>
                                                 name: 'model.${modelAttr.english}',
                                                 value: model.${modelAttr.english},
+        </#if>
                                                 fieldLabel: '${modelAttr.chinese}',
                                                 allowBlank: false,
                                                 blankText : '${modelAttr.chinese}不能为空'

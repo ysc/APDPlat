@@ -36,6 +36,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -260,6 +261,9 @@ public abstract class Model implements Serializable{
         if(field.isAnnotationPresent(TreeDic.class)){
             String dic=field.getAnnotation(TreeDic.class).value();
             data.setTreeDic(dic);
+        }
+        if(field.isAnnotationPresent(ManyToOne.class)){
+            data.setManyToOne(true);
         }
         String valueClass=field.getType().getSimpleName();
         if("Timestamp".equals(valueClass) || "Date".equals(valueClass)){
