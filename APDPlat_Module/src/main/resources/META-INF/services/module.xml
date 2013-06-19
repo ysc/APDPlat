@@ -40,5 +40,116 @@
                 </module>
             </subModules>
         </module>
+        <module english="infoCollect" chinese="信息采集业务">
+            <subModules>
+                <module english="homeCollect"  chinese="入户采集子业务" >
+                    <subModules>
+                        <module english="basicInfoCollect"  chinese="基础信息采集" >
+                            <subModules>
+                                <module english="populationInfo"  chinese="全员人口基础信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加全员人口基础信息" />
+                                        <command english="delete" chinese="删除全员人口基础信息" />
+                                        <command english="update" chinese="修改全员人口基础信息" />
+                                        <command english="query" chinese="查询全员人口基础信息" />
+                                        <command english="export" chinese="导出全员人口基础信息" />
+                                    </commands>
+                                </module>
+                                <module english="childbearingAgeInfo"  chinese="育龄夫妇信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加育龄夫妇信息" />
+                                        <command english="delete" chinese="删除育龄夫妇信息" />
+                                        <command english="update" chinese="修改育龄夫妇信息" />
+                                        <command english="query" chinese="查询育龄夫妇信息" />
+                                        <command english="export" chinese="导出育龄夫妇信息" />
+                                    </commands>
+                                </module>
+                                <module english="marriageInfo"  chinese="婚姻信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加婚姻信息" />
+                                        <command english="delete" chinese="删除婚姻信息" />
+                                        <command english="update" chinese="修改婚姻信息" />
+                                        <command english="query" chinese="查询婚姻信息" />
+                                        <command english="export" chinese="导出婚姻信息" />
+                                    </commands>
+                                </module>
+                                <module english="contraceptInfo"  chinese="避孕信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加避孕信息" />
+                                        <command english="delete" chinese="删除避孕信息" />
+                                        <command english="update" chinese="修改避孕信息" />
+                                        <command english="query" chinese="查询避孕信息" />
+                                        <command english="export" chinese="导出避孕信息" />
+                                    </commands>
+                                </module>
+                                <module english="pregnancyEugenic"  chinese="孕前优生信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加孕前优生信息" />
+                                        <command english="delete" chinese="删除孕前优生信息" />
+                                        <command english="update" chinese="修改孕前优生信息" />
+                                        <command english="query" chinese="查询孕前优生信息" />
+                                        <command english="export" chinese="导出孕前优生信息" />
+                                    </commands>
+                                </module>
+                                <module english="birthControlInfo"  chinese="生育计划信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加生育计划信息" />
+                                        <command english="delete" chinese="删除生育计划信息" />
+                                        <command english="update" chinese="修改生育计划信息" />
+                                        <command english="query" chinese="查询生育计划信息" />
+                                        <command english="export" chinese="导出生育计划信息" />
+                                    </commands>
+                                </module>
+                                <module english="pregnancyInfo"  chinese="妊娠信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加妊娠信息" />
+                                        <command english="delete" chinese="删除妊娠信息" />
+                                        <command english="update" chinese="修改妊娠信息" />
+                                        <command english="query" chinese="查询妊娠信息" />
+                                        <command english="export" chinese="导出妊娠信息" />
+                                    </commands>
+                                </module>
+                                <module english="maternityChildRelationInfo"  chinese="生育及子女关系信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加生育及子女关系信息" />
+                                        <command english="delete" chinese="删除生育及子女关系信息" />
+                                        <command english="update" chinese="修改生育及子女关系信息" />
+                                        <command english="query" chinese="查询生育及子女关系信息" />
+                                        <command english="export" chinese="导出生育及子女关系信息" />
+                                    </commands>
+                                </module>
+                                <module english="familyPlanningOperation"  chinese="计划生育手术" >
+                                    <commands>
+                                        <command english="create" chinese="添加计划生育手术" />
+                                        <command english="delete" chinese="删除计划生育手术" />
+                                        <command english="update" chinese="修改计划生育手术" />
+                                        <command english="query" chinese="查询计划生育手术" />
+                                        <command english="export" chinese="导出计划生育手术" />
+                                    </commands>
+                                </module>
+                                <module english="currentPopulationInfo"  chinese="流动人口信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加流动人口信息" />
+                                        <command english="delete" chinese="删除流动人口信息" />
+                                        <command english="update" chinese="修改流动人口信息" />
+                                        <command english="query" chinese="查询流动人口信息" />
+                                        <command english="export" chinese="导出流动人口信息" />
+                                    </commands>
+                                </module>
+                                <module english="parentInfo"  chinese="父母信息" >
+                                    <commands>
+                                        <command english="create" chinese="添加父母信息" />
+                                        <command english="delete" chinese="删除父母信息" />
+                                        <command english="update" chinese="修改父母信息" />
+                                        <command english="query" chinese="查询父母信息" />
+                                        <command english="export" chinese="导出父母信息" />
+                                    </commands>
+                                </module>
+                            </subModules>
+                        </module>
+                    </subModules>
+                </module>
+            </subModules>
+        </module>
     </subModules>
 </module>
