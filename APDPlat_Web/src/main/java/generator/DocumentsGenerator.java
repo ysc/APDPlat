@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class DocumentsGenerator {
     /**
-     * 根据类路径下的文件/generator/*.xls生成相应的模型
+     * 根据类路径下的文件/generator/moduleProjectName/*.xls生成相应的模型
      * 编译模型之后再次生成相应的控制器
      * 生成的文件放置在moduleProjectName指定的项目下
      * @param args 
@@ -50,8 +50,8 @@ public class DocumentsGenerator {
         String moduleProjectName="APDPlat_Module_Documents";
         
         //运行此生成器之前确保*.xls已经建立完毕
-        //并将*.xls拷贝到/generator/下
-        //不会强行覆盖MODEL，如果待生成的文件存在则会忽略生成s
+        //并将*.xls拷贝到/generator/moduleProjectName/下
+        //不会强行覆盖MODEL，如果待生成的文件存在则会忽略生成
         //生成model
         List<ModelInfo> modelInfos=ModelGenerator.generate(moduleProjectName);
         
@@ -177,8 +177,7 @@ public class DocumentsGenerator {
         
         //不会强行覆盖ACTION，如果待生成的文件存在则会忽略生成s
         //生成action
-        //如果在linux平台，则需要改变第三个参数
-        ActionGenerator.generate(modelInfos,workspaceModuleBasePath,mavenRunner);
+        ActionGenerator.generate(modelInfos,workspaceModuleBasePath);
         
         //运行此生成器之前确保module.xml，和相关的model已经建立完毕
         WebGenerator.generate();
