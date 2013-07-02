@@ -20,115 +20,27 @@
 
 package org.apdplat.platform.spring;
 
-import org.apdplat.module.system.service.SystemListener;
-import java.util.Enumeration;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
+import org.apdplat.module.system.service.SystemListener;
+import org.springframework.web.context.ContextLoaderListener;
 
 /**
- * Bootstrap listener to start up and shut down Spring's root {@link WebApplicationContext}.
- * Simply delegates to {@link ContextLoader} as well as to {@link ContextCleanupListener}.
- *
- * <p>This listener should be registered after
- * {@link org.springframework.web.util.Log4jConfigListener}
- * in <code>web.xml</code>, if the latter is used.
- *
- * @author Juergen Hoeller
- * @since 17.02.2003
- * @see org.springframework.web.util.Log4jConfigListener
+ * 自定义Spring的ContextLoaderListener
+ * @author 杨尚川
  */
-public class APDPlatContextLoaderListener extends ContextLoader implements ServletContextListener {
+public class APDPlatContextLoaderListener extends ContextLoaderListener {
+    
+    @Override
+    public void contextInitialized(ServletContextEvent event) {
+        //接管系统的启动
+        SystemListener.contextInitialized(event);
+        super.contextInitialized(event);
+    }
 
-	private ContextLoader contextLoader;
-
-
-	/**
-	 * Initialize the root web application context.
-	 */
-	public void contextInitialized(ServletContextEvent event) {
-            SystemListener.contextInitialized(event);
-		this.contextLoader = createContextLoader();
-		if (this.contextLoader == null) {
-			this.contextLoader = this;
-		}
-		this.contextLoader.initWebApplicationContext(event.getServletContext());
-	}
-
-	/**
-	 * Create the ContextLoader to use. Can be overridden in subclasses.
-	 * @return the new ContextLoader
-	 * @deprecated in favor of simply subclassing APDPlatContextLoaderListener itself
-	 * (which extends ContextLoader, as of Spring 3.0)
-	 */
-	@Deprecated
-	protected ContextLoader createContextLoader() {
-		return null;
-	}
-
-	/**
-	 * Return the ContextLoader used by this listener.
-	 * @return the current ContextLoader
-	 * @deprecated in favor of simply subclassing APDPlatContextLoaderListener itself
-	 * (which extends ContextLoader, as of Spring 3.0)
-	 */
-	@Deprecated
-	public ContextLoader getContextLoader() {
-		return this.contextLoader;
-	}
-
-
-	/**
-	 * Close the root web application context.
-	 */
-	public void contextDestroyed(ServletContextEvent event) {
-            SystemListener.contextDestroyed(event);
-		if (this.contextLoader != null) {
-			this.contextLoader.closeWebApplicationContext(event.getServletContext());
-		}
-		ContextCleanupListener.cleanupAttributes(event.getServletContext());
-	}
-
-}
-class ContextCleanupListener implements ServletContextListener {
-
-	private static final Log logger = LogFactory.getLog(ContextCleanupListener.class);
-
-
-	public void contextInitialized(ServletContextEvent event) {
-	}
-
-	public void contextDestroyed(ServletContextEvent event) {
-		cleanupAttributes(event.getServletContext());
-	}
-
-
-	/**
-	 * Find all ServletContext attributes which implement {@link DisposableBean}
-	 * and destroy them, removing all affected ServletContext attributes eventually.
-	 * @param sc the ServletContext to check
-	 */
-	static void cleanupAttributes(ServletContext sc) {
-		Enumeration attrNames = sc.getAttributeNames();
-		while (attrNames.hasMoreElements()) {
-			String attrName = (String) attrNames.nextElement();
-			if (attrName.startsWith("org.springframework.")) {
-				Object attrValue = sc.getAttribute(attrName);
-				if (attrValue instanceof DisposableBean) {
-					try {
-						((DisposableBean) attrValue).destroy();
-					}
-					catch (Throwable ex) {
-						logger.error("Couldn't invoke destroy method of attribute with name '" + attrName + "'", ex);
-					}
-				}
-			}
-		}
-	}
-
+    @Override
+    public void contextDestroyed(ServletContextEvent event) {
+        //接管系统的关闭
+        SystemListener.contextDestroyed(event);
+        super.contextDestroyed(event);
+    }
 }
