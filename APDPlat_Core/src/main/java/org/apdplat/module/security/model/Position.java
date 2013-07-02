@@ -77,6 +77,8 @@ public class Position extends SimpleModel{
     @JoinColumn(name = "positionID")}, inverseJoinColumns = {
     @JoinColumn(name = "commandID")})
     @OrderBy("id")
+    @ModelAttr("岗位拥有的命令列表")
+    @ModelCollRef("chinese")
     protected List<Command> commands = new ArrayList<>();
     
     @ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "positions", fetch = FetchType.LAZY)
