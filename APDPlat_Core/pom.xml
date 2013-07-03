@@ -88,6 +88,7 @@
         <dynamicreports-core.version>2.1.0</dynamicreports-core.version>
         <sigar.version>1.6.4</sigar.version>        
         <cxf.version>2.7.3</cxf.version>
+        <wro4j.version>1.7.0</wro4j.version>
         
         <p6spy.version>1.3</p6spy.version>
         <mysql.version>5.1.18</mysql.version>
@@ -770,6 +771,23 @@
             </exclusions>
         </dependency>
         <!-- webservice end -->
+        
+        <dependency>
+            <groupId>ro.isdc.wro4j</groupId>
+            <artifactId>wro4j-core</artifactId>
+            <version>${wro4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <!-- 因为项目中的其他jar包已经引入了不同版本的slf4j,这里避免jar重叠所以不引入 -->
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

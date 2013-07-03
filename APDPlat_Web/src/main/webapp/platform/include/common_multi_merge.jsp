@@ -26,9 +26,19 @@ String jsessionid=session.getId();
     var jsessionid='<%=jsessionid%>';
 </script>
 <!--引用合并的css，也可以引用未合并的css-->
-<link rel="stylesheet" type="text/css" href="<%=contextPath%>/platform/include/apdplat_merge.css">
+<link rel="stylesheet" type="text/css" href="<%=contextPath%>/extjs/css/extjs_css_merge.css">
+<link rel="stylesheet" type="text/css" href="<%=contextPath%>/extjs/ux/css/extjs_ux_css_merge.css">
+<link rel="stylesheet" type="text/css" href="<%=contextPath%>/DateTime/DateTime_merge.css">
+<link rel="stylesheet" type="text/css" href="<%=contextPath%>/platform/css/platform_css_merge.css">
 <!--引用合并的js，也可以引用未合并的js-->
-<script type="text/javascript" src="<%=contextPath%>/platform/include/apdplat_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/extjs/js/extjs_js_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/extjs/ux/extjs_ux_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/FusionCharts/FusionCharts_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/ckeditor/ckeditor_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/ckfinder/ckfinder_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/DateTime/DateTime_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/js/js_merge.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/platform/js/platform_js_merge.js"></script>
 
 <!--web系统启动时自动生成的js-->
 <script type="text/javascript" src="<%=contextPath%>/platform/js/dic.js"></script>

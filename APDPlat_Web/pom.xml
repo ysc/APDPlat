@@ -46,6 +46,7 @@
         <java.version>1.7</java.version>
         <!-- 主要依赖库的版本定义 -->
         <apdplat.version>2.4</apdplat.version>
+        <wro4j.version>1.7.0</wro4j.version>
         <junit.version>4.8.2</junit.version>
         <javaee-api.version>6.0</javaee-api.version>
 
@@ -162,8 +163,8 @@
             <artifactId>APDPlat_Module</artifactId>
             <version>${apdplat.version}</version>
         </dependency>
-       
-       
+        
+                              
     </dependencies>
     <build>
         <plugins>  
@@ -172,7 +173,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${maven-war-plugin.version}</version>   
             </plugin>
-            
+                        
             <!--执行对Jar的混淆-->
             <!--
             <plugin>
@@ -232,8 +233,31 @@
                     </excludes>
                 </configuration> 
             </plugin>
-            -->
-            
+            -->            
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <version>${wro4j.version}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- wro4j只负责合并，不负责压缩和混淆，压缩和混淆由yuicompressor-maven-plugin负责 -->
+                    <minimize>false</minimize>
+                    <destinationFolder>${basedir}/src/main/webapp/</destinationFolder>
+                    <contextFolder>${basedir}/src/main/webapp/</contextFolder>                    
+                    <!-- 有 wro4j_single_merge.xml 和 wro4j_multi_merge.xml 可供选择,要和下面的wroManagerFactory对应 -->
+                    <wroFile>${basedir}/src/main/resources/wro4j_single_merge.xml</wroFile>
+                    <!-- 有 org.apdplat.platform.wro4j.APDPlatWro4jSingleMergeManagerFactory 和 org.apdplat.platform.wro4j.APDPlatWro4jMultiMergeManagerFactory 可供选择 -->
+                    <wroManagerFactory>org.apdplat.platform.wro4j.APDPlatWro4jSingleMergeManagerFactory</wroManagerFactory>
+                </configuration>
+            </plugin>
+                        
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-release-plugin</artifactId>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="http://www.isdc.ro/wro">
+
+    <group name="apdplat_merge">
+        <css>/extjs/css/ext-all.css</css>
+        <css>/extjs/css/ext-patch.css</css>
+        <css>/extjs/ux/css/MultiSelect.css</css>
+        <css>/extjs/ux/css/CheckTreePanel.css</css>
+        <css>/extjs/ux/css/ux-all.css</css>
+        <css>/extjs/ux/css/Portal.css</css>
+        <css>/extjs/ux/css/fileuploadfield.css</css>
+        <css>/DateTime/Spinner.css</css>
+        <css>/platform/css/index.css</css>
+        <css>/platform/css/chart.css</css>
+        <css>/platform/css/IconCombo.css</css>
+        <css>/platform/css/skin.css</css>
+        <css>/platform/css/PrinterFriendly.css</css>
+        
+        <js>/extjs/js/adapter/ext/ext-base.js</js>
+        <js>/extjs/js/ext-all.js</js>
+        <js>/extjs/js/ext-lang-zh_CN.js</js>
+        <js>/extjs/js/ext-basex.js</js>
+        <js>/extjs/ux/MultiSelect.js</js>
+        <js>/extjs/ux/ItemSelector.js</js>
+        <js>/extjs/ux/Toast.js</js>
+        <js>/extjs/ux/CheckTreePanel.js</js>
+        <js>/extjs/ux/XmlTreeLoader.js</js>
+        <js>/extjs/ux/Portal.js</js>
+        <js>/extjs/ux/PortalColumn.js</js>
+        <js>/extjs/ux/Portlet.js</js>
+        <js>/extjs/ux/FileUploadField.js</js>
+        <js>/FusionCharts/FusionCharts.js</js>
+        <js>/FusionCharts/FusionChartsExportComponent.js</js>
+        <js>/FusionCharts/uxmedia.js</js>
+        <js>/FusionCharts/uxflash.js</js>
+        <js>/FusionCharts/uxfusion.js</js>
+        <js>/ckeditor/ckeditor.js</js>
+        <js>/ckeditor/Ext.form.BasicForm.js</js>
+        <js>/ckeditor/Ext.form.CKEditor.js</js>
+        <js>/DateTime/Spinner.js</js>
+        <js>/DateTime/SpinnerField.js</js>
+        <js>/DateTime/DateTimeField.js</js>
+        <js>/js/reLogin.js</js>
+        <js>/js/md5.js</js>
+        <js>/js/MSIE.PNG.js</js>
+        <js>/platform/js/specialDic.js</js>
+        <js>/platform/js/vtypeCheck.js</js>
+        <js>/platform/js/PrinterFriendly.js</js>
+        <js>/platform/js/map.js</js>
+        <js>/platform/js/APDPlat.js</js>
+        <js>/platform/js/swfupload.js</js>
+        <js>/platform/js/UploadPanel.js</js>
+        <js>/platform/js/IconCombo.js</js>
+        <js>/platform/js/PageSizePlugin.js</js>
+    </group>
+</groups>
