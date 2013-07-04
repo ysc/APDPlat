@@ -28,28 +28,28 @@ import ro.isdc.wro.model.resource.support.naming.NamingStrategy;
  */
 
 /**
- *
+ *MultiMerge是指对platform/include/common.jsp所引用的JS(CSS)合并为多个文件，同一个文件夹下多个文件合并为一个文件
  * @author 杨尚川
  */
 public class APDPlatMultiMergeNamingStrategy implements NamingStrategy{
     private static final Map<String,String> map = new HashMap<>();
     static{
-        map.put("extjs_css_merge", "extjs/css/");
-        map.put("extjs_js_merge", "extjs/js/");
-        map.put("extjs_ux_merge", "extjs/ux/");
-        map.put("extjs_ux_css_merge", "extjs/ux/css/");
-        map.put("FusionCharts_merge", "FusionCharts/");
-        map.put("ckeditor_merge", "ckeditor/");
-        map.put("ckfinder_merge", "ckfinder/");
-        map.put("DateTime_merge", "DateTime/");
-        map.put("js_merge", "js/");
-        map.put("platform_css_merge", "platform/css/");
-        map.put("platform_js_merge", "platform/js/");
+        map.put("extjs_css_merge.css", "extjs/css/");
+        map.put("extjs_js_merge.js", "extjs/js/");
+        map.put("extjs_ux_merge.js", "extjs/ux/");
+        map.put("extjs_ux_css_merge.css", "extjs/ux/css/");
+        map.put("FusionCharts_merge.js", "FusionCharts/");
+        map.put("ckeditor_merge.js", "ckeditor/");
+        map.put("ckfinder_merge.js", "ckfinder/");
+        map.put("DateTime_merge.css", "DateTime/");
+        map.put("DateTime_merge.js", "DateTime/");
+        map.put("js_merge.js", "js/");
+        map.put("platform_css_merge.css", "platform/css/");
+        map.put("platform_js_merge.js", "platform/js/");
     }
     @Override
     public String rename(String originalName, InputStream inputStream) throws IOException {
-        String originalNamePrefix=originalName.replace(".css", "").replace(".js", "");
-        String path=map.get(originalNamePrefix);
+        String path=map.get(originalName);
         System.out.println("originalName:"+originalName);
         System.out.println("path:"+path);
         originalName=path+originalName;
