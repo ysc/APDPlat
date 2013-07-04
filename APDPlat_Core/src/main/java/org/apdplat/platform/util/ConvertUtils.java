@@ -32,7 +32,11 @@ public class ConvertUtils {
     private ConvertUtils() {
     }
     
-    public static String getTimeDes(long ms) {
+    public static String getTimeDes(Long ms) {
+        //处理参数为NULL的情况
+        if(ms == null){
+            return "";
+        }
         int ss = 1000;
         int mi = ss * 60;
         int hh = mi * 60;
