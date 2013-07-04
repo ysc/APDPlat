@@ -26,14 +26,23 @@ import ro.isdc.wro.model.resource.support.naming.NamingStrategy;
  */
 
 /**
- *
+ *SingleMerge是指对platform/include/common.jsp所引用的JS(CSS)合并为一个文件
  * @author 杨尚川
  */
 public class APDPlatSingleMergeNamingStrategy implements NamingStrategy{
     @Override
     public String rename(String originalName, InputStream inputStream) throws IOException {
         System.out.println("originalName:"+originalName);
-        originalName="platform/include/"+originalName;
+        if(originalName.contains("apdplat_merge")){
+            originalName="platform/include/"+originalName;
+        }
+        if(originalName.contains("login_merge.js")){
+            originalName="js/"+originalName;
+        }
+        if(originalName.contains("login_merge.css")){
+            originalName="css/"+originalName;
+        }
+        
         System.out.println("originalName:"+originalName);
         return originalName;
     }

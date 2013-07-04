@@ -46,6 +46,8 @@ public class APDPlatMultiMergeNamingStrategy implements NamingStrategy{
         map.put("js_merge.js", "js/");
         map.put("platform_css_merge.css", "platform/css/");
         map.put("platform_js_merge.js", "platform/js/");
+        map.put("login_merge.js", "js/");
+        map.put("login_merge.css", "css/");
     }
     @Override
     public String rename(String originalName, InputStream inputStream) throws IOException {
