@@ -165,9 +165,12 @@ public class SystemListener{
             LOG.info("Recording the server shutdown logging", Locale.ENGLISH);    
             runingTime.setShutdownTime(new Date());
             runingTime.setRuningTime(runingTime.getShutdownTime().getTime()-runingTime.getStartupTime().getTime());         
-            //更新runingTime
+            //在更新runingTime的时候，需要打开日志数据库em
+            EntityManagerFactory entityManagerFactoryForLog = SpringContextUtils.getBean("entityManagerFactoryForLog");
             ServiceFacade serviceFacade = SpringContextUtils.getBean("serviceFacadeForLog");
+            openEntityManagerForLog(entityManagerFactoryForLog);
             serviceFacade.update(runingTime);
+            closeEntityManagerForLog(entityManagerFactoryForLog);
         }
         if(memoryMonitor){
             LOG.info("停止内存监视线程");
