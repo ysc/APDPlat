@@ -89,7 +89,7 @@ public class SmsGenerator {
         actions.add("smsSearch");
         String modelName="Sms";
         for(ModelInfo modelInfo : modelInfos){
-            if(modelInfo.getModelEnglish().toUpperCase().equals(modelName.toUpperCase())){
+            if(modelInfo.getModelEnglish().equalsIgnoreCase(modelName)){
                 String modelClzz=modelInfo.getModelPackage()+"."+modelInfo.getModelEnglish();
                 try {
                     Class clazz = Class.forName(modelClzz);
