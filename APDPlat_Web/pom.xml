@@ -204,7 +204,7 @@
             -->
             <!--执行对JS和CSS的混淆压缩-->
             <!-- The yuicompressor plugin will process the js files and css files in src/main/webapp, but they won't be included in the final war. 
-            
+
             <plugin>        
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
@@ -233,7 +233,7 @@
                     </excludes>
                 </configuration> 
             </plugin>
-            -->            
+            -->         
             <plugin>
                 <groupId>ro.isdc.wro4j</groupId>
                 <artifactId>wro4j-maven-plugin</artifactId>
@@ -318,7 +318,7 @@
                 <artifactId>sonar-maven3-plugin</artifactId>
                 <version>${sonar-maven3-plugin.version}</version>
             </plugin>
-            <!--  运行mvn org.codehaus.sonar:sonar-maven3-plugin:2.8:sonar可将项目发布给质量管理平台-->
+            <!--  运行 mvn sonar:sonar 可将项目发布给质量管理平台-->
             <!--site-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

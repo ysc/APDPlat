@@ -247,7 +247,7 @@
                 <artifactId>sonar-maven3-plugin</artifactId>
                 <version>${sonar-maven3-plugin.version}</version>
             </plugin>
-            <!--  运行mvn org.codehaus.sonar:sonar-maven3-plugin:2.8:sonar可将项目发布给质量管理平台-->
+            <!--  运行 mvn sonar:sonar 可将项目发布给质量管理平台-->
             <!--site-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
