@@ -30,13 +30,13 @@
         <property name="username" value="${db.forlog.username}" />
         <property name="password" value="${db.forlog.password}" />
 
-        <property name="initialSize" value="${pool.initialSize}" />
-        <property name="maxActive" value="${pool.maxActive}" />
-        <property name="maxIdle" value="${pool.maxIdle}" />
-        <property name="minIdle" value="${pool.minIdle}" />
-        <property name="maxWait" value="${pool.maxWait}" />
-        <property name="poolPreparedStatements" value="${pool.poolPreparedStatements}" />
-        <property name="defaultAutoCommit" value="${pool.defaultAutoCommit}" />
+        <property name="initialSize" value="${pool.forlog.initialSize}" />
+        <property name="maxActive" value="${pool.forlog.maxActive}" />
+        <property name="maxIdle" value="${pool.forlog.maxIdle}" />
+        <property name="minIdle" value="${pool.forlog.minIdle}" />
+        <property name="maxWait" value="${pool.forlog.maxWait}" />
+        <property name="poolPreparedStatements" value="${pool.forlog.poolPreparedStatements}" />
+        <property name="defaultAutoCommit" value="${pool.forlog.defaultAutoCommit}" />
     </bean>
         <!-- 用p6spy 在console显示变量绑定后的真实sql 与ResultSet,方便开发 
     <bean id="dataSourceSpy" class="com.p6spy.engine.spy.P6DataSource">
@@ -77,22 +77,22 @@
         <property name="dataSource" ref="${dataSourceForLog}" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="${jpa.database}" />
-                <property name="showSql" value="${jpa.show_sql}" />
-                <property name="generateDdl" value="${jpa.generateDdl}" />
+                <property name="database" value="${jpa.forlog.database}" />
+                <property name="showSql" value="${jpa.forlog.show_sql}" />
+                <property name="generateDdl" value="${jpa.forlog.generateDdl}" />
             </bean>
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-                <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
-                <prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
-                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
-                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
-                <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
-                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
-                <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
-                <prop key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>
+                <prop key="hibernate.format_sql">${hibernate.forlog.format_sql}</prop>
+                <prop key="hibernate.max_fetch_depth">${hibernate.forlog.max_fetch_depth}</prop>
+                <prop key="hibernate.jdbc.fetch_size">${hibernate.forlog.jdbc.fetch_size}</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.forlog.jdbc.batch_size}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.forlog.cache.use_second_level_cache}</prop>
+                <prop key="hibernate.cache.use_structured_entries">${hibernate.forlog.cache.use_structured_entries}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.forlog.cache.use_query_cache}</prop>
+                <prop key="hibernate.cache.provider_class">${hibernate.forlog.cache.provider_class}</prop>
+                <prop key="hibernate.memcached.servers">${hibernate.forlog.memcached.servers}</prop>
             </props>
         </property>
     </bean>
