@@ -32,11 +32,11 @@ import java.util.List;
  * @author 杨尚川
  */
 public class IndexFileService {
-    private static final  File file;
+    private static final  File FILE;
     
     static{
         //compass存放lucene索引的根目录
-        file=new File(IndexManager.getIndexDir(),"index");
+        FILE=new File(IndexManager.getIndexDir(),"index");
     }
     /**
      * 获取所有对象对应的索引目录
@@ -45,7 +45,7 @@ public class IndexFileService {
     public static List<IndexDir> getIndexDirs() {
         List<IndexDir> dirs=new ArrayList<>();
         
-        File[] files=file.listFiles();
+        File[] files=FILE.listFiles();
         for(int i=0;i<files.length;i++){
             File f=files[i];
             IndexDir dir=new IndexDir();
@@ -62,7 +62,7 @@ public class IndexFileService {
      * @return 索引文件列表
      */
     public static List<File> getIndexFiles(String dir) {
-        File dirFile=new File(file,dir);
+        File dirFile=new File(FILE,dir);
         List<File> result=new ArrayList<>();
         
         File[] files=dirFile.listFiles();
