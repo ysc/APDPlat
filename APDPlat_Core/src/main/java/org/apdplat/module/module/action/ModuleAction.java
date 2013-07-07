@@ -66,6 +66,10 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
             return null;
         }
 
+        public void setRecursion(boolean recursion) {
+            this.recursion = recursion;
+        }
+
         public void setPrivilege(boolean privilege) {
             this.privilege = privilege;
         }
