@@ -33,7 +33,7 @@ import java.io.InputStreamReader;
  * @author 杨尚川
  */
 public class WindowsMavenRunner implements MavenRunner{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(WindowsMavenRunner.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(WindowsMavenRunner.class);
 
     @Override
     public void run(String workspaceModuleRootPath) {

@@ -53,7 +53,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  *
  */
 public class SystemListener{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SystemListener.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(SystemListener.class);
     
     private static boolean running=false;
     

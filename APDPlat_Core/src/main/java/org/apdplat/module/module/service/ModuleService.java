@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ModuleService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ModuleService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ModuleService.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
 

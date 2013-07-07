@@ -45,7 +45,7 @@ import org.springframework.util.Assert;
  * @author 杨尚川
  */
 public class FileUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(FileUtils.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(FileUtils.class);
         
     private FileUtils(){};
     

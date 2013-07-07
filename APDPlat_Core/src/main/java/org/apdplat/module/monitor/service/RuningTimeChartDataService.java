@@ -35,7 +35,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class RuningTimeChartDataService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(RuningTimeChartDataService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(RuningTimeChartDataService.class);
     
     public static LinkedHashMap<String,Long> getRuningSequence(List<RuningTime> models){
         models=getValidData(models);

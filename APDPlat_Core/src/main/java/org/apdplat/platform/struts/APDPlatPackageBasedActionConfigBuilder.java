@@ -83,7 +83,7 @@ import org.springframework.core.io.FileSystemResource;
  * </p>
  */
 public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuilder {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(APDPlatPackageBasedActionConfigBuilder.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(APDPlatPackageBasedActionConfigBuilder.class);
     
     private final Configuration configuration;
     private final ActionNameBuilder actionNameBuilder;

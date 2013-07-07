@@ -45,7 +45,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class UploadImageAction extends DefaultAction {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(UploadImageAction.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(UploadImageAction.class);
     
     //上传
     private static int BUFFER_SIZE=1024*100*8;

@@ -43,7 +43,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author 杨尚川
  */
 public class AutoLoginFilter implements Filter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(AutoLoginFilter.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(AutoLoginFilter.class);
     
     private UserDetailsServiceImpl userDetailsServiceImpl;
     private boolean enabled = false;

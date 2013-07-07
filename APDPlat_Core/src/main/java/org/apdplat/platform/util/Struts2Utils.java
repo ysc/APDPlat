@@ -37,7 +37,7 @@ import org.apache.struts2.ServletActionContext;
 * @author 杨尚川
 */
 public class Struts2Utils {
-        protected static final APDPlatLogger LOG = new APDPlatLogger(Struts2Utils.class);
+        private static final APDPlatLogger LOG = new APDPlatLogger(Struts2Utils.class);
         
         private Struts2Utils(){};
 

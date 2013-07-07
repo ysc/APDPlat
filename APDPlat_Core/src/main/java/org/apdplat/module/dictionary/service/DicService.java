@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DicService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(DicService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(DicService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
     

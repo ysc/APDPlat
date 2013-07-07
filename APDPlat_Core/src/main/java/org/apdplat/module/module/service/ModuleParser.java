@@ -41,7 +41,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class ModuleParser {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ModuleParser.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ModuleParser.class);
     private static final String dtdFile="/target/module.dtd";
     private static final String disableModules=PropertyHolder.getProperty("module.disable");
     /**

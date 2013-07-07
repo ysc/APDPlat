@@ -48,7 +48,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SpringSecurityService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SpringSecurityService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(SpringSecurityService.class);
     @Resource(name = "filterSecurityInterceptor")
     private  FilterSecurityInterceptor filterSecurityInterceptor;
     @Resource(name="serviceFacade")

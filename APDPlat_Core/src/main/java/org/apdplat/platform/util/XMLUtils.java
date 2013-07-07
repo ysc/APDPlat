@@ -36,7 +36,7 @@ import org.xml.sax.SAXException;
  * @author 杨尚川
  */
 public class XMLUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(XMLUtils.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(XMLUtils.class);
 
     private XMLUtils() {
     }

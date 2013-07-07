@@ -37,7 +37,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class ProcessTimeChartDataService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ProcessTimeChartDataService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ProcessTimeChartDataService.class);
   
 
     public static LinkedHashMap<String, Long> getProcessRate(List<ProcessTime> models) {    

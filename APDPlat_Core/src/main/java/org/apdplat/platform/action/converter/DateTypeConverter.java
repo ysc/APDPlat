@@ -36,7 +36,7 @@ import org.apache.struts2.util.StrutsTypeConverter;
  */
 
 public class DateTypeConverter extends StrutsTypeConverter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(DateTypeConverter.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(DateTypeConverter.class);
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     //暂时只考虑这几种日期格式

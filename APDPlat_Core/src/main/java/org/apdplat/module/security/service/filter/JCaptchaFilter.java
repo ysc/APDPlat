@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 
 public class JCaptchaFilter implements Filter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(JCaptchaFilter.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(JCaptchaFilter.class);
     
     public static final String PARAM_CAPTCHA_PARAMTER_NAME = "captchaParamterName";
     public static final String PARAM_FILTER_PROCESSES_URL = "filterProcessesUrl";

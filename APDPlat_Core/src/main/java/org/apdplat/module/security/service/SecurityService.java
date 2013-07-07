@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 public class SecurityService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SecurityService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(SecurityService.class);
 
     public void checkSeq(String seq){
         if(StringUtils.isNotBlank(seq)){

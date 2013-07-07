@@ -38,7 +38,7 @@ import java.util.zip.ZipOutputStream;
  * @author 杨尚川
  */
 public class ZipUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ZipUtils.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ZipUtils.class);
         
     private ZipUtils(){};
     

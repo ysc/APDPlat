@@ -58,7 +58,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
  */
 
 public class GzipFilter extends Filter {
-
+    private static final APDPlatLogger LOG = new APDPlatLogger(GzipFilter.class);
     /**
      * Performs initialisation.
      */
@@ -173,7 +173,7 @@ class GenericResponseWrapper extends HttpServletResponseWrapper implements Seria
 
     private static final long serialVersionUID = -5976708169031065498L;
 
-    protected static final APDPlatLogger LOG = new APDPlatLogger(GenericResponseWrapper.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(GenericResponseWrapper.class);
     private int statusCode = SC_OK;
     private int contentLength;
     private String contentType;
@@ -382,7 +382,7 @@ class FilterServletOutputStream extends ServletOutputStream {
     }
 }
 class ResponseUtil {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ResponseUtil.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ResponseUtil.class);
 
 
 
@@ -487,7 +487,7 @@ abstract class Filter implements javax.servlet.Filter {
      * If a request attribute NO_FILTER is set, then filtering will be skipped
      */
     public static final String NO_FILTER = "NO_FILTER";
-    protected static final APDPlatLogger LOG = new APDPlatLogger(Filter.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(Filter.class);
 
     /**
      * The filter configuration.

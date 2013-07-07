@@ -42,7 +42,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class BackupAction extends DefaultAction {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(BackupAction.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(BackupAction.class);
     
     private String date;
     @Resource(name="backupServiceExecuter")

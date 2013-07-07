@@ -46,7 +46,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(UserDetailsServiceImpl.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(UserDetailsServiceImpl.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
     private static Map<String,String> messages = new HashMap<>();

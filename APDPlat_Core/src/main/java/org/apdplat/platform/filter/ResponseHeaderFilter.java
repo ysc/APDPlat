@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author 杨尚川
  */
 public class ResponseHeaderFilter implements javax.servlet.Filter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(DicService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(DicService.class);
 
     private  String expiresSeconds;
     private  FilterConfig filterConfig;

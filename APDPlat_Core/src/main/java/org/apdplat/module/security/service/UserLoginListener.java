@@ -44,7 +44,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 
 
 public class UserLoginListener implements HttpSessionAttributeListener,HttpSessionListener  {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(UserLoginListener.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(UserLoginListener.class);
 
     private static Map<String,UserLogin> logs=new HashMap<>();
 

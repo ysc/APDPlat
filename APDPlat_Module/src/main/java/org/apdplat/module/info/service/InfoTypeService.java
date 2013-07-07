@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InfoTypeService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(InfoTypeService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(InfoTypeService.class);
 
     public static List<Integer> getChildIds(InfoType obj) {
         List<Integer> ids=new ArrayList<>();

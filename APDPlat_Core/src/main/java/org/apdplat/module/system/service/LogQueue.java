@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LogQueue {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(LogQueue.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(LogQueue.class);
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
     private ServiceFacade serviceFacade;
