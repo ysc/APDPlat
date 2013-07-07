@@ -31,6 +31,10 @@ import javax.annotation.Resource;
 import org.apdplat.platform.criteria.Criteria;
 import org.springframework.stereotype.Service;
 
+/**
+ *  数据字典项服务
+ * @author 杨尚川
+ */
 @Service
 public class DicItemService {
     private static final APDPlatLogger LOG = new APDPlatLogger(DicItemService.class);
@@ -39,6 +43,7 @@ public class DicItemService {
 
     /**
      * 根据 数据字典英文名称 以及 数据字典编码 查找 数据字典项
+     * 此方法对于遗留数据迁移非常有用
      * @param dicEnglish 数据字典英文名称
      * @param code 数据字典编码
      * @return 数据字典项
