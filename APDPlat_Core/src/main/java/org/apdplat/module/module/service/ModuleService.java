@@ -213,7 +213,7 @@ public class ModuleService {
             json.append("[");
             for (Module m : subModules) {
                 json.append("{'text':'").append(m.getChinese()).append("','id':'module-").append(m.getId()).append("','iconCls':'").append(m.getEnglish()).append("'");
-                if (filter.recursion()) {
+                if (filter.recursion() && m.getSubModules().size()>0) {
                     json.append(",children:").append(toJson(m, filter));
                 }
                 if (m.getSubModules().size() > 0) {
