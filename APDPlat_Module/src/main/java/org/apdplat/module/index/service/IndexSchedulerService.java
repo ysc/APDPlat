@@ -48,7 +48,7 @@ public class IndexSchedulerService implements ApplicationListener {
 
     private static SchedulerFactory sf = new StdSchedulerFactory();
     @Resource(name = "serviceFacade")
-    protected ServiceFacade serviceFacade;
+    private ServiceFacade serviceFacade;
     @Resource(name = "indexTask")
     private JobDetail indexTask;
 
