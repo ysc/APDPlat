@@ -52,6 +52,17 @@ public  class ServiceFacade{
         public void clear(){
             dao.clear();
         }
+        /**
+         * 批量保存，批量提交，显著提升性能
+         * @param <T>
+         * @param models 
+         */
+	@Transactional
+	public <T extends Model> void create(List<T> models) {
+            for(T model : models){
+		dao.create(model);
+            }
+	}
 
 	@Transactional
 	public <T extends Model> void create(T model) {
