@@ -48,7 +48,7 @@
         <apdplat.version>2.4</apdplat.version>
         <wro4j.version>1.7.0</wro4j.version>
         <junit.version>4.8.2</junit.version>
-        <javaee-api.version>6.0</javaee-api.version>
+        <javaee-api.version>7.0</javaee-api.version>
         <!-- 数据库驱动 -->
         <mysql.version>5.1.18</mysql.version>
         <org.hsqldb.version>2.0.0</org.hsqldb.version>

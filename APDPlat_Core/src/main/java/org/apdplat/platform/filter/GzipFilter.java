@@ -41,6 +41,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.WriteListener;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -379,6 +380,16 @@ class FilterServletOutputStream extends ServletOutputStream {
     @Override
     public void write(final byte[] b, final int off, final int len) throws IOException {
         stream.write(b, off, len);
+    }
+
+    @Override
+    public boolean isReady() {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public void setWriteListener(WriteListener wl) {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 }
 class ResponseUtil {

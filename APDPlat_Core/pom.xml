@@ -80,7 +80,7 @@
         <jul-to-slf4j.version>1.6.4</jul-to-slf4j.version>
         <jcl-over-slf4j.version>1.6.4</jcl-over-slf4j.version>
         <logback-classic.version>0.9.28</logback-classic.version>
-        <javaee-api.version>6.0</javaee-api.version>
+        <javaee-api.version>7.0</javaee-api.version>
         <junit.version>4.8.2</junit.version>
         <quartz.version>1.8.4</quartz.version>
         <jcaptcha-all.version>1.0-RC6</jcaptcha-all.version>
