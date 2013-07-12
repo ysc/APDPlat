@@ -35,6 +35,7 @@
     var selectPositionURL=contextPath + '/security/position!store.action?recursion=true';
     var selectUserGroupURL=contextPath + '/security/user-group!store.action';
     var resetURL=contextPath+'/'+namespace+'/'+action+'!reset.action';
+    var reportURL=contextPath+'/'+namespace+'/'+action+'!report.action';
      
     //高级搜索
     AdvancedSearchModel = function() {
@@ -588,16 +589,56 @@
                     });
                 };
                 
-                var commands=["create","delete","updatePart","search","query","export","reset"];
-                var tips=['增加(C)','删除(R)','修改(U)','高级搜索(S)','显示全部(A)','导出(E)',"重置密码(Z)"];
-                var callbacks=[GridBaseModel.create,GridBaseModel.remove,GridBaseModel.modify,GridBaseModel.advancedsearch,GridBaseModel.showall,GridBaseModel.exportData,GridModel.reset];
-            
+                var commands=["create","delete","updatePart","search","query","export","reset","report"];
+                var tips=['增加(C)','删除(R)','修改(U)','高级搜索(S)','显示全部(A)','导出(E)',"重置密码(Z)","图形报表"];
+                var callbacks=[GridBaseModel.create,GridBaseModel.remove,GridBaseModel.modify,GridBaseModel.advancedsearch,GridBaseModel.showall,GridBaseModel.exportData,GridModel.reset,GridModel.report];
+                
                 var grid=GridBaseModel.getGrid(contextPath, namespace, action, pageSize, this.getFields(), this.getColumns(), commands,tips,callbacks);   
          
                 //设置标题
                 grid.setTitle("已选中【"+rootNodeText+"】");
                 
                 return grid;
+            },
+            report: function(){
+                var win = new parent.Ext.Window({
+                    title: "用户报表",
+                    maximizable:true,
+                    width:800,
+                    height:600,
+                    plain: true,
+                    closable: true,
+                    frame: true,
+                    layout: 'fit',
+                    border: false,
+                    modal: true,
+                    items:[new parent.Ext.form.FormPanel({                    
+                            labelAlign: 'left',
+                            buttonAlign: 'center',
+                            bodyStyle: 'padding:5px',
+                            frame: true,//圆角和浅蓝色背景
+                            autoScroll:true,
+
+                            autoLoad: reportURL,
+
+                            buttons: [{
+                                text: '关闭',
+                                iconCls:'cancel',
+                                scope: this,
+                                handler: function() {
+                                    win.close();
+                                }
+                            }],
+                             keys:[{
+                                 key : Ext.EventObject.ENTER,
+                                 fn : function() {
+                                    win.close();
+                                 },
+                                 scope : this
+                             }]
+                        })]
+                });
+                win.show();
             },
             reset: function(){
                 var idList=GridBaseModel.getIdList();
