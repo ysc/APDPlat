@@ -12,6 +12,7 @@
                         <command english="query" chinese="查询用户" />
                         <command english="export" chinese="导出用户" />
                         <command english="reset" chinese="重置密码" />
+                        <command english="report" chinese="图形报表" />
                     </commands>
                 </module>
                 <module english="userGroup"  chinese="用户组管理" >
