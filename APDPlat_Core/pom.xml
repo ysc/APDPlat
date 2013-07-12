@@ -769,6 +769,10 @@
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.birt.runtime</groupId>
+                    <artifactId>org.apache.commons.logging</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         
