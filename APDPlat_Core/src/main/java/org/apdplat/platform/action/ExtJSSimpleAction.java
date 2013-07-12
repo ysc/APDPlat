@@ -82,6 +82,11 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             LOG.error("initModel fail");
         }
     }
+    
+    public String report(){
+        
+        return null;
+    }
 
     public String chart(){
         if(StringUtils.isNotBlank(getQueryString())){
