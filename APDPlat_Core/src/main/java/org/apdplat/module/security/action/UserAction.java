@@ -42,8 +42,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apdplat.module.security.service.UserReportService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -68,6 +71,15 @@ public class UserAction extends ExtJSSimpleAction<User> {
     //用户选择组件
     private boolean select;
     
+    @Resource(name="userReportService")
+    private UserReportService userReportService;
+    
+    @Override
+    public String report(){
+        Struts2Utils.renderImage(userReportService.getReport(ServletActionContext.getServletContext(), ServletActionContext.getRequest()), "text/html");
+        
+        return null;
+    }
     @Override
     protected void checkModel(User model) throws Exception{
         /* 取得用户 */
