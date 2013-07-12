@@ -89,6 +89,7 @@
         <sigar.version>1.6.4</sigar.version>        
         <cxf.version>2.7.3</cxf.version>
         <wro4j.version>1.7.0</wro4j.version>
+        <birt.version>4.2.2</birt.version>
         
         <p6spy.version>1.3</p6spy.version>
         
@@ -758,6 +759,18 @@
             </exclusions>
         </dependency>
         <!-- webservice end -->
+        <!-- birt报表 -->
+        <dependency>
+            <groupId>org.eclipse.birt.runtime</groupId>
+            <artifactId>org.eclipse.birt.runtime</artifactId>
+            <version>${birt.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         
         <dependency>
             <groupId>ro.isdc.wro4j</groupId>
