@@ -38,8 +38,8 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.access.intercept.RequestKey;
-import org.springframework.security.web.util.AntUrlPathMatcher;
+import org.springframework.security.web.util.AntPathRequestMatcher;
+import org.springframework.security.web.util.RequestMatcher;
 import org.springframework.stereotype.Service;
 
 /**
@@ -79,7 +79,7 @@ public class SpringSecurityService {
         LOG.info("开始初始化权限子系统...");
         //核心对象，一切url和角色的绑定都围绕它进行
         //指定了哪些url可以由哪些角色来访问
-        LinkedHashMap<RequestKey, Collection<ConfigAttribute>> requestMap =new LinkedHashMap<>();
+        LinkedHashMap<RequestMatcher, Collection<ConfigAttribute>> requestMap =new LinkedHashMap<>();
         
         
         //普通管理员
@@ -123,19 +123,19 @@ public class SpringSecurityService {
                     v.add(new SecurityConfig(role));
                 }
                 //POST
-                RequestKey key=new RequestKey(url,"POST");
+                RequestMatcher key=new AntPathRequestMatcher(url,"POST");
                 requestMap.put(key, v);
                 //GET
-                key=new RequestKey(url,"GET");
+                key=new AntPathRequestMatcher(url,"GET");
                 requestMap.put(key, v);
             }
             //格式2：超级管理员 或是 普通管理员都可以访问
             else{
                 //POST
-                RequestKey key=new RequestKey(url,"POST");
+                RequestMatcher key=new AntPathRequestMatcher(url,"POST");
                 requestMap.put(key, value);
                 //GET
-                key=new RequestKey(url,"GET");
+                key=new AntPathRequestMatcher(url,"GET");
                 requestMap.put(key, value);
             }
         }
@@ -149,7 +149,7 @@ public class SpringSecurityService {
             Map<String,String> map=ModuleService.getCommandPathToRole(command);
             for(String path : paths){
                 //POST
-                RequestKey key=new RequestKey(path.toString().toLowerCase()+".action*","POST");
+                RequestMatcher key=new AntPathRequestMatcher(path.toString().toLowerCase()+".action*","POST");
                 value=new ArrayList<>();
                 //要把路径转换为角色
                 //如：命令路径：/**/security/user!query 映射角色：_SECURITY_USER_QUERY
@@ -157,13 +157,13 @@ public class SpringSecurityService {
                 value.add(superManager);
                 requestMap.put(key, value);
                 //GET
-                key=new RequestKey(path.toString().toLowerCase()+".action*","GET");
+                key=new AntPathRequestMatcher(path.toString().toLowerCase()+".action*","GET");
                 requestMap.put(key, value);
             }
         }
         
  //3、超级管理员对所有的POST操作具有权限
-        RequestKey key=new RequestKey("/**","POST");
+        RequestMatcher key=new AntPathRequestMatcher("/**","POST");
         //value为超级管理员
         value=new ArrayList<>();
         value.add(superManager);
@@ -171,15 +171,15 @@ public class SpringSecurityService {
         
         
  //4、超级管理员对所有的GET操作具有权限
-        key=new RequestKey("/**","GET");
+        key=new AntPathRequestMatcher("/**","GET");
         requestMap.put(key, value);        
 
-        DefaultFilterInvocationSecurityMetadataSource source=new DefaultFilterInvocationSecurityMetadataSource(new AntUrlPathMatcher(),requestMap);
+        DefaultFilterInvocationSecurityMetadataSource source=new DefaultFilterInvocationSecurityMetadataSource(requestMap);
         
         filterSecurityInterceptor.setSecurityMetadataSource(source);
 
         LOG.debug("system privilege info:\n");
-        for(Map.Entry<RequestKey, Collection<ConfigAttribute>> entry : requestMap.entrySet()){
+        for(Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()){
             LOG.debug(entry.getKey().toString());
             for(ConfigAttribute att : entry.getValue()){
                 LOG.debug("\t"+att.toString());

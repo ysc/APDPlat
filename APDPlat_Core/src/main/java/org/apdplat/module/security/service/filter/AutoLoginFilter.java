@@ -27,7 +27,6 @@ import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.SpringContextUtils;
 import java.io.IOException;
-import java.util.Collection;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -60,8 +59,7 @@ public class AutoLoginFilter implements Filter {
                 UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(defaultUserName);
 
                 UserHolder.saveUserDetailsToContext(userDetails, (HttpServletRequest) request);
-                Collection<GrantedAuthority> auth=userDetails.getAuthorities();
-                for(GrantedAuthority au : auth){
+                for(GrantedAuthority au : userDetails.getAuthorities()){
                     LOG.info("\t"+au.getAuthority());
                 }
             }

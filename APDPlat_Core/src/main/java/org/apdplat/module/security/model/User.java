@@ -52,7 +52,7 @@ import org.apdplat.platform.model.SimpleModel;
 import org.compass.annotations.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -315,7 +315,7 @@ public class User extends SimpleModel  implements UserDetails{
         //如果用户是超级管理员，则只需加入ROLE_SUPERMANAGER标识
         //就不用对其他的权限对象进行检查
         if(isSuperManager()){
-            grantedAuthArray.add(new GrantedAuthorityImpl("ROLE_SUPERMANAGER"));
+            grantedAuthArray.add(new SimpleGrantedAuthority("ROLE_SUPERMANAGER"));
             LOG.debug("ROLE_SUPERMANAGER");
         }else{
             if(this.roles != null && !this.roles.isEmpty()) {
@@ -323,7 +323,7 @@ public class User extends SimpleModel  implements UserDetails{
                 for (Role role : this.roles) {
                     for (String priv : role.getAuthorities()) {
                         LOG.debug(priv);
-                        grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                        grantedAuthArray.add(new SimpleGrantedAuthority(priv.toUpperCase()));
                     }
                 }
             }
@@ -333,7 +333,7 @@ public class User extends SimpleModel  implements UserDetails{
                     for(Role role : userGroup.getRoles()){
                         for (String priv : role.getAuthorities()) {
                             LOG.debug(priv);
-                            grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                            grantedAuthArray.add(new SimpleGrantedAuthority(priv.toUpperCase()));
                         }
                     }
                 }
@@ -343,7 +343,7 @@ public class User extends SimpleModel  implements UserDetails{
                 for (Position position : this.positions) {
                     for (String priv : position.getAuthorities()) {
                         LOG.debug(priv);
-                        grantedAuthArray.add(new GrantedAuthorityImpl(priv.toUpperCase()));
+                        grantedAuthArray.add(new SimpleGrantedAuthority(priv.toUpperCase()));
                     }
                 }
             }
@@ -351,7 +351,7 @@ public class User extends SimpleModel  implements UserDetails{
         if(grantedAuthArray.isEmpty()){
             return null;
         }
-        grantedAuthArray.add(new GrantedAuthorityImpl("ROLE_MANAGER"));
+        grantedAuthArray.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
         LOG.debug("ROLE_MANAGER");
         return grantedAuthArray;
     }
