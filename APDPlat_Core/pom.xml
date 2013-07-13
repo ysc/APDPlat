@@ -59,9 +59,9 @@
         <commons-pool.version>1.2</commons-pool.version>
         <commons-dbcp.version>1.2.1</commons-dbcp.version>
         <freemarker.version>2.3.15</freemarker.version>
-        <struts2-spring-plugin.version>2.2.3</struts2-spring-plugin.version>
-        <struts2-convention-plugin.version>2.2.3</struts2-convention-plugin.version>
-        <struts2-core.version>2.2.3</struts2-core.version>
+        <struts2-spring-plugin.version>2.3.15</struts2-spring-plugin.version>
+        <struts2-convention-plugin.version>2.3.15</struts2-convention-plugin.version>
+        <struts2-core.version>2.3.15</struts2-core.version>
         <commons-io.version>2.0.1</commons-io.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <commons-collections.version>3.2.1</commons-collections.version>
