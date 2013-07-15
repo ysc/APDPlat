@@ -20,8 +20,8 @@
 
 package org.apdplat.module.monitor.service;
 
+import java.util.ArrayList;
 import org.apdplat.module.monitor.model.UserLogin;
-import org.apdplat.module.security.model.User;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -31,7 +31,8 @@ import java.util.List;
  */
 public class UserLoginChartDataService {
   
-    public static LinkedHashMap<String,Long> getUserOnlineTime(List<UserLogin> models){        
+    public static LinkedHashMap<String,Long> getUserOnlineTime(List<UserLogin> models){
+        models=getValidData(models);
         LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
         for(UserLogin item : models){
@@ -72,5 +73,15 @@ public class UserLoginChartDataService {
             temp.put(username, value);
         }
         return temp;
-    }  
+    }
+    public static List<UserLogin> getValidData(List<UserLogin> userLogins){
+        List<UserLogin> models = new ArrayList<>();
+        for(UserLogin userLogin : userLogins){            
+            //如果登录时间或是注销时间有一项为空，则忽略
+            if(userLogin.getLoginTime() != null && userLogin.getLogoutTime() != null){
+                models.add(userLogin);
+            }
+        }
+        return models;
+    }
 }

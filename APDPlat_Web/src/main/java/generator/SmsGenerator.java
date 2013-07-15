@@ -51,8 +51,8 @@ public class SmsGenerator {
         String moduleProjectName="APDPlat_Module_SMS";
         
         //运行此生成器之前确保*.xls已经建立完毕
-        //并将*.xls拷贝到/generator/下
-        //不会强行覆盖MODEL，如果待生成的文件存在则会忽略生成s
+        //并将*.xls拷贝到/generator/moduleProjectName/下
+        //不会强行覆盖MODEL，如果待生成的文件存在则会忽略生成
         //生成model
         List<ModelInfo> modelInfos=ModelGenerator.generate(moduleProjectName);
         
@@ -89,7 +89,7 @@ public class SmsGenerator {
         actions.add("smsSearch");
         String modelName="Sms";
         for(ModelInfo modelInfo : modelInfos){
-            if(modelInfo.getModelEnglish().toUpperCase().equals(modelName.toUpperCase())){
+            if(modelInfo.getModelEnglish().equalsIgnoreCase(modelName)){
                 String modelClzz=modelInfo.getModelPackage()+"."+modelInfo.getModelEnglish();
                 try {
                     Class clazz = Class.forName(modelClzz);
@@ -107,8 +107,7 @@ public class SmsGenerator {
         
         //不会强行覆盖ACTION，如果待生成的文件存在则会忽略生成s
         //生成action
-        //如果在linux平台，则需要改变第三个参数
-        ActionGenerator.generate(modelInfos,workspaceModuleBasePath,mavenRunner);
+        ActionGenerator.generate(modelInfos,workspaceModuleBasePath);
         
         //运行此生成器之前确保module.xml，和相关的model已经建立完毕
         WebGenerator.generate();

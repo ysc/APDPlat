@@ -25,6 +25,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
  * @author 杨尚川
  */
 public class AuthorizationUtils {
+    private static final int SPLITLENGTH=4;
     public static void main(String args[]) throws Exception {
         String code="71F5-DA7F-495E-7F70-6D47-F3E6-3DC6-349A";
         String authCode=auth(code);
@@ -37,7 +38,7 @@ public class AuthorizationUtils {
         return getSplitString(code);
     }
     private static String getSplitString(String str){ 
-        return getSplitString(str, "-", 4);
+        return getSplitString(str, "-", SPLITLENGTH);
     }
     private static String getSplitString(String str, String split, int length){        
         int len=str.length();

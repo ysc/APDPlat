@@ -36,13 +36,15 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import org.apdplat.platform.service.ServiceFacade;
+import org.apdplat.platform.util.SpringContextUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 
 
 public class UserLoginListener implements HttpSessionAttributeListener,HttpSessionListener  {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(UserLoginListener.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(UserLoginListener.class);
 
     private static Map<String,UserLogin> logs=new HashMap<>();
 
@@ -79,6 +81,8 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
                         LOG.error("记录登录日志出错",e);
                     }
                     userLogin.setUsername(user.getUsername());
+                    //保存用户登陆日志
+                    LogQueue.addLog(userLogin);
                     logs.put(user.getUsername(), userLogin);
                 }else{
                     LOG.info("用户 "+user.getUsername()+" 的登录日志已经被记录过，用户在未注销前又再次登录，忽略此登录");
@@ -108,7 +112,9 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
                             LOG.info("开始记录用户 "+user.getUsername()+" 的注销日志");
                             userLogin.setLogoutTime(new Date());
                             userLogin.setOnlineTime(userLogin.getLogoutTime().getTime()-userLogin.getLoginTime().getTime());
-                            LogQueue.addLog(userLogin);
+                            //更新userLogin
+                            ServiceFacade serviceFacade = SpringContextUtils.getBean("serviceFacadeForLog");
+                            serviceFacade.update(userLogin);
                             logs.remove(user.getUsername());
                         }else{
                             LOG.info("无法记录用户 "+user.getUsername()+" 的注销日志，因为用户的登录日志不存在");
@@ -156,7 +162,9 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
             LOG.info("开始记录用户 "+username+" 的注销日志");
             userLogin.setLogoutTime(new Date());
             userLogin.setOnlineTime(userLogin.getLogoutTime().getTime()-userLogin.getLoginTime().getTime());
-            LogQueue.addLog(userLogin);
+            //更新userLogin
+            ServiceFacade serviceFacade = SpringContextUtils.getBean("serviceFacadeForLog");
+            serviceFacade.update(userLogin);
             logs.remove(username);
         }
     }

@@ -31,7 +31,7 @@ import org.apache.commons.lang.StringUtils;
  * @author 杨尚川
  */
 public class IPAccessControler {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(IPAccessControler.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(IPAccessControler.class);
     
     private Collection<String> allow;
     private Collection<String> deny;

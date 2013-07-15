@@ -82,6 +82,11 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             LOG.error("initModel fail");
         }
     }
+    
+    public String report(){
+        
+        return null;
+    }
 
     public String chart(){
         if(StringUtils.isNotBlank(getQueryString())){
@@ -571,6 +576,16 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                     value=DateTypeConverter.toDefaultDate((Date)value);
                 }else if(field.isAnnotationPresent(RenderTime.class)){
                     value=DateTypeConverter.toDefaultDateTime((Date)value);
+                }else{
+                    //对于Date字段，如果没有指定渲染类型，则根据@Temporal来判断
+                    switch (valueClass) {
+                        case "Timestamp":
+                            value=DateTypeConverter.toDefaultDateTime((Date)value);
+                            break;
+                        case "Date":
+                            value=DateTypeConverter.toDefaultDate((Date)value);
+                            break;
+                    }
                 }
             }
             //处理下拉菜单

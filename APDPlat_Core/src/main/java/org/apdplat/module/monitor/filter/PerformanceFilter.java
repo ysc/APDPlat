@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author 杨尚川
  */
 public class PerformanceFilter implements Filter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(PerformanceFilter.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(PerformanceFilter.class);
     private boolean enabled = false;
 
     @Override
@@ -60,6 +60,10 @@ public class PerformanceFilter implements Filter {
         if (enabled && filter(req)) {
 		long end=System.currentTimeMillis();
                 User user=OnlineUserService.getUser(req.getSession().getId());
+                //如果没有用户登录，则不执行性能分析
+                if(user==null){
+                    return ;
+                }
                 ProcessTime logger=new ProcessTime();
                 logger.setUsername(user.getUsername());
                 logger.setUserIP(req.getRemoteAddr());

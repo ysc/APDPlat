@@ -197,7 +197,7 @@ function createViewport(){
                                 autoScroll : true,
                                 border : false,
                                 loader : new Ext.tree.TreeLoader({
-                                        dataUrl : contextPath + '/module/module!query.action?recursion=true'
+                                        dataUrl : contextPath + '/module/module!query.action?recursion=false'
                                 }),
                                 root : new Ext.tree.AsyncTreeNode({
                                         text:arr[i].text,

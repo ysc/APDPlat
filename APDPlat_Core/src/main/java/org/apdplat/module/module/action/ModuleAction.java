@@ -26,6 +26,8 @@ import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.util.Struts2Utils;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apdplat.module.module.service.ModuleCache;
+import org.apdplat.module.security.service.UserHolder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 /**
@@ -40,12 +42,27 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
         private ModuleService moduleService;
         private String node;
         private boolean privilege=false;
-        private boolean recursion=false;
+        private boolean recursion=false;      
         @Override
         public String query(){
             if(node==null){
                 return super.query();
             }
+            //手动缓存控制
+            String key="node:"+node+"_privilege:"+privilege+"_recursion:"+recursion;
+            //如果privilege=ture，所有用户共享一份数据
+            if(!privilege){
+                key=UserHolder.getCurrentLoginUser().getUsername()+"_"+key;
+            }
+            String value=ModuleCache.get(key);
+            if(value!=null){
+                LOG.info("使用缓存数据，key:"+key);
+                LOG.debug("使用缓存数据，value:"+value);
+                Struts2Utils.renderJson(value);
+                return null;
+            }
+            
+            long start=System.currentTimeMillis();
             Module module=null;
             if(node.contains("-")){
                 String[] temp=node.split("-");
@@ -61,9 +78,17 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
                 }else{
                     json=moduleService.toJsonForUser(module,recursion);
                 }
+                
+                LOG.info("module.query cost:"+(System.currentTimeMillis()-start));
+                LOG.info("设置缓存数据，key:"+key);
+                ModuleCache.put(key, json);
                 Struts2Utils.renderJson(json);
             }
             return null;
+        }
+
+        public void setRecursion(boolean recursion) {
+            this.recursion = recursion;
         }
 
         public void setPrivilege(boolean privilege) {

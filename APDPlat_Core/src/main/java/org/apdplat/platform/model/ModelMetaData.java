@@ -30,7 +30,7 @@ import java.util.Map;
  * @author 杨尚川
  */
 public class ModelMetaData {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ModelMetaData.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ModelMetaData.class);
     
     private static Map<String,String> des=new HashMap<>();
     private static Map<String,Class<? extends Model>> metaData=new HashMap<>();

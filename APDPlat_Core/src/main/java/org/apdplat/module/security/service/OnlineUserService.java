@@ -31,7 +31,7 @@ import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 
 public class OnlineUserService{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(OnlineUserService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(OnlineUserService.class);
 
     private static SessionRegistry sessionRegistry;
     public static String getUsername(String sessionID) {

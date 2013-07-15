@@ -31,7 +31,7 @@ import java.util.Set;
  * @author 杨尚川
  */
 public class SortUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SortUtils.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(SortUtils.class);
         
     private SortUtils(){};
     

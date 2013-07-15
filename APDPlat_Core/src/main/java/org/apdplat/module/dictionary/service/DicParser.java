@@ -39,7 +39,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class DicParser {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(DicParser.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(DicParser.class);
     private static final String dtdFile="/target/dic.dtd";
     /**
      * 返回所有Dic对象中dicItems不为空的Dic对象

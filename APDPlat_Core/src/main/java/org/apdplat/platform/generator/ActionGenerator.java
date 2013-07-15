@@ -68,10 +68,9 @@ public class ActionGenerator extends Generator{
     /**
      * 生成批量模型对应的Action
      * @param modelInfos 批量模型
-     * @param moduleProjectName 模块名称
-     * @param mavenRunner 自动构建
+     * @param workspaceModuleBasePath 模块所在项目物理根路径
      */
-    public static void generate(List<ModelInfo>  modelInfos,String workspaceModuleBasePath,MavenRunner mavenRunner){        
+    public static void generate(List<ModelInfo>  modelInfos,String workspaceModuleBasePath){        
         workspaceModuleBasePath+="/src/main/java/";
         for(ModelInfo modelInfo : modelInfos){
             String modelClzz=modelInfo.getModelPackage()+"."+modelInfo.getModelEnglish();

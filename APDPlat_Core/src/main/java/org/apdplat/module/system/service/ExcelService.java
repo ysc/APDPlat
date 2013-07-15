@@ -37,7 +37,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExcelService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ExcelService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ExcelService.class);
 
     private static String outputFile = null;
 

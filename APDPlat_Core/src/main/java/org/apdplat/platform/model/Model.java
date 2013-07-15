@@ -154,7 +154,7 @@ public abstract class Model implements Serializable{
         if (id == null) {
             id = -1;
         }
-        return new Integer(id + 1000).hashCode();
+        return Integer.valueOf(id + 1000).hashCode();
     }
 
     @Override

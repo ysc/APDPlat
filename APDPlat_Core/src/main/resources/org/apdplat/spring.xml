@@ -3,10 +3,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
-    http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-    http://www.springframework.org/schema/tx       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-    http://www.springframework.org/schema/aop      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-    http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    http://www.springframework.org/schema/beans    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/tx       http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+    http://www.springframework.org/schema/aop      http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+    http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-3.2.xsd">
     <context:component-scan base-package="${basePackage}" />
 	<!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -30,13 +30,13 @@
         <property name="username" value="${db.forlog.username}" />
         <property name="password" value="${db.forlog.password}" />
 
-        <property name="initialSize" value="${pool.initialSize}" />
-        <property name="maxActive" value="${pool.maxActive}" />
-        <property name="maxIdle" value="${pool.maxIdle}" />
-        <property name="minIdle" value="${pool.minIdle}" />
-        <property name="maxWait" value="${pool.maxWait}" />
-        <property name="poolPreparedStatements" value="${pool.poolPreparedStatements}" />
-        <property name="defaultAutoCommit" value="${pool.defaultAutoCommit}" />
+        <property name="initialSize" value="${pool.forlog.initialSize}" />
+        <property name="maxActive" value="${pool.forlog.maxActive}" />
+        <property name="maxIdle" value="${pool.forlog.maxIdle}" />
+        <property name="minIdle" value="${pool.forlog.minIdle}" />
+        <property name="maxWait" value="${pool.forlog.maxWait}" />
+        <property name="poolPreparedStatements" value="${pool.forlog.poolPreparedStatements}" />
+        <property name="defaultAutoCommit" value="${pool.forlog.defaultAutoCommit}" />
     </bean>
         <!-- 用p6spy 在console显示变量绑定后的真实sql 与ResultSet,方便开发 
     <bean id="dataSourceSpy" class="com.p6spy.engine.spy.P6DataSource">
@@ -66,6 +66,7 @@
                 <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
                 <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
                 <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+                <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
                 <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
                 <prop key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>
             </props>
@@ -77,22 +78,23 @@
         <property name="dataSource" ref="${dataSourceForLog}" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="${jpa.database}" />
-                <property name="showSql" value="${jpa.show_sql}" />
-                <property name="generateDdl" value="${jpa.generateDdl}" />
+                <property name="database" value="${jpa.forlog.database}" />
+                <property name="showSql" value="${jpa.forlog.show_sql}" />
+                <property name="generateDdl" value="${jpa.forlog.generateDdl}" />
             </bean>
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-                <prop key="hibernate.max_fetch_depth">${hibernate.max_fetch_depth}</prop>
-                <prop key="hibernate.jdbc.fetch_size">${hibernate.jdbc.fetch_size}</prop>
-                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
-                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
-                <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
-                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
-                <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
-                <prop key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>
+                <prop key="hibernate.format_sql">${hibernate.forlog.format_sql}</prop>
+                <prop key="hibernate.max_fetch_depth">${hibernate.forlog.max_fetch_depth}</prop>
+                <prop key="hibernate.jdbc.fetch_size">${hibernate.forlog.jdbc.fetch_size}</prop>
+                <prop key="hibernate.jdbc.batch_size">${hibernate.forlog.jdbc.batch_size}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.forlog.cache.use_second_level_cache}</prop>
+                <prop key="hibernate.cache.use_structured_entries">${hibernate.forlog.cache.use_structured_entries}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.forlog.cache.use_query_cache}</prop>
+                <prop key="hibernate.cache.region.factory_class">${hibernate.forlog.cache.region.factory_class}</prop>
+                <prop key="hibernate.cache.provider_class">${hibernate.forlog.cache.provider_class}</prop>
+                <prop key="hibernate.memcached.servers">${hibernate.forlog.memcached.servers}</prop>
             </props>
         </property>
     </bean>
@@ -158,6 +160,42 @@
             <value>backup</value>
         </property>
     </bean>
+    
+     <!-- Activiti begin -->
+     <!-- 
+    配置processEngineConfiguration的时候属性transactionManager要使用和业务功能的同一个事务管理Bean，否则事务不同步 
+    由Spring代理创建引擎，最最重要的是如果把引擎嵌入到业务系统中可以做到业务事务与引擎事务的统一管理
+    -->
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="databaseSchemaUpdate" value="true"/>
+        <property name="jobExecutorActivate" value="false"/>
+        <property name="history" value="full"/>
+        <property name="processDefinitionCacheLimit" value="10"/>
+        <!-- 生成流程图的字体 -->
+        <property name="activityFontName" value="宋体"/>
+        <property name="labelFontName" value="宋体"/>
+        <!-- 自动部署 -->
+        <property name="deploymentResources">
+            <list>
+                <value>classpath*:/deployments/*</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    </bean>
+
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+    <!-- Activiti end -->
     
     <bean id="serviceFacadeForLog" class="org.apdplat.platform.service.ServiceFacade">
         <property name="dao" ref="daoFacadeForLog"/>

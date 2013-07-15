@@ -1,59 +1,61 @@
-9fabf03ea54ffd04663aa6e80af26f9dcc7295e8
- APDPlatPackageBasedActionConfigBuilder.java | 260 +++++++++++------------------
- 1 file changed, 101 insertions(+), 159 deletions(-)
+505f303de92916bd4a2029d001e4857ac044c061
+ APDPlatPackageBasedActionConfigBuilder.java | 71 ++++++++++++++++++-----------
+ 1 file changed, 44 insertions(+), 27 deletions(-)
 
-diff --git APDPlatPackageBasedActionConfigBuilder.java APDPlatPackageBasedActionConfigBuilder.java
-index 13f75a0..4a8cfe6 100644
---- APDPlatPackageBasedActionConfigBuilder.java
-+++ APDPlatPackageBasedActionConfigBuilder.java
-@@ -1,5 +1,5 @@
- /*
-- * $Id: PackageBasedActionConfigBuilder.java 1076544 2011-03-03 07:19:37Z lukaszlenart $
-+ * $Id: APDPlatPackageBasedActionConfigBuilder.java 805664 2009-08-19 05:13:48Z musachy $
-  *
-  * Licensed to the Apache Software Foundation (ASF) under one
-  * or more contributor license agreements.  See the NOTICE file
-@@ -18,10 +18,13 @@
-  * specific language governing permissions and limitations
-  * under the License.
+diff --git a/APDPlatPackageBasedActionConfigBuilder.java b/APDPlatPackageBasedActionConfigBuilder.java
+index 222851e..00a6570 100644
+--- a/APDPlatPackageBasedActionConfigBuilder.java
++++ b/APDPlatPackageBasedActionConfigBuilder.java
+@@ -1,24 +1,24 @@
+-/*
+- * $Id: PackageBasedActionConfigBuilder.java 1469182 2013-04-18 06:20:37Z lukaszlenart $
+- *
+- * Licensed to the Apache Software Foundation (ASF) under one
+- * or more contributor license agreements.  See the NOTICE file
+- * distributed with this work for additional information
+- * regarding copyright ownership.  The ASF licenses this file
+- * to you under the Apache License, Version 2.0 (the
+- * "License"); you may not use this file except in compliance
+- * with the License.  You may obtain a copy of the License at
+- *
+- *  http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing,
+- * software distributed under the License is distributed on an
+- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+- * KIND, either express or implied.  See the License for the
+- * specific language governing permissions and limitations
+- * under the License.
++/**
++ * 
++ * APDPlat - Application Product Development Platform
++ * Copyright (c) 2013, Êù®Â∞öÂ∑ù, yang-shangchuan@qq.com
++ * 
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 3 of the License, or
++ * (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ * 
   */
 -package org.apache.struts2.convention;
-+package com.apdplat.platform.struts;
++
++package org.apdplat.platform.struts;
  
--import com.opensymphony.xwork2.ActionContext;
-+import com.apdplat.module.system.service.PropertyHolder;
-+import com.apdplat.platform.log.APDPlatLogger;
-+import com.apdplat.platform.util.FileUtils;
- import com.opensymphony.xwork2.ObjectFactory;
-+import com.opensymphony.xwork2.ActionContext;
- import com.opensymphony.xwork2.config.Configuration;
- import com.opensymphony.xwork2.config.ConfigurationException;
- import com.opensymphony.xwork2.config.entities.ActionConfig;
-@@ -35,15 +38,10 @@ import com.opensymphony.xwork2.util.FileManager;
- import com.opensymphony.xwork2.util.TextParseUtil;
- import com.opensymphony.xwork2.util.classloader.ReloadingClassLoader;
- import com.opensymphony.xwork2.util.finder.ClassFinder;
--import com.opensymphony.xwork2.util.finder.ClassFinder.ClassInfo;
--import com.opensymphony.xwork2.util.finder.ClassLoaderInterface;
--import com.opensymphony.xwork2.util.finder.ClassLoaderInterfaceDelegate;
- import com.opensymphony.xwork2.util.finder.Test;
- import com.opensymphony.xwork2.util.finder.UrlSet;
--import com.opensymphony.xwork2.util.logging.Logger;
--import com.opensymphony.xwork2.util.logging.LoggerFactory;
--import org.apache.commons.lang.ObjectUtils;
--import org.apache.commons.lang.StringUtils;
-+import com.opensymphony.xwork2.util.finder.ClassLoaderInterface;
-+import com.opensymphony.xwork2.util.finder.ClassLoaderInterfaceDelegate;
- import org.apache.struts2.StrutsConstants;
- import org.apache.struts2.StrutsException;
- import org.apache.struts2.convention.annotation.Action;
-@@ -68,15 +66,25 @@ import java.util.HashSet;
+ import com.opensymphony.xwork2.ActionContext;
+ import com.opensymphony.xwork2.FileManager;
+@@ -71,16 +71,23 @@ import java.util.HashSet;
  import java.util.List;
  import java.util.Map;
  import java.util.Set;
 -import java.util.regex.Pattern;
-+import org.apache.commons.lang.ObjectUtils;
-+import org.apache.commons.lang.StringUtils;
 +import org.apache.struts2.convention.ActionConfigBuilder;
 +import org.apache.struts2.convention.ActionNameBuilder;
 +import org.apache.struts2.convention.ConventionConstants;
@@ -61,7 +63,7 @@ index 13f75a0..4a8cfe6 100644
 +import org.apache.struts2.convention.ReflectionTools;
 +import org.apache.struts2.convention.ResultMapBuilder;
 +import org.apache.struts2.convention.StringTools;
-+import org.springframework.core.io.FileSystemResource;
++import org.apdplat.module.system.service.PropertyHolder;
  
  /**
   * <p>
@@ -69,25 +71,14 @@ index 13f75a0..4a8cfe6 100644
   * </p>
   */
 -public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
--    private static final Logger LOG = LoggerFactory.getLogger(PackageBasedActionConfigBuilder.class);
 +public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuilder {
-+    protected static final APDPlatLogger LOG = new APDPlatLogger(APDPlatPackageBasedActionConfigBuilder.class);
-+    
+ 
+-    private static final Logger LOG = LoggerFactory.getLogger(PackageBasedActionConfigBuilder.class);
++    private static final Logger LOG = LoggerFactory.getLogger(APDPlatPackageBasedActionConfigBuilder.class);
+     private static final boolean EXTRACT_BASE_INTERFACES = true;
+ 
      private final Configuration configuration;
-     private final ActionNameBuilder actionNameBuilder;
-     private final ResultMapBuilder resultMapBuilder;
-@@ -101,10 +109,8 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-     private Set<String> fileProtocols;
-     private boolean alwaysMapExecute;
-     private boolean excludeParentClassLoader;
--    private boolean slashesInActionNames;
- 
-     private static final String DEFAULT_METHOD = "execute";
--    private boolean eagerLoading = false;
- 
-     /**
-      * Constructs actions based on a list of packages.
-@@ -120,7 +126,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
+@@ -128,7 +135,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
       * @param defaultParentPackage  The default parent package for all the configuration.
       */
      @Inject
@@ -96,337 +87,33 @@ index 13f75a0..4a8cfe6 100644
                                             @Inject("struts.convention.redirect.to.slash") String redirectToSlash,
                                             @Inject("struts.convention.default.parent.package") String defaultParentPackage) {
  
-@@ -152,12 +158,6 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-     public void setReload(String reload) {
-         this.reload = "true".equals(reload);
-     }
--    
--    
--    @Inject(StrutsConstants.STRUTS_ENABLE_SLASHES_IN_ACTION_NAMES)
--    public void setSlashesInActionNames(String slashesInActionNames) {
--        this.slashesInActionNames = "true".equals(slashesInActionNames);
--    }
- 
-     /**
-      * Exclude URLs found by the parent class loader. Defaults to "true", set to true for JBoss
-@@ -177,7 +177,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-     }
- 
-     /**
--     * File URLs whose protocol are in these list will be processed as jars containing classes 
-+     * File URLs whose protocol are in these list will be processed as jars containing classes
-      * @param fileProtocols Comma separated list of file protocols that will be considered as jar files and scanned
-      */
-     @Inject("struts.convention.action.fileProtocols")
-@@ -196,12 +196,21 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-     }
- 
-     /**
--     * @param includeJars Comma separated list of regular expressions of jars to be included.                         
-+     * @param includeJars Comma separated list of regular expressions of jars to be included.
+@@ -208,8 +215,18 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
       */
      @Inject(value = "struts.convention.action.includeJars", required = false)
      public void setIncludeJars(String includeJars) {
 -        if (StringUtils.isNotEmpty(includeJars))
 -            this.includeJars = includeJars.split("\\s*[,]\\s*");
-+        if (StringUtils.isNotBlank(includeJars))
-+            LOG.info("ø™ º÷¥––apdplat∂‘strutsµƒ∂®÷∆–ﬁ∏ƒ");
-+            LOG.info("’ºŒª∑˚µƒƒ⁄»›Œ™: "+includeJars);
-+            //»•µÙ${∫Õ}£¨¥”≈‰÷√Œƒº˛∂¡»°’Ê’˝ƒ⁄»›
++        if (StringUtils.isNotBlank(includeJars)){
++            LOG.info("ÂºÄÂßãÊâßË°åapdplatÂØπstrutsÁöÑÂÆöÂà∂‰øÆÊîπ");
++            LOG.info("Âç†‰ΩçÁ¨¶ÁöÑÂÜÖÂÆπ‰∏∫: "+includeJars);
++            //ÂéªÊéâ${Âíå}Ôºå‰ªéÈÖçÁΩÆÊñá‰ª∂ËØªÂèñÁúüÊ≠£ÂÜÖÂÆπ
 +            includeJars=PropertyHolder.getProperty(includeJars.substring(2,includeJars.length()-1));
-+            LOG.info("’ºŒª∑˚∂‘”¶µƒ≈‰÷√Œƒº˛µƒƒ⁄»›Œ™: "+includeJars);
++            LOG.info("Âç†‰ΩçÁ¨¶ÂØπÂ∫îÁöÑÈÖçÁΩÆÊñá‰ª∂ÁöÑÂÜÖÂÆπ‰∏∫: "+includeJars);
 +            this.includeJars = includeJars.split(",");
 +
 +            for(String jar : this.includeJars){
 +                LOG.info("struts include jar "+jar);
 +            }
++        }
      }
  
      /**
-@@ -281,15 +290,6 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-         this.mapAllMatches = "true".equals(mapAllMatches);
-     }
- 
--    /**
--     * @param eagerLoading (Optional) If set, found action classes will be instantiated by the ObjectFactory to accelerate future use
--     *                      setting it up can clash with Spring managed beans
--     */
--    @Inject(value = "struts.convention.action.eagerLoading", required = false)
--    public void setEagerLoading(String eagerLoading) {
--        this.eagerLoading = "true".equals(eagerLoading);
--    }
--
-     protected void initReloadClassLoader() {
-         //when the configuration is reloaded, a new classloader will be setup
-         if (isReloadEnabled() && reloadingClassLoader == null)
-@@ -313,7 +313,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-     public void buildActionConfigs() {
-         //setup reload class loader based on dev settings
-         initReloadClassLoader();
--        
-+
-         if (!disableActionScanning) {
-             if (actionPackages == null && packageLocators == null) {
-                 throw new ConfigurationException("At least a list of action packages or action package locators " +
-@@ -366,17 +366,23 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-         Set<Class> classes = new HashSet<Class>();
-         try {
-             if (actionPackages != null || (packageLocators != null && !disablePackageLocatorsScanning)) {
--                
--                // By default, ClassFinder scans EVERY class in the specified
--                // url set, which can produce spurious warnings for non-action
--                // classes that can't be loaded. We pass a package filter that
--                // only considers classes that match the action packages
--                // specified by the user
--                Test<String> classPackageTest = getClassPackageTest();
--                ClassFinder finder = new ClassFinder(getClassLoaderInterface(), buildUrlSet().getUrls(), true, this.fileProtocols, classPackageTest);
--
--                Test<ClassFinder.ClassInfo> test = getActionClassTest();
--                classes.addAll(finder.findClasses(test));
-+                ClassFinder finder = new ClassFinder(getClassLoaderInterface(), buildUrlSet().getUrls(), true, this.fileProtocols);
-+
-+                // named packages
-+                if (actionPackages != null) {
-+                    for (String packageName : actionPackages) {
-+                        Test<ClassFinder.ClassInfo> test = getPackageFinderTest(packageName);
-+                        classes.addAll(finder.findClasses(test));
-+                    }
-+                }
-+
-+                //package locators
-+                if (packageLocators != null && !disablePackageLocatorsScanning) {
-+                    for (String packageLocator : packageLocators) {
-+                        Test<ClassFinder.ClassInfo> test = getPackageLocatorTest(packageLocator);
-+                        classes.addAll(finder.findClasses(test));
-+                    }
-+                }
-             }
-         } catch (Exception ex) {
-             if (LOG.isErrorEnabled())
-@@ -432,25 +438,16 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-         if (includeJars == null) {
-             urlSet = urlSet.exclude(".*?\\.jar(!/|/)?");
-         } else {
--            //jar urls regexes were specified
--            List<URL> rawIncludedUrls = urlSet.getUrls();
-             Set<URL> includeUrls = new HashSet<URL>();
-             boolean[] patternUsed = new boolean[includeJars.length];
--
--            for (URL url : rawIncludedUrls) {
--                if (fileProtocols.contains(url.getProtocol())) {
--                    //it is a jar file, make sure it macthes at least a url regex
--                    for (int i = 0; i < includeJars.length; i++) {
--                        String includeJar = includeJars[i];
+@@ -471,7 +488,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
+                     //it is a jar file, make sure it macthes at least a url regex
+                     for (int i = 0; i < includeJars.length; i++) {
+                         String includeJar = includeJars[i];
 -                        if (Pattern.matches(includeJar, url.toExternalForm())) {
--                            includeUrls.add(url);
--                            patternUsed[i] = true;
--                            break;
--                        }
--                    }
--                } else {
--                    //it is not a jar
--                    includeUrls.add(url);
-+            for (int i = 0; i < includeJars.length; i++) {
-+                try{
-+                    String includeJar = includeJars[i];
-+                    FileSystemResource resource=new FileSystemResource(FileUtils.getAbsolutePath(includeJar));
-+                    includeUrls.add(resource.getURL());
-+                    patternUsed[i] = true;
-+                }catch(Exception e){
-+                    e.printStackTrace();
-                 }
-             }
- 
-@@ -467,87 +464,13 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-         return urlSet;
-     }
- 
--    /**
--     * Note that we can't include the test for {@link #actionSuffix} here
--     * because a class is included if its name ends in {@link #actionSuffix} OR
--     * it implements {@link com.opensymphony.xwork2.Action}. Since the whole
--     * goal is to avoid loading the class if we don't have to, the (actionSuffix
--     * || implements Action) test will have to remain until later. See
--     * {@link #getActionClassTest()} for the test performed on the loaded
--     * {@link ClassInfo} structure.
--     * 
--     * @param className the name of the class to test
--     * @return true if the specified class should be included in the
--     *         package-based action scan
--     */
--    protected boolean includeClassNameInActionScan(String className) {
--
--        String classPackageName = StringUtils.substringBeforeLast(className, ".");
--
--        if (actionPackages != null) {
--            for (String packageName : actionPackages) {
--                String strictPackageName = packageName + ".";
--                if (classPackageName.equals(packageName)
--                        || classPackageName.startsWith(strictPackageName))
--                    return true;
--            }
--        }
--
--        if (packageLocators != null && !disablePackageLocatorsScanning) {
--            for (String packageLocator : packageLocators) {
--                if (classPackageName.length() > 0
--                        && (packageLocatorsBasePackage == null || classPackageName
--                        .startsWith(packageLocatorsBasePackage))) {
--                    String[] splitted = classPackageName.split("\\.");
--
--                    if (StringTools.contains(splitted, packageLocator, false))
--                        return true;
--                }
--            }
--        }
--
--        return false;
--    }
--    
--    /**
--     * Construct a {@link Test} object that determines if a specified class name
--     * should be included in the package scan based on the clazz's package name.
--     * Note that the goal is to avoid loading the class, so the test should only
--     * rely on information in the class name itself. The default implementation
--     * is to return the result of {@link #includeClassNameInActionScan(String)}.
--     * 
--     * @return a {@link Test} object that returns true if the specified class
--     *         name should be included in the package scan
--     */
--    protected Test<String> getClassPackageTest() {
--        return new Test<String>() {
--            public boolean test(String className) {
--                return includeClassNameInActionScan(className);
--            }
--        };
--    }
--
--    /**
--     * Construct a {@link Test} Object that determines if a specified class
--     * should be included in the package scan based on the full {@link ClassInfo}
--     * of the class. At this point, the class has been loaded, so it's ok to
--     * perform tests such as checking annotations or looking at interfaces or
--     * super-classes of the specified class.
--     * 
--     * @return a {@link Test} object that returns true if the specified class
--     *         should be included in the package scan
--     */
--    protected Test<ClassFinder.ClassInfo> getActionClassTest() {
-+    protected Test<ClassFinder.ClassInfo> getPackageFinderTest(final String packageName) {
-+        // so "my.package" does not match "my.package2.test"
-+        final String strictPackageName = packageName + ".";
-         return new Test<ClassFinder.ClassInfo>() {
-             public boolean test(ClassFinder.ClassInfo classInfo) {
--                
--                // Why do we call includeClassNameInActionScan here, when it's
--                // already been called to in the initial call to ClassFinder?
--                // When some action class passes our package filter in that step,
--                // ClassFinder automatically includes parent classes of that action,
--                // such as com.opensymphony.xwork2.ActionSupport.  We repeat the
--                // package filter here to filter out such results.
--                boolean inPackage = includeClassNameInActionScan(classInfo.getName());
-+                String classPackageName = classInfo.getPackageName();
-+                boolean inPackage = classPackageName.equals(packageName) || classPackageName.startsWith(strictPackageName);
-                 boolean nameMatches = classInfo.getName().endsWith(actionSuffix);
- 
-                 try {
-@@ -561,6 +484,29 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-         };
-     }
- 
-+    protected Test<ClassFinder.ClassInfo> getPackageLocatorTest(final String packageLocator) {
-+        return new Test<ClassFinder.ClassInfo>() {
-+            public boolean test(ClassFinder.ClassInfo classInfo) {
-+                String packageName = classInfo.getPackageName();
-+                if (packageName.length() > 0 && (packageLocatorsBasePackage == null || packageName.startsWith(packageLocatorsBasePackage))) {
-+                    String[] splitted = packageName.split("\\.");
-+
-+                    boolean packageMatches = StringTools.contains(splitted, packageLocator, false);
-+                    boolean nameMatches = classInfo.getName().endsWith(actionSuffix);
-+
-+                    try {
-+                        return packageMatches && (nameMatches || (checkImplementsAction && com.opensymphony.xwork2.Action.class.isAssignableFrom(classInfo.get())));
-+                    } catch (ClassNotFoundException ex) {
-+                        if (LOG.isErrorEnabled())
-+                            LOG.error("Unable to load class [#0]", ex, classInfo.getName());
-+                        return false;
-+                    }
-+                } else
-+                    return false;
-+            }
-+        };
-+    }
-+
-     @SuppressWarnings("unchecked")
-     protected void buildConfiguration(Set<Class> classes) {
-         Map<String, PackageConfig.Builder> packageConfigs = new HashMap<String, PackageConfig.Builder>();
-@@ -576,15 +522,13 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-                 continue;
-             }
- 
--            if (eagerLoading) {
--                // Tell the ObjectFactory about this class
--                try {
--                    objectFactory.getClassInstance(actionClass.getName());
--                } catch (ClassNotFoundException e) {
--                    if (LOG.isErrorEnabled())
--                        LOG.error("Object Factory was unable to load class [#0]", e, actionClass.getName());
--                    throw new StrutsException("Object Factory was unable to load class " + actionClass.getName(), e);
--                }
-+            // Tell the ObjectFactory about this class
-+            try {
-+                objectFactory.getClassInstance(actionClass.getName());
-+            } catch (ClassNotFoundException e) {
-+                if (LOG.isErrorEnabled())
-+                    LOG.error("Object Factory was unable to load class [#0]", e, actionClass.getName());
-+                throw new StrutsException("Object Factory was unable to load class " + actionClass.getName(), e);
-             }
- 
-             // Determine the action package
-@@ -642,7 +586,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-                     List<Action> actions = map.get(method);
-                     for (Action action : actions) {
-                         PackageConfig.Builder pkgCfg = defaultPackageConfig;
--                        if (action.value().contains("/") && !slashesInActionNames) {
-+                        if (action.value().contains("/")) {
-                             pkgCfg = getPackageConfig(packageConfigs, namespace, actionPackage,
-                                     actionClass, action);
-                         }
-@@ -844,7 +788,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-         if (annotation != null) {
-             actionName = annotation.value() != null && annotation.value().equals(Action.DEFAULT_VALUE) ?
-                     actionName : annotation.value();
--            actionName = StringUtils.contains(actionName, "/") && !slashesInActionNames ? StringUtils.substringAfterLast(actionName, "/") : actionName;
-+            actionName = StringUtils.contains(actionName, "/") ? StringUtils.substringAfterLast(actionName, "/") : actionName;
-         }
- 
-         ActionConfig.Builder actionConfig = new ActionConfig.Builder(pkgCfg.getName(),
-@@ -852,8 +796,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-         actionConfig.methodName(actionMethod);
- 
-         if (LOG.isDebugEnabled()) {
--            LOG.debug("Creating action config for class [#0], name [#1] and package name [#2] in namespace [#3]",
--                    actionClass.toString(), actionName, pkgCfg.getName(), pkgCfg.getNamespace());
-+            LOG.debug("Creating action config for class ["+actionClass.toString()+"], name ["+actionName+"] and package name ["+pkgCfg.getName()+"] in namespace ["+pkgCfg.getNamespace()+"]");
-         }
- 
-         //build interceptors
-@@ -902,8 +845,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
- 
-         for (ExceptionMapping exceptionMapping : exceptions) {
-             if (LOG.isTraceEnabled())
--                LOG.trace("Mapping exception [#0] to result [#1] for action [#2]", exceptionMapping.exception(),
--                        exceptionMapping.result(), actionName);
-+                LOG.trace("Mapping exception ["+exceptionMapping.exception()+"] to result ["+exceptionMapping.result()+"] for action ["+actionName+"]");
-             ExceptionMappingConfig.Builder builder = new ExceptionMappingConfig.Builder(null, exceptionMapping
-                     .exception(), exceptionMapping.result());
-             if (exceptionMapping.params() != null)
-@@ -922,7 +864,7 @@ public class PackageBasedActionConfigBuilder implements ActionConfigBuilder {
-                 LOG.trace("Using non-default action namespace from the Action annotation of [#0]", action.value());
-             }
-             String actionName = action.value();
--            actionNamespace = StringUtils.contains(actionName, "/") ? StringUtils.substringBeforeLast(actionName, "/") : StringUtils.EMPTY; 
-+            actionNamespace = StringUtils.contains(actionName, "/") ? StringUtils.substringBeforeLast(actionName, "/") : StringUtils.EMPTY;
-         }
- 
-         // Next grab the parent annotation from the class
++                        if (url.toExternalForm().contains(includeJar)) {
+                             includeUrls.add(url);
+                             patternUsed[i] = true;
+                             break;

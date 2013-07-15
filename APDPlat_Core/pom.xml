@@ -6,7 +6,7 @@
     <groupId>org.apdplat</groupId>
     <artifactId>APDPlat_Core</artifactId>
     <packaging>jar</packaging>
-    <version>2.3</version>
+    <version>2.4</version>
     <name>APDPlat_Core</name>
     
     <url>https://github.com/ysc/APDPlat</url>
@@ -45,23 +45,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
         <!-- 主要依赖库的版本定义 -->
-        <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+        <org.springframework.version>3.2.3.RELEASE</org.springframework.version>
         <compass.version>2.1.4</compass.version>
         <lucene-highlighter.version>2.4.1</lucene-highlighter.version>
         <poi.version>3.8-beta4</poi.version>
-        <spring-security-core.version>3.0.5.RELEASE</spring-security-core.version>
-        <spring-security-web.version>3.0.5.RELEASE</spring-security-web.version>
-        <spring-security-config.version>3.0.5.RELEASE</spring-security-config.version>
-        <spring-security-acl.version>3.0.5.RELEASE</spring-security-acl.version>
-        <spring-security-taglibs.version>3.0.5.RELEASE</spring-security-taglibs.version>
+        <spring-security-core.version>3.1.4.RELEASE</spring-security-core.version>
+        <spring-security-web.version>3.1.4.RELEASE</spring-security-web.version>
+        <spring-security-config.version>3.1.4.RELEASE</spring-security-config.version>
+        <spring-security-acl.version>3.1.4.RELEASE</spring-security-acl.version>
+        <spring-security-taglibs.version>3.1.4.RELEASE</spring-security-taglibs.version>
         <json-lib.version>2.3</json-lib.version>
         <cglib.version>2.2</cglib.version>
         <commons-pool.version>1.2</commons-pool.version>
         <commons-dbcp.version>1.2.1</commons-dbcp.version>
         <freemarker.version>2.3.15</freemarker.version>
-        <struts2-spring-plugin.version>2.2.3</struts2-spring-plugin.version>
-        <struts2-convention-plugin.version>2.2.3</struts2-convention-plugin.version>
-        <struts2-core.version>2.2.3</struts2-core.version>
+        <struts2-spring-plugin.version>2.3.15</struts2-spring-plugin.version>
+        <struts2-convention-plugin.version>2.3.15</struts2-convention-plugin.version>
+        <struts2-core.version>2.3.15</struts2-core.version>
         <commons-io.version>2.0.1</commons-io.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <commons-collections.version>3.2.1</commons-collections.version>
@@ -69,18 +69,18 @@
         <commons-lang.version>2.5</commons-lang.version>
         <ognl.version>3.0.1</ognl.version>
         <jasypt.version>1.5</jasypt.version>
-        <hibernate-ehcache.version>3.6.3.Final</hibernate-ehcache.version>
+        <hibernate-ehcache.version>4.2.3.Final</hibernate-ehcache.version>
         <hibernate-memcached.version>1.3</hibernate-memcached.version>
         <javassist.version>3.8.0.GA</javassist.version>
         <jaxen.version>1.1.1</jaxen.version>
         <dom4j.version>1.6.1</dom4j.version>
-        <hibernate-entitymanager.version>3.6.3.Final</hibernate-entitymanager.version>
+        <hibernate-entitymanager.version>4.2.3.Final</hibernate-entitymanager.version>
         <slf4j-api.version>1.6.4</slf4j-api.version>
         <log4j-over-slf4j.version>1.6.4</log4j-over-slf4j.version>
         <jul-to-slf4j.version>1.6.4</jul-to-slf4j.version>
         <jcl-over-slf4j.version>1.6.4</jcl-over-slf4j.version>
         <logback-classic.version>0.9.28</logback-classic.version>
-        <javaee-api.version>6.0</javaee-api.version>
+        <javaee-api.version>7.0</javaee-api.version>
         <junit.version>4.8.2</junit.version>
         <quartz.version>1.8.4</quartz.version>
         <jcaptcha-all.version>1.0-RC6</jcaptcha-all.version>
@@ -88,10 +88,11 @@
         <dynamicreports-core.version>2.1.0</dynamicreports-core.version>
         <sigar.version>1.6.4</sigar.version>        
         <cxf.version>2.7.3</cxf.version>
+        <wro4j.version>1.7.0</wro4j.version>
+        <birt.version>4.2.2</birt.version>
+        <activiti.version>5.13</activiti.version>
         
         <p6spy.version>1.3</p6spy.version>
-        <mysql.version>5.1.18</mysql.version>
-        <org.hsqldb.version>2.0.0</org.hsqldb.version>
         
         <!-- 主要插件依赖的版本定义 -->
         <yuicompressor-maven-plugin>1.3.2</yuicompressor-maven-plugin>
@@ -153,6 +154,11 @@
             <id>hibernate-memcached</id>
             <name>hibernate-memcached</name>
             <url>http://raykrueger.googlecode.com/svn/repository</url>
+        </repository>
+        
+        <repository>
+                <id>Activiti</id>
+                <url>https://maven.alfresco.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -659,17 +665,6 @@
             <version>${quartz.version}</version>
         </dependency>
 
-        <!-- 数据库 -->
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>${org.hsqldb.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.octo.captcha</groupId>
             <artifactId>jcaptcha-all</artifactId>
@@ -770,6 +765,91 @@
             </exclusions>
         </dependency>
         <!-- webservice end -->
+        <!-- birt报表 -->
+        <dependency>
+            <groupId>org.eclipse.birt.runtime</groupId>
+            <artifactId>org.eclipse.birt.runtime</artifactId>
+            <version>${birt.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.birt.runtime</groupId>
+                    <artifactId>org.apache.commons.logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <!-- activiti -->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>${activiti.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring</artifactId>
+            <version>${activiti.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-explorer</artifactId>
+            <version>${activiti.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>vaadin</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.vaadin.addons</groupId>
+                    <artifactId>dcharts-widget</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.activiti</groupId>
+                    <artifactId>activiti-simple-workflow</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-modeler</artifactId>
+            <version>${activiti.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>ro.isdc.wro4j</groupId>
+            <artifactId>wro4j-core</artifactId>
+            <version>${wro4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <!-- 因为项目中的其他jar包已经引入了不同版本的slf4j,这里避免jar重叠所以不引入 -->
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -879,7 +959,7 @@
                 <artifactId>sonar-maven3-plugin</artifactId>
                 <version>${sonar-maven3-plugin.version}</version>
             </plugin>
-            <!--  运行mvn org.codehaus.sonar:sonar-maven3-plugin:2.8:sonar可将项目发布给质量管理平台-->
+            <!--  运行 mvn sonar:sonar 可将项目发布给质量管理平台-->
             <!--site-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

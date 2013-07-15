@@ -18,6 +18,16 @@
     <listener>
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
+    <!-- 性能过滤器放置到最前, 放置到最后不起作用，放置到最前的统计时间更准确地表示了服务器的处理速度 -->
+    <filter>
+        <description>记录请求的处理时间，为性能分析提供数据</description>
+        <filter-name>PerformanceFilter</filter-name>
+        <filter-class>org.apdplat.module.monitor.filter.PerformanceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PerformanceFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
     <!--
     <filter>
         <filter-name>ResponseHeaderFilter</filter-name>
@@ -146,20 +156,6 @@
         <url-pattern>/platform/*</url-pattern>
     </filter-mapping>
     <filter>
-        <filter-name>struts-cleanup</filter-name>
-        <filter-class>
-            org.apache.struts2.dispatcher.ActionContextCleanUp
-        </filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>struts-cleanup</filter-name>
-        <url-pattern>*.action</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>struts-cleanup</filter-name>
-        <url-pattern>/struts/*</url-pattern>
-    </filter-mapping>
-    <filter>
         <description>WEB前端控制器</description>
         <filter-name>struts2</filter-name>
         <filter-class>
@@ -168,11 +164,7 @@
     </filter>
     <filter-mapping>
         <filter-name>struts2</filter-name>
-        <url-pattern>*.action</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>struts2</filter-name>
-        <url-pattern>/struts/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <!--
     启用服务器Gzip，包括css、js、jsp、png、gif、jpg等文件
@@ -205,16 +197,6 @@
       <url-pattern>*.jpg</url-pattern>
     </filter-mapping>
     -->
-    <!-- 性能过滤器放置到最后 -->
-    <filter>
-        <description>记录请求的处理时间，为性能分析提供数据</description>
-        <filter-name>PerformanceFilter</filter-name>
-        <filter-class>org.apdplat.module.monitor.filter.PerformanceFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PerformanceFilter</filter-name>
-        <url-pattern>*.action</url-pattern>
-    </filter-mapping>
 
     <!--CXF 配置  WEB服务-->
     <servlet>

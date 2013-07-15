@@ -51,7 +51,7 @@ import javax.crypto.spec.DESKeySpec;
  * @author 杨尚川
  */
 public class EncryptClassUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(EncryptClassUtils.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(EncryptClassUtils.class);
     private static String sequenceKeyName;
     private static String securityKeyName;
     private static String winClspath;

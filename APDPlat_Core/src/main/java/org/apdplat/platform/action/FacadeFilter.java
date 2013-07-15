@@ -36,7 +36,7 @@ import javax.servlet.ServletResponse;
  * @author 杨尚川
  */
 public class FacadeFilter implements Filter {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(FacadeFilter.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(FacadeFilter.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

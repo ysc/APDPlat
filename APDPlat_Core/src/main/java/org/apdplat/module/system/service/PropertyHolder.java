@@ -26,7 +26,7 @@ import java.util.Properties;
 import org.springframework.core.io.ClassPathResource;
 
 public class PropertyHolder {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(PropertyHolder.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(PropertyHolder.class);
     private static Properties props = new Properties();
 
     static {

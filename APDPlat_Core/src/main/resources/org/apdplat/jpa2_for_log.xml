@@ -4,9 +4,16 @@
     version="1.0">
     <persistence-unit name="${persistenceUnitForLog}">
     	<!--
-        因为使用了多数据库，所以要手动指定模型，而不能扫描，因为扫描会对所有模型建表
-        <jar-file>${scan.jars}</jar-file>
+        方式一：
+        默认使用扫描，这样更方便, 不区分多数据库，每一个数据库都对所有模型自动建表，哪怕不用
         -->
+        <jar-file>${scan.jars}</jar-file>
+        
+    	<!--
+        方式二：
+        有点麻烦，区分多数据库，为每一个数据库手动指定需要映射的模型
+        -->
+        <!--
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         
         <class>org.apdplat.module.log.model.OperateLog</class>
@@ -16,5 +23,6 @@
         <class>org.apdplat.module.monitor.model.ProcessTime</class>
         <class>org.apdplat.module.monitor.model.RuningTime</class>
         <class>org.apdplat.module.monitor.model.UserLogin</class>
+        -->
     </persistence-unit>
 </persistence>

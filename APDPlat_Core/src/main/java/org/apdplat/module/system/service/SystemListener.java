@@ -42,6 +42,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.SpringContextUtils;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.EntityManagerHolder;
@@ -52,7 +53,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  *
  */
 public class SystemListener{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SystemListener.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(SystemListener.class);
     
     private static boolean running=false;
     
@@ -144,6 +145,8 @@ public class SystemListener{
             runingTime.setJvmVersion(System.getProperty("java.vm.version"));
             runingTime.setJvmVendor(System.getProperty("java.vm.vendor"));
             runingTime.setStartupTime(new Date());
+            //保存服务器启动日志
+            LogQueue.addLog(runingTime);
         }
         if(memoryMonitor){
             LOG.info("启动内存监视线程");
@@ -159,10 +162,15 @@ public class SystemListener{
         
         if(runingMonitor){
             LOG.info("记录服务器关闭日志");
-            LOG.info("Recording the server shutdown logging", Locale.ENGLISH);             
+            LOG.info("Recording the server shutdown logging", Locale.ENGLISH);    
             runingTime.setShutdownTime(new Date());
-            runingTime.setRuningTime(runingTime.getShutdownTime().getTime()-runingTime.getStartupTime().getTime());
-            LogQueue.addLog(runingTime);
+            runingTime.setRuningTime(runingTime.getShutdownTime().getTime()-runingTime.getStartupTime().getTime());         
+            //在更新runingTime的时候，需要打开日志数据库em
+            EntityManagerFactory entityManagerFactoryForLog = SpringContextUtils.getBean("entityManagerFactoryForLog");
+            ServiceFacade serviceFacade = SpringContextUtils.getBean("serviceFacadeForLog");
+            openEntityManagerForLog(entityManagerFactoryForLog);
+            serviceFacade.update(runingTime);
+            closeEntityManagerForLog(entityManagerFactoryForLog);
         }
         if(memoryMonitor){
             LOG.info("停止内存监视线程");

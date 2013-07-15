@@ -42,7 +42,7 @@ import org.springframework.util.Assert;
  * @author 杨尚川
  */
 public class ReflectionUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ReflectionUtils.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ReflectionUtils.class);
     
     private ReflectionUtils(){};
 

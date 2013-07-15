@@ -59,9 +59,7 @@ public class SQLServerBackupService extends BackupService{
             if(!bps.execute()){
                 return true;
             }
-            else{
-                return false;
-            }
+            return false;
         } catch (Exception e) {
             LOG.error("备份出错",e);
             return false;

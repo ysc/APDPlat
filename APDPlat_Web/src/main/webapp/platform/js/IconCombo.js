@@ -53,5 +53,3 @@ Ext.ux.IconCombo = Ext.extend(Ext.form.ComboBox, {
  
 // register xtype
 Ext.reg('iconcombo', Ext.ux.IconCombo);
- 
-// end of file

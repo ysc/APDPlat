@@ -45,7 +45,7 @@ import javax.crypto.NoSuchPaddingException;
  * @author 杨尚川
  */
 public class PKIUtils {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(PKIUtils.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(PKIUtils.class);
        
     private PKIUtils(){}
     /**

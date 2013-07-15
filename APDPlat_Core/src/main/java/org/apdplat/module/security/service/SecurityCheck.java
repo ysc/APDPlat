@@ -47,7 +47,7 @@ import org.springframework.util.ReflectionUtils;
 
 @Service
 public class SecurityCheck {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(SecurityCheck.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(SecurityCheck.class);
     private static String securityKeyName;
     private static String securityClspath;
     private static String sequenceKeyName;

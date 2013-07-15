@@ -34,7 +34,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class IndexLogChartDataService {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(IndexLogChartDataService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(IndexLogChartDataService.class);
 
     public static LinkedHashMap<String,Long> getSequenceData(List<IndexLog> models){    
         Collections.sort(models, new Comparator(){

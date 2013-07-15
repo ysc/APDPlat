@@ -44,6 +44,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.persistence.MappedSuperclass;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Result;
@@ -238,6 +239,9 @@ public abstract class ActionSupport extends DataPrivilegeControl{
     }
     protected HttpServletRequest getRequest() {
         return ServletActionContext.getRequest();
+    }
+    protected HttpSession getSession() {
+        return ServletActionContext.getRequest().getSession();
     }
 
     private Enumeration<?> getRequestParameterNames() {

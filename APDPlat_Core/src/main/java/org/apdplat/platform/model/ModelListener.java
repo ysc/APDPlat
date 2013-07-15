@@ -49,7 +49,7 @@ import org.compass.annotations.Searchable;
  *
  */
 public class ModelListener {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(ModelListener.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(ModelListener.class);
     
     private static IndexManager indexManager=null;
     private static final boolean create;

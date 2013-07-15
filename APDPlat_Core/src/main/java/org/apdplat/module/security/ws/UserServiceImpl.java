@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 @Service
 @WebService(endpointInterface = "org.apdplat.module.security.ws.UserService")
 public class UserServiceImpl implements UserService{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(UserServiceImpl.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(UserServiceImpl.class);
     @Resource(name = "userDetailsServiceImpl")
     private UserDetailsServiceImpl userDetailsServiceImpl;
     

@@ -44,7 +44,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BackupSchedulerService implements ApplicationListener {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(BackupSchedulerService.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(BackupSchedulerService.class);
 
     private static SchedulerFactory sf = new StdSchedulerFactory();
     @Resource(name = "serviceFacade")

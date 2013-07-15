@@ -6,7 +6,7 @@
     <groupId>org.apdplat</groupId>
     <artifactId>APDPlat_Web</artifactId>
     <packaging>war</packaging>
-    <version>2.3</version>
+    <version>2.4</version>
     <name>APDPlat_Web</name>
     
     <url>https://github.com/ysc/APDPlat</url>
@@ -45,14 +45,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
         <!-- 主要依赖库的版本定义 -->
-        <apdplat.version>2.3</apdplat.version>
+        <apdplat.version>2.4</apdplat.version>
+        <wro4j.version>1.7.0</wro4j.version>
         <junit.version>4.8.2</junit.version>
-        <javaee-api.version>6.0</javaee-api.version>
+        <javaee-api.version>7.0</javaee-api.version>
+        <!-- 数据库驱动 -->
+        <mysql.version>5.1.18</mysql.version>
+        <org.hsqldb.version>2.0.0</org.hsqldb.version>
+        <h2.version>1.3.172</h2.version>
+        <postgresql.version>9.2-1003-jdbc4</postgresql.version>
+        <derbyclient.version>10.10.1.1</derbyclient.version>
 
         <!-- WEB 模块 主要插件的版本定义 -->
         <maven-war-plugin.version>2.1.1</maven-war-plugin.version>
         <maven-antrun-plugin.version>1.6</maven-antrun-plugin.version>
-        <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server>
         
         <!-- 主要插件依赖的版本定义 -->
         <yuicompressor-maven-plugin>1.3.2</yuicompressor-maven-plugin>
@@ -163,8 +169,34 @@
             <artifactId>APDPlat_Module</artifactId>
             <version>${apdplat.version}</version>
         </dependency>
-       
-       
+        
+        <!-- 数据库驱动 -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId> 
+            <version>${derbyclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>${org.hsqldb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+                              
     </dependencies>
     <build>
         <plugins>  
@@ -173,7 +205,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${maven-war-plugin.version}</version>   
             </plugin>
-            
+                        
             <!--执行对Jar的混淆-->
             <!--
             <plugin>
@@ -204,7 +236,7 @@
             -->
             <!--执行对JS和CSS的混淆压缩-->
             <!-- The yuicompressor plugin will process the js files and css files in src/main/webapp, but they won't be included in the final war. 
-            
+
             <plugin>        
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
@@ -233,8 +265,31 @@
                     </excludes>
                 </configuration> 
             </plugin>
-            -->
-            
+            -->         
+            <plugin>
+                <groupId>ro.isdc.wro4j</groupId>
+                <artifactId>wro4j-maven-plugin</artifactId>
+                <version>${wro4j.version}</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- wro4j只负责合并，不负责压缩和混淆，压缩和混淆由yuicompressor-maven-plugin负责 -->
+                    <minimize>false</minimize>
+                    <destinationFolder>${basedir}/src/main/webapp/</destinationFolder>
+                    <contextFolder>${basedir}/src/main/webapp/</contextFolder>                    
+                    <!-- 有 wro4j_single_merge.xml 和 wro4j_multi_merge.xml 可供选择,要和下面的wroManagerFactory对应 -->
+                    <wroFile>${basedir}/src/main/resources/wro4j_single_merge.xml</wroFile>
+                    <!-- 有 org.apdplat.platform.wro4j.APDPlatWro4jSingleMergeManagerFactory 和 org.apdplat.platform.wro4j.APDPlatWro4jMultiMergeManagerFactory 可供选择 -->
+                    <wroManagerFactory>org.apdplat.platform.wro4j.APDPlatWro4jSingleMergeManagerFactory</wroManagerFactory>
+                </configuration>
+            </plugin>
+                        
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-release-plugin</artifactId>
@@ -295,7 +350,7 @@
                 <artifactId>sonar-maven3-plugin</artifactId>
                 <version>${sonar-maven3-plugin.version}</version>
             </plugin>
-            <!--  运行mvn org.codehaus.sonar:sonar-maven3-plugin:2.8:sonar可将项目发布给质量管理平台-->
+            <!--  运行 mvn sonar:sonar 可将项目发布给质量管理平台-->
             <!--site-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

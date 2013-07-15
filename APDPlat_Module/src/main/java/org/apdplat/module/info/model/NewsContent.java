@@ -45,6 +45,7 @@ public class NewsContent extends SimpleModel{
     protected News news;
     
     @Enumerated(EnumType.STRING) 
+    @ModelAttr("多国语言")
     protected Lang lang;
     
     @SearchableProperty

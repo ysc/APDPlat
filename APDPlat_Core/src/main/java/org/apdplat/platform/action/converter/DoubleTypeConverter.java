@@ -30,7 +30,7 @@ import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
 
 public class DoubleTypeConverter extends StrutsTypeConverter{
-    protected static final APDPlatLogger LOG = new APDPlatLogger(DoubleTypeConverter.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(DoubleTypeConverter.class);
 
 
     @Override

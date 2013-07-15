@@ -20,12 +20,15 @@
 
 package org.apdplat.module.system.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.service.ServiceFacade;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import org.apdplat.platform.util.ConvertUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,7 +37,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LogQueue {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(LogQueue.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(LogQueue.class);
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
     private ServiceFacade serviceFacade;
@@ -56,22 +59,23 @@ public class LogQueue {
     }
     public synchronized void saveLog(){
         int len=logs.size();
-        int success=0;
-        LOG.info("保存前队列中的日志数目为(Num. of log before saving in the queue)："+len);
-        try{
-            for(int i=0;i<len;i++){
-                Model model = logs.remove();
-                try{
-                    serviceFacade.create(model);
-                    success++;
-                }catch(Exception e){
-                    LOG.error("保存日志失败(Failed to save log):"+model.getMetaData(),e);
-                }
-            }
-        } catch (Exception e) {
-            LOG.error("保存日志抛出异常(Saving log exception)",e);
+        if(len==0){
+            LOG.info("没有日志需要保存");
+            return ;
         }
-        LOG.info("成功保存(Success to save) "+success+" 条日志(log)");
-        LOG.info("保存后队列中的日志数目为(Num. of log after saving in the queue)："+logs.size());
+        LOG.info("保存前队列中的日志数目为(Num. of log before saving in the queue)："+len);
+        long start=System.currentTimeMillis();
+        List<Model> list=new ArrayList<>();
+        for(int i=0;i<len;i++){
+            list.add(logs.remove());            
+        }
+        try{
+            serviceFacade.create(list);
+            long cost=System.currentTimeMillis()-start;
+            LOG.info("成功保存(Success to save) "+len+" 条日志(logs),耗时(cost): "+ConvertUtils.getTimeDes(cost));
+            LOG.info("保存后队列中的日志数目为(Num. of log after saving in the queue)："+logs.size());
+        }catch(Exception e){
+            LOG.error("保存日志失败(Failed to save log)",e);
+        }
     }
 }

@@ -100,6 +100,8 @@ public class Role extends SimpleModel {
     @JoinColumn(name = "roleID")}, inverseJoinColumns = {
     @JoinColumn(name = "commandID")})
     @OrderBy("id")
+    @ModelAttr("角色拥有的命令列表")
+    @ModelCollRef("chinese")
     protected List<Command> commands = new ArrayList<>();
     public String getModuleCommandStr(){
         if(this.commands==null || this.commands.isEmpty()){

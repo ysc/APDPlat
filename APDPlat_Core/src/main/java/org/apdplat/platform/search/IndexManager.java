@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class IndexManager {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(IndexManager.class);
+    private static final APDPlatLogger LOG = new APDPlatLogger(IndexManager.class);
     
     @Resource(name = "compassTemplate")
     private CompassTemplate compassTemplate;

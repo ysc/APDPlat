@@ -23,6 +23,7 @@ package org.apdplat.module.module.action;
 import org.apdplat.module.module.model.Command;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apdplat.module.module.service.ModuleCache;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 /**
@@ -38,4 +39,9 @@ import org.springframework.stereotype.Controller;
 @Namespace("/module")
 public class EditCommandAction extends ExtJSSimpleAction<Command> {
 
+    @Override
+    protected void afterSuccessPartUpdateModel(Command model) {
+        //手动清空缓存
+        ModuleCache.clear();
+    }
 }

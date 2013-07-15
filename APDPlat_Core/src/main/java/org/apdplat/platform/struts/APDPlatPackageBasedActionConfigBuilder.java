@@ -20,11 +20,10 @@
 
 package org.apdplat.platform.struts;
 
-import org.apdplat.module.system.service.PropertyHolder;
-import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.platform.util.FileUtils;
-import com.opensymphony.xwork2.ObjectFactory;
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.FileManager;
+import com.opensymphony.xwork2.FileManagerFactory;
+import com.opensymphony.xwork2.ObjectFactory;
 import com.opensymphony.xwork2.config.Configuration;
 import com.opensymphony.xwork2.config.ConfigurationException;
 import com.opensymphony.xwork2.config.entities.ActionConfig;
@@ -34,19 +33,24 @@ import com.opensymphony.xwork2.config.entities.PackageConfig;
 import com.opensymphony.xwork2.config.entities.ResultConfig;
 import com.opensymphony.xwork2.inject.Container;
 import com.opensymphony.xwork2.inject.Inject;
-import com.opensymphony.xwork2.util.FileManager;
+import com.opensymphony.xwork2.util.AnnotationUtils;
 import com.opensymphony.xwork2.util.TextParseUtil;
+import com.opensymphony.xwork2.util.WildcardHelper;
 import com.opensymphony.xwork2.util.classloader.ReloadingClassLoader;
 import com.opensymphony.xwork2.util.finder.ClassFinder;
-import com.opensymphony.xwork2.util.finder.Test;
-import com.opensymphony.xwork2.util.finder.UrlSet;
+import com.opensymphony.xwork2.util.finder.ClassFinder.ClassInfo;
 import com.opensymphony.xwork2.util.finder.ClassLoaderInterface;
 import com.opensymphony.xwork2.util.finder.ClassLoaderInterfaceDelegate;
+import com.opensymphony.xwork2.util.finder.Test;
+import com.opensymphony.xwork2.util.finder.UrlSet;
+import com.opensymphony.xwork2.util.logging.Logger;
+import com.opensymphony.xwork2.util.logging.LoggerFactory;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.StrutsConstants;
 import org.apache.struts2.StrutsException;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
-import org.apache.struts2.convention.annotation.AnnotationTools;
 import org.apache.struts2.convention.annotation.DefaultInterceptorRef;
 import org.apache.struts2.convention.annotation.ExceptionMapping;
 import org.apache.struts2.convention.annotation.ExceptionMappings;
@@ -61,13 +65,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.ActionConfigBuilder;
 import org.apache.struts2.convention.ActionNameBuilder;
 import org.apache.struts2.convention.ConventionConstants;
@@ -75,7 +78,7 @@ import org.apache.struts2.convention.InterceptorMapBuilder;
 import org.apache.struts2.convention.ReflectionTools;
 import org.apache.struts2.convention.ResultMapBuilder;
 import org.apache.struts2.convention.StringTools;
-import org.springframework.core.io.FileSystemResource;
+import org.apdplat.module.system.service.PropertyHolder;
 
 /**
  * <p>
@@ -83,8 +86,10 @@ import org.springframework.core.io.FileSystemResource;
  * </p>
  */
 public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuilder {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(APDPlatPackageBasedActionConfigBuilder.class);
-    
+
+    private static final Logger LOG = LoggerFactory.getLogger(APDPlatPackageBasedActionConfigBuilder.class);
+    private static final boolean EXTRACT_BASE_INTERFACES = true;
+
     private final Configuration configuration;
     private final ActionNameBuilder actionNameBuilder;
     private final ResultMapBuilder resultMapBuilder;
@@ -109,8 +114,12 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
     private Set<String> fileProtocols;
     private boolean alwaysMapExecute;
     private boolean excludeParentClassLoader;
+    private boolean slashesInActionNames;
 
     private static final String DEFAULT_METHOD = "execute";
+    private boolean eagerLoading = false;
+
+    private FileManager fileManager;
 
     /**
      * Constructs actions based on a list of packages.
@@ -158,6 +167,12 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
     public void setReload(String reload) {
         this.reload = "true".equals(reload);
     }
+    
+    
+    @Inject(StrutsConstants.STRUTS_ENABLE_SLASHES_IN_ACTION_NAMES)
+    public void setSlashesInActionNames(String slashesInActionNames) {
+        this.slashesInActionNames = "true".equals(slashesInActionNames);
+    }
 
     /**
      * Exclude URLs found by the parent class loader. Defaults to "true", set to true for JBoss
@@ -177,7 +192,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
     }
 
     /**
-     * File URLs whose protocol are in these list will be processed as jars containing classes
+     * File URLs whose protocol are in these list will be processed as jars containing classes 
      * @param fileProtocols Comma separated list of file protocols that will be considered as jar files and scanned
      */
     @Inject("struts.convention.action.fileProtocols")
@@ -196,11 +211,11 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
     }
 
     /**
-     * @param includeJars Comma separated list of regular expressions of jars to be included.
+     * @param includeJars Comma separated list of regular expressions of jars to be included.                         
      */
     @Inject(value = "struts.convention.action.includeJars", required = false)
     public void setIncludeJars(String includeJars) {
-        if (StringUtils.isNotBlank(includeJars))
+        if (StringUtils.isNotBlank(includeJars)){
             LOG.info("开始执行apdplat对struts的定制修改");
             LOG.info("占位符的内容为: "+includeJars);
             //去掉${和}，从配置文件读取真正内容
@@ -211,6 +226,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
             for(String jar : this.includeJars){
                 LOG.info("struts include jar "+jar);
             }
+        }
     }
 
     /**
@@ -290,6 +306,20 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         this.mapAllMatches = "true".equals(mapAllMatches);
     }
 
+    /**
+     * @param eagerLoading (Optional) If set, found action classes will be instantiated by the ObjectFactory to accelerate future use
+     *                      setting it up can clash with Spring managed beans
+     */
+    @Inject(value = "struts.convention.action.eagerLoading", required = false)
+    public void setEagerLoading(String eagerLoading) {
+        this.eagerLoading = "true".equals(eagerLoading);
+    }
+
+    @Inject
+    public void setFileManagerFactory(FileManagerFactory fileManagerFactory) {
+        this.fileManager = fileManagerFactory.getFileManager();
+    }
+
     protected void initReloadClassLoader() {
         //when the configuration is reloaded, a new classloader will be setup
         if (isReloadEnabled() && reloadingClassLoader == null)
@@ -313,7 +343,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
     public void buildActionConfigs() {
         //setup reload class loader based on dev settings
         initReloadClassLoader();
-
+        
         if (!disableActionScanning) {
             if (actionPackages == null && packageLocators == null) {
                 throw new ConfigurationException("At least a list of action packages or action package locators " +
@@ -353,7 +383,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
             if (ctx != null)
                 classLoaderInterface = (ClassLoaderInterface) ctx.get(ClassLoaderInterface.CLASS_LOADER_INTERFACE);
 
-            return (ClassLoaderInterface) ObjectUtils.defaultIfNull(classLoaderInterface, new ClassLoaderInterfaceDelegate(getClassLoader()));
+            return ObjectUtils.defaultIfNull(classLoaderInterface, new ClassLoaderInterfaceDelegate(getClassLoader()));
         }
     }
 
@@ -366,23 +396,18 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         Set<Class> classes = new HashSet<Class>();
         try {
             if (actionPackages != null || (packageLocators != null && !disablePackageLocatorsScanning)) {
-                ClassFinder finder = new ClassFinder(getClassLoaderInterface(), buildUrlSet().getUrls(), true, this.fileProtocols);
+                
+                // By default, ClassFinder scans EVERY class in the specified
+                // url set, which can produce spurious warnings for non-action
+                // classes that can't be loaded. We pass a package filter that
+                // only considers classes that match the action packages
+                // specified by the user
+                Test<String> classPackageTest = getClassPackageTest();
+                List<URL> urls = readUrls();
+                ClassFinder finder = new ClassFinder(getClassLoaderInterface(), urls, EXTRACT_BASE_INTERFACES, fileProtocols, classPackageTest);
 
-                // named packages
-                if (actionPackages != null) {
-                    for (String packageName : actionPackages) {
-                        Test<ClassFinder.ClassInfo> test = getPackageFinderTest(packageName);
-                        classes.addAll(finder.findClasses(test));
-                    }
-                }
-
-                //package locators
-                if (packageLocators != null && !disablePackageLocatorsScanning) {
-                    for (String packageLocator : packageLocators) {
-                        Test<ClassFinder.ClassInfo> test = getPackageLocatorTest(packageLocator);
-                        classes.addAll(finder.findClasses(test));
-                    }
-                }
+                Test<ClassFinder.ClassInfo> test = getActionClassTest();
+                classes.addAll(finder.findClasses(test));
             }
         } catch (Exception ex) {
             if (LOG.isErrorEnabled())
@@ -392,9 +417,20 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         return classes;
     }
 
-    private UrlSet buildUrlSet() throws IOException {
+    private List<URL> readUrls() throws IOException {
+        List<URL> resourceUrls = new ArrayList<URL>();
+        // Usually the "classes" dir.
+        ArrayList<URL> classesList = Collections.list(getClassLoaderInterface().getResources(""));
+        for (URL url : classesList) {
+            resourceUrls.addAll(fileManager.getAllPhysicalUrls(url));
+        }
+        return buildUrlSet(resourceUrls).getUrls();
+    }
+
+    private UrlSet buildUrlSet(List<URL> resourceUrls) throws IOException {
         ClassLoaderInterface classLoaderInterface = getClassLoaderInterface();
-        UrlSet urlSet = new UrlSet(classLoaderInterface, this.fileProtocols);
+        UrlSet urlSet = new UrlSet(resourceUrls);
+        urlSet = urlSet.include(new UrlSet(classLoaderInterface, this.fileProtocols));
 
         //excluding the urls found by the parent class loader is desired, but fails in JBoss (all urls are removed)
         if (excludeParentClassLoader) {
@@ -420,7 +456,11 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         }
 
         //try to find classes dirs inside war files
-        urlSet = urlSet.includeClassesUrl(classLoaderInterface);
+        urlSet = urlSet.includeClassesUrl(classLoaderInterface, new UrlSet.FileProtocolNormalizer() {
+            public URL normalizeToFileProtocol(URL url) {
+                return fileManager.normalizeToFileProtocol(url);
+            }
+        });
 
 
         urlSet = urlSet.excludeJavaExtDirs();
@@ -438,16 +478,25 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         if (includeJars == null) {
             urlSet = urlSet.exclude(".*?\\.jar(!/|/)?");
         } else {
+            //jar urls regexes were specified
+            List<URL> rawIncludedUrls = urlSet.getUrls();
             Set<URL> includeUrls = new HashSet<URL>();
             boolean[] patternUsed = new boolean[includeJars.length];
-            for (int i = 0; i < includeJars.length; i++) {
-                try{
-                    String includeJar = includeJars[i];
-                    FileSystemResource resource=new FileSystemResource(FileUtils.getAbsolutePath(includeJar));
-                    includeUrls.add(resource.getURL());
-                    patternUsed[i] = true;
-                }catch(Exception e){
-                    e.printStackTrace();
+
+            for (URL url : rawIncludedUrls) {
+                if (fileProtocols.contains(url.getProtocol())) {
+                    //it is a jar file, make sure it macthes at least a url regex
+                    for (int i = 0; i < includeJars.length; i++) {
+                        String includeJar = includeJars[i];
+                        if (url.toExternalForm().contains(includeJar)) {
+                            includeUrls.add(url);
+                            patternUsed[i] = true;
+                            break;
+                        }
+                    }
+                } else {
+                    //it is not a jar
+                    includeUrls.add(url);
                 }
             }
 
@@ -464,13 +513,126 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         return urlSet;
     }
 
-    protected Test<ClassFinder.ClassInfo> getPackageFinderTest(final String packageName) {
-        // so "my.package" does not match "my.package2.test"
-        final String strictPackageName = packageName + ".";
+    /**
+     * Note that we can't include the test for {@link #actionSuffix} here
+     * because a class is included if its name ends in {@link #actionSuffix} OR
+     * it implements {@link com.opensymphony.xwork2.Action}. Since the whole
+     * goal is to avoid loading the class if we don't have to, the (actionSuffix
+     * || implements Action) test will have to remain until later. See
+     * {@link #getActionClassTest()} for the test performed on the loaded
+     * {@link ClassInfo} structure.
+     * 
+     * @param className the name of the class to test
+     * @return true if the specified class should be included in the
+     *         package-based action scan
+     */
+    protected boolean includeClassNameInActionScan(String className) {
+        String classPackageName = StringUtils.substringBeforeLast(className, ".");
+        return (checkActionPackages(classPackageName) || checkPackageLocators(classPackageName)) && checkExcludePackages(classPackageName);
+    }
+
+    /**
+     * Checks if provided class package is on the exclude list
+     *
+     * @param classPackageName name of class package
+     * @return false if class package is on the {@link #excludePackages} list
+     */
+    protected boolean checkExcludePackages(String classPackageName) {
+        if(excludePackages != null && excludePackages.length > 0) {
+            WildcardHelper wildcardHelper = new WildcardHelper();
+
+            //we really don't care about the results, just the boolean
+            Map<String, String> matchMap = new HashMap<String, String>();
+
+            for(String packageExclude : excludePackages) {
+                int[] packagePattern = wildcardHelper.compilePattern(packageExclude);
+                if(wildcardHelper.match(matchMap, classPackageName, packagePattern)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if class package match provided list of action packages
+     *
+     * @param classPackageName name of class package
+     * @return true if class package is on the {@link #actionPackages} list
+     */
+    protected boolean checkActionPackages(String classPackageName) {
+        if (actionPackages != null) {
+            for (String packageName : actionPackages) {
+                String strictPackageName = packageName + ".";
+                if (classPackageName.equals(packageName)
+                        || classPackageName.startsWith(strictPackageName))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if class package match provided list of package locators
+     *
+     * @param classPackageName name of class package
+     * @return true if class package is on the {@link #packageLocators} list
+     */
+    protected boolean checkPackageLocators(String classPackageName) {
+        if (packageLocators != null && !disablePackageLocatorsScanning) {
+            for (String packageLocator : packageLocators) {
+                if (classPackageName.length() > 0
+                        && (packageLocatorsBasePackage == null || classPackageName
+                        .startsWith(packageLocatorsBasePackage))) {
+                    String[] splitted = classPackageName.split("\\.");
+
+                    if (StringTools.contains(splitted, packageLocator, false))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Construct a {@link Test} object that determines if a specified class name
+     * should be included in the package scan based on the clazz's package name.
+     * Note that the goal is to avoid loading the class, so the test should only
+     * rely on information in the class name itself. The default implementation
+     * is to return the result of {@link #includeClassNameInActionScan(String)}.
+     * 
+     * @return a {@link Test} object that returns true if the specified class
+     *         name should be included in the package scan
+     */
+    protected Test<String> getClassPackageTest() {
+        return new Test<String>() {
+            public boolean test(String className) {
+                return includeClassNameInActionScan(className);
+            }
+        };
+    }
+
+    /**
+     * Construct a {@link Test} Object that determines if a specified class
+     * should be included in the package scan based on the full {@link ClassInfo}
+     * of the class. At this point, the class has been loaded, so it's ok to
+     * perform tests such as checking annotations or looking at interfaces or
+     * super-classes of the specified class.
+     * 
+     * @return a {@link Test} object that returns true if the specified class
+     *         should be included in the package scan
+     */
+    protected Test<ClassFinder.ClassInfo> getActionClassTest() {
         return new Test<ClassFinder.ClassInfo>() {
             public boolean test(ClassFinder.ClassInfo classInfo) {
-                String classPackageName = classInfo.getPackageName();
-                boolean inPackage = classPackageName.equals(packageName) || classPackageName.startsWith(strictPackageName);
+                
+                // Why do we call includeClassNameInActionScan here, when it's
+                // already been called to in the initial call to ClassFinder?
+                // When some action class passes our package filter in that step,
+                // ClassFinder automatically includes parent classes of that action,
+                // such as com.opensymphony.xwork2.ActionSupport.  We repeat the
+                // package filter here to filter out such results.
+                boolean inPackage = includeClassNameInActionScan(classInfo.getName());
                 boolean nameMatches = classInfo.getName().endsWith(actionSuffix);
 
                 try {
@@ -480,29 +642,6 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
                         LOG.error("Unable to load class [#0]", ex, classInfo.getName());
                     return false;
                 }
-            }
-        };
-    }
-
-    protected Test<ClassFinder.ClassInfo> getPackageLocatorTest(final String packageLocator) {
-        return new Test<ClassFinder.ClassInfo>() {
-            public boolean test(ClassFinder.ClassInfo classInfo) {
-                String packageName = classInfo.getPackageName();
-                if (packageName.length() > 0 && (packageLocatorsBasePackage == null || packageName.startsWith(packageLocatorsBasePackage))) {
-                    String[] splitted = packageName.split("\\.");
-
-                    boolean packageMatches = StringTools.contains(splitted, packageLocator, false);
-                    boolean nameMatches = classInfo.getName().endsWith(actionSuffix);
-
-                    try {
-                        return packageMatches && (nameMatches || (checkImplementsAction && com.opensymphony.xwork2.Action.class.isAssignableFrom(classInfo.get())));
-                    } catch (ClassNotFoundException ex) {
-                        if (LOG.isErrorEnabled())
-                            LOG.error("Unable to load class [#0]", ex, classInfo.getName());
-                        return false;
-                    }
-                } else
-                    return false;
             }
         };
     }
@@ -522,13 +661,15 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
                 continue;
             }
 
-            // Tell the ObjectFactory about this class
-            try {
-                objectFactory.getClassInstance(actionClass.getName());
-            } catch (ClassNotFoundException e) {
-                if (LOG.isErrorEnabled())
-                    LOG.error("Object Factory was unable to load class [#0]", e, actionClass.getName());
-                throw new StrutsException("Object Factory was unable to load class " + actionClass.getName(), e);
+            if (eagerLoading) {
+                // Tell the ObjectFactory about this class
+                try {
+                    objectFactory.getClassInstance(actionClass.getName());
+                } catch (ClassNotFoundException e) {
+                    if (LOG.isErrorEnabled())
+                        LOG.error("Object Factory was unable to load class [#0]", e, actionClass.getName());
+                    throw new StrutsException("Object Factory was unable to load class " + actionClass.getName(), e);
+                }
             }
 
             // Determine the action package
@@ -586,7 +727,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
                     List<Action> actions = map.get(method);
                     for (Action action : actions) {
                         PackageConfig.Builder pkgCfg = defaultPackageConfig;
-                        if (action.value().contains("/")) {
+                        if (action.value().contains("/") && !slashesInActionNames) {
                             pkgCfg = getPackageConfig(packageConfigs, namespace, actionPackage,
                                     actionClass, action);
                         }
@@ -647,7 +788,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
 
         // Check if there is a class or package level annotation for the namespace
         //single namespace
-        Namespace namespaceAnnotation = AnnotationTools.findAnnotation(actionClass, Namespace.class);
+        Namespace namespaceAnnotation = AnnotationUtils.findAnnotation(actionClass, Namespace.class);
         if (namespaceAnnotation != null) {
             if (LOG.isTraceEnabled()) {
                 LOG.trace("Using non-default action namespace from Namespace annotation of [#0]", namespaceAnnotation.value());
@@ -657,7 +798,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         }
 
         //multiple annotations
-        Namespaces namespacesAnnotation = AnnotationTools.findAnnotation(actionClass, Namespaces.class);
+        Namespaces namespacesAnnotation = AnnotationUtils.findAnnotation(actionClass, Namespaces.class);
         if (namespacesAnnotation != null) {
             if (LOG.isTraceEnabled()) {
                 StringBuilder sb = new StringBuilder();
@@ -687,12 +828,13 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
 
         if (pkgPart == null && packageLocators != null) {
             for (String packageLocator : packageLocators) {
-                int index = pkg.lastIndexOf(packageLocator);
+                // check subpackage and not a part of package name, eg. actions -> my.actions.transactions - WW-3803
+                int index = pkg.lastIndexOf("." + packageLocator + ".");
 
                 // This ensures that the match is at the end, beginning or has a dot on each side of it
                 if (index >= 0 && (index + packageLocator.length() == pkg.length() || index == 0 ||
-                        (pkg.charAt(index - 1) == '.' && pkg.charAt(index + packageLocator.length()) == '.'))) {
-                    pkgPart = actionClass.getName().substring(index + packageLocator.length() + 1);
+                        (pkg.charAt(index) == '.' && pkg.charAt(index + 1 + packageLocator.length()) == '.'))) {
+                    pkgPart = actionClass.getName().substring(index + packageLocator.length() + 2);
                 }
             }
         }
@@ -785,18 +927,21 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
      */
     protected void createActionConfig(PackageConfig.Builder pkgCfg, Class<?> actionClass, String actionName,
                                       String actionMethod, Action annotation) {
+    	String className = actionClass.getName();
         if (annotation != null) {
-            actionName = annotation.value() != null && annotation.value().equals(Action.DEFAULT_VALUE) ?
-                    actionName : annotation.value();
-            actionName = StringUtils.contains(actionName, "/") ? StringUtils.substringAfterLast(actionName, "/") : actionName;
+            actionName = annotation.value() != null && annotation.value().equals(Action.DEFAULT_VALUE) ? actionName : annotation.value();
+            actionName = StringUtils.contains(actionName, "/") && !slashesInActionNames ? StringUtils.substringAfterLast(actionName, "/") : actionName;
+            if(!Action.DEFAULT_VALUE.equals(annotation.className())){
+            	className = annotation.className();
+            }
         }
-
-        ActionConfig.Builder actionConfig = new ActionConfig.Builder(pkgCfg.getName(),
-                actionName, actionClass.getName());
+        
+        ActionConfig.Builder actionConfig = new ActionConfig.Builder(pkgCfg.getName(), actionName, className);
         actionConfig.methodName(actionMethod);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Creating action config for class ["+actionClass.toString()+"], name ["+actionName+"] and package name ["+pkgCfg.getName()+"] in namespace ["+pkgCfg.getNamespace()+"]");
+            LOG.debug("Creating action config for class [#0], name [#1] and package name [#2] in namespace [#3]",
+                    actionClass.toString(), actionName, pkgCfg.getName(), pkgCfg.getNamespace());
         }
 
         //build interceptors
@@ -835,7 +980,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
         //watch class file
         if (isReloadEnabled()) {
             URL classFile = actionClass.getResource(actionClass.getSimpleName() + ".class");
-            FileManager.loadFile(classFile, false);
+            fileManager.monitorFile(classFile);
             loadedFileUrls.add(classFile.toString());
         }
     }
@@ -845,7 +990,8 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
 
         for (ExceptionMapping exceptionMapping : exceptions) {
             if (LOG.isTraceEnabled())
-                LOG.trace("Mapping exception ["+exceptionMapping.exception()+"] to result ["+exceptionMapping.result()+"] for action ["+actionName+"]");
+                LOG.trace("Mapping exception [#0] to result [#1] for action [#2]", exceptionMapping.exception(),
+                        exceptionMapping.result(), actionName);
             ExceptionMappingConfig.Builder builder = new ExceptionMappingConfig.Builder(null, exceptionMapping
                     .exception(), exceptionMapping.result());
             if (exceptionMapping.params() != null)
@@ -864,11 +1010,11 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
                 LOG.trace("Using non-default action namespace from the Action annotation of [#0]", action.value());
             }
             String actionName = action.value();
-            actionNamespace = StringUtils.contains(actionName, "/") ? StringUtils.substringBeforeLast(actionName, "/") : StringUtils.EMPTY;
+            actionNamespace = StringUtils.contains(actionName, "/") ? StringUtils.substringBeforeLast(actionName, "/") : StringUtils.EMPTY; 
         }
 
         // Next grab the parent annotation from the class
-        ParentPackage parent = AnnotationTools.findAnnotation(actionClass, ParentPackage.class);
+        ParentPackage parent = AnnotationUtils.findAnnotation(actionClass, ParentPackage.class);
         String parentName = null;
         if (parent != null) {
             if (LOG.isTraceEnabled()) {
@@ -902,7 +1048,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
             packageConfigs.put(name, pkgConfig);
 
             //check for @DefaultInterceptorRef in the package
-            DefaultInterceptorRef defaultInterceptorRef = AnnotationTools.findAnnotation(actionClass, DefaultInterceptorRef.class);
+            DefaultInterceptorRef defaultInterceptorRef = AnnotationUtils.findAnnotation(actionClass, DefaultInterceptorRef.class);
             if (defaultInterceptorRef != null) {
                 pkgConfig.defaultInterceptorRef(defaultInterceptorRef.value());
 
@@ -990,7 +1136,7 @@ public class APDPlatPackageBasedActionConfigBuilder implements ActionConfigBuild
     public boolean needsReload() {
         if (devMode && reload) {
             for (String url : loadedFileUrls) {
-                if (FileManager.fileNeedsReloading(url)) {
+                if (fileManager.fileNeedsReloading(url)) {
                     if (LOG.isDebugEnabled())
                         LOG.debug("File [#0] changed, configuration will be reloaded", url);
                     return true;
