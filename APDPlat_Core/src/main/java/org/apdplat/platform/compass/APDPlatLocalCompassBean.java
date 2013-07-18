@@ -20,9 +20,6 @@
 
 package org.apdplat.platform.compass;
 
-import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.platform.search.IndexManager;
-import org.apdplat.platform.util.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -35,6 +32,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import javax.sql.DataSource;
+import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.search.IndexManager;
+import org.apdplat.platform.util.FileUtils;
 
 import org.compass.core.Compass;
 import org.compass.core.CompassException;
@@ -64,8 +64,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 
+/**
+ * @author kimchy
+ */
 public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, DisposableBean, BeanNameAware, ApplicationContextAware, BeanClassLoaderAware {
-    private static final APDPlatLogger LOG = new APDPlatLogger(APDPlatLocalCompassBean.class);
+
+    protected static final APDPlatLogger log = new APDPlatLogger(APDPlatLocalCompassBean.class);
 
     private Resource connection;
 
@@ -78,7 +82,6 @@ public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, D
     private Resource[] resourceLocations;
 
     private String resourceJarLocations;
-
 
     private String resourceDirectoryLocations;
 
@@ -139,10 +142,10 @@ public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, D
         //this.connection = connection;
         //忽略compass注入的相对路径
         //这里从索引管理器中获取索引的绝对路径
-        Resource resource=new FileSystemResource(IndexManager.getIndexDir());
-        this.connection=resource;
+        Resource resource = new FileSystemResource(IndexManager.getIndexDir());
+        this.connection = resource;
         try {
-            LOG.info("开始执行apdplat对compass的定制修改1 :将索引目录路径【 "+connection.getFile().getPath()+" 】修改成路径【 "+this.connection.getFile().getAbsolutePath()+"】");
+            log.info("开始执行apdplat对compass的定制修改1 :将索引目录路径【 " + connection.getFile().getPath() + " 】修改成路径【 " + this.connection.getFile().getAbsolutePath() + "】");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -317,16 +320,16 @@ public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, D
         }
 
         if (resourceJarLocations != null && !"".equals(resourceJarLocations.trim())) {
-            LOG.info("开始执行apdplat对compass的定制修改2");
-            LOG.info("compass resourceJarLocations:"+resourceJarLocations);
-            String[] jars=resourceJarLocations.split(",");
+            log.info("开始执行apdplat对compass的定制修改2");
+            log.info("compass resourceJarLocations:" + resourceJarLocations);
+            String[] jars = resourceJarLocations.split(",");
             for (String jar : jars) {
-                try{
-                    FileSystemResource resource=new FileSystemResource(FileUtils.getAbsolutePath(jar));
+                try {
+                    FileSystemResource resource = new FileSystemResource(FileUtils.getAbsolutePath(jar));
                     config.addJar(resource.getFile());
-                    LOG.info("compass resourceJarLocations  find:"+jar);
-                }catch(Exception e){
-                    LOG.info("compass resourceJarLocations not exists:"+jar);
+                    log.info("compass resourceJarLocations  find:" + jar);
+                } catch (Exception e) {
+                    log.info("compass resourceJarLocations not exists:" + jar);
                 }
             }
         }
@@ -337,30 +340,30 @@ public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, D
             }
         }
 
-        if (resourceDirectoryLocations != null && !"".equals(resourceDirectoryLocations.trim()) ) {
-            LOG.info("开始执行apdplat对compass的定制修改3");
-            LOG.info("compass resourceDirectoryLocations:"+resourceDirectoryLocations);
-            String[] dirs=resourceDirectoryLocations.split(",");
+        if (resourceDirectoryLocations != null && !"".equals(resourceDirectoryLocations.trim())) {
+            log.info("开始执行apdplat对compass的定制修改3");
+            log.info("compass resourceDirectoryLocations:" + resourceDirectoryLocations);
+            String[] dirs = resourceDirectoryLocations.split(",");
             for (String dir : dirs) {
-                ClassPathResource resource=new ClassPathResource(dir);
-                try{
+                ClassPathResource resource = new ClassPathResource(dir);
+                try {
                     File file = resource.getFile();
                     if (!file.isDirectory()) {
-                        LOG.info("Resource directory location ["
+                        log.info("Resource directory location ["
                                 + dir + "] does not denote a directory");
-                    }else{
+                    } else {
                         config.addDirectory(file);
                     }
-                    LOG.info("compass resourceDirectoryLocations find:"+dir);
-                }catch(Exception e){
-                        LOG.info("compass resourceDirectoryLocations not exists:"+dir);
+                    log.info("compass resourceDirectoryLocations find:" + dir);
+                } catch (Exception e) {
+                    log.info("compass resourceDirectoryLocations not exists:" + dir);
                 }
             }
         }
 
         if (mappingResolvers != null) {
             for (InputStreamMappingResolver mappingResolver : mappingResolvers) {
-                config.addMappingResover(mappingResolver);
+                config.addMappingResolver(mappingResolver);
             }
         }
 
@@ -425,7 +428,7 @@ public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, D
                         config.getSettings().setSetting(key, value.equals(nullValue) ? null : value);
                     }
                 } catch (Exception e) {
-                    LOG.debug("Failed to apply property placeholder defined in bean [" + name + "]", e);
+                    log.debug("Failed to apply property placeholder defined in bean [" + name + "]", e);
                 }
             }
         }

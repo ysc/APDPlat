@@ -1,53 +1,65 @@
-c234d4e43643b731aead3aa36985a6a5835c5501
- APDPlatLocalCompassBean.java | 86 +++++++++++++++++++++++++++++---------------
- 1 file changed, 58 insertions(+), 28 deletions(-)
+7a7e83eeb8c32187665900a9b6f54a4d86cd7168
+ APDPlatLocalCompassBean.java | 99 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 68 insertions(+), 31 deletions(-)
 
-diff --git APDPlatLocalCompassBean.java APDPlatLocalCompassBean.java
-index 5210b3c..ef39276 100644
---- APDPlatLocalCompassBean.java
-+++ APDPlatLocalCompassBean.java
-@@ -1,12 +1,14 @@
-+package com.apdplat.platform.compass;
-+
- /*
-  * Copyright 2004-2006 the original author or authors.
-- * 
-+ *
-  * Licensed under the Apache License, Version 2.0 (the "License");
-  * you may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at
-- * 
-+ *
-  *      http://www.apache.org/licenses/LICENSE-2.0
-- * 
-+ *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-@@ -14,9 +16,11 @@
-  * limitations under the License.
+diff --git a/APDPlatLocalCompassBean.java b/APDPlatLocalCompassBean.java
+index 7255482..fb0bc0a 100644
+--- a/APDPlatLocalCompassBean.java
++++ b/APDPlatLocalCompassBean.java
+@@ -1,22 +1,27 @@
+-/*
+- * Copyright 2004-2009 the original author or authors.
++/**
++ * 
++ * APDPlat - Application Product Development Platform
++ * Copyright (c) 2013, 杨尚川, yang-shangchuan@qq.com
++ * 
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 3 of the License, or
++ * (at your option) any later version.
+  * 
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
+  * 
+- *      http://www.apache.org/licenses/LICENSE-2.0
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  * 
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
   */
  
 -package org.compass.spring;
--
-+import com.apdplat.platform.log.APDPlatLogger;
-+import com.apdplat.platform.search.IndexManager;
-+import com.apdplat.platform.util.FileUtils;
++package org.apdplat.platform.compass;
+ 
  import java.io.File;
 +import java.io.IOException;
  import java.lang.reflect.Field;
  import java.lang.reflect.InvocationHandler;
  import java.lang.reflect.InvocationTargetException;
-@@ -28,8 +32,6 @@ import java.util.Properties;
+@@ -27,9 +32,10 @@ import java.util.Map;
+ import java.util.Properties;
  import java.util.Set;
  import javax.sql.DataSource;
++import org.apdplat.platform.log.APDPlatLogger;
++import org.apdplat.platform.search.IndexManager;
++import org.apdplat.platform.util.FileUtils;
  
 -import org.apache.commons.logging.Log;
 -import org.apache.commons.logging.LogFactory;
  import org.compass.core.Compass;
  import org.compass.core.CompassException;
  import org.compass.core.config.CompassConfiguration;
-@@ -41,6 +43,7 @@ import org.compass.core.lucene.LuceneEnvironment;
+@@ -41,6 +47,7 @@ import org.compass.core.lucene.LuceneEnvironment;
  import org.compass.core.lucene.engine.store.jdbc.ExternalDataSourceProvider;
  import org.compass.core.spi.InternalCompass;
  import org.compass.core.util.ClassUtils;
@@ -55,7 +67,7 @@ index 5210b3c..ef39276 100644
  import org.compass.spring.transaction.SpringSyncTransactionFactory;
  import org.springframework.beans.BeansException;
  import org.springframework.beans.factory.BeanClassLoaderAware;
-@@ -51,16 +54,14 @@ import org.springframework.beans.factory.InitializingBean;
+@@ -51,6 +58,8 @@ import org.springframework.beans.factory.InitializingBean;
  import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
  import org.springframework.context.ApplicationContext;
  import org.springframework.context.ApplicationContextAware;
@@ -64,32 +76,31 @@ index 5210b3c..ef39276 100644
  import org.springframework.core.io.Resource;
  import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
  import org.springframework.transaction.PlatformTransactionManager;
- 
--/**
-- * @author kimchy
-- */
+@@ -58,9 +67,9 @@ import org.springframework.transaction.PlatformTransactionManager;
+ /**
+  * @author kimchy
+  */
 -public class LocalCompassBean implements FactoryBean, InitializingBean, DisposableBean, BeanNameAware, ApplicationContextAware, BeanClassLoaderAware {
--
--    protected static final Log log = LogFactory.getLog(LocalCompassBean.class);
 +public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, DisposableBean, BeanNameAware, ApplicationContextAware, BeanClassLoaderAware {
+ 
+-    protected static final Log log = LogFactory.getLog(LocalCompassBean.class);
 +    protected static final APDPlatLogger log = new APDPlatLogger(APDPlatLocalCompassBean.class);
  
      private Resource connection;
  
-@@ -72,9 +73,10 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
+@@ -72,9 +81,9 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
  
      private Resource[] resourceLocations;
  
 -    private Resource[] resourceJarLocations;
 +    private String resourceJarLocations;
-+
  
 -    private Resource[] resourceDirectoryLocations;
 +    private String resourceDirectoryLocations;
  
      private String[] classMappings;
  
-@@ -130,7 +132,16 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
+@@ -130,7 +139,16 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
       * path.
       */
      public void setConnection(Resource connection) {
@@ -97,17 +108,17 @@ index 5210b3c..ef39276 100644
 +        //this.connection = connection;
 +        //忽略compass注入的相对路径
 +        //这里从索引管理器中获取索引的绝对路径
-+        Resource resource=new FileSystemResource(IndexManager.getIndexDir());
-+        this.connection=resource;
++        Resource resource = new FileSystemResource(IndexManager.getIndexDir());
++        this.connection = resource;
 +        try {
-+            log.info("开始执行apdplat对compass的定制修改1 :将索引目录路径【 "+connection.getFile().getPath()+" 】修改成路径【 "+this.connection.getFile().getAbsolutePath()+"】");
++            log.info("开始执行apdplat对compass的定制修改1 :将索引目录路径【 " + connection.getFile().getPath() + " 】修改成路径【 " + this.connection.getFile().getAbsolutePath() + "】");
 +        } catch (IOException ex) {
 +            ex.printStackTrace();
 +        }
      }
  
      /**
-@@ -191,7 +202,7 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
+@@ -191,7 +209,7 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
       * Can be used to add to mappings from a Compass XML config file, or to
       * specify all mappings locally.
       */
@@ -116,7 +127,7 @@ index 5210b3c..ef39276 100644
          this.resourceJarLocations = resourceJarLocations;
      }
  
-@@ -202,7 +213,7 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
+@@ -202,7 +220,7 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
       * Can be used to add to mappings from a Compass XML config file, or to
       * specify all mappings locally.
       */
@@ -125,7 +136,7 @@ index 5210b3c..ef39276 100644
          this.resourceDirectoryLocations = resourceDirectoryLocations;
      }
  
-@@ -301,9 +312,18 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
+@@ -301,9 +319,18 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
              }
          }
  
@@ -134,20 +145,20 @@ index 5210b3c..ef39276 100644
 -                config.addJar(resourceJarLocation.getFile());
 +        if (resourceJarLocations != null && !"".equals(resourceJarLocations.trim())) {
 +            log.info("开始执行apdplat对compass的定制修改2");
-+            log.info("compass resourceJarLocations:"+resourceJarLocations);
-+            String[] jars=resourceJarLocations.split(",");
++            log.info("compass resourceJarLocations:" + resourceJarLocations);
++            String[] jars = resourceJarLocations.split(",");
 +            for (String jar : jars) {
-+                try{
-+                    FileSystemResource resource=new FileSystemResource(FileUtils.getAbsolutePath(jar));
++                try {
++                    FileSystemResource resource = new FileSystemResource(FileUtils.getAbsolutePath(jar));
 +                    config.addJar(resource.getFile());
-+                    log.info("compass resourceJarLocations  find:"+jar);
-+                }catch(Exception e){
-+                    log.info("compass resourceJarLocations not exists:"+jar);
++                    log.info("compass resourceJarLocations  find:" + jar);
++                } catch (Exception e) {
++                    log.info("compass resourceJarLocations not exists:" + jar);
 +                }
              }
          }
  
-@@ -313,14 +333,24 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
+@@ -313,14 +340,24 @@ public class LocalCompassBean implements FactoryBean, InitializingBean, Disposab
              }
          }
  
@@ -157,25 +168,24 @@ index 5210b3c..ef39276 100644
 -                if (!file.isDirectory()) {
 -                    throw new IllegalArgumentException("Resource directory location ["
 -                            + resourceDirectoryLocation + "] does not denote a directory");
-+        if (resourceDirectoryLocations != null && !"".equals(resourceDirectoryLocations.trim()) ) {
++        if (resourceDirectoryLocations != null && !"".equals(resourceDirectoryLocations.trim())) {
 +            log.info("开始执行apdplat对compass的定制修改3");
-+            log.info("compass resourceDirectoryLocations:"+resourceDirectoryLocations);
-+            String[] dirs=resourceDirectoryLocations.split(",");
++            log.info("compass resourceDirectoryLocations:" + resourceDirectoryLocations);
++            String[] dirs = resourceDirectoryLocations.split(",");
 +            for (String dir : dirs) {
-+                ClassPathResource resource=new ClassPathResource(dir);
-+                try{
++                ClassPathResource resource = new ClassPathResource(dir);
++                try {
 +                    File file = resource.getFile();
 +                    if (!file.isDirectory()) {
 +                        log.info("Resource directory location ["
 +                                + dir + "] does not denote a directory");
-+                    }else{
++                    } else {
 +                        config.addDirectory(file);
 +                    }
-+                    log.info("compass resourceDirectoryLocations find:"+dir);
-+                }catch(Exception e){
-+                        log.info("compass resourceDirectoryLocations not exists:"+dir);
++                    log.info("compass resourceDirectoryLocations find:" + dir);
++                } catch (Exception e) {
++                    log.info("compass resourceDirectoryLocations not exists:" + dir);
                  }
 -                config.addDirectory(file);
              }
          }
- 

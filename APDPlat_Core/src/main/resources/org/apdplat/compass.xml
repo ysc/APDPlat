@@ -16,12 +16,8 @@
         <property name="compass" ref="compass" />
         <property name="gpsDevices">
             <list>
-                <bean class="org.compass.spring.device.SpringSyncTransactionGpsDeviceWrapper">
-                    <property name="gpsDevice" ref="jpaGpsDevice" />
-                </bean>
-                <bean class="org.compass.spring.device.SpringSyncTransactionGpsDeviceWrapper">
-                    <property name="gpsDevice" ref="jpaGpsDeviceForLog" />
-                </bean>
+                <ref bean="jpaGpsDevice"/>
+                <ref bean="jpaGpsDeviceForLog"/>
             </list>
         </property>
     </bean>
