@@ -55,7 +55,12 @@ public class BackupAction extends DefaultAction {
     
     public String query(){
         Map map=new HashMap();
-        BackupScheduleConfig config=backupSchedulerService.getBackupScheduleConfig();
+        BackupScheduleConfig config=null;
+        try{
+                config=backupSchedulerService.getBackupScheduleConfig();
+        }catch(Exception e){
+                LOG.warn("未获取到备份配置对象",e);
+        }
         
         if(config!=null && config.isEnabled()){
             map.put("state", "定时备份数据任务执行频率为每天，时间（24小时制）"+config.getScheduleHour()+":"+config.getScheduleMinute());
