@@ -44,6 +44,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.util.TextEscapeUtils;
 import org.springframework.stereotype.Service;
 
+/**
+ * 用户登录认证服务实现类
+ * 实现接口org.springframework.security.core.userdetails.UserDetailsService
+ * 定义的方法UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+ * @author 杨尚川
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private static final APDPlatLogger LOG = new APDPlatLogger(UserDetailsServiceImpl.class);
@@ -52,7 +58,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static Map<String,String> messages = new HashMap<>();
     private String message;
     private static final IPAccessControler ipAccessControler=new IPAccessControler();
-
+    
+    /**
+     * 在登录的JSP页面中，如果用户登录失败，可调用此方法返回登录失败的原因
+     * @param username 登录失败的用户名
+     * @return 登录失败的原因
+     */
     public synchronized static String getMessage(String username) {
         String result = messages.get(username);
         LOG.debug("username "+username+" getMessage:"+result);
@@ -60,6 +71,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return result;
     }
 
+    /**
+     * 用户登录认证实现细节
+     * @param username 用户名
+     * @return 用户信息
+     * @throws UsernameNotFoundException 如果没有相应的用户或是用户没有登录权限则抛出异常
+     */
     @Override
     public synchronized UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
         try{
