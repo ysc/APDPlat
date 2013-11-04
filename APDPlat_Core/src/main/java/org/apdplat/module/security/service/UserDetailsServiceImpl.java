@@ -96,9 +96,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
     
-    private UserDetails load(String username) throws UsernameNotFoundException {      
-        message = "密码不正确";
-        
+    private UserDetails load(String username) throws UsernameNotFoundException {        
         if(FileUtils.existsFile("/WEB-INF/licence") && PropertyHolder.getBooleanProperty("security")){
             Collection<String> reqs = FileUtils.getTextFileContent("/WEB-INF/licence");
             message="您还没有购买产品";
@@ -143,6 +141,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             LOG.info(message);
             throw new UsernameNotFoundException(message);
         }
+        //到了这里，如果用户还是不能登录，那么只有一种情况就是：密码不正确
+        message = "密码不正确";
 
         return user;
     }
