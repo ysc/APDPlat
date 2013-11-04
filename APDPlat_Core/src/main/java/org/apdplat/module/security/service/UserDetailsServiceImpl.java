@@ -79,7 +79,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @throws UsernameNotFoundException 如果没有相应的用户或是用户没有登录权限则抛出异常
      */
     @Override
-    public synchronized UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+    public synchronized UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //spring security最新版本不保存上一次登录的用户名，所以在这里自己保存
         SPRING_SECURITY_LAST_USERNAME = username;
         //加try catch的目的是为了能执行finally的代码，在登录失败的情况下保存失败原因
