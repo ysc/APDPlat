@@ -85,19 +85,11 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
 %>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title><%=appName%></title>
     <link rel="shortcut icon" href="images/<%= shortcut %>.ico" />
-    <link rel="stylesheet" type="text/css" href="extjs/css/ext-all.css"/>
-    <link rel="stylesheet" type="text/css" href="extjs/css/ext-patch.css"/>
-    <link rel="stylesheet" type="text/css" href="css/login.css"/>
-    <script type="text/javascript" src="extjs/js/adapter/ext/ext-base.js"></script>
-    <script type="text/javascript" src="extjs/js/ext-all.js"></script>
-    <script type="text/javascript" src="extjs/ux/Toast.js"></script>
-    <script type="text/javascript" src="extjs/js/ext-lang-zh_CN.js"></script>
-    <script type="text/javascript" src="js/validate.js"></script>
-    <script type="text/javascript" src="js/md5.js"></script>
-    <script type="text/javascript" src="js/login.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/login_merge.css"/>
+    <script type="text/javascript" src="js/login_merge.js"></script>
     <script type="text/javascript">
         //解决Ext在ie9报错：不支持extjs对象的“createContextualFragment属性或方法”
         if ((typeof Range !== "undefined") && !Range.prototype.createContextualFragment) {
@@ -166,7 +158,6 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
             }
         })
     </script>
-    <script type="text/javascript" src="js/MSIE.PNG.js"></script>
 
 </head>
 <body>
