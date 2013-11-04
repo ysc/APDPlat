@@ -19,7 +19,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page  import="org.apdplat.module.security.service.OnlineUserService"%>
 <%@page  import="org.apdplat.module.security.service.SpringSecurityService"%>
-<%@page  import="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter"%>
 <%@page  import="org.apdplat.module.security.service.UserDetailsServiceImpl"%>
 <%@page  import="org.apdplat.module.system.service.PropertyHolder"%>
 <%@page  import="java.util.Collection"%>
@@ -56,11 +55,11 @@ if("checkCodeError".equals(state)){
     return;
 }
 
-Object obj=session.getAttribute(UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY);
+String SPRING_SECURITY_LAST_USERNAME=UserDetailsServiceImpl.SPRING_SECURITY_LAST_USERNAME;
 
 String lastUsername="";
-if(obj!=null){
-    lastUsername=obj.toString();
+if(SPRING_SECURITY_LAST_USERNAME!=null){
+    lastUsername=SPRING_SECURITY_LAST_USERNAME;
     if(request.getParameter("login_error")!=null){
         String tip=UserDetailsServiceImpl.getMessage(lastUsername);
         if(tip!=null){

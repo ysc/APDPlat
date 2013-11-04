@@ -55,6 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private static final APDPlatLogger LOG = new APDPlatLogger(UserDetailsServiceImpl.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
+    public static String SPRING_SECURITY_LAST_USERNAME = null;
     private static Map<String,String> messages = new HashMap<>();
     private String message;
     private static final IPAccessControler ipAccessControler=new IPAccessControler();
@@ -79,6 +80,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public synchronized UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+        //spring security最新版本不保存上一次登录的用户名，所以在这里自己保存
+        SPRING_SECURITY_LAST_USERNAME = username;
         //加try catch的目的是为了能执行finally的代码，在登录失败的情况下保存失败原因
         try{
             if(ipAccessControler.deny(OpenEntityManagerInViewFilter.request)){
