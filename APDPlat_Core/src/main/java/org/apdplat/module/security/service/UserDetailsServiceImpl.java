@@ -65,9 +65,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @return 登录失败的原因
      */
     public synchronized static String getMessage(String username) {
-        String result = messages.get(username);
-        LOG.debug("username "+username+" getMessage:"+result);
-        messages.clear();
+        String result = messages.get(TextEscapeUtils.escapeEntities(username));
+        LOG.debug("获取用户登录失败原因，用户名： "+username+" 原因:"+result);
+        messages.remove(TextEscapeUtils.escapeEntities(username));
         return result;
     }
 
