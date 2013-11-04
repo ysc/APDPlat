@@ -79,24 +79,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public synchronized UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
+        //加try catch的目的是为了能执行finally的代码，在登录失败的情况下保存失败原因
         try{
             if(ipAccessControler.deny(OpenEntityManagerInViewFilter.request)){
                 message = "IP访问策略限制";
+                LOG.info(message);
                 throw new UsernameNotFoundException(message);
             }
             return load(username);
-        }catch(  UsernameNotFoundException | DataAccessException e){
+        }catch(  UsernameNotFoundException e){
             throw e;
         }
         finally{
-            LOG.debug("messages put "+username+":"+message);
+            LOG.debug("保存用户登录失败原因，用户名： "+username+" 原因："+message);
             messages.put(TextEscapeUtils.escapeEntities(username), message);
         }
     }
     
-    public UserDetails load(String username) throws UsernameNotFoundException, DataAccessException {
+    private UserDetails load(String username) throws UsernameNotFoundException {      
         message = "密码不正确";
-
+        
         if(FileUtils.existsFile("/WEB-INF/licence") && PropertyHolder.getBooleanProperty("security")){
             Collection<String> reqs = FileUtils.getTextFileContent("/WEB-INF/licence");
             message="您还没有购买产品";
@@ -107,9 +109,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException(message);
         }
         if (StringUtils.isBlank(username)) {
-            LOG.info("请输入用户名");
             message = "请输入用户名";
-            throw new UsernameNotFoundException("请输入用户名");
+            LOG.info(message);
+            throw new UsernameNotFoundException(message);
         }
         /* 取得用户 */
         PropertyCriteria propertyCriteria = new PropertyCriteria(Criteria.or);
@@ -128,7 +130,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //propertyCriteria.addPropertyEditor(sub);
 
         Page<User> page = serviceFacade.query(User.class, null, propertyCriteria);
-
+        
         
         if (page.getTotalRecords() != 1) {
             message = "用户账号不存在";
@@ -140,7 +142,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(message != null){
             LOG.info(message);
             throw new UsernameNotFoundException(message);
-        }        
+        }
 
         return user;
     }
