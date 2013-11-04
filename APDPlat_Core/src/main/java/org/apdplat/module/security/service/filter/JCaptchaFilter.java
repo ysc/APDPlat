@@ -59,7 +59,7 @@ public class JCaptchaFilter implements Filter {
     }
 
     protected void initParameters(final FilterConfig fConfig) {
-        failureUrl = PropertyHolder.getProperty("login.page")+"?state=checkCodeError";
+        failureUrl = "/"+PropertyHolder.getProperty("login.page")+"?state=checkCodeError";
         if("true".equals(PropertyHolder.getProperty("login.code"))){
             LOG.info("启用登录验证码机制");
             filter=true;
