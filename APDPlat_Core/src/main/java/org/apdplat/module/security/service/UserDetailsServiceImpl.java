@@ -112,34 +112,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Page<User> page = serviceFacade.query(User.class, null, propertyCriteria);
 
-
+        
         if (page.getTotalRecords() != 1) {
             message = "用户账号不存在";
             LOG.info(message+": " + username);
             throw new UsernameNotFoundException(message);
         }
-        User user = page.getModels().get(0);
-        if(!user.isEnabled()){
-            message = "用户账号被禁用";
+        User user = page.getModels().get(0);        
+        message = user.loginValidate();
+        if(message != null){
+            LOG.info(message);
             throw new UsernameNotFoundException(message);
-        }
-        if(!user.isAccountNonExpired()){
-            message = "用户帐号已过期";
-            throw new UsernameNotFoundException(message);
-        }
-        if(!user.isAccountNonLocked()){
-            message = "用户帐号已被锁定";
-            throw new UsernameNotFoundException(message);
-        }
-        if(!user.isCredentialsNonExpired()){
-            message = "用户凭证已过期";
-            throw new UsernameNotFoundException(message);
-        }
-        if(user.getAuthorities()==null){
-            message = "用户帐号未被授予任何权限";
-            throw new UsernameNotFoundException(message);
-        }
+        }        
 
-        return page.getModels().get(0);
+        return user;
     }
 }

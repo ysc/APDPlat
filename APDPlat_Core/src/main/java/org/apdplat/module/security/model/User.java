@@ -124,7 +124,33 @@ public class User extends SimpleModel  implements UserDetails{
     protected boolean credentialsexpired = false;
     @ModelAttr("账户可用")
     protected boolean enabled = true;
-
+    
+    /**
+     * 用户登录验证
+     * 具体的验证规则就写在这里
+     * 
+     * @return 验证结果，null为验证通过，非null则为验证未通过的原因
+     */
+    public String loginValidate(){
+        String message = null;
+        if(!isEnabled()){
+            message = "用户账号被禁用";
+        }
+        if(!isAccountNonExpired()){
+            message = "用户帐号已过期";
+        }
+        if(!isAccountNonLocked()){
+            message = "用户帐号已被锁定";
+        }
+        if(!isCredentialsNonExpired()){
+            message = "用户凭证已过期";
+        }
+        if(getAuthorities() == null){
+            message = "用户帐号未被授予任何权限";
+        }
+        return message;
+    }
+    
     /**
      * 用户是否为超级管理员
      * @return
