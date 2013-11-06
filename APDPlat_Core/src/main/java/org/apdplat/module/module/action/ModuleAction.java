@@ -56,8 +56,7 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
             }
             String value=ModuleCache.get(key);
             if(value!=null){
-                LOG.info("使用缓存数据，key:"+key);
-                LOG.debug("使用缓存数据，value:"+value);
+                LOG.debug("使用缓存数据，key:"+key+", value:"+value);
                 Struts2Utils.renderJson(value);
                 return null;
             }
@@ -79,8 +78,8 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
                     json=moduleService.toJsonForUser(module,recursion);
                 }
                 
-                LOG.info("module.query cost:"+(System.currentTimeMillis()-start));
-                LOG.info("设置缓存数据，key:"+key);
+                LOG.debug("ModuleAction.query() cost time: "+(System.currentTimeMillis()-start)+" 毫秒");
+                LOG.debug("设置缓存数据，key:"+key+", value:"+json);
                 ModuleCache.put(key, json);
                 Struts2Utils.renderJson(json);
             }
