@@ -6,7 +6,7 @@
     <groupId>org.apdplat</groupId>
     <artifactId>APDPlat_Core</artifactId>
     <packaging>jar</packaging>
-    <version>2.4</version>
+    <version>2.5</version>
     <name>APDPlat_Core</name>
     
     <url>https://github.com/ysc/APDPlat</url>
