@@ -25,7 +25,6 @@ import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.ServletUtils;
 import org.apdplat.platform.util.SpringContextUtils;
 import com.octo.captcha.service.CaptchaService;
-import com.octo.captcha.service.CaptchaServiceException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -119,8 +118,11 @@ public class JCaptchaFilter implements Filter {
             //String writerNames[] = ImageIO.getWriterFormatNames();
             ImageIO.write(challenge, "png", out);
             out.flush();
-        } catch (IOException | CaptchaServiceException e) {
-            LOG.error("生成验证码出错",e);
+        } catch (Exception e) {
+            //忽略异常org.apache.catalina.connector.ClientAbortException
+            if(!"org.apache.catalina.connector.ClientAbortException".equals(e.getClass().getName())){
+                LOG.error("生成验证码出错",e);
+            }
         } finally {
             try {
                 out.close();
