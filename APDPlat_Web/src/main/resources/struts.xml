@@ -7,7 +7,7 @@
     <!-- 约定优于配置 -->
 
     <!-- 打印详细错误信息  -->
-    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.devMode" value="false"/>
     <!--设置浏览器不缓存静态内容 -->
     <constant name="struts.serve.static.browserCache" value="false" />
     <!--以上两项在开发时使用, 在生产环境下将以上两项分别改为false和true-->
