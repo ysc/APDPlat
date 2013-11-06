@@ -66,7 +66,6 @@
                 <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
                 <prop key="hibernate.cache.use_structured_entries">${hibernate.cache.use_structured_entries}</prop>
                 <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
-                <prop key="hibernate.cache.region.factory_class">${hibernate.cache.region.factory_class}</prop>
                 <prop key="hibernate.cache.provider_class">${hibernate.cache.provider_class}</prop>
                 <prop key="hibernate.memcached.servers">${hibernate.memcached.servers}</prop>
             </props>
@@ -92,7 +91,6 @@
                 <prop key="hibernate.cache.use_second_level_cache">${hibernate.forlog.cache.use_second_level_cache}</prop>
                 <prop key="hibernate.cache.use_structured_entries">${hibernate.forlog.cache.use_structured_entries}</prop>
                 <prop key="hibernate.cache.use_query_cache">${hibernate.forlog.cache.use_query_cache}</prop>
-                <prop key="hibernate.cache.region.factory_class">${hibernate.forlog.cache.region.factory_class}</prop>
                 <prop key="hibernate.cache.provider_class">${hibernate.forlog.cache.provider_class}</prop>
                 <prop key="hibernate.memcached.servers">${hibernate.forlog.memcached.servers}</prop>
             </props>
