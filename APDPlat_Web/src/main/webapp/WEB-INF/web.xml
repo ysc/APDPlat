@@ -138,7 +138,7 @@
             <url-pattern>/j_spring_security_check</url-pattern>
     </filter-mapping>
     <filter>
-        <description>系统安全模块，复杂整个系统的安全拦截工作</description>
+        <description>系统安全过滤模块，负责整个系统的安全拦截工作</description>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
