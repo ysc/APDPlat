@@ -82,7 +82,9 @@ public class BufferLogCollector  implements ApplicationListener {
      */
     public static void close(){
         LOG.info("等待任务处理完毕");
-        LOG_SAVER.save();
+        if(shoudHandle()){
+            LOG_SAVER.save();
+        }
         LOG.info("关闭日志处理线程池");
         executorService.shutdown();
     }
@@ -104,7 +106,22 @@ public class BufferLogCollector  implements ApplicationListener {
      * 提交日志之后立即返回，不会阻塞调用线程
      */
     public static void handleLog(){
-        executorService.submit(handleLogRunnable);
+        if(shoudHandle()){
+            executorService.submit(handleLogRunnable);
+        }
+    }
+    private static boolean shoudHandle(){
+        if(logHandlers.isEmpty()){    
+            LOG.error("未找到任何LogHandler");
+            return false;
+        }
+        int len=buffers.size();
+        if(len==0){
+            LOG.info("没有日志需要保存");
+            LOG.info("No logs need to save："+len, Locale.ENGLISH);
+            return false;
+        }
+        return true;
     }
     /**
      * 处理日志线程，异步使用
@@ -120,16 +137,7 @@ public class BufferLogCollector  implements ApplicationListener {
      */
     private static class LogSaver{
         public void save(){
-            if(logHandlers.isEmpty()){    
-               LOG.error("未找到任何LogHandler");
-                return;
-            }
             int len=buffers.size();
-            if(len==0){
-                LOG.info("没有日志需要保存");
-                LOG.info("No logs need to save："+len, Locale.ENGLISH);
-                return ;
-            }
             List<Model> list=new LinkedList<>();
             for(int i=0;i<len;i++){
                 list.add(buffers.remove());            
