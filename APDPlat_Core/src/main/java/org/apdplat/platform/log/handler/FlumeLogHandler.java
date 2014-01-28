@@ -18,9 +18,10 @@
  * 
  */
 
-package org.apdplat.platform.log;
+package org.apdplat.platform.log.handler;
 
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.model.Model;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,8 @@ import org.springframework.stereotype.Service;
  * @author 杨尚川
  */
 @Service
-public class ScribeLogHandler implements LogHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(ScribeLogHandler.class);
+public class FlumeLogHandler implements LogHandler{
+    private static final APDPlatLogger LOG = new APDPlatLogger(FlumeLogHandler.class);
 
     @Override
     public <T extends Model> void handle(List<T> list) {

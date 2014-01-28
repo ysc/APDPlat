@@ -18,25 +18,24 @@
  * 
  */
 
-package org.apdplat.platform.log;
+package org.apdplat.platform.log.handler;
 
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.model.Model;
 import org.springframework.stereotype.Service;
 
 /**
- *将日志输出到控制台
+ *
  * @author 杨尚川
  */
 @Service
-public class ConsoleLogHandler implements LogHandler{
-    private static int count = 1;
+public class ChukwaLogHandler implements LogHandler{
+    private static final APDPlatLogger LOG = new APDPlatLogger(ChukwaLogHandler.class);
+
     @Override
     public <T extends Model> void handle(List<T> list) {
-        for(T t : list){
-            System.out.println((count++) + ":");
-            System.out.println(t.toString());
-        }
+        LOG.info("还未实现！");
     }
 
 }

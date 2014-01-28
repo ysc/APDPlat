@@ -18,9 +18,10 @@
  * 
  */
 
-package org.apdplat.platform.log;
+package org.apdplat.platform.log.handler;
 
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.model.Model;
 import org.springframework.stereotype.Service;
 

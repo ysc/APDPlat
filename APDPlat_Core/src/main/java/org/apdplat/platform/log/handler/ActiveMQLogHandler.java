@@ -18,13 +18,11 @@
  * 
  */
 
-package org.apdplat.platform.log;
+package org.apdplat.platform.log.handler;
 
-import java.util.Date;
 import java.util.List;
-import org.apdplat.platform.action.converter.DateTypeConverter;
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.model.Model;
-import org.apdplat.platform.util.FileUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,15 +30,12 @@ import org.springframework.stereotype.Service;
  * @author 杨尚川
  */
 @Service
-public class FileLogHandler implements LogHandler{
-    private static int count = 1;
+public class ActiveMQLogHandler implements LogHandler{
+    private static final APDPlatLogger LOG = new APDPlatLogger(ActiveMQLogHandler.class);
 
     @Override
     public <T extends Model> void handle(List<T> list) {
-        StringBuilder str = new StringBuilder();
-        for(T t : list){
-            str.append(count++).append(":\n").append(t.toString());
-        }
-        FileUtils.createAndWriteFile("/WEB-INF/logs/log-"+DateTypeConverter.toDefaultDateTime(new Date()).replace(" ", "-").replace(":", "-")+".txt", str.toString());
+        LOG.info("还未实现！");
     }
+
 }

@@ -20,6 +20,7 @@
 
 package org.apdplat.platform.log;
 
+import org.apdplat.platform.log.handler.LogHandler;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

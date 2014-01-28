@@ -18,18 +18,25 @@
  * 
  */
 
-package org.apdplat.platform.log;
+package org.apdplat.platform.log.handler;
 
 import java.util.List;
 import org.apdplat.platform.model.Model;
+import org.springframework.stereotype.Service;
 
 /**
- * 日志处理接口:
- * 可将日志存入独立日志数据库（非业务数据库）
- * 可将日志传递到activemq\rabbitmq\zeromq等消息队列
- * 可将日志传递到kafka\flume\chukwa\scribe等日志聚合系统
+ *将日志输出到控制台
  * @author 杨尚川
  */
-public interface LogHandler {
-    public <T extends Model> void handle(List<T> list);
+@Service
+public class ConsoleLogHandler implements LogHandler{
+    private static int count = 1;
+    @Override
+    public <T extends Model> void handle(List<T> list) {
+        for(T t : list){
+            System.out.println((count++) + ":");
+            System.out.println(t.toString());
+        }
+    }
+
 }

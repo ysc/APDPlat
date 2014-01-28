@@ -18,9 +18,10 @@
  * 
  */
 
-package org.apdplat.platform.log;
+package org.apdplat.platform.log.handler;
 
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.model.Model;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,8 @@ import org.springframework.stereotype.Service;
  * @author 杨尚川
  */
 @Service
-public class RabbitMQLogHandler implements LogHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(RabbitMQLogHandler.class);
+public class KafkaLogHandler implements LogHandler{
+    private static final APDPlatLogger LOG = new APDPlatLogger(KafkaLogHandler.class);
 
     @Override
     public <T extends Model> void handle(List<T> list) {
