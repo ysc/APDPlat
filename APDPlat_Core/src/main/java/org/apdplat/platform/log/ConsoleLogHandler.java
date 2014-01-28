@@ -30,12 +30,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ConsoleLogHandler implements LogHandler{
-
+    private static int count = 1;
     @Override
     public <T extends Model> void handle(List<T> list) {
-        int i=1;
         for(T t : list){
-            System.out.println((i++) + ":");
+            System.out.println((count++) + ":");
             System.out.println(t.toString());
         }
     }
