@@ -34,7 +34,7 @@ import java.util.Date;
  */
 public class MemoryMonitorThread extends Thread{
     private static final APDPlatLogger LOG = new APDPlatLogger(MemoryMonitorThread.class);
-    public boolean running=true;
+    public volatile boolean running=true;
     private int circle=10;
     public MemoryMonitorThread(int circle){
         this.setDaemon(true);
