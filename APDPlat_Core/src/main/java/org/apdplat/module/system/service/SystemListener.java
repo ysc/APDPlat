@@ -38,15 +38,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
-import org.apdplat.platform.service.ServiceFacade;
-import org.apdplat.platform.util.SpringContextUtils;
-import org.springframework.orm.jpa.EntityManagerFactoryUtils;
-import org.springframework.orm.jpa.EntityManagerHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.apdplat.platform.log.BufferLogCollector;
 /**
  * 系统启动和关闭的监听器,由Spring来调用
  * @author 杨尚川
@@ -146,7 +140,7 @@ public class SystemListener{
             runingTime.setJvmVendor(System.getProperty("java.vm.vendor"));
             runingTime.setStartupTime(new Date());
             //保存服务器启动日志
-            LogQueue.addLog(runingTime);
+            BufferLogCollector.collect(runingTime);
         }
         if(memoryMonitor){
             LOG.info("启动内存监视线程");
@@ -164,50 +158,24 @@ public class SystemListener{
             LOG.info("记录服务器关闭日志");
             LOG.info("Recording the server shutdown logging", Locale.ENGLISH);    
             runingTime.setShutdownTime(new Date());
-            runingTime.setRuningTime(runingTime.getShutdownTime().getTime()-runingTime.getStartupTime().getTime());         
-            //在更新runingTime的时候，需要打开日志数据库em
-            EntityManagerFactory entityManagerFactoryForLog = SpringContextUtils.getBean("entityManagerFactoryForLog");
-            ServiceFacade serviceFacade = SpringContextUtils.getBean("serviceFacadeForLog");
-            openEntityManagerForLog(entityManagerFactoryForLog);
-            serviceFacade.update(runingTime);
-            closeEntityManagerForLog(entityManagerFactoryForLog);
+            runingTime.setRuningTime(runingTime.getShutdownTime().getTime()-runingTime.getStartupTime().getTime());
+            //保存服务器关闭日志
+            BufferLogCollector.collect(runingTime);
         }
         if(memoryMonitor){
             LOG.info("停止内存监视线程");
             LOG.info("Stop memory monitor thread", Locale.ENGLISH);
             memoryMonitorThread.running=false;
             memoryMonitorThread.interrupt();
-        }
+        } 
         
-        if(LogQueue.getLogQueue()!=null){
-            //在关闭系统的时候，保存日志数据需要打开日志数据库em
-            EntityManagerFactory entityManagerFactoryForLog = SpringContextUtils.getBean("entityManagerFactoryForLog");
-            openEntityManagerForLog(entityManagerFactoryForLog);
-            LogQueue.getLogQueue().saveLog();
-            closeEntityManagerForLog(entityManagerFactoryForLog);
-        }
+        //在关闭系统之前，处理缓冲区中的日志
+        BufferLogCollector.close(); 
+            
         deregisterDrivers();
         LOG.info("卸载JDBC驱动");
-        LOG.info("Uninstalled JDBC driver", Locale.ENGLISH);
+        LOG.info("Uninstalled JDBC driver", Locale.ENGLISH);      
     }    
-    /**
-     * 打开日志数据库em
-     * @param entityManagerFactory 
-     */
-    private static void openEntityManagerForLog(EntityManagerFactory entityManagerFactory){        
-        EntityManager em = entityManagerFactory.createEntityManager();
-        TransactionSynchronizationManager.bindResource(entityManagerFactory, new EntityManagerHolder(em));
-        LOG.info("打开ForLog实体管理器");
-    }
-    /**
-     * 关闭日志数据库em
-     * @param entityManagerFactory 
-     */
-    private static void closeEntityManagerForLog(EntityManagerFactory entityManagerFactory){
-        EntityManagerHolder emHolder = (EntityManagerHolder)TransactionSynchronizationManager.unbindResource(entityManagerFactory);
-        LOG.info("关闭ForLog实体管理器");
-        EntityManagerFactoryUtils.closeEntityManager(emHolder.getEntityManager());
-    }
     public static String getContextPath() {
         return contextPath;
     }

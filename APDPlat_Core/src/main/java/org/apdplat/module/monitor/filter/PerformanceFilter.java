@@ -23,7 +23,6 @@ package org.apdplat.module.monitor.filter;
 import org.apdplat.module.monitor.model.ProcessTime;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.OnlineUserService;
-import org.apdplat.module.system.service.LogQueue;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
@@ -38,6 +37,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import org.apdplat.platform.log.BufferLogCollector;
 
 /**
  *
@@ -78,7 +78,7 @@ public class PerformanceFilter implements Filter {
                 logger.setStartTime(new Date(start));
                 logger.setEndTime(new Date(end));
                 logger.setProcessTime(end-start);
-                LogQueue.addLog(logger);
+                BufferLogCollector.collect(logger);
         }
     }
 

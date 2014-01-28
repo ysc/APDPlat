@@ -21,12 +21,12 @@
 package org.apdplat.module.monitor.service;
 
 import org.apdplat.module.monitor.model.MemoryState;
-import org.apdplat.module.system.service.LogQueue;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import org.apdplat.platform.log.BufferLogCollector;
 
 /**
  *
@@ -76,6 +76,6 @@ public class MemoryMonitorThread extends Thread{
         logger.setTotalMemory(total);
         logger.setFreeMemory(free);
         logger.setUsableMemory(logger.getMaxMemory()-logger.getTotalMemory()+logger.getFreeMemory());
-        LogQueue.addLog(logger);
+        BufferLogCollector.collect(logger);
     }
 }

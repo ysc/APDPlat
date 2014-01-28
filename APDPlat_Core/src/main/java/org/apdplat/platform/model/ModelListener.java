@@ -24,7 +24,6 @@ import org.apdplat.module.log.model.OperateLog;
 import org.apdplat.module.log.model.OperateLogType;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
-import org.apdplat.module.system.service.LogQueue;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.annotation.IgnoreBusinessLog;
@@ -42,6 +41,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
+import org.apdplat.platform.log.BufferLogCollector;
 import org.compass.annotations.Searchable;
 /**
  * 模型监听器
@@ -132,7 +132,7 @@ public class ModelListener {
             operateLog.setOperatingType(type);
             operateLog.setOperatingModel(model.getMetaData());
             operateLog.setOperatingID(model.getId());
-            LogQueue.addLog(operateLog);
+            BufferLogCollector.collect(operateLog);
         }
     }
     @PreRemove

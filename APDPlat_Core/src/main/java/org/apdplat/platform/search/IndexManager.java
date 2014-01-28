@@ -24,7 +24,6 @@ import org.apdplat.module.monitor.model.IndexLog;
 import org.apdplat.module.monitor.model.IndexLogResult;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
-import org.apdplat.module.system.service.LogQueue;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
@@ -35,6 +34,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.BufferLogCollector;
 import org.compass.core.CompassSession;
 import org.compass.core.CompassTemplate;
 import org.compass.gps.CompassGps;
@@ -126,7 +126,7 @@ public class IndexManager {
                 if(indexMonitor){
                     indexLog.setEndTime(new Date());
                     indexLog.setProcessTime(indexLog.getEndTime().getTime()-indexLog.getStartTime().getTime());
-                    LogQueue.addLog(indexLog);
+                    BufferLogCollector.collect(indexLog);
                 }
                 buiding=false;
             }

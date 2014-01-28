@@ -25,7 +25,6 @@ import org.apdplat.module.monitor.model.BackupLogResult;
 import org.apdplat.module.monitor.model.BackupLogType;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
-import org.apdplat.module.system.service.LogQueue;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import org.apdplat.platform.log.BufferLogCollector;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
@@ -118,7 +118,7 @@ public abstract class BackupService {
             }
             backupLog.setEndTime(new Date());
             backupLog.setProcessTime(backupLog.getEndTime().getTime()-backupLog.getStartTime().getTime());
-            LogQueue.addLog(backupLog);
+            BufferLogCollector.collect(backupLog);
         }
         return result;
     }

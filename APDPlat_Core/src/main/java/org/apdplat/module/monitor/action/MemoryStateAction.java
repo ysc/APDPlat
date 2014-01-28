@@ -23,12 +23,12 @@ package org.apdplat.module.monitor.action;
 import org.apdplat.module.monitor.model.MemoryState;
 import org.apdplat.module.monitor.service.MemoryStateCategoryService;
 import org.apdplat.module.monitor.service.MemoryStateChartDataService;
-import org.apdplat.module.system.service.LogQueue;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apdplat.platform.log.BufferLogCollector;
 import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -50,7 +50,7 @@ public class MemoryStateAction extends ExtJSSimpleAction<MemoryState> {
     }
     @Override
     public String query(){
-        LogQueue.getLogQueue().saveLog();
+        BufferLogCollector.handleLog();
         return super.query();
     }
     @Override

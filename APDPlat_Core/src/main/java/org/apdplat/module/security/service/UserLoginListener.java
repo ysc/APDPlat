@@ -22,7 +22,6 @@ package org.apdplat.module.security.service;
 
 import org.apdplat.module.monitor.model.UserLogin;
 import org.apdplat.module.security.model.User;
-import org.apdplat.module.system.service.LogQueue;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
@@ -36,6 +35,7 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import org.apdplat.platform.log.BufferLogCollector;
 import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.SpringContextUtils;
 import org.springframework.security.core.Authentication;
@@ -82,7 +82,7 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
                     }
                     userLogin.setUsername(user.getUsername());
                     //保存用户登陆日志
-                    LogQueue.addLog(userLogin);
+                    BufferLogCollector.collect(userLogin);
                     logs.put(user.getUsername(), userLogin);
                 }else{
                     LOG.info("用户 "+user.getUsername()+" 的登录日志已经被记录过，用户在未注销前又再次登录，忽略此登录");
