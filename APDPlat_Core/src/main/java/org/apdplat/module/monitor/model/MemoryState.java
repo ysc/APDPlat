@@ -28,6 +28,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.apdplat.platform.action.converter.DateTypeConverter;
 import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.Model;
 import org.compass.annotations.Searchable;
@@ -74,6 +75,33 @@ public class MemoryState extends Model {
     
     @ModelAttr("可用内存")
     protected Float usableMemory;
+    
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("服务器IP地址:")
+                .append(serverIP)
+                .append("\n")
+                .append("应用系统名称:")
+                .append(appName)
+                .append("\n")
+                .append("记录时间:")
+                .append(DateTypeConverter.toDefaultDateTime(recordTime))
+                .append("\n")
+                .append("最大可用内存:")
+                .append(maxMemory)
+                .append("\n")
+                .append("已分配内存:")
+                .append(totalMemory)
+                .append("\n")
+                .append("已释放内存:")
+                .append(freeMemory)
+                .append("\n")
+                .append("可用内存:")
+                .append(usableMemory)
+                .append("\n\n");
+        return str.toString();
+    }
 
     public String getAppName() {
         return appName;

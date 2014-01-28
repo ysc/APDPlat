@@ -29,6 +29,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.apdplat.platform.action.converter.DateTypeConverter;
 import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.Model;
 import org.compass.annotations.Searchable;
@@ -93,6 +94,45 @@ public class RuningTime extends Model {
     //单位为毫秒
     @ModelAttr("持续运行时间")
     protected Long runingTime;
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append("服务器IP地址:")
+                .append(serverIP)
+                .append("\n")
+                .append("应用系统名称:")
+                .append(appName)
+                .append("\n")
+                .append("操作系统名称:")
+                .append(osName)
+                .append("\n")
+                .append("操作系统版本:")
+                .append(osVersion)
+                .append("\n")
+                .append("CPU架构:")
+                .append(osArch)
+                .append("\n")
+                .append("Java虚拟机名称:")
+                .append(jvmName)
+                .append("\n")
+                .append("Java虚拟机版本:")
+                .append(jvmVersion)
+                .append("\n")
+                .append("Java虚拟机提供商:")
+                .append(jvmVendor)
+                .append("\n")
+                .append("系统启动时间:")
+                .append(DateTypeConverter.toDefaultDateTime(startupTime))
+                .append("\n")
+                .append("系统关闭时间:")
+                .append(DateTypeConverter.toDefaultDateTime(shutdownTime))
+                .append("\n")
+                .append("持续运行时间:")
+                .append(getRuningTimeStr())
+                .append("\n\n");
+        return str.toString();
+    }
 
     public String getAppName() {
         return appName;
