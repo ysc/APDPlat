@@ -47,7 +47,7 @@
 %>
         <h1>机器码：<%=code%></h1>
         <h1>注册码：<%=reg%></h1>
-        <h1><a href="<%=request.getContextPath()%>">返回</a></h1>
+        <h1><a href="/<%=request.getContextPath()%>">返回</a></h1>
 <%
   }
 %>  
