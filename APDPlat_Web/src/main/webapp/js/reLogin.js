@@ -193,7 +193,7 @@ var updatePartURL=contextPath+'/security/user!modifyPassword.action';
                         }  
                     },
                     failure: function(response, opts) {
-                        location.replace("platform/index.jsp");
+                        location.replace("../platform/index.jsp");
                     }
                 });
             }
