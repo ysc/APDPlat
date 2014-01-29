@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apdplat.module.system.service.backup;
+package org.apdplat.module.system.service.backup.impl;
 
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.converter.DateTypeConverter;
@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Date;
+import org.apdplat.module.system.service.backup.AbstractBackupService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,16 +37,16 @@ import org.springframework.stereotype.Service;
  * @author 杨尚川
  */
 @Service("MYSQL")
-public class MySQLBackupService extends BackupService{
+public class MySQLBackupService extends AbstractBackupService{
  
     /**
      * MySQL备份数据库实现
      * @return 
      */
     @Override
-    public boolean backupImpl() {
+    public boolean backup() {
         try {
-            String path=getPath()+DateTypeConverter.toFileName(new Date())+".bak";
+            String path=getBackupFilePath()+DateTypeConverter.toFileName(new Date())+".bak";
             String command=PropertyHolder.getProperty("db.backup.command");
             command=command.replace("${db.username}", username);
             command=command.replace("${db.password}", password);
@@ -73,12 +74,13 @@ public class MySQLBackupService extends BackupService{
 
     /**
      * MySQL恢复数据库实现
+     * @param date
      * @return 
      */
     @Override
-    public boolean restoreImpl(String date) {
+    public boolean restore(String date) {
         try {
-            String path=getPath()+date+".bak";
+            String path=getBackupFilePath()+date+".bak";
             String command=PropertyHolder.getProperty("db.restore.command");
             command=command.replace("${db.username}", username);
             command=command.replace("${db.password}", password);

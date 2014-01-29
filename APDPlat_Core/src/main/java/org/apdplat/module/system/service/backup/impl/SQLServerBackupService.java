@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apdplat.module.system.service.backup;
+package org.apdplat.module.system.service.backup.impl;
 
 import org.apdplat.module.system.service.Lock;
 import org.apdplat.module.system.service.PropertyHolder;
@@ -31,13 +31,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import javax.annotation.Resource;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apdplat.module.system.service.backup.AbstractBackupService;
 import org.springframework.stereotype.Service;
 /**
  * SQLServer备份恢复实现
  * @author 杨尚川
  */
 @Service("SQL_SERVER")
-public class SQLServerBackupService extends BackupService{
+public class SQLServerBackupService extends AbstractBackupService{
     @Resource(name="dataSource")
     private BasicDataSource dataSource;
     @Resource(name="indexManager")
@@ -47,12 +48,12 @@ public class SQLServerBackupService extends BackupService{
      * @return 
      */
     @Override
-    public boolean backupImpl(){
+    public boolean backup(){
         Connection con = null;
         PreparedStatement bps = null;
         try {
             con = dataSource.getConnection();
-            String path=getPath()+DateTypeConverter.toFileName(new Date())+".bak";
+            String path=getBackupFilePath()+DateTypeConverter.toFileName(new Date())+".bak";
             String bakSQL=PropertyHolder.getProperty("db.backup.sql");
             bps=con.prepareStatement(bakSQL);
             bps.setString(1,path);
@@ -85,13 +86,13 @@ public class SQLServerBackupService extends BackupService{
      * @return 
      */
     @Override
-    public boolean restoreImpl(String date){
+    public boolean restore(String date){
         Lock.setRestore(true);
         Connection con = null;
         PreparedStatement rps = null;
         try {
             con= DriverManager.getConnection(PropertyHolder.getProperty("db.restore.url"),username,password);
-            String path=getPath()+date+".bak";
+            String path=getBackupFilePath()+date+".bak";
             String restoreSQL=PropertyHolder.getProperty("db.restore.sql");
             rps=con.prepareStatement(restoreSQL);
             rps.setString(1,path);

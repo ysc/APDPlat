@@ -29,18 +29,18 @@ import org.springframework.stereotype.Service;
  * @author 杨尚川
  */
 @Service
-public class BackupServiceExecuter extends BackupService{  
+public class BackupServiceExecuter extends AbstractBackupService{  
     private BackupService backupService=null;
     /**
      * 查找并执行正在使用的数据的备份实现实例
      * @return 
      */
     @Override
-    public boolean backupImpl() {
+    public boolean backup() {
         if(backupService==null){
             backupService=SpringContextUtils.getBean(PropertyHolder.getProperty("jpa.database"));
         }
-        return backupService.backupImpl();
+        return backupService.backup();
     }
     /**
      * 查找并执行正在使用的数据的恢复实现实例
@@ -48,10 +48,10 @@ public class BackupServiceExecuter extends BackupService{
      * @return 
      */
     @Override
-    public boolean restoreImpl(String date) {
+    public boolean restore(String date) {
         if(backupService==null){
             backupService=SpringContextUtils.getBean(PropertyHolder.getProperty("jpa.database"));
         }
-        return backupService.restoreImpl(date);
+        return backupService.restore(date);
     }    
 }
