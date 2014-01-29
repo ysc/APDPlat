@@ -26,7 +26,9 @@ import org.apdplat.platform.util.FileUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
@@ -72,6 +74,37 @@ public abstract class AbstractBackupService implements BackupService{
             file.mkdirs();
         }
         return path;
+    }
+    @Override
+    public File getNewestBackupFile(){
+        Map<String,File> map = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        String path=getBackupFilePath();
+        File dir=new File(path);
+        File[] files=dir.listFiles();
+        for(File file : files){
+            String name=file.getName();
+            if(!name.contains("bak")) {
+                continue;
+            }
+            map.put(name, file);
+            list.add(name);
+        }
+        if(list.isEmpty()){
+            return null;
+        }
+        //按备份时间排序
+        Collections.sort(list);
+        //最新备份的在最前面
+        Collections.reverse(list);
+        
+        String name = list.get(0);
+        File file = map.get(name);
+        //加速垃圾回收
+        list.clear();
+        map.clear();
+        
+        return file;
     }
     @Override
     public List<String> getExistBackupFileNames(){

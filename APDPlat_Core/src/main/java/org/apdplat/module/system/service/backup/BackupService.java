@@ -20,6 +20,7 @@
 
 package org.apdplat.module.system.service.backup;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -48,4 +49,9 @@ public interface BackupService {
      * @return 备份文件存放路径
      */
     public String getBackupFilePath();
+    /**
+     * 获取最新的备份文件
+     * @return 最新的备份文件
+     */
+    public File getNewestBackupFile();
 }
