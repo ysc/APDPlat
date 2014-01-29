@@ -20,20 +20,10 @@
 
 package org.apdplat.platform.model;
 
-import org.apdplat.module.log.model.OperateLog;
-import org.apdplat.module.log.model.OperateLogType;
-import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.service.UserHolder;
-import org.apdplat.module.system.service.PropertyHolder;
-import org.apdplat.module.system.service.SystemListener;
-import org.apdplat.platform.annotation.IgnoreBusinessLog;
-import org.apdplat.platform.annotation.IgnoreUser;
+import org.apdplat.platform.model.handler.ModelHandler;
+import java.util.LinkedList;
+import java.util.List;
 import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.platform.search.IndexManager;
-import org.apdplat.platform.util.SpringContextUtils;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Date;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.PostRemove;
@@ -41,132 +31,66 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
-import org.apdplat.platform.log.BufferLogCollector;
-import org.compass.annotations.Searchable;
 /**
- * 模型监听器
+ * 模型监听事件调度器
+ * 可注册与反注册多个ModelHandler的实现
+ * 相应事件发生的时候，改调度器负责转发给所有注册的ModelHandler
  * @author 杨尚川
  *
  */
 public class ModelListener {
     private static final APDPlatLogger LOG = new APDPlatLogger(ModelListener.class);
+    private static final List<ModelHandler> modelHandlers = new LinkedList<>();
     
-    private static IndexManager indexManager=null;
-    private static final boolean create;
-    private static final boolean delete;
-    private static final boolean update;
+    public static void addModelHandler(ModelHandler modelHandler){
+        LOG.info("注册模型事件处理器："+modelHandler.getClass().getName());
+        modelHandlers.add(modelHandler);
+    }
+    public static void removeModelHandler(ModelHandler modelHandler){
+        LOG.info("移除模型事件处理器："+modelHandler.getClass().getName());
+        modelHandlers.remove(modelHandler);
+    }
     
-    static{
-        create=PropertyHolder.getBooleanProperty("log.create");
-        delete=PropertyHolder.getBooleanProperty("log.delete");
-        update=PropertyHolder.getBooleanProperty("log.update");
-        if(create){
-            LOG.info("启用添加数据日志(Enable add data log)");
-        }else{
-            LOG.info("禁用添加数据日志(Disable add data log)");
-        }
-        if(delete){
-            LOG.info("启用删除数据日志(Enable delete data log)");
-        }else{
-            LOG.info("禁用删除数据日志(Disable delete data log)");
-        }
-        if(update){
-            LOG.info("启用更新数据日志(Enable update data log)");
-        }else{
-            LOG.info("禁用更新数据日志(Disable update data log)");
-        }
-    }
-
-    private boolean indexManagerUsable(){
-        if(indexManager==null){
-            indexManager=SpringContextUtils.getBean("indexManager");
-            if(indexManager==null){
-                LOG.info("实时索引不可用(Real-time index is not available)");
-            }else{
-                LOG.info("实时索引开启(Launch real-time index)");
-            }
-        }
-        
-        return indexManager!=null;
-    }
-
     @PrePersist
     public void prePersist(Model model) {
-        User user=UserHolder.getCurrentLoginUser();
-        if(model instanceof SimpleModel){
-            SimpleModel simpleModel = (SimpleModel)model;
-            if(user!=null && simpleModel.getOwnerUser()==null && !model.getClass().isAnnotationPresent(IgnoreUser.class)){
-                //设置数据的拥有者
-                simpleModel.setOwnerUser(user);
-            }
+        for(ModelHandler modelHandler : modelHandlers){
+            modelHandler.prePersist(model);
         }
-        //设置创建时间
-        model.setCreateTime(new Date());
     }
-
     @PostPersist
     public void postPersist(Model model) {
-        if(indexManagerUsable() && model.getClass().isAnnotationPresent(Searchable.class)){
-            indexManager.createIndex(model);
-        }
-        if(create){
-            saveLog(model,OperateLogType.ADD);
-        }
-    }
-    private void saveLog(Model model, String type){
-        if(!model.getClass().isAnnotationPresent(IgnoreBusinessLog.class)){
-            User user=UserHolder.getCurrentLoginUser();
-            String ip=UserHolder.getCurrentUserLoginIp();
-            OperateLog operateLog=new OperateLog();
-            if(user != null){
-                operateLog.setUsername(user.getUsername());
-            }
-            operateLog.setLoginIP(ip);
-            try {
-                operateLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException ex) {
-                ex.printStackTrace();
-            }
-            operateLog.setAppName(SystemListener.getContextPath());
-            operateLog.setOperatingTime(new Date());
-            operateLog.setOperatingType(type);
-            operateLog.setOperatingModel(model.getMetaData());
-            operateLog.setOperatingID(model.getId());
-            BufferLogCollector.collect(operateLog);
+        for(ModelHandler modelHandler : modelHandlers){
+            modelHandler.postPersist(model);
         }
     }
     @PreRemove
     public void preRemove(Model model) {
-
+        for(ModelHandler modelHandler : modelHandlers){
+            modelHandler.preRemove(model);
+        }
     }
-
     @PostRemove
     public void postRemove(Model model) {
-        if(indexManagerUsable() && model.getClass().isAnnotationPresent(Searchable.class)){
-            indexManager.deleteIndex(model.getClass(), model.getId());
-        }
-        if(delete){
-            saveLog(model,OperateLogType.DELETE);
+        for(ModelHandler modelHandler : modelHandlers){
+            modelHandler.postRemove(model);
         }
     }
-
     @PreUpdate
     public  void preUpdate(Model model) {
-        //设置更新时间
-        model.setUpdateTime(new Date());
+        for(ModelHandler modelHandler : modelHandlers){
+            modelHandler.preUpdate(model);
+        }
     }
-
     @PostUpdate
     public void postUpdate(Model model) {
-        if(indexManagerUsable() && model.getClass().isAnnotationPresent(Searchable.class)){
-            indexManager.updateIndex(model.getClass(),model);
-        }
-        if(update){
-            saveLog(model,OperateLogType.UPDATE);
+        for(ModelHandler modelHandler : modelHandlers){
+            modelHandler.postUpdate(model);
         }
     }
-
     @PostLoad
     public void postLoad(Model model) {
+        for(ModelHandler modelHandler : modelHandlers){
+            modelHandler.postLoad(model);
+        }
     }
 }
