@@ -138,7 +138,7 @@ public class BufferLogCollector  implements ApplicationListener {
     private static class LogSaver{
         public void save(){
             int len=buffers.size();
-            List<Model> list=new LinkedList<>();
+            List<Model> list=new ArrayList<>(len);
             for(int i=0;i<len;i++){
                 list.add(buffers.remove());            
             }        
