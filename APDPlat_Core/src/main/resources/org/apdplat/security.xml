@@ -23,7 +23,7 @@
         <s:form-login login-page="/${login.page}?state=login" default-target-url="/${system.main.page}" authentication-failure-url="/${login.fail.page}?state=login&amp;login_error=true" login-processing-url="/j_spring_security_check" />
         <s:access-denied-handler error-page="/${deny.page}"/>  
         <s:logout logout-success-url="/${logout.page}" />
-        <s:session-management session-authentication-error-url="/${login.page}?state=session-authentication-error" invalid-session-url="/${login.page}?state=session-invalid" session-fixation-protection="none" > 
+        <s:session-management session-authentication-error-url="/${login.page}?state=session-authentication-error" invalid-session-url="/login.jsp?state=session-invalid" session-fixation-protection="none" > 
             <s:concurrency-control max-sessions="1" expired-url="/${login.page}?state=session-expired" error-if-maximum-exceeded="false" session-registry-alias="sessionRegistry"/>
         </s:session-management>
         
