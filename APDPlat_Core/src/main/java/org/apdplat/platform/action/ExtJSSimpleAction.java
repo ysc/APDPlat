@@ -106,6 +106,10 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             return null;
         }
         Struts2Utils.renderXml(data);
+        //业务处理完毕后删除页面数据引用，加速垃圾回收
+        this.getPage().getModels().clear();
+        this.setPage(null);
+        
         return null;
     }
 
@@ -294,6 +298,10 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         renderJsonForQuery(result);
         json.put("root", result);
         Struts2Utils.renderJson(json);
+        //业务处理完毕后删除页面数据引用，加速垃圾回收
+        this.getPage().getModels().clear();
+        this.setPage(null);
+        
         return null;
     }
 
@@ -315,6 +323,10 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         renderForExport(result);
         String path=excelService.write(result, exportFileName());
         Struts2Utils.renderText(path);
+        //业务处理完毕后删除页面数据引用，加速垃圾回收
+        this.getPage().getModels().clear();
+        this.setPage(null);
+        
         return null;
     }
     private List<T> processSearchResult(List<T> models){
