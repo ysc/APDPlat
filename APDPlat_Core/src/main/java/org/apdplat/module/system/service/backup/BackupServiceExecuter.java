@@ -23,6 +23,7 @@ package org.apdplat.module.system.service.backup;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.util.SpringContextUtils;
 import org.springframework.stereotype.Service;
+import javax.annotation.Resource;
 
 /**
  *执行备份恢复的服务，自动判断使用的是什么数据库，并找到该数据库备份恢复服务的实现并执行
@@ -31,6 +32,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class BackupServiceExecuter extends AbstractBackupService{  
     private BackupService backupService=null;
+    
+    @Resource(name="backupFileSenderExecuter")
+    private BackupFileSenderExecuter backupFileSenderExecuter;
     /**
      * 查找并执行正在使用的数据的备份实现实例
      * @return 
@@ -40,7 +44,12 @@ public class BackupServiceExecuter extends AbstractBackupService{
         if(backupService==null){
             backupService=SpringContextUtils.getBean(PropertyHolder.getProperty("jpa.database"));
         }
-        return backupService.backup();
+        boolean result = backupService.backup();
+        //如果备份成功，则将备份文件发往他处
+        if(result){
+            backupFileSenderExecuter.send(getNewestBackupFile());
+        }
+        return result;
     }
     /**
      * 查找并执行正在使用的数据的恢复实现实例
