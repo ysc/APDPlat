@@ -145,7 +145,9 @@ public class BufferLogCollector  implements ApplicationListener {
             //把日志交给LogHandler处理
             for(LogHandler logHandler : logHandlers){
                 logHandler.handle(list);
-            }            
+            }  
+            //加速垃圾回收
+            list.clear();
         }
     }
 }
