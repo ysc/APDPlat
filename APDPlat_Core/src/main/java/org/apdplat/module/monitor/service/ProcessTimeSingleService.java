@@ -53,10 +53,9 @@ public class ProcessTimeSingleService  extends SingleService{
      * @param sort 根据VALUE排序
      */
     private void createSets(LinkedHashMap<String, Long> data, Element rootElement, boolean sort) {
-        Map.Entry[] entrys=null;
         if(sort){
             //根据VALUE排序
-            entrys=SortUtils.getSortedMapByValue(data);
+            Map.Entry[] entrys=SortUtils.getSortedMapByValue(data);
             for(Map.Entry<String,Long> entry : entrys){
                 Element element = createSet(entry.getKey(), entry.getValue());
                 rootElement.addContent(element);
