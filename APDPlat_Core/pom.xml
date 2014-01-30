@@ -777,6 +777,10 @@
                     <groupId>org.eclipse.birt.runtime</groupId>
                     <artifactId>org.apache.commons.logging</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>milyn</groupId>
+                    <artifactId>flute</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         
