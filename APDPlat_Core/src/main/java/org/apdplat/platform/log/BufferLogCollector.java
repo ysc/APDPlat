@@ -22,12 +22,12 @@ package org.apdplat.platform.log;
 
 import org.apdplat.platform.log.handler.LogHandler;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.model.Model;
@@ -53,6 +53,7 @@ public class BufferLogCollector  implements ApplicationListener {
     private static final ConcurrentLinkedQueue<Model> buffers =  new  ConcurrentLinkedQueue<>();
     private static final int logBufferMax = PropertyHolder.getIntProperty("log.buffer.max");
     private static final LogSaver LOG_SAVER = new LogSaver();
+    private static final AtomicLong count = new AtomicLong();
     
     @Override
     public void onApplicationEvent(ApplicationEvent event){
@@ -94,7 +95,7 @@ public class BufferLogCollector  implements ApplicationListener {
      * @param t 
      */
     public static <T extends Model> void collect(T t){
-        LOG.debug("将日志加入缓冲区：\n"+t.toString());
+        LOG.debug(count.incrementAndGet()+"、将日志加入缓冲区：\n【"+t.getMetaData()+"】\n"+t.toString());
         buffers.add(t);
         //判断缓冲区是否达到限制
         if(buffers.size() > logBufferMax){
@@ -121,6 +122,7 @@ public class BufferLogCollector  implements ApplicationListener {
             LOG.info("No logs need to save："+len, Locale.ENGLISH);
             return false;
         }
+        LOG.info("需要处理缓冲区中的日志");
         return true;
     }
     /**
@@ -138,6 +140,7 @@ public class BufferLogCollector  implements ApplicationListener {
     private static class LogSaver{
         public void save(){
             int len=buffers.size();
+            LOG.info("开始处理缓冲区中的"+len+" 个日志对象");
             List<Model> list=new ArrayList<>(len);
             for(int i=0;i<len;i++){
                 list.add(buffers.remove());            
@@ -148,6 +151,7 @@ public class BufferLogCollector  implements ApplicationListener {
             }  
             //加速垃圾回收
             list.clear();
+            LOG.info("缓冲区中的日志处理完毕");
         }
     }
 }
