@@ -90,6 +90,7 @@
         <activiti.version>5.13</activiti.version>
         <aspectj.version>1.7.4</aspectj.version>
         <commons-net.version>3.3</commons-net.version>
+        <jackson.version>2.3.1</jackson.version>
         
         <p6spy.version>1.3</p6spy.version>
         
@@ -869,6 +870,12 @@
             <artifactId>commons-net</artifactId>
             <version>${commons-net.version}</version>
             <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
     <build>
