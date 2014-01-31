@@ -783,6 +783,10 @@
                     <groupId>milyn</groupId>
                     <artifactId>flute</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.birt.runtime</groupId>
+                    <artifactId>org.apache.commons.codec</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         
@@ -876,7 +880,7 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
-        </dependency>
+        </dependency>     
     </dependencies>
     <build>
         <plugins>
