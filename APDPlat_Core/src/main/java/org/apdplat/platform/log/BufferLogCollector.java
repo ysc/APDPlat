@@ -107,6 +107,7 @@ public class BufferLogCollector  implements ApplicationListener {
      * 提交日志之后立即返回，不会阻塞调用线程
      */
     public static void handleLog(){
+        LOG.info("处理缓冲区中的日志");
         if(shoudHandle()){
             executorService.submit(handleLogRunnable);
         }
