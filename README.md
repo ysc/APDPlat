@@ -14,7 +14,7 @@ APDPlat使用的技术主要有：
 
     4)、ORM使用JPA，默认实现是Hibernate。
 
-    5)、内置搜索使用Compass，扩展方案使用Solr和ElasticSearch。
+    5)、内置搜索（OSEM）使用Compass。
 
     6)、认证授权使用SpringSecurity。
 
@@ -51,4 +51,11 @@ APDPlat使用的技术主要有：
 	22)、报表使用BIRT。
 	
 	23)、Web资源优化使用wro4j。
-
+	
+	24)、日志拦截使用AspectJ。
+	
+	25)、上传备份文件到FTP使用Commons Net。
+	
+	26)、JSON处理使用Jackson。
+	
+	27)、分布式搜索和实时分析使用elasticsearch
