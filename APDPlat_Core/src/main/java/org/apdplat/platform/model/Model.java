@@ -236,12 +236,16 @@ public abstract class Model implements Serializable{
                     }else if(field.isAnnotationPresent(RenderTime.class)){
                         value=DateTypeConverter.toDefaultDateTime((Date)value);
                     }else{
-                        //对于Date字段，如果没有指定渲染类型，则根据@Temporal来判断
-                        switch (valueClass) {
-                            case "Timestamp":
+                        String temporal = "TIMESTAMP";
+                        if(field.isAnnotationPresent(Temporal.class)){
+                            temporal = field.getAnnotation(Temporal.class).value().name();
+                        }
+                        //如果没有指定渲染类型，则根据@Temporal来判断
+                        switch (temporal) {
+                            case "TIMESTAMP":
                                 value=DateTypeConverter.toDefaultDateTime((Date)value);
                                 break;
-                            case "Date":
+                            case "DATE":
                                 value=DateTypeConverter.toDefaultDate((Date)value);
                                 break;
                         }

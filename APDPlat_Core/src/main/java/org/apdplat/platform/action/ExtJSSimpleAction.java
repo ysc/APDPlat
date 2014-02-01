@@ -45,6 +45,7 @@ import javax.annotation.Resource;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.platform.annotation.RenderDate;
 import org.apdplat.platform.annotation.RenderTime;
@@ -589,12 +590,16 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                 }else if(field.isAnnotationPresent(RenderTime.class)){
                     value=DateTypeConverter.toDefaultDateTime((Date)value);
                 }else{
-                    //对于Date字段，如果没有指定渲染类型，则根据@Temporal来判断
-                    switch (valueClass) {
-                        case "Timestamp":
+                    //如果没有指定渲染类型，则根据@Temporal来判断
+                    String temporal = "TIMESTAMP";
+                    if(field.isAnnotationPresent(Temporal.class)){
+                        temporal = field.getAnnotation(Temporal.class).value().name();
+                    }
+                    switch (temporal) {
+                        case "TIMESTAMP":
                             value=DateTypeConverter.toDefaultDateTime((Date)value);
                             break;
-                        case "Date":
+                        case "DATE":
                             value=DateTypeConverter.toDefaultDate((Date)value);
                             break;
                     }
