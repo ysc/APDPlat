@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.Locale;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -40,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apdplat.platform.log.BufferLogCollector;
 
 /**
- *
+ * 性能过滤器
  * @author 杨尚川
  */
 public class PerformanceFilter implements Filter {
@@ -56,21 +57,22 @@ public class PerformanceFilter implements Filter {
         if (enabled && filter(req)) {            
 		start=System.currentTimeMillis();
         }
-        chain.doFilter(request, response);
+        chain.doFilter(request, response);        
         if (enabled && filter(req)) {
 		long end=System.currentTimeMillis();
                 User user=OnlineUserService.getUser(req.getSession().getId());
-                //如果没有用户登录，则不执行性能分析
-                if(user==null){
-                    return ;
+                String userName = "";
+                if(user != null){
+                    userName = user.getUsername();
                 }
                 ProcessTime logger=new ProcessTime();
-                logger.setUsername(user.getUsername());
+                logger.setUsername(userName);
                 logger.setUserIP(req.getRemoteAddr());
                 try {
                     logger.setServerIP(InetAddress.getLocalHost().getHostAddress());
-                } catch (UnknownHostException ex) {
-                    LOG.error("保存日志出错(Error in saving log)",ex);
+                } catch (UnknownHostException e) {
+                    LOG.error("无法获取服务器IP地址", e);
+                    LOG.error("Can't get server's ip address", e, Locale.ENGLISH);
                 }
                 logger.setAppName(SystemListener.getContextPath());
                 String resource=req.getRequestURI().replace(logger.getAppName(), "");
@@ -84,28 +86,34 @@ public class PerformanceFilter implements Filter {
 
     @Override
     public void init(FilterConfig fc) throws ServletException {
-        LOG.info("初始化性能过滤器(Initialize the filter performance)");
+        LOG.info("初始化性能过滤器");
+        LOG.info("Initialize the performance filter", Locale.ENGLISH);
         enabled = PropertyHolder.getBooleanProperty("monitor.performance");
         if(enabled){
-            LOG.info("启用性能分析日志(Enable performance analyzing log)");
+            LOG.info("启用性能分析日志");
+            LOG.info("Enable performance analyzing log", Locale.ENGLISH);
         }else{            
-            LOG.info("禁用性能分析日志(Disable performance analyzing log)");
+            LOG.info("禁用性能分析日志");
+            LOG.info("Disable performance analyzing log", Locale.ENGLISH);
         }
     }
 
     @Override
     public void destroy() {
-        LOG.info("销毁性能过滤器(Destroy the filter performance)");
+        LOG.info("销毁性能过滤器");
+        LOG.info("Destroy the performance filter", Locale.ENGLISH);
     }
 
     private boolean filter(HttpServletRequest req) {
         String path=req.getRequestURI();
         if(path.contains("/log/")){
-            LOG.info("路径包含/log/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
+            LOG.info("路径包含/log/,不执行性能分析"+path);
+            LOG.info("/log/ in path, not execute performance analysis", Locale.ENGLISH);
             return false;
         }
         if(path.contains("/monitor/")){
-            LOG.info("路径包含/monitor/,不执行性能分析(/log/ in path, not execute performance analysis) "+path);
+            LOG.info("路径包含/monitor/,不执行性能分析"+path);
+            LOG.info("/monitor/ in path, not execute performance analysis", Locale.ENGLISH);
             return false;
         }
         return true;
