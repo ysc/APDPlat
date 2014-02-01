@@ -30,7 +30,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import org.apdplat.platform.action.converter.DateTypeConverter;
 import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.Model;
 import org.compass.annotations.Index;
@@ -88,36 +87,6 @@ public class UserLogin extends Model {
     @SearchableProperty(index=Index.NOT_ANALYZED)
     @ModelAttr("用户名")
     protected String username;    
-
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("登录IP地址:")
-                .append(loginIP)
-                .append("\n")
-                .append("用户代理:")
-                .append(userAgent)
-                .append("\n")
-                .append("服务器IP地址:")
-                .append(serverIP)
-                .append("\n")
-                .append("应用系统名称:")
-                .append(appName)
-                .append("\n")
-                .append("登录时间:")
-                .append(DateTypeConverter.toDefaultDateTime(loginTime))
-                .append("\n")
-                .append("注销时间:")
-                .append(DateTypeConverter.toDefaultDateTime(logoutTime))
-                .append("\n")
-                .append("用户在线时间:")
-                .append(getOnlineTimeStr())
-                .append("\n")
-                .append("用户名:")
-                .append(username)
-                .append("\n\n");
-        return str.toString();
-    }
 
     public String getUsername() {
         return username;

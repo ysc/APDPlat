@@ -95,7 +95,7 @@ public class BufferLogCollector  implements ApplicationListener {
      * @param t 
      */
     public static <T extends Model> void collect(T t){
-        LOG.debug(count.incrementAndGet()+"、将日志加入缓冲区：\n【"+t.getMetaData()+"】\n"+t.toString());
+        LOG.debug(count.incrementAndGet()+"、将日志加入缓冲区：\n"+t.toString());
         buffers.add(t);
         //判断缓冲区是否达到限制
         if(buffers.size() > logBufferMax){
