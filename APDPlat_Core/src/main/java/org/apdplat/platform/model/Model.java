@@ -29,6 +29,7 @@ import org.apdplat.platform.util.ReflectionUtils;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -43,7 +45,11 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlTransient;
+import org.apdplat.platform.action.converter.DateTypeConverter;
 import org.apdplat.platform.annotation.ModelAttrRef;
+import org.apdplat.platform.annotation.ModelCollRef;
+import org.apdplat.platform.annotation.RenderDate;
+import org.apdplat.platform.annotation.RenderTime;
 import org.compass.annotations.SearchableComponent;
 import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
@@ -157,9 +163,107 @@ public abstract class Model implements Serializable{
         return Integer.valueOf(id + 1000).hashCode();
     }
 
+    /**
+     * 输出模型中带有@ModelAttr注解的字段的值
+     * 忽略带@Lob注解的字段
+     * 不包括从父类继承的字段
+     * @return 
+     */
     @Override
     public String toString() {
-        return this.getMetaData() + this.getId();
+        StringBuilder result = new StringBuilder();
+        result.append("【")
+                .append(getMetaData())
+                .append("】")
+                .append("\n");
+        if(id != null){
+            result.append("id:  ").append(id).append("\n");
+        }
+        Field[] fields = this.getClass().getDeclaredFields();
+        int len = fields.length;
+        for(int i = 0; i < len; i++){
+            Field field = fields[i];
+            String fieldName = field.getName();
+            try{
+                field.setAccessible(true);
+                String fieldAttr;
+                if(field.isAnnotationPresent(Lob.class)){
+                    LOG.debug("字段["+fieldName+"]为大对象， 在toString()方法中忽略输出");
+                    continue;
+                }
+                if(field.isAnnotationPresent(ModelAttr.class)){
+                    ModelAttr attr = field.getAnnotation(ModelAttr.class);
+                    fieldAttr = attr.value();
+                }else{
+                    LOG.debug("字段["+fieldName+"]未加@ModelAttr注解， 在toString()方法中忽略输出");
+                    continue;
+                }
+                //获取字段的值
+                Object value = field.get(this);
+                if(value == null){
+                    LOG.debug("忽略空字段："+fieldName);
+                    continue;
+                }
+                //字段值处理
+                String valueClass=value.getClass().getSimpleName();
+                LOG.debug("fieldAttr: "+fieldAttr+" fieldName: "+fieldName+" valueClass: "+valueClass);                      
+                //处理集合类型
+                if(field.isAnnotationPresent(ModelCollRef.class)){
+                    ModelCollRef ref = field.getAnnotation(ModelCollRef.class);
+                    String fieldRef = ref.value();
+                    Collection collection=(Collection)value;  
+                    LOG.debug("处理集合,字段为："+fieldName+",大小为："+collection.size());
+                    if(collection.size() > 0){
+                        StringBuilder str=new StringBuilder();
+                        for(Object object : collection){
+                            str.append(ReflectionUtils.getFieldValue(object, fieldRef).toString()).append(",");
+                        }
+                        str=str.deleteCharAt(str.length()-1);
+                        value=str.toString();
+                    }
+                }
+                //处理复杂对象类型
+                if(field.isAnnotationPresent(ModelAttrRef.class)){
+                    LOG.debug("处理对象,字段为："+fieldName);
+                    ModelAttrRef ref = field.getAnnotation(ModelAttrRef.class);
+                    String fieldRef = ref.value();
+                    //获取fieldRef的值
+                    value = ReflectionUtils.getFieldValue(value, fieldRef);
+                }
+                if("Timestamp".equals(valueClass) || "Date".equals(valueClass)){
+                    if(field.isAnnotationPresent(RenderDate.class)){
+                        value=DateTypeConverter.toDefaultDate((Date)value);
+                    }else if(field.isAnnotationPresent(RenderTime.class)){
+                        value=DateTypeConverter.toDefaultDateTime((Date)value);
+                    }else{
+                        //对于Date字段，如果没有指定渲染类型，则根据@Temporal来判断
+                        switch (valueClass) {
+                            case "Timestamp":
+                                value=DateTypeConverter.toDefaultDateTime((Date)value);
+                                break;
+                            case "Date":
+                                value=DateTypeConverter.toDefaultDate((Date)value);
+                                break;
+                        }
+                    }
+                }
+                //处理下拉菜单
+                if("DicItem".equals(valueClass)){
+                    value = ReflectionUtils.getFieldValue(value, "name");
+                }
+                if(value == null){
+                    value = "";
+                }
+                result.append(fieldAttr)
+                        .append(":  ")
+                        .append(value)
+                        .append("\n");
+            }catch(IllegalAccessException | IllegalArgumentException | SecurityException e){
+                LOG.error("获取字段 "+fieldName+" 的值出错", e);
+            }
+        }
+        result.append("\n");   
+        return result.toString();
     }
     public List<ModelFieldData> getAllRenderModelAttr(){
         List<ModelFieldData> list=new ArrayList<>();
