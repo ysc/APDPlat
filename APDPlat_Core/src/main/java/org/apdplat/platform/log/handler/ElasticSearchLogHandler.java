@@ -100,17 +100,66 @@ public class ElasticSearchLogHandler implements LogHandler{
     }
     
     /**
-     * 批量索引
-     * 批量提交
+     * 批量提交索引JSON文档
      * 
      * @param <T> 泛型参数
      * @param list 批量模型
      */
     public <T extends Model> void index(List<T> list){
         success = 0;
+        String json = getJsonDocuments(list);
+        try{
+            LOG.debug("开始批量提交索引JSON文档");
+            HttpURLConnection conn = (HttpURLConnection) URL.openConnection();
+            conn.setRequestMethod("PUT");
+            conn.setDoOutput(true);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(),"utf-8"));    
+            writer.write(json.toString());
+            writer.flush();
+            StringBuilder result = new StringBuilder();
+            try (BufferedReader reader = new BufferedReader (new InputStreamReader (conn.getInputStream()))) {
+                String line = reader.readLine();
+                while(line != null){
+                    result.append(line);
+                    line = reader.readLine();
+                }
+            }
+            String resultStr = result.toString();
+            LOG.debug(resultStr);          
+            //使用Jackson解析返回的JSON
+            JsonNode node = MAPPER.readTree(resultStr);
+            for(JsonNode item : node.get("items")){
+                JsonNode createJsonNode = item.get("create");
+                JsonNode okJsonNode = createJsonNode.get("ok");
+                if(okJsonNode != null){
+                    boolean r = okJsonNode.getBooleanValue();
+                    if(r){
+                        success++;
+                    }
+                }else{
+                    JsonNode errorJsonNode = createJsonNode.get("error");
+                    if(errorJsonNode != null){
+                        String errorMessage = errorJsonNode.getTextValue();
+                        LOG.error("索引失败："+errorMessage);
+                    }
+                }
+            }
+            LOG.debug("批量提交索引JSON文档完毕");
+        }catch(IOException e){
+            LOG.error("批量提交索引失败", e);
+        }
+    }
+    /**
+     * 将待索引的日志对象列表按照ElasticSearch的要求
+     * 构造成合适的JSON文档
+     * @param <T> 泛型参数
+     * @param list 待索引的日志对象列表
+     * @return 符合ElasticSearch要求的JSON文档
+     */
+    public <T extends Model> String getJsonDocuments(List<T> list){        
         StringBuilder json = new StringBuilder();
         int j = 1;
-        //构造批量索引请求
+        LOG.debug("开始构造JSON文档");
         for(T model : list){
             try{
                 String simpleName = model.getClass().getSimpleName();
@@ -167,46 +216,8 @@ public class ElasticSearchLogHandler implements LogHandler{
                 LOG.error("构造索引请求失败【"+model.getMetaData()+"】\n"+model, e);
             }
         }
-        //批量提交索引
-        try{
-            LOG.debug("提交JSON数据：\n"+json.toString());
-            HttpURLConnection conn = (HttpURLConnection) URL.openConnection();
-            conn.setRequestMethod("PUT");
-            conn.setDoOutput(true);
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream(),"utf-8"));    
-            writer.write(json.toString());
-            writer.flush();
-            StringBuilder result = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader (new InputStreamReader (conn.getInputStream()))) {
-                String line = reader.readLine();
-                while(line != null){
-                    result.append(line);
-                    line = reader.readLine();
-                }
-            }
-            String resultStr = result.toString();
-            LOG.debug(resultStr);          
-            //使用Jackson解析返回的JSON
-            JsonNode node = MAPPER.readTree(resultStr);
-            for(JsonNode item : node.get("items")){
-                JsonNode createJsonNode = item.get("create");
-                JsonNode okJsonNode = createJsonNode.get("ok");
-                if(okJsonNode != null){
-                    boolean r = okJsonNode.getBooleanValue();
-                    if(r){
-                        success++;
-                    }
-                }else{
-                    JsonNode errorJsonNode = createJsonNode.get("error");
-                    if(errorJsonNode != null){
-                        String errorMessage = errorJsonNode.getTextValue();
-                        LOG.error("索引失败："+errorMessage);
-                    }
-                }
-            }
-        }catch(IOException e){
-            LOG.error("批量提交索引失败", e);
-        }
+        LOG.debug("JSON文档构造完毕：\n"+json.toString());
+        return json.toString();
     }
     
     @Override
