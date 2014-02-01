@@ -28,6 +28,7 @@ import org.apdplat.platform.model.Model;
  * 可将日志存入独立日志数据库（非业务数据库）
  * 可将日志传递到activemq\rabbitmq\zeromq等消息队列
  * 可将日志传递到kafka\flume\chukwa\scribe等日志聚合系统
+ * 可将日志传递到elasticsearch\solr等搜索服务器
  * @author 杨尚川
  */
 public interface LogHandler {
