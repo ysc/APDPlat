@@ -20,33 +20,25 @@
 
 package org.apdplat.module.security.action;
 
-import org.apdplat.module.security.model.Org;
 import org.apdplat.module.security.model.Position;
 import org.apdplat.module.security.model.Role;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.model.UserGroup;
-import org.apdplat.module.security.service.OnlineUserService;
-import org.apdplat.module.security.service.OrgService;
 import org.apdplat.module.security.service.PasswordEncoder;
-import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apdplat.platform.criteria.Operator;
 import org.apdplat.platform.criteria.Property;
 import org.apdplat.platform.criteria.PropertyCriteria;
-import org.apdplat.platform.criteria.PropertyEditor;
-import org.apdplat.platform.criteria.PropertyType;
-import org.apdplat.platform.result.Page;
 import org.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apdplat.module.security.service.UserReportService;
+import org.apdplat.module.security.service.UserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -73,154 +65,33 @@ public class UserAction extends ExtJSSimpleAction<User> {
     
     @Resource(name="userReportService")
     private UserReportService userReportService;
+    @Resource(name="userService")
+    private UserService userService;
     
     @Override
     public String report(){
-        Struts2Utils.renderImage(userReportService.getReport(ServletActionContext.getServletContext(), ServletActionContext.getRequest()), "text/html");
-        
+        byte[] report = userReportService.getReport(ServletActionContext.getServletContext(), ServletActionContext.getRequest());
+        Struts2Utils.renderImage(report, "text/html");        
         return null;
     }
     @Override
     protected void checkModel(User model) throws Exception{
-        /* 取得用户 */
-        PropertyCriteria propertyCriteria = new PropertyCriteria();
-        propertyCriteria.addPropertyEditor(new PropertyEditor("username", Operator.eq, "String",model.getUsername()));
-        Page<User> p = getService().query(User.class, null, propertyCriteria);
-        if(p.getTotalRecords()>0){
-            throw new RuntimeException("添加的用户已存在，请更换用户名");
-        }
-        //为了防止搜索用户名时不精确
-        String q="+username:"+model.getUsername() +" AND +alias:User";
-        p = getService().search(q, null, User.class);
-        if(p.getTotalRecords()>0){
-            throw new RuntimeException("已经存在用户【"+model.getUsername()+"】,您的用户名【"+model.getUsername()+"】和其相似，请更换用户名");
-        }
-        
-        /*
-        int len=model.getUsername().length();
-        for(int i=0;i<len;i++){
-            String name=model.getUsername().substring(0, i+1);
-            p = getService().search("+username:"+name +" AND +alias:User", null, User.class);
-            if(p.getTotalRecords()>0){
-                throw new RuntimeException("已经存在用户【"+name+"】,您的用户名【"+model.getUsername()+"】和其相似，请更换用户名");
-            }
-        }
-        * 
-        */
+        userService.checkModel(model);
     }
-    //每一次查询用户的时候都是查询特定的机构及其所有子机构下的用户
-    //方式一：使用多个OR连接
-    /*
-    @Override
-    public PropertyCriteria buildPropertyCriteria(){
-        PropertyCriteria propertyCriteria=super.buildPropertyCriteria();
-        if(propertyCriteria==null){
-            propertyCriteria=new PropertyCriteria();
-        }
-        if(orgId>0){
-            Org obj=getService().retrieve(Org.class, orgId);
-            //获取orgId的所有子机构的ID
-            List<Integer> orgIds=OrgService.getChildIds(obj);
-            //加上orgId
-            orgIds.add(obj.getId());
-            int i=0;
-            for(int id : orgIds){
-                PropertyEditor pe=new PropertyEditor("org.id", Operator.eq, id);
-                //当有多个同样的属性时，要指定属性的顺序以区别不同的命名参数
-                pe.setSeq(i++);
-                propertyCriteria.addPropertyEditor(pe);
-            }
-            return propertyCriteria;
-        }
-        return null;
-    }
-    */
-    //方式二：使用IN语句
     
     @Override
     public PropertyCriteria buildPropertyCriteria(){
-        PropertyCriteria propertyCriteria=super.buildPropertyCriteria();
-        if(propertyCriteria==null){
-            propertyCriteria=new PropertyCriteria();
-        }
-        //orgId==-1或orgId<0代表为根节点，不加过滤条件
-        if(orgId>0){
-            Org obj=getService().retrieve(Org.class, orgId);
-            //获取orgId的所有子机构的ID
-            List<Integer> orgIds=OrgService.getChildIds(obj);
-            //加上orgId
-            orgIds.add(obj.getId());
-            
-            PropertyEditor pe=new PropertyEditor("org.id", Operator.in, PropertyType.List, orgIds);
-            propertyCriteria.addPropertyEditor(pe);
-            
-            return propertyCriteria;
-        }
-         
-        return propertyCriteria;
+        return userService.buildPropertyCriteria(super.buildPropertyCriteria(), orgId);
     }
     
     public String reset(){
-        Integer[] ids=super.getIds();
-        if(ids!=null && ids.length>0){
-            if(!StringUtils.isBlank(password)){
-                for(int id : ids){
-                    User user=getService().retrieve(User.class, id);
-                    if(PropertyHolder.getBooleanProperty("demo")){
-                        if(user.getUsername().equals("admin")){
-                            Struts2Utils.renderText("演示版本不能重置admin用户的密码");
-                            return null;
-                        }
-                    }
-                    user.setPassword(PasswordEncoder.encode(password,user));
-                    getService().update(user);
-                }
-                Struts2Utils.renderText("已经成功将 "+ids.length+" 个用户的密码重置为"+password);
-            }else{
-                Struts2Utils.renderText("重置密码不能为空");
-            }
-        }else{
-            Struts2Utils.renderText("必须要指定需要重置密码的用户");
-        }
+        String result = userService.reset(getIds(), password);
+        Struts2Utils.renderText(result);
         return null;
     }
     
-    public String online(){        
-        int start=super.getStart();
-        int len=super.getLimit();
-        if(start==-1){
-            start=0;
-        }
-        if(len==-1){
-            len=10;
-        }
-        Org o=null;
-        Role r=null;
-        if(!StringUtils.isBlank(org)){
-            //返回特定组织架构及其所有子机构的在线用户
-            int id=Integer.parseInt(org);
-            o=getService().retrieve(Org.class, id);
-        }
-        if(!StringUtils.isBlank(role)){
-            //返回属于特定角色的在线用户
-            int id=Integer.parseInt(role);
-            r=getService().retrieve(Role.class, id);
-        }
-        
-        List<User> users=OnlineUserService.getUser(o,r);
-        LOG.info("获取在线用户,start: "+start+",len:"+len);
-        LOG.info("在线用户的总数为： "+users.size());
-        if(len>users.size()){
-            len=users.size();
-        }
-        List<User> models=new ArrayList<>();
-        for(int i=start;i<len;i++){
-            models.add(users.get(i));
-        }
-        //构造当前页面对象
-        page=new Page<>();
-        page.setModels(models);
-        page.setTotalRecords(users.size());
+    public String online(){
+        page = userService.getOnlineUsers(getStart(), getLimit(), org, role);
         
         Map json = new HashMap();
         json.put("totalProperty", page.getTotalRecords());
@@ -248,73 +119,11 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
     @Override
     public void assemblyModelForCreate(User model) {
-        model.setPassword(PasswordEncoder.encode(model.getPassword(),model));
-        //组装角色
-        assemblyRoles(model);
-        //组装岗位
-        assemblyPositions(model);
-        //组装用户组
-        assemblyUserGroups(model);
-    }
-    public void assemblyRoles(User model){        
-        if(roles!=null && !"".equals(roles.trim())){
-            String[] roleIds=roles.trim().split(",");
-            for(String id : roleIds){
-                String[] attr=id.split("-");
-                if(attr.length==2){
-                    int roleId=Integer.parseInt(attr[1]);
-                    Role temp=getService().retrieve(Role.class, roleId);
-                    if(temp!=null){
-                        model.addRole(temp);
-                    }
-                }
-            }
-        }
-    }
-    public void assemblyPositions(User model){        
-        if(positions!=null && !"".equals(positions.trim())){
-            String[] positionIds=positions.trim().split(",");
-            for(String id : positionIds){
-                String[] attr=id.split("-");
-                if(attr.length==2){
-                    int positionId=Integer.parseInt(attr[1]);
-                    Position temp=getService().retrieve(Position.class, positionId);
-                    if(temp!=null){
-                        model.addPosition(temp);
-                    }
-                }
-            }
-        }
-    }
-    public void assemblyUserGroups(User model){        
-        if(userGroups!=null && !"".equals(userGroups.trim())){
-            String[] userGroupIds=userGroups.trim().split(",");
-            for(String id : userGroupIds){
-                String[] attr=id.split("-");
-                if(attr.length==2){
-                    int userGroupId=Integer.parseInt(attr[1]);
-                    UserGroup temp=getService().retrieve(UserGroup.class, userGroupId);
-                    if(temp!=null){
-                        model.addUserGroup(temp);
-                    }
-                }
-            }
-        }
+        userService.assemblyModelForCreate(model, roles, positions, userGroups);
     }
     @Override
     public void prepareForDelete(Integer[] ids){
-        User loginUser=UserHolder.getCurrentLoginUser();
-        for(int id :ids){            
-            if(PropertyHolder.getBooleanProperty("demo")){
-                User toDeleteUser = getService().retrieve(modelClass, id);
-                if(toDeleteUser.getUsername().equals("admin")){
-                    throw new RuntimeException("演示版本不能删除admin用户");
-                }
-            }
-            if(loginUser.getId()==id){
-                throw new RuntimeException("用户不能删除自己");
-            }
-        }
+        userService.prepareForDelete(ids);
     }   
     @Override
     protected void old(User model) {
@@ -325,34 +134,9 @@ public class UserAction extends ExtJSSimpleAction<User> {
         }
     }
     public String modifyPassword(){
-        Map result=new HashMap();
-        User user=UserHolder.getCurrentLoginUser();
-        if(user==null){
-            result.put("success", false);
-            result.put("message", "用户没有登录");
-             Struts2Utils.renderJson(result);
-            return null;
-        }
-        if(PropertyHolder.getBooleanProperty("demo")){
-            if(user.getUsername().equals("admin")){
-                result.put("success", false);
-                result.put("message", "演示版本admin用户不能更改密码");
-                Struts2Utils.renderJson(result);
-                return null;
-            }
-        }
-        oldPassword=PasswordEncoder.encode(oldPassword.trim(),user);
-        if(oldPassword.equals(user.getPassword())){
-            user.setPassword(PasswordEncoder.encode(newPassword.trim(),user));
-            getService().update(user);
-            result.put("success", true);
-            result.put("message", "修改成功");
-             Struts2Utils.renderJson(result);
-        }else{
-            result.put("success", false);
-            result.put("message", "修改失败，旧密码错误");
-             Struts2Utils.renderJson(result);
-        }
+        Map result = userService.modifyPassword(oldPassword, newPassword);
+        Struts2Utils.renderJson(result);
+        
         return null;
     }
     
@@ -368,20 +152,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
     @Override
     protected void assemblyModelForUpdate(User model){
-        if(roles!=null){
-            model.clearRole();
-            assemblyRoles(model);
-        }
-        
-        if(positions!=null){
-            model.clearPosition();
-            assemblyPositions(model);
-        }
-        
-        if(userGroups!=null){
-            model.clearUserGroup();
-            assemblyUserGroups(model);
-        }
+        userService.assemblyModelForUpdate(model, roles, positions, userGroups);
     }
     @Override
     protected void renderJsonForRetrieve(Map map) {
