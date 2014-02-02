@@ -262,7 +262,8 @@ public abstract class Model implements Serializable{
                         .append(":  ")
                         .append(value)
                         .append("\n");
-            }catch(IllegalAccessException | IllegalArgumentException | SecurityException e){
+            //捕获所有异常
+            }catch(Exception e){
                 LOG.error("获取字段 "+fieldName+" 的值出错", e);
             }
         }
