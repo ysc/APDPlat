@@ -20,32 +20,21 @@
 
 package org.apdplat.platform.search;
 
-import org.apdplat.module.monitor.model.IndexLog;
-import org.apdplat.module.monitor.model.IndexLogResult;
-import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.module.system.service.PropertyHolder;
-import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.util.ConvertUtils;
 import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Date;
+import java.util.Locale;
 import javax.annotation.Resource;
-import org.apdplat.platform.log.BufferLogCollector;
 import org.compass.core.CompassSession;
 import org.compass.core.CompassTemplate;
-import org.compass.gps.CompassGps;
-import org.compass.gps.CompassGpsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 索引管理
+ * 实时索引管理，包括：新增、修改、删除
  * @author 杨尚川
- *
  */
 @Service
 public class IndexManager {
@@ -53,104 +42,43 @@ public class IndexManager {
     
     @Resource(name = "compassTemplate")
     private CompassTemplate compassTemplate;
-    @Resource(name = "compassGps")
-    private CompassGps compassGps;
-    private static boolean buiding=false;
-    private static final  boolean indexMonitor;
-    static{
-        indexMonitor=PropertyHolder.getBooleanProperty("monitor.index");        
-        if(indexMonitor){
-            LOG.info("启用重建索引日志(Enable rebuilding index log)");
-        }else{
-            LOG.info("禁用重建索引日志(Disable rebuilding index log)");
-        }
-    }
+    @Resource(name = "indexRebuilder")
+    private IndexRebuilder indexRebuilder;
+    private volatile boolean buiding=false;
 
+    /**
+     * 异步重建索引（线程安全且为异步调用）
+     * 只有一个重建操作完成后才可开始另一个重建操作
+     * 利用buiding变量来进行控制
+     * 因为涉及到多个线程对同一个变量的读写，所以
+     * buiding变量要加volatile
+     * 保证线程的可见性
+     */
     public void rebuidAll(){
         if(buiding){
-            LOG.info("已经有任务在重建索引，当前请求无效(Rebuilding index in using, invalid request)");
+            LOG.info("正在重建索引，请求自动取消");
+            LOG.info("Rebuilding index is in progress, request auto cancel", Locale.ENGLISH);
             return;
         }
         buiding=true;
-        final IndexLog indexLog=new IndexLog();
-        if(indexMonitor){
-            User user=UserHolder.getCurrentLoginUser();
-            indexLog.setUsername(user.getUsername());
-            indexLog.setLoginIP(UserHolder.getCurrentUserLoginIp());
-            try {
-                indexLog.setServerIP(InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException e) {
-                LOG.error("保存索引日志出错(Error in saving index log)",e);
-            }
-            indexLog.setAppName(SystemListener.getContextPath());
-            indexLog.setStartTime(new Date());
-        }
+        LOG.info("开始重建索引");
+        LOG.info("Begin to rebuild index", Locale.ENGLISH);
         new Thread(new Runnable(){
             @Override
             public void run(){
-                try{
-                    LOG.info("开始删除索引文件(Start to delete index file)");
-                    
-                    delDir(getIndexDir());
-                    
-                    LOG.info("删除索引文件结束(End to delete index file)");
-                    
-                    LOG.info("开始建立索引文件...(Starting to create index file)");
-                    long beginTime = System.currentTimeMillis();
-                    float max=(float)Runtime.getRuntime().maxMemory()/1000000;
-                    float total=(float)Runtime.getRuntime().totalMemory()/1000000;
-                    float free=(float)Runtime.getRuntime().freeMemory()/1000000;
-                    String pre="执行之前剩余内存(Remain memory before execution):"+max+"-"+total+"+"+free+"="+(max-total+free);
-                    
-                    compassGps.index();
-                    
-                    long costTime = System.currentTimeMillis() - beginTime;
-                    max=(float)Runtime.getRuntime().maxMemory()/1000000;
-                    total=(float)Runtime.getRuntime().totalMemory()/1000000;
-                    free=(float)Runtime.getRuntime().freeMemory()/1000000;
-                    String post="执行之后剩余内存(Remain memory after execution):"+max+"-"+total+"+"+free+"="+(max-total+free);
-                    LOG.info("索引文件建立完毕.(Finish to build index)");
-                    LOG.info("花费了(this cost) " + ConvertUtils.getTimeDes(costTime));
-                    LOG.info(pre);
-                    LOG.info(post);
-                    
-                    if(indexMonitor){
-                        indexLog.setOperatingResult(IndexLogResult.SUCCESS);
-                    }
-                }catch(CompassGpsException | IllegalStateException e){
-                    LOG.error("建立索引出错(Error in building index)",e);
-                    if(indexMonitor){
-                        indexLog.setOperatingResult(IndexLogResult.FAIL);
-                    }
-                }
-                if(indexMonitor){
-                    indexLog.setEndTime(new Date());
-                    indexLog.setProcessTime(indexLog.getEndTime().getTime()-indexLog.getStartTime().getTime());
-                    BufferLogCollector.collect(indexLog);
-                }
+                indexRebuilder.build();
+                LOG.info("结束重建索引");
+                LOG.info("Finish rebuild index", Locale.ENGLISH);
                 buiding=false;
             }
         }).start();
-    }
-    private void delDir(File file){
-        if(file.isFile()){
-            file.delete();
-        }else if(file.isDirectory()){
-            File[] files=file.listFiles();
-            if(files.length==0){
-                file.delete();
-            }else{
-                for(File f : files){
-                    delDir(f);
-                }
-            }
-        }
     }
     public static File getIndexDir(){
         String userDir = System.getProperty("user.dir");
         String indexDir=PropertyHolder.getProperty("index.dictionary").replace("/", File.separator);
         File file=new File(userDir,indexDir);
-        LOG.info("获取索引文件目录(Get index file list)："+file.getAbsolutePath());
+        LOG.info("获取索引文件目录："+file.getAbsolutePath());
+        LOG.info("Get index file path:", Locale.ENGLISH);
         return file;
     }
     private CompassSession getCompassSession() {
@@ -168,7 +96,8 @@ public class IndexManager {
                 session.create(model);
             } catch (Exception e) {
                 String info=e.getMessage();
-                LOG.info("创建索引失败,原因是(Failed to create index because): " + info);
+                LOG.error("创建索引失败", e);
+                LOG.error("Failed in building index", e, Locale.ENGLISH);
 
                 if(info.indexOf("LockObtainFailedException")!=-1){
                     int index=info.indexOf("@");
@@ -178,10 +107,12 @@ public class IndexManager {
                     fixIndex();
                     session.create(model);
                 }
+            } finally{
+                closeCompassSession(session);
             }
-            closeCompassSession(session);
         }catch(Exception e){
-            LOG.info("创建索引失败,原因是(Failed to create index because): " + e.getMessage());
+            LOG.error("创建索引失败", e);
+            LOG.error("Failed in building index", e, Locale.ENGLISH);
         }
     }
     @Transactional
@@ -193,7 +124,8 @@ public class IndexManager {
                 session.save(model);
             } catch (Exception e) {
                 String info=e.getMessage();
-                LOG.info("更新索引失败,原因是(Failed to update index because): " + info);
+                LOG.error("更新索引失败", e);
+                LOG.error("Failed to update index", e, Locale.ENGLISH);
                 if(info.indexOf("LockObtainFailedException")!=-1){
                     int index=info.indexOf("@");
                     String path=info.substring(index+1);
@@ -202,10 +134,12 @@ public class IndexManager {
                     fixIndex();
                     session.save(model);
                 }
+            } finally{
+                closeCompassSession(session);
             }
-            closeCompassSession(session);
         }catch(Exception e){
-            LOG.info("更新索引失败,原因是(Failed to update index because): " + e.getMessage());
+            LOG.error("更新索引失败", e);
+            LOG.error("Failed to update index", e, Locale.ENGLISH);
         }
     }
     @Transactional
@@ -216,29 +150,36 @@ public class IndexManager {
                 session.delete(session.load(type, objectID));
             } catch (Exception e) {
                 String info=e.getMessage();
-                LOG.info("删除索引失败,原因是(Failed to delete index because): " + info);
-                if(info.indexOf("LockObtainFailedException")!=-1){
+                LOG.error("删除索引失败", e);
+                LOG.error("Failed to delete index", e , Locale.ENGLISH);
+                if(info.indexOf("LockObtainFailedException") != -1){
                     int index=info.indexOf("@");
                     String path=info.substring(index+1);
                     File file=new File(path);
                     file.delete();
                     fixIndex();
+                    //再次删除
                     session.delete(session.load(type, objectID));
                 }
+            } finally{
+                closeCompassSession(session);
             }
-            closeCompassSession(session);
         }catch(Exception e){
-            LOG.info("删除索引失败,原因是(Failed to delete index because): " + e.getMessage());
+            LOG.error("删除索引失败",e);
+            LOG.error("Failed to delete index", e, Locale.ENGLISH);
         }
     }
     private void fixIndex(){
-        LOG.info("开始修复索引(Begin repair index)");
+        LOG.info("开始修复索引");
+        LOG.info("Begin repair index", Locale.ENGLISH);
         long beginTime = System.currentTimeMillis();
         File file=IndexManager.getIndexDir();
         clearWriteLock(file);
         long costTime = System.currentTimeMillis() - beginTime;
-        LOG.info("花费了(This cost) " + costTime + " (ms)毫秒");
-        LOG.info("结束修复索引(Finish repair index)");
+        LOG.info("耗时:" + ConvertUtils.getTimeDes(costTime));
+        LOG.info("Elapsed:", Locale.ENGLISH);
+        LOG.info("结束修复索引");
+        LOG.info("Finish repair index", Locale.ENGLISH);
     }
     private void clearWriteLock(File file){
         if(file.isFile()){
