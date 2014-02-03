@@ -59,7 +59,26 @@ public class UserService {
      * @param roleId 角色ID
      * @return 
      */
-    public Page<User> getOnlineUsers(int start, int len, String orgId, String roleId){
+    public Page<User> getOnlineUsers(int start, int len, String orgIdStr, String roleIdStr){
+        int orgId = -1;
+        int roleId = -1;
+        if(StringUtils.isNotBlank(orgIdStr)){
+            orgId = Integer.parseInt(orgIdStr);
+        }
+        if(StringUtils.isNotBlank(roleIdStr)){
+            roleId = Integer.parseInt(roleIdStr);
+        }
+        return getOnlineUsers(start, len, orgId, roleId);
+    }
+    /**
+     * 分页获取在线用户
+     * @param start 开始索引（包括）
+     * @param len 页面大小
+     * @param orgId 组织机构ID
+     * @param roleId 角色ID
+     * @return 
+     */
+    public Page<User> getOnlineUsers(int start, int len, int orgId, int roleId){
         if(start < 0){
             start = 0;
         }
@@ -68,15 +87,13 @@ public class UserService {
         }
         Org org = null;
         Role role = null;
-        if(StringUtils.isNotBlank(orgId)){
+        if(orgId > 0){
             //返回特定组织架构及其所有子机构的在线用户
-            int id = Integer.parseInt(orgId);
-            org = serviceFacade.retrieve(Org.class, id);
+            org = serviceFacade.retrieve(Org.class, orgId);
         }
-        if(StringUtils.isNotBlank(roleId)){
+        if(roleId > 0){
             //返回属于特定角色的在线用户
-            int id = Integer.parseInt(roleId);
-            role = serviceFacade.retrieve(Role.class, id);
+            role = serviceFacade.retrieve(Role.class, roleId);
         }
         //获取在线用户
         List<User> users = OnlineUserService.getUser(org, role);
