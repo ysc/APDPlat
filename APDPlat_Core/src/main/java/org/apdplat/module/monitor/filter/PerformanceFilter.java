@@ -39,6 +39,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import org.apdplat.platform.log.BufferLogCollector;
+import org.apdplat.platform.util.SpringContextUtils;
 
 /**
  * 性能过滤器
@@ -60,7 +61,8 @@ public class PerformanceFilter implements Filter {
         chain.doFilter(request, response);        
         if (enabled && filter(req)) {
 		long end=System.currentTimeMillis();
-                User user=OnlineUserService.getUser(req.getSession().getId());
+                OnlineUserService onlineUserService = SpringContextUtils.getBean("onlineUserService");
+                User user = onlineUserService.getUser(req.getSession().getId());
                 String userName = "";
                 if(user != null){
                     userName = user.getUsername();

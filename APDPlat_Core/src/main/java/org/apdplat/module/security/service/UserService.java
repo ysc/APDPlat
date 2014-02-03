@@ -48,8 +48,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private static final APDPlatLogger LOG = new APDPlatLogger(UserService.class);
+    
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
+    @Resource(name="onlineUserService")
+    private OnlineUserService onlineUserService;
 
     /**
      * 分页获取在线用户
@@ -96,7 +99,7 @@ public class UserService {
             role = serviceFacade.retrieve(Role.class, roleId);
         }
         //获取在线用户
-        List<User> users = OnlineUserService.getUser(org, role);
+        List<User> users = onlineUserService.getUsers(org, role);
         LOG.info("获取在线用户, start: "+start+", len: "+len);
         //构造当前页面对象
         Page<User> page=new Page<>();
