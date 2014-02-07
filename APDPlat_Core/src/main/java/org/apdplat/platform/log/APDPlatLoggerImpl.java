@@ -22,7 +22,6 @@ package org.apdplat.platform.log;
 
 import java.io.Serializable;
 import java.util.Locale;
-import org.apdplat.module.system.service.PropertyHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
@@ -33,7 +32,8 @@ import org.slf4j.Marker;
  */
 class APDPlatLoggerImpl implements APDPlatLogger,Serializable{
     private static final long serialVersionUID = 1L;
-    private static Locale locale = Locale.forLanguageTag(PropertyHolder.getProperty("log.locale.language"));
+    //默认使用中文日志输出，在PropertyHolder类加载完配置之后，会根据配置文件的指定重新设置locale的值
+    private static Locale locale = Locale.CHINA;
     private Logger log = null;
     
     public APDPlatLoggerImpl(Class clazz){
