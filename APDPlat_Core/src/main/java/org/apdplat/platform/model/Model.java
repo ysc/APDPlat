@@ -50,6 +50,7 @@ import org.apdplat.platform.annotation.ModelAttrRef;
 import org.apdplat.platform.annotation.ModelCollRef;
 import org.apdplat.platform.annotation.RenderDate;
 import org.apdplat.platform.annotation.RenderTime;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.compass.annotations.SearchableComponent;
 import org.compass.annotations.SearchableId;
 import org.compass.annotations.SearchableProperty;
@@ -70,7 +71,7 @@ public abstract class Model implements Serializable{
 
     @Transient
     @RenderIgnore
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @SearchableId

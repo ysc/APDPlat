@@ -25,13 +25,14 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class SortUtils {
-    private static final APDPlatLogger LOG = new APDPlatLogger(SortUtils.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SortUtils.class);
         
     private SortUtils(){};
     

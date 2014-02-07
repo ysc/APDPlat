@@ -36,6 +36,7 @@ import org.apdplat.module.log.model.OperateLog;
 import org.apdplat.module.monitor.model.MemoryState;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.util.ConvertUtils;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SolrLogHandler implements LogHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(SolrLogHandler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SolrLogHandler.class);
     
     private static final String host = PropertyHolder.getProperty("solr.host");
     private static final String port = PropertyHolder.getProperty("solr.port");

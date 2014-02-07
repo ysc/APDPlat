@@ -31,11 +31,12 @@ import org.apdplat.platform.service.ServiceFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RoleService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(RoleService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(RoleService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 

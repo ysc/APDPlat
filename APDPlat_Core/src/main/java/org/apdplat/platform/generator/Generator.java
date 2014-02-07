@@ -30,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 
 /**
@@ -37,7 +38,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
  * @author 杨尚川
  */
 public abstract class Generator {
-    protected static final APDPlatLogger LOG = new APDPlatLogger(Generator.class);
+    protected static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(Generator.class);
     
     protected static final String ENCODING = "utf-8";
     protected static final FreeMarkerConfigurationFactoryBean factory = new FreeMarkerConfigurationFactoryBean();

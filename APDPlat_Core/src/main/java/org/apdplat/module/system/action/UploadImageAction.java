@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 /**
@@ -45,7 +46,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Namespace("/system")
 public class UploadImageAction extends DefaultAction {
-    private static final APDPlatLogger LOG = new APDPlatLogger(UploadImageAction.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UploadImageAction.class);
     
     //上传
     private static int BUFFER_SIZE=1024*100*8;

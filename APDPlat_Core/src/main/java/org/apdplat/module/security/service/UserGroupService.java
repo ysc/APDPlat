@@ -25,11 +25,12 @@ import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.service.ServiceFacade;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserGroupService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(UserGroupService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserGroupService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 

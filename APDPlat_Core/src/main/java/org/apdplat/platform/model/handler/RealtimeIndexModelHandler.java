@@ -23,6 +23,7 @@ package org.apdplat.platform.model.handler;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.model.ModelListener;
 import org.apdplat.platform.search.IndexManager;
@@ -35,7 +36,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RealtimeIndexModelHandler extends ModelHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(RealtimeIndexModelHandler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(RealtimeIndexModelHandler.class);
 
     @Resource(name = "indexManager")
     private IndexManager indexManager;    

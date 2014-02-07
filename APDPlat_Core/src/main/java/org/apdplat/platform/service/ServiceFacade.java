@@ -31,6 +31,7 @@ import org.apdplat.platform.result.Page;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -40,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public  class ServiceFacade{
-        protected final APDPlatLogger LOG = new APDPlatLogger(getClass());   
+        protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());   
     
 	@Resource(name="daoFacade")
 	private DaoFacade dao = null;     

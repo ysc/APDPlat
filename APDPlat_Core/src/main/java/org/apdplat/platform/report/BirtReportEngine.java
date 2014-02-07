@@ -22,6 +22,7 @@ package org.apdplat.platform.report;
 
 import javax.servlet.ServletContext;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.util.ConvertUtils;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.IPlatformContext;
@@ -37,7 +38,7 @@ import org.eclipse.birt.report.engine.api.IReportEngineFactory;
  * @author 杨尚川
  */
 public class BirtReportEngine {
-    private static final APDPlatLogger LOG = new APDPlatLogger(BirtReportEngine.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(BirtReportEngine.class);
     private static IReportEngine reportEngine = null;
 
     private BirtReportEngine(){}

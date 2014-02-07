@@ -25,6 +25,7 @@ import java.io.IOException;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,7 +34,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FtpUtils {
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
 
     private FTPClient ftpClient;
 

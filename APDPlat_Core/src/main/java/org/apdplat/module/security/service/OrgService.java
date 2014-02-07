@@ -31,6 +31,7 @@ import org.apdplat.platform.service.ServiceFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,7 +40,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrgService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(OrgService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(OrgService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 

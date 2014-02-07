@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 
 
@@ -36,7 +37,7 @@ import org.apache.struts2.util.StrutsTypeConverter;
  */
 
 public class DateTypeConverter extends StrutsTypeConverter {
-    private static final APDPlatLogger LOG = new APDPlatLogger(DateTypeConverter.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(DateTypeConverter.class);
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
     //暂时只考虑这几种日期格式

@@ -38,9 +38,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 public class JCaptchaFilter implements Filter {
-    private static final APDPlatLogger LOG = new APDPlatLogger(JCaptchaFilter.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(JCaptchaFilter.class);
     
     public static final String PARAM_CAPTCHA_PARAMTER_NAME = "captchaParamterName";
     public static final String PARAM_FILTER_PROCESSES_URL = "filterProcessesUrl";

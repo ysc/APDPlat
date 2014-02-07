@@ -31,6 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetFlags;
 import org.hyperic.sigar.NetInterfaceConfig;
@@ -41,7 +42,7 @@ import org.hyperic.sigar.Sigar;
  * @author 杨尚川
  */
 public abstract class AbstractSequenceService   implements SequenceService{
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     /**
      * 对一段String生成MD5摘要信息
      * @param message 要摘要的String

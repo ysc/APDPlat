@@ -32,6 +32,7 @@ import org.apdplat.platform.service.ServiceFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,7 +41,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class InfoTypeService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(InfoTypeService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(InfoTypeService.class);
 
     public static List<Integer> getChildIds(InfoType obj) {
         List<Integer> ids=new ArrayList<>();

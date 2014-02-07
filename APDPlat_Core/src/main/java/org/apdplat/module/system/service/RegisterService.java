@@ -30,6 +30,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -38,7 +39,7 @@ import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public abstract class RegisterService<T extends Model> implements ApplicationListener {
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     
     @Resource(name="serviceFacade")
     protected ServiceFacade serviceFacade;

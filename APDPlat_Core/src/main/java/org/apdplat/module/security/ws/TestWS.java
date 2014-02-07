@@ -24,6 +24,7 @@ import org.apdplat.module.security.model.User;
 import org.apdplat.platform.log.APDPlatLogger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,7 +33,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TestWS {
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     @Resource(name="userServiceClient")
     private UserService userService;
     //@PostConstruct

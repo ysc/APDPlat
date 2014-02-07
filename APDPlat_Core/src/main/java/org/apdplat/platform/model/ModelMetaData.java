@@ -24,13 +24,14 @@ import org.apdplat.platform.log.APDPlatLogger;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class ModelMetaData {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ModelMetaData.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ModelMetaData.class);
     
     private static Map<String,String> des=new HashMap<>();
     private static Map<String,Class<? extends Model>> metaData=new HashMap<>();

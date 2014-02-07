@@ -28,9 +28,10 @@ package org.apdplat.platform.action.converter;
 import org.apdplat.platform.log.APDPlatLogger;
 import java.util.Map;
 import org.apache.struts2.util.StrutsTypeConverter;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 public class IntegerTypeConverter extends StrutsTypeConverter{
-    private static final APDPlatLogger LOG = new APDPlatLogger(IntegerTypeConverter.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(IntegerTypeConverter.class);
 
     @Override
     public Object convertFromString(Map context, String[] values, Class toClass) {

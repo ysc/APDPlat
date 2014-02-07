@@ -27,13 +27,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class MemoryStateChartDataService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(MemoryStateChartDataService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(MemoryStateChartDataService.class);
 
     public static List<MemoryState> getSequenceDataHH(List<MemoryState> models){    
         return getSequenceTimeData(models,"yyyy-MM-dd HH");

@@ -26,6 +26,7 @@ import org.apdplat.platform.result.Page;
 import org.apdplat.platform.service.ServiceFacade;
 import java.text.ParseException;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.quartz.CronExpression;
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
@@ -44,7 +45,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class IndexSchedulerService implements ApplicationListener {
-    private static final APDPlatLogger LOG = new APDPlatLogger(IndexSchedulerService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(IndexSchedulerService.class);
 
     private static SchedulerFactory sf = new StdSchedulerFactory();
     @Resource(name = "serviceFacade")

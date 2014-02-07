@@ -29,11 +29,12 @@ import java.util.TreeMap;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.util.Assert;
 
 
 public class ServletUtils {
-        private static final APDPlatLogger LOG = new APDPlatLogger(ServletUtils.class);
+        private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ServletUtils.class);
         
         private ServletUtils(){};
 

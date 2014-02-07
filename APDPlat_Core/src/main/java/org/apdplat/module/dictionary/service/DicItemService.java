@@ -25,6 +25,7 @@ import org.apdplat.platform.criteria.Operator;
 import org.apdplat.platform.criteria.PropertyCriteria;
 import org.apdplat.platform.criteria.PropertyEditor;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.service.ServiceFacade;
 import java.util.List;
 import javax.annotation.Resource;
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DicItemService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(DicItemService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(DicItemService.class);
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;
 

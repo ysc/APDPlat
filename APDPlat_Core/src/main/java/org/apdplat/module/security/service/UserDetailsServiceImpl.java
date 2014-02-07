@@ -37,6 +37,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.module.system.service.PropertyHolder;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -52,7 +53,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(UserDetailsServiceImpl.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserDetailsServiceImpl.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
     public static String SPRING_SECURITY_LAST_USERNAME = null;

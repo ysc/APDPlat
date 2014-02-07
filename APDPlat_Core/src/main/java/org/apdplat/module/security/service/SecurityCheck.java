@@ -42,12 +42,13 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 @Service
 public class SecurityCheck {
-    private static final APDPlatLogger LOG = new APDPlatLogger(SecurityCheck.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SecurityCheck.class);
     private static String securityKeyName;
     private static String securityClspath;
     private static String sequenceKeyName;

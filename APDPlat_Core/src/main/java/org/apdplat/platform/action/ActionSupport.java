@@ -49,6 +49,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.service.ServiceFacade;
 
 @MappedSuperclass
@@ -61,7 +62,7 @@ import org.apdplat.platform.service.ServiceFacade;
     @Result(name = "detail", type = "freemarker", location = "/_namespace_/_action_/detail.ftl"),
     @Result(name = "form", type = "freemarker", location = "/_namespace_/_action_/form.ftl")})
 public abstract class ActionSupport extends DataPrivilegeControl{
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     
     protected static final String LIST = "list";
     protected static final String FORM = "form";

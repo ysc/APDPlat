@@ -21,6 +21,7 @@
 package org.apdplat.platform.util;
 
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SpringContextUtils implements ApplicationContextAware {
-        private static final APDPlatLogger LOG = new APDPlatLogger(SpringContextUtils.class);
+        private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SpringContextUtils.class);
 
 	private static ApplicationContext applicationContext;
 

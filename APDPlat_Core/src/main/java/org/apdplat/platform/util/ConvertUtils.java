@@ -21,13 +21,14 @@
 package org.apdplat.platform.util;
 
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class ConvertUtils {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ConvertUtils.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ConvertUtils.class);
 
     private ConvertUtils() {
     }

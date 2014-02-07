@@ -25,6 +25,7 @@ import org.apdplat.platform.util.ConvertUtils;
 import java.io.File;
 import java.util.Locale;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.compass.gps.CompassGps;
 import org.compass.gps.CompassGpsException;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class IndexRebuilder {
-    private static final APDPlatLogger LOG = new APDPlatLogger(IndexRebuilder.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(IndexRebuilder.class);
     
     @Resource(name = "compassGps")
     private CompassGps compassGps;

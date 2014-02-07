@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
@@ -37,7 +38,7 @@ import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
  * @author 杨尚川
  */
 public abstract class AbstractBackupService implements BackupService{  
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     
     protected static final StandardPBEStringEncryptor encryptor;
     protected static final String username;

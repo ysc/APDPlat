@@ -35,13 +35,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class ModuleParser {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ModuleParser.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ModuleParser.class);
     private static final String dtdFile="/target/module.dtd";
     private static final String disableModules=PropertyHolder.getProperty("module.disable");
     /**

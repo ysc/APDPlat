@@ -36,6 +36,7 @@ import org.apdplat.module.monitor.model.MemoryState;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.converter.DateTypeConverter;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.util.ConvertUtils;
 import org.codehaus.jackson.JsonNode;
@@ -78,7 +79,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ElasticSearchLogHandler implements LogHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(ElasticSearchLogHandler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ElasticSearchLogHandler.class);
     
     private static final String INDEX_NAME = PropertyHolder.getProperty("elasticsearch.log.index.name");
     private static final String HOST = PropertyHolder.getProperty("elasticsearch.host");

@@ -26,6 +26,7 @@ import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.annotation.IgnoreUser;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.model.ModelListener;
 import org.apdplat.platform.model.SimpleModel;
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AidModelHandler extends ModelHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(AidModelHandler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(AidModelHandler.class);
 
     /**
      * 注册模型处理器

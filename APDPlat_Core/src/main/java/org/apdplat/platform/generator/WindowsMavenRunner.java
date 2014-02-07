@@ -27,13 +27,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class WindowsMavenRunner implements MavenRunner{
-    private static final APDPlatLogger LOG = new APDPlatLogger(WindowsMavenRunner.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(WindowsMavenRunner.class);
 
     @Override
     public void run(String workspaceModuleRootPath) {

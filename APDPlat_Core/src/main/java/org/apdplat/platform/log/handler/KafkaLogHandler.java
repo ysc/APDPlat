@@ -22,6 +22,7 @@ package org.apdplat.platform.log.handler;
 
 import java.util.List;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class KafkaLogHandler implements LogHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(KafkaLogHandler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(KafkaLogHandler.class);
 
     @Override
     public <T extends Model> void handle(List<T> list) {

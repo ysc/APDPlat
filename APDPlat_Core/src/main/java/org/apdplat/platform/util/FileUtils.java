@@ -37,6 +37,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.Assert;
 
@@ -45,7 +46,7 @@ import org.springframework.util.Assert;
  * @author 杨尚川
  */
 public class FileUtils {
-    private static final APDPlatLogger LOG = new APDPlatLogger(FileUtils.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(FileUtils.class);
         
     private FileUtils(){};
     

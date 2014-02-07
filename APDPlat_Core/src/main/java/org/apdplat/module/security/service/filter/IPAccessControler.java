@@ -25,13 +25,14 @@ import org.apdplat.platform.util.FileUtils;
 import java.util.Collection;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *IP地址访问限制
  * @author 杨尚川
  */
 public class IPAccessControler {
-    private static final APDPlatLogger LOG = new APDPlatLogger(IPAccessControler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(IPAccessControler.class);
     
     private Collection<String> allow;
     private Collection<String> deny;

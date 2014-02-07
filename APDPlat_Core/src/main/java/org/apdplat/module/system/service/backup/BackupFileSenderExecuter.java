@@ -26,6 +26,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.util.SpringContextUtils;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
@@ -38,7 +39,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BackupFileSenderExecuter  implements  BackupFileSender, ApplicationListener{
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     private static final List<BackupFileSender> backupFileSenders = new LinkedList<>();  
     @Override
     public void send(File file) {

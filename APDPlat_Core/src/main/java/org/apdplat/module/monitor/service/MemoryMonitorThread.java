@@ -27,6 +27,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Locale;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.log.BufferLogCollector;
 
 /**
@@ -34,7 +35,7 @@ import org.apdplat.platform.log.BufferLogCollector;
  * @author 杨尚川
  */
 public class MemoryMonitorThread extends Thread{
-    private static final APDPlatLogger LOG = new APDPlatLogger(MemoryMonitorThread.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(MemoryMonitorThread.class);
     public volatile boolean running=true;
     private int circle=10;
     public MemoryMonitorThread(int circle){

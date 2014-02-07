@@ -40,12 +40,13 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 /**
  * 
  * @author 杨尚川
  */
 public class PKIUtils {
-    private static final APDPlatLogger LOG = new APDPlatLogger(PKIUtils.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(PKIUtils.class);
        
     private PKIUtils(){}
     /**

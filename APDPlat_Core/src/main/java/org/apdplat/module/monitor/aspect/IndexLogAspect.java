@@ -30,6 +30,7 @@ import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.log.BufferLogCollector;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -47,7 +48,7 @@ import org.springframework.stereotype.Service;
 @Aspect
 @Service
 public class IndexLogAspect {
-    private static final APDPlatLogger LOG = new APDPlatLogger(IndexLogAspect.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(IndexLogAspect.class);
     private static final boolean MONITOR_INDEX = PropertyHolder.getBooleanProperty("monitor.index");
     private IndexLog indexLog = null;
     

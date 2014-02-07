@@ -29,13 +29,14 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  * md5算法工具
  * @author 杨尚川
  */
 public class MD5Util {
-    private static final APDPlatLogger LOG = new APDPlatLogger(MD5Util.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(MD5Util.class);
     static MessageDigest md = null;
 
     static {

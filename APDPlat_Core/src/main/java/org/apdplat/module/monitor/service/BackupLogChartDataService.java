@@ -28,13 +28,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class BackupLogChartDataService {    
-    private static final APDPlatLogger LOG = new APDPlatLogger(BackupLogChartDataService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(BackupLogChartDataService.class);
 
     public static LinkedHashMap<String,Long> getSequenceData(List<BackupLog> models){    
         Collections.sort(models, new Comparator(){

@@ -23,6 +23,7 @@ package org.apdplat.module.security.service;
 import org.apdplat.module.security.model.User;
 import org.apdplat.platform.log.APDPlatLogger;
 import javax.servlet.http.HttpServletRequest;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +32,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 public class UserHolder {
-    private static final APDPlatLogger LOG = new APDPlatLogger(UserHolder.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserHolder.class);
 
     public static boolean hasLogin() {
         if (getCurrentLoginUser() == null) {

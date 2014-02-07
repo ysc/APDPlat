@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource;
@@ -48,7 +49,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SpringSecurityService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(SpringSecurityService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SpringSecurityService.class);
     @Resource(name = "filterSecurityInterceptor")
     private  FilterSecurityInterceptor filterSecurityInterceptor;
     @Resource(name="serviceFacade")

@@ -26,6 +26,7 @@ import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.ConvertUtils;
@@ -43,7 +44,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 @Service
 public class DatabaseLogHandler implements LogHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(DatabaseLogHandler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(DatabaseLogHandler.class);
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
     private ServiceFacade serviceFacade;

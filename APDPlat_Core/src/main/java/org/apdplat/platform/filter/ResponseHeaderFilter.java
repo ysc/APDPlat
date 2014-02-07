@@ -31,6 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  * 使用Filter来指定浏览器缓存或不缓存服务器数据
@@ -38,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author 杨尚川
  */
 public class ResponseHeaderFilter implements javax.servlet.Filter {
-    private static final APDPlatLogger LOG = new APDPlatLogger(DicService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(DicService.class);
 
     private  String expiresSeconds;
     private  FilterConfig filterConfig;

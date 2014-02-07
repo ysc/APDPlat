@@ -31,6 +31,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 /**
  * 模型监听事件调度器
  * 可注册与反注册多个ModelHandler的实现
@@ -39,7 +40,7 @@ import javax.persistence.PreUpdate;
  *
  */
 public class ModelListener {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ModelListener.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ModelListener.class);
     private static final List<ModelHandler> modelHandlers = new LinkedList<>();
     
     public static void addModelHandler(ModelHandler modelHandler){

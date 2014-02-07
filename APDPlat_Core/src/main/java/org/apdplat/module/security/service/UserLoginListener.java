@@ -35,6 +35,7 @@ import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.log.BufferLogCollector;
 import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.SpringContextUtils;
@@ -44,7 +45,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 
 
 public class UserLoginListener implements HttpSessionAttributeListener,HttpSessionListener  {
-    private static final APDPlatLogger LOG = new APDPlatLogger(UserLoginListener.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserLoginListener.class);
 
     private static Map<String,UserLogin> logs=new HashMap<>();
 

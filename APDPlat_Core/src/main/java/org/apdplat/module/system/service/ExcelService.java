@@ -29,6 +29,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ExcelService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ExcelService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ExcelService.class);
 
     private static String outputFile = null;
 

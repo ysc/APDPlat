@@ -27,6 +27,7 @@ import org.apdplat.platform.util.ConvertUtils;
 import java.io.File;
 import java.util.Locale;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.compass.core.CompassSession;
 import org.compass.core.CompassTemplate;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class IndexManager {
-    private static final APDPlatLogger LOG = new APDPlatLogger(IndexManager.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(IndexManager.class);
     
     @Resource(name = "compassTemplate")
     private CompassTemplate compassTemplate;

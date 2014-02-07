@@ -28,10 +28,11 @@ import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.FileUtils;
 import java.util.Collection;
 import org.apache.commons.lang.StringUtils;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 
 public class SecurityService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(SecurityService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SecurityService.class);
 
     public void checkSeq(String seq){
         if(StringUtils.isNotBlank(seq)){

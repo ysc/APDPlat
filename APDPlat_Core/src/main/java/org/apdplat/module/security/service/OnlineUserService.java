@@ -27,6 +27,7 @@ import org.apdplat.platform.log.APDPlatLogger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OnlineUserService{
-    private static final APDPlatLogger LOG = new APDPlatLogger(OnlineUserService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(OnlineUserService.class);
     
     @Resource(name="sessionRegistry")
     private SessionRegistry sessionRegistry;

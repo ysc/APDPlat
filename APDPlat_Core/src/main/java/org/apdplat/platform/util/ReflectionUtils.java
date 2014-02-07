@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
@@ -42,7 +43,7 @@ import org.springframework.util.Assert;
  * @author 杨尚川
  */
 public class ReflectionUtils {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ReflectionUtils.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ReflectionUtils.class);
     
     private ReflectionUtils(){};
 

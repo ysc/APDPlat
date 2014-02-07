@@ -31,6 +31,7 @@ import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.log.BufferLogCollector;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -48,7 +49,7 @@ import org.springframework.stereotype.Service;
 @Aspect
 @Service
 public class BackupLogAspect {
-    private static final APDPlatLogger LOG = new APDPlatLogger(BackupLogAspect.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(BackupLogAspect.class);
     private static final boolean MONITOR_BACKUP = PropertyHolder.getBooleanProperty("monitor.backup");
     private BackupLog backupLog = null;
     

@@ -29,13 +29,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class RuningTimeChartDataService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(RuningTimeChartDataService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(RuningTimeChartDataService.class);
     
     public static LinkedHashMap<String,Long> getRuningSequence(List<RuningTime> models){
         models=getValidData(models);

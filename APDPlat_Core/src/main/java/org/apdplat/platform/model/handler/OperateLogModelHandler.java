@@ -33,6 +33,7 @@ import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.annotation.IgnoreBusinessLog;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.log.BufferLogCollector;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.model.ModelListener;
@@ -44,7 +45,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OperateLogModelHandler extends ModelHandler{
-    private static final APDPlatLogger LOG = new APDPlatLogger(OperateLogModelHandler.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(OperateLogModelHandler.class);
 
     private static final boolean CREATE;
     private static final boolean DELETE;

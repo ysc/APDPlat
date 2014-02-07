@@ -22,13 +22,14 @@ package org.apdplat.module.module.service;
 
 import java.util.HashMap;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class ModuleCache {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ModuleCache.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ModuleCache.class);
     private static final HashMap<String,String> cache=new HashMap<>();
     private ModuleCache(){}
     

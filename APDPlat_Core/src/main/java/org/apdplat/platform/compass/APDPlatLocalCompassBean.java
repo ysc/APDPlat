@@ -33,6 +33,7 @@ import java.util.Properties;
 import java.util.Set;
 import javax.sql.DataSource;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.search.IndexManager;
 import org.apdplat.platform.util.FileUtils;
 
@@ -69,7 +70,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  */
 public class APDPlatLocalCompassBean implements FactoryBean, InitializingBean, DisposableBean, BeanNameAware, ApplicationContextAware, BeanClassLoaderAware {
 
-    protected static final APDPlatLogger log = new APDPlatLogger(APDPlatLocalCompassBean.class);
+    protected static final APDPlatLogger log = APDPlatLoggerFactory.getAPDPlatLogger(APDPlatLocalCompassBean.class);
 
     private Resource connection;
 

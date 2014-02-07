@@ -53,6 +53,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import javax.persistence.spi.ClassTransformer;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 import org.springframework.core.DecoratingClassLoader;
 import org.springframework.core.io.FileSystemResource;
@@ -101,7 +102,7 @@ class APDPlatPersistenceUnitReader {
 	private static final String META_INF = "META-INF";
 
 
-        protected final APDPlatLogger logger = new APDPlatLogger(getClass());
+        protected final APDPlatLogger logger = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
 
 	private final ResourcePatternResolver resourcePatternResolver;
 

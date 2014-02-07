@@ -34,6 +34,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -42,7 +43,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @author 杨尚川
  */
 public class AutoLoginFilter implements Filter {
-    private static final APDPlatLogger LOG = new APDPlatLogger(AutoLoginFilter.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(AutoLoginFilter.class);
     
     private UserDetailsServiceImpl userDetailsServiceImpl;
     private boolean enabled = false;

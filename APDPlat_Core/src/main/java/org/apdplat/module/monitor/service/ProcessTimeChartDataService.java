@@ -31,13 +31,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *
  * @author 杨尚川
  */
 public class ProcessTimeChartDataService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ProcessTimeChartDataService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ProcessTimeChartDataService.class);
   
 
     public static LinkedHashMap<String, Long> getProcessRate(List<ProcessTime> models) {    

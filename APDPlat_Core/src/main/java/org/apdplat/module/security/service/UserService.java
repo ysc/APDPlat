@@ -38,6 +38,7 @@ import org.apdplat.platform.criteria.Operator;
 import org.apdplat.platform.criteria.PropertyCriteria;
 import org.apdplat.platform.criteria.PropertyEditor;
 import org.apdplat.platform.criteria.PropertyType;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.result.Page;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(UserService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserService.class);
     
     @Resource(name="serviceFacade")
     private ServiceFacade serviceFacade;

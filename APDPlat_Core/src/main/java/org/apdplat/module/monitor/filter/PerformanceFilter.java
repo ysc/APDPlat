@@ -38,6 +38,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.log.BufferLogCollector;
 import org.apdplat.platform.util.SpringContextUtils;
 
@@ -46,7 +47,7 @@ import org.apdplat.platform.util.SpringContextUtils;
  * @author 杨尚川
  */
 public class PerformanceFilter implements Filter {
-    private static final APDPlatLogger LOG = new APDPlatLogger(PerformanceFilter.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(PerformanceFilter.class);
     private boolean enabled = false;
 
     @Override

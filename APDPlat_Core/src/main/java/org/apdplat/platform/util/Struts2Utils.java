@@ -32,12 +32,13 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 /**
 *Struts2工具类
 * @author 杨尚川
 */
 public class Struts2Utils {
-        private static final APDPlatLogger LOG = new APDPlatLogger(Struts2Utils.class);
+        private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(Struts2Utils.class);
         
         private Struts2Utils(){};
 

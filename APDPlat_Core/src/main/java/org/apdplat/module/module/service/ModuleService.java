@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import javax.annotation.Resource;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 /**
  * 模块服务
@@ -48,7 +49,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ModuleService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ModuleService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ModuleService.class);
     @Resource(name = "serviceFacade")
     private ServiceFacade serviceFacade;
 

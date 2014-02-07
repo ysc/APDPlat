@@ -45,7 +45,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BufferLogCollector  implements ApplicationListener {
-    private static final APDPlatLogger LOG = new APDPlatLogger(BufferLogCollector.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(BufferLogCollector.class);
 
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private static final HandleLogRunnable handleLogRunnable = new HandleLogRunnable();

@@ -32,12 +32,13 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 @XmlRootElement
 @XmlType(name = "Page")
 public class Page<T extends Model> implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static final APDPlatLogger LOG = new APDPlatLogger(Page.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(Page.class);
 
     private long totalRecords = 0;
     private List<T> models = new ArrayList<>();

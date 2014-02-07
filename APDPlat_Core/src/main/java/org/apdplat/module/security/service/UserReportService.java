@@ -25,6 +25,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.report.BirtReportEngine;
 import org.apdplat.platform.util.ConvertUtils;
 import org.apdplat.platform.util.FileUtils;
@@ -42,7 +43,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserReportService {
-    private static final APDPlatLogger LOG = new APDPlatLogger(UserReportService.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserReportService.class);
     private IReportEngine birtReportEngine = null;
     private static  String reportPath="/platform/reports/security/user.rptdesign";
 

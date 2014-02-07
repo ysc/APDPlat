@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.backup.BackupFileSender;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,7 +35,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LocalBackupFileSender implements BackupFileSender{
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
 
     @Override
     public void send(File file) {

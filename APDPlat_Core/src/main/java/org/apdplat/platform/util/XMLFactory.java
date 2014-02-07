@@ -31,12 +31,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 /**
 *在XML和对象之间进行转换
 * @author 杨尚川
 */
 public class XMLFactory {
-    private static final APDPlatLogger LOG = new APDPlatLogger(XMLFactory.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(XMLFactory.class);
        
     private XMLFactory(){};
 

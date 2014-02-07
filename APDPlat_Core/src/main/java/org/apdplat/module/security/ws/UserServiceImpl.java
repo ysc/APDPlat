@@ -26,6 +26,7 @@ import org.apdplat.module.security.service.UserDetailsServiceImpl;
 import org.apdplat.platform.log.APDPlatLogger;
 import javax.annotation.Resource;
 import javax.jws.WebService;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ import org.springframework.stereotype.Service;
 @Service
 @WebService(endpointInterface = "org.apdplat.module.security.ws.UserService")
 public class UserServiceImpl implements UserService{
-    private static final APDPlatLogger LOG = new APDPlatLogger(UserServiceImpl.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserServiceImpl.class);
     @Resource(name = "userDetailsServiceImpl")
     private UserDetailsServiceImpl userDetailsServiceImpl;
     

@@ -32,13 +32,14 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *将文件或是文件夹打包压缩成zip格式
  * @author 杨尚川
  */
 public class ZipUtils {
-    private static final APDPlatLogger LOG = new APDPlatLogger(ZipUtils.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(ZipUtils.class);
         
     private ZipUtils(){};
     

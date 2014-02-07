@@ -23,6 +23,7 @@ package org.apdplat.module.dictionary.service;
 import org.apdplat.module.dictionary.model.Dic;
 import org.apdplat.module.dictionary.model.DicItem;
 import org.apdplat.platform.log.APDPlatLogger;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.util.FileUtils;
 import org.apdplat.platform.util.XMLFactory;
 import org.apdplat.platform.util.XMLUtils;
@@ -39,7 +40,7 @@ import java.util.List;
  * @author 杨尚川
  */
 public class DicParser {
-    private static final APDPlatLogger LOG = new APDPlatLogger(DicParser.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(DicParser.class);
     private static final String dtdFile="/target/dic.dtd";
     /**
      * 返回所有Dic对象中dicItems不为空的Dic对象

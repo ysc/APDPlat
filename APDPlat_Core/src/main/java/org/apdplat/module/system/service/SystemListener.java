@@ -40,6 +40,7 @@ import java.util.Enumeration;
 import java.util.Locale;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.log.BufferLogCollector;
 /**
  * 系统启动和关闭的监听器,由Spring来调用
@@ -47,7 +48,7 @@ import org.apdplat.platform.log.BufferLogCollector;
  *
  */
 public class SystemListener{
-    private static final APDPlatLogger LOG = new APDPlatLogger(SystemListener.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SystemListener.class);
     
     private static boolean running=false;
     

@@ -38,6 +38,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.apache.commons.lang.StringUtils;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.compass.core.Compass;
 import org.compass.core.CompassHighlighter;
 import org.compass.core.CompassHits;
@@ -50,7 +51,7 @@ import org.compass.core.CompassTemplate;
  *
  */
 public abstract class DaoSupport extends DataPrivilegeControl{
-    protected final APDPlatLogger LOG = new APDPlatLogger(getClass());
+    protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
     
     protected static final OrderCriteria defaultOrderCriteria = new OrderCriteria();
 

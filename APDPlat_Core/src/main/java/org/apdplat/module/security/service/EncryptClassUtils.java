@@ -39,6 +39,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
  *此工具负责把
@@ -51,7 +52,7 @@ import javax.crypto.spec.DESKeySpec;
  * @author 杨尚川
  */
 public class EncryptClassUtils {
-    private static final APDPlatLogger LOG = new APDPlatLogger(EncryptClassUtils.class);
+    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(EncryptClassUtils.class);
     private static String sequenceKeyName;
     private static String securityKeyName;
     private static String winClspath;
