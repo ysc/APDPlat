@@ -28,10 +28,10 @@ import org.springframework.core.io.ClassPathResource;
 
 public class PropertyHolder {
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(PropertyHolder.class);
-    private static Properties props = new Properties();
+    private static final Properties props = new Properties();
 
     static {
-        reload();
+        init();
     }
 
     public static Properties getProperties() {
@@ -42,7 +42,7 @@ public class PropertyHolder {
      * 只有配置项加载完毕，调用了指定日志输出语言方法LOG.setLocale(getLogLanguage())
      * 之后，配置的日志输出语言才会生效
      */
-    public static void reload() {
+    private static void init() {
             String systemConfig="/org/apdplat/config.properties";
             String localConfig="/config.local.properties";
             String dbConfig="/org/apdplat/db.properties";
