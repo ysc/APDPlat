@@ -259,6 +259,10 @@ public abstract class Model implements Serializable{
                 if(value == null){
                     value = "";
                 }
+                if( !(value instanceof  String) ){
+                    LOG.debug("值不属于明确处理的情况，忽略");
+                    continue;
+                }
                 result.append(fieldAttr)
                         .append(":  ")
                         .append(value)
