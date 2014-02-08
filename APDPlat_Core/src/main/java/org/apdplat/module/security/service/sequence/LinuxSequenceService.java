@@ -31,7 +31,7 @@ public class LinuxSequenceService  extends AbstractSequenceService{
     }
 
     public static void main(String[] args) {
-        LinuxSequenceService s = new LinuxSequenceService();
+        SequenceService s = new LinuxSequenceService();
         String seq = s.getSequence();
         System.out.println(seq);
     }

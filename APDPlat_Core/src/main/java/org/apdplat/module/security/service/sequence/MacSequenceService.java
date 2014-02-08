@@ -31,7 +31,7 @@ public class MacSequenceService    extends AbstractSequenceService{
     }
    
     public static void main(String[] args) {
-        MacSequenceService s = new MacSequenceService();
+        SequenceService s = new MacSequenceService();
         String seq = s.getSequence();
         System.out.println(seq);
     }

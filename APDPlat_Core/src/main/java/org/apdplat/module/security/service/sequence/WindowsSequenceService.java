@@ -48,7 +48,7 @@ public final class WindowsSequenceService extends AbstractSequenceService{
      * @return 该分区的卷标
      */
     private String getHDSerial(String drive) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             File file = File.createTempFile("tmp", ".vbs");
             file.deleteOnExit();
@@ -62,19 +62,18 @@ public final class WindowsSequenceService extends AbstractSequenceService{
             try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                 String line;
                 while ((line = input.readLine()) != null) {
-                    result += line;
+                    result.append(line);
                 }
             }
             file.delete();
         } catch (Throwable e) {
             LOG.error("生成HDSerial失败", e);
         }
-        if (result.trim().length() < 1 || result == null) {
+        if (result.length() < 1) {
             LOG.info("无磁盘ID被读取");
-            result = "";
         }
 
-        return result.trim();
+        return result.toString();
     }
 
     /**
@@ -82,7 +81,7 @@ public final class WindowsSequenceService extends AbstractSequenceService{
      * @return
      */
     private String getCPUSerial() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         try {
             File file = File.createTempFile("tmp", ".vbs");
             file.deleteOnExit();
@@ -100,22 +99,21 @@ public final class WindowsSequenceService extends AbstractSequenceService{
             try (BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
                 String line;
                 while ((line = input.readLine()) != null) {
-                    result += line;
+                    result.append(line);
                 }
             }
             file.delete();
         } catch (Throwable e) {
             LOG.error("生成CPUSerial失败", e);
         }
-        if (result.trim().length() < 1 || result == null) {
+        if (result.length() < 1) {
             LOG.info("无CPU_ID被读取");
-            result = "";
         }
-        return result.trim();
+        return result.toString();
     }
     
     public static void main(String[] args) {        
-        WindowsSequenceService s = new WindowsSequenceService();
+        SequenceService s = new WindowsSequenceService();
         String seq = s.getSequence();
         System.out.println(seq);
     }

@@ -20,8 +20,6 @@
 
 package org.apdplat.module.security.service.sequence;
 
-import org.apdplat.module.security.service.sequence.AbstractSequenceService;
-
 /**
  *在Solaris平台上生成机器码
  * @author 杨尚川
@@ -33,9 +31,8 @@ public class SolarisSequenceService    extends AbstractSequenceService{
     }
 
     public static void main(String[] args) {
-        SolarisSequenceService s = new SolarisSequenceService();
+        SequenceService s = new SolarisSequenceService();
         String seq = s.getSequence();
         System.out.println(seq);
-    }
-    
+    }    
 }

@@ -100,7 +100,7 @@ public abstract class AbstractSequenceService   implements SequenceService{
         return result;
     }    
     /**
-     * 利用sigar来生成机器码，当然这个实现不是很好，无法获得CPU ID，希望朋友来改进这个实现
+     * 利用sigar来生成机器码，当然这个实现不是很好，无法获得CPU ID，希望有兴趣的朋友来改进这个实现
      * @param osName 操作系统类型
      * @return 机器码
      */
@@ -113,8 +113,8 @@ public abstract class AbstractSequenceService   implements SequenceService{
             Set<String> result = new HashSet<>();
             Sigar sigar = new Sigar();
             String[] ifaces = sigar.getNetInterfaceList();
-            for (int i = 0; i < ifaces.length; i++) {
-                NetInterfaceConfig cfg = sigar.getNetInterfaceConfig(ifaces[i]);
+            for (String iface : ifaces) {
+                NetInterfaceConfig cfg = sigar.getNetInterfaceConfig(iface);
                 if (NetFlags.LOOPBACK_ADDRESS.equals(cfg.getAddress()) || (cfg.getFlags() & NetFlags.IFF_LOOPBACK) != 0
                         || NetFlags.NULL_HWADDR.equals(cfg.getHwaddr())) {
                     continue;
