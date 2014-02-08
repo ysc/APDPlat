@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apdplat.module.security.service;
+package org.apdplat.module.security.service.sequence;
 
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.log.APDPlatLogger;

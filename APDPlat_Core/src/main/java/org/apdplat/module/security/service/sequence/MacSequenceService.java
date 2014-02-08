@@ -18,22 +18,21 @@
  * 
  */
 
-package org.apdplat.module.security.service;
+package org.apdplat.module.security.service.sequence;
 
 /**
- *在Solaris平台上生成机器码
+ *在Mac OS X平台上生成机器码
  * @author 杨尚川
  */
-public class SolarisSequenceService    extends AbstractSequenceService{
+public class MacSequenceService    extends AbstractSequenceService{
     @Override
     public String getSequence() {
-        return getSigarSequence("solaris");
+        return getSigarSequence("mac");
     }
-
+   
     public static void main(String[] args) {
-        SolarisSequenceService s = new SolarisSequenceService();
+        MacSequenceService s = new MacSequenceService();
         String seq = s.getSequence();
         System.out.println(seq);
     }
-    
 }

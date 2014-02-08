@@ -18,18 +18,21 @@
  * 
  */
 
-package org.apdplat.module.security.service;
+package org.apdplat.module.security.service.sequence;
 
 /**
- *生成机器码的接口，不同平台有不同实现
+ *在Linux平台上生成机器码
  * @author 杨尚川
  */
-public interface SequenceService {
+public class LinuxSequenceService  extends AbstractSequenceService{
+    @Override
+    public String getSequence() {
+        return getSigarSequence("linux");
+    }
 
-    /**
-     * 获取机器码
-     * @return  机器码
-     */
-    public String getSequence();
-    
+    public static void main(String[] args) {
+        LinuxSequenceService s = new LinuxSequenceService();
+        String seq = s.getSequence();
+        System.out.println(seq);
+    }
 }

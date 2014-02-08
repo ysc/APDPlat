@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apdplat.module.security.service;
+package org.apdplat.module.security.service.sequence;
 
 import java.io.BufferedReader;
 import java.io.File;
