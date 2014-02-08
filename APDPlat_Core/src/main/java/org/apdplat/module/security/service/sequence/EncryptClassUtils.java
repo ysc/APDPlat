@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apdplat.module.security.service;
+package org.apdplat.module.security.service.sequence;
 
 import org.apdplat.platform.log.APDPlatLogger;
 import java.io.ByteArrayOutputStream;
@@ -48,28 +48,29 @@ import org.apdplat.platform.log.APDPlatLoggerFactory;
  * MacSequenceService.class
  * SolarisSequenceService.class
  * SecurityService.class
- * 进行加密并放到WEB模块
+ * 进行加密并放到对应的包中
+ * 在maven打包的时候，class文件不会打进包中
  * @author 杨尚川
  */
 public class EncryptClassUtils {
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(EncryptClassUtils.class);
-    private static String sequenceKeyName;
-    private static String securityKeyName;
-    private static String winClspath;
-    private static String linuxClspath;
-    private static String macClspath;
-    private static String solarisClspath;
-    private static String securityClspath;
+    private static final String sequenceKeyName;
+    private static final String securityKeyName;
+    private static final String winClspath;
+    private static final String linuxClspath;
+    private static final String macClspath;
+    private static final String solarisClspath;
+    private static final String securityClspath;
     
     private static final String workDir="D:/Workspaces/NetBeansProjects/APDPlat/APDPlat_Core/";
     static{        
         String dir=workDir+"src/main/resources/org/apdplat/module/security/service/";
-        sequenceKeyName = dir+"SequenceKey";
+        sequenceKeyName = dir+"sequence/SequenceKey";
         securityKeyName = dir+"SecurityKey";
-        winClspath = dir+"WindowsSequenceService";
-        linuxClspath = dir+"LinuxSequenceService";
-        macClspath = dir+"MacSequenceService";
-        solarisClspath = dir+"SolarisSequenceService";
+        winClspath = dir+"sequence/WindowsSequenceService";
+        linuxClspath = dir+"sequence/LinuxSequenceService";
+        macClspath = dir+"sequence/MacSequenceService";
+        solarisClspath = dir+"sequence/SolarisSequenceService";
         securityClspath = dir+"SecurityService";
     }
 
@@ -133,10 +134,10 @@ public class EncryptClassUtils {
     public static void main(String args[]) throws Exception {
         createKey(sequenceKeyName);
         createKey(securityKeyName);
-        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/WindowsSequenceService.class", winClspath);
-        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/LinuxSequenceService.class", linuxClspath);
-        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/MacSequenceService.class", macClspath);
-        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/SolarisSequenceService.class", solarisClspath);
+        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/sequence/WindowsSequenceService.class", winClspath);
+        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/sequence/LinuxSequenceService.class", linuxClspath);
+        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/sequence/MacSequenceService.class", macClspath);
+        encrypt(sequenceKeyName, workDir+"target/classes/org/apdplat/module/security/service/sequence/SolarisSequenceService.class", solarisClspath);
         encrypt(securityKeyName, workDir+"target/classes/org/apdplat/module/security/service/SecurityService.class", securityClspath);
     }
     private static byte[] readAll(InputStream in){

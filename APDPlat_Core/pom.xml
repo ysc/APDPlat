@@ -951,11 +951,13 @@
                     <excludes>
                         <exclude>**/uml/**</exclude>
                         <exclude>**/doc/**</exclude>
-                        <exclude>**/org/apdplat/module/security/service/WindowsSequenceService.class</exclude>
-                        <exclude>**/org/apdplat/module/security/service/LinuxSequenceService.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/sequence/WindowsSequenceService.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/sequence/LinuxSequenceService.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/sequence/MacSequenceService.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/sequence/SolarisSequenceService.class</exclude>
                         <exclude>**/org/apdplat/module/security/service/SecurityService.class</exclude>
-                        <exclude>**/org/apdplat/module/security/service/EncryptClassUtils.class</exclude>
-                        <exclude>**/org/apdplat/module/security/service/AuthorizationUtils.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/sequence/EncryptClassUtils.class</exclude>
+                        <exclude>**/org/apdplat/module/security/service/sequence/AuthorizationUtils.class</exclude>
                         <exclude>**/org/apdplat/tip/**</exclude>
                         <exclude>**/org/apdplat/module/security/pki/**</exclude>
                     </excludes>
