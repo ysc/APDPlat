@@ -49,10 +49,10 @@ import org.springframework.util.ReflectionUtils;
 @Service
 public class SecurityCheck {
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(SecurityCheck.class);
-    private static String securityKeyName;
-    private static String securityClspath;
-    private static String sequenceKeyName;
-    private static String sequenceClspath;
+    private static final String securityKeyName;
+    private static final String securityClspath;
+    private static final String sequenceKeyName;
+    private static final String sequenceClspath;
     private static String osName="Windows";
     static{       
         if(System.getProperty("os.name").toLowerCase().indexOf("linux")!=-1){
@@ -65,8 +65,8 @@ public class SecurityCheck {
             osName="Solaris";
         }
         LOG.debug("osName: "+osName); 
-        sequenceKeyName="/org/apdplat/module/security/service/SequenceKey";
-        sequenceClspath="/org/apdplat/module/security/service/"+osName+"SequenceService";
+        sequenceKeyName="/org/apdplat/module/security/service/sequence/SequenceKey";
+        sequenceClspath="/org/apdplat/module/security/service/sequence/"+osName+"SequenceService";
     
         securityKeyName="/org/apdplat/module/security/service/SecurityKey";
         securityClspath="/org/apdplat/module/security/service/SecurityService";
@@ -119,7 +119,7 @@ public class SecurityCheck {
     }
     private static String getSequence(){
         try {
-            Class clazz=loadClass(sequenceKeyName,sequenceClspath,"org.apdplat.module.security.service."+osName+"SequenceService");
+            Class clazz=loadClass(sequenceKeyName,sequenceClspath,"org.apdplat.module.security.service.sequence."+osName+"SequenceService");
             Object obj=clazz.newInstance();
             Method method=ReflectionUtils.findMethod(clazz, "getSequence");
             String seq=method.invoke(obj).toString();
