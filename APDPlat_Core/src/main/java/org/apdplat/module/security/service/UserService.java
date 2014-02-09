@@ -33,6 +33,8 @@ import org.apdplat.module.security.model.Position;
 import org.apdplat.module.security.model.Role;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.model.UserGroup;
+import org.apdplat.module.security.service.password.PasswordInvalidException;
+import org.apdplat.module.security.service.password.PasswordStrategyExecuter;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.criteria.Operator;
 import org.apdplat.platform.criteria.Property;
@@ -55,13 +57,15 @@ public class UserService {
     private ServiceFacade serviceFacade;
     @Resource(name="onlineUserService")
     private OnlineUserService onlineUserService;
+    @Resource(name="passwordStrategyExecuter")
+    private PasswordStrategyExecuter passwordStrategyExecuter;
 
     /**
      * 分页获取在线用户
      * @param start 开始索引（包括）
      * @param len 页面大小
-     * @param orgId 组织机构ID
-     * @param roleId 角色ID
+     * @param orgIdStr 组织机构ID
+     * @param roleIdStr 角色ID
      * @return 
      */
     public Page<User> getOnlineUsers(int start, int len, String orgIdStr, String roleIdStr){
@@ -149,6 +153,15 @@ public class UserService {
                 return result;
             }
         }
+        //先对用户的密码策略进行验证
+        try{
+            passwordStrategyExecuter.check(newPassword);
+        }catch(PasswordInvalidException e){
+            result.put("success", false);
+            result.put("message", e.getMessage());
+            LOG.error(e.getMessage());
+            return result;
+        }            
         oldPassword=PasswordEncoder.encode(oldPassword.trim(),user);
         if(oldPassword.equals(user.getPassword())){
             user.setPassword(PasswordEncoder.encode(newPassword.trim(),user));
@@ -178,10 +191,12 @@ public class UserService {
             LOG.error(message);
             return message;
         }
-        if(StringUtils.isBlank(password)){            
-            message = "重置密码不能为空";
-            LOG.error(message);
-            return message;
+        //先对用户的密码策略进行验证
+        try{
+            passwordStrategyExecuter.check(password);
+        }catch(PasswordInvalidException e){    
+            LOG.error(e.getMessage());
+            return e.getMessage();
         }
         int success = 0;
         for(int id : ids){
@@ -280,6 +295,12 @@ public class UserService {
     public void assemblyModelForPartUpdate(List<Property> properties, User user) {
         for(Property property : properties){
             if("password".equals(property.getName().trim())){
+                //先对用户的密码策略进行验证
+                try{
+                    passwordStrategyExecuter.check(property.getValue().toString());
+                }catch(PasswordInvalidException e){
+                    throw new RuntimeException(e.getMessage());
+                }
                 property.setValue(PasswordEncoder.encode(property.getValue().toString(),user));
                 break;
             }
@@ -317,6 +338,12 @@ public class UserService {
      * @param userGroups 用户组，形如：userGrou-1,userGrou-2,userGrou-3
      */
     public void assemblyModelForCreate(User model, String roles, String positions, String userGroups) {
+        //先对用户的密码策略进行验证
+        try{
+            passwordStrategyExecuter.check(model.getPassword());
+        }catch(PasswordInvalidException e){
+            throw new RuntimeException(e.getMessage());
+        }
         LOG.debug("加密用户密码");
         model.setPassword(PasswordEncoder.encode(model.getPassword(), model));
         LOG.debug("组装角色: " + roles);
