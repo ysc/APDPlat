@@ -115,6 +115,9 @@ public class SystemListener{
         LOG.info("你的操作系统所用的编码file.encoding："+encoding);
         LOG.info("Encoding of your OS is file.encoding："+encoding, Locale.ENGLISH);
         
+        //lib目录中去掉多余的JDBC驱动
+        DatabaseDriverChecker.check();
+        
         //为spring的配置做预处理
         prepareForSpring();
         //注册模块
