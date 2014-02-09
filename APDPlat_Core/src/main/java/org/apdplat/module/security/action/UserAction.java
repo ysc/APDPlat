@@ -143,12 +143,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
     // 在更新一个特定的部分的Model之前对Model添加需要修改的属性
     @Override
     protected void assemblyModelForPartUpdate(List<Property> properties) {
-        for(Property property : properties){
-            if("password".equals(property.getName().trim())){
-                property.setValue(PasswordEncoder.encode(property.getValue().toString(),model));
-                break;
-            }
-        }
+        userService.assemblyModelForPartUpdate(properties, model);
     }
     @Override
     protected void assemblyModelForUpdate(User model){

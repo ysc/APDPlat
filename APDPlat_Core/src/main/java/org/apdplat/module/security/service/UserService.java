@@ -35,6 +35,7 @@ import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.model.UserGroup;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.criteria.Operator;
+import org.apdplat.platform.criteria.Property;
 import org.apdplat.platform.criteria.PropertyCriteria;
 import org.apdplat.platform.criteria.PropertyEditor;
 import org.apdplat.platform.criteria.PropertyType;
@@ -269,6 +270,19 @@ public class UserService {
             //加快内存释放
             pape.getModels().clear();
             throw new RuntimeException(message);
+        }
+    }
+    /**
+     * 修改用户部分属性 - 组装模型
+     * @param properties 
+     * @param user 
+     */
+    public void assemblyModelForPartUpdate(List<Property> properties, User user) {
+        for(Property property : properties){
+            if("password".equals(property.getName().trim())){
+                property.setValue(PasswordEncoder.encode(property.getValue().toString(),user));
+                break;
+            }
         }
     }
     /**
