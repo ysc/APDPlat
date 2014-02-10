@@ -115,6 +115,9 @@ public class SystemListener{
         LOG.info("你的操作系统所用的编码file.encoding："+encoding);
         LOG.info("Encoding of your OS is file.encoding："+encoding, Locale.ENGLISH);
         
+        LOG.info("启动目录监控线程");
+        WatchDirectory.startWatch(basePath);
+        
         //lib目录中去掉多余的JDBC驱动
         DatabaseDriverChecker.check();
         
@@ -179,6 +182,9 @@ public class SystemListener{
         deregisterDrivers();
         LOG.info("卸载JDBC驱动");
         LOG.info("Uninstalled JDBC driver", Locale.ENGLISH);      
+        
+        LOG.info("停止目录监控线程");
+        WatchDirectory.stopWatch();        
     }    
     public static String getContextPath() {
         return contextPath;
