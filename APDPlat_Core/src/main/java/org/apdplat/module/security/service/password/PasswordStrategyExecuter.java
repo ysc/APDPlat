@@ -33,7 +33,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 /**
- * 密码复杂性策略执行者
+ * 密码安全策略执行者
  * 根据配置项user.password.strategy
  * 指定的spring bean name
  * 分别执行指定的策略

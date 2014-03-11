@@ -43,5 +43,4 @@ public class PasswordLengthStrategy implements PasswordStrategy{
         }
         LOG.info("密码符合安全策略");
     }
-
 }
