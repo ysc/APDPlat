@@ -90,7 +90,7 @@ String jsessionid=session.getId();
 <script type="text/javascript" src="<%=contextPath%>/platform/js/PageSizePlugin.js"></script>
 
 <script type="text/javascript" src="<%=contextPath%>/js/reLogin.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/js/md5.js"></script>
+<script type="text/javascript" src="<%=contextPath%>/js/sha512.js"></script>
 
 <!--网页编辑器-->
 <script type="text/javascript" src="<%=contextPath%>/ckfinder/ckfinder.js"></script>

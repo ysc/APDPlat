@@ -42,7 +42,7 @@
         <js>/DateTime/SpinnerField.js</js>
         <js>/DateTime/DateTimeField.js</js>
         <js>/js/reLogin.js</js>
-        <js>/js/md5.js</js>
+        <js>/js/sha512.js</js>
         <js>/js/MSIE.PNG.js</js>
         <js>/platform/js/specialDic.js</js>
         <js>/platform/js/vtypeCheck.js</js>
@@ -64,7 +64,7 @@
         <js>/extjs/ux/Toast.js</js>
         <js>/extjs/js/ext-lang-zh_CN.js</js>
         <js>/js/validate.js</js>
-        <js>/js/md5.js</js>
+        <js>/js/sha512.js</js>
         <js>/js/login.js</js>
         <js>/js/MSIE.PNG.js</js>
     </group>

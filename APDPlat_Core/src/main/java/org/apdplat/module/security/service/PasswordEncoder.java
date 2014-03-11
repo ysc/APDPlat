@@ -21,7 +21,7 @@
 package org.apdplat.module.security.service;
 
 import org.apdplat.module.security.model.User;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 
 /**
  *
@@ -29,6 +29,11 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
  */
 public class PasswordEncoder {
     public static String encode(String password,User user){
-        return new Md5PasswordEncoder().encodePassword(password,user.getMetaData());
+        return new ShaPasswordEncoder(512).encodePassword(password,user.getMetaData());
+    }
+    public static void main(String[] args){
+        ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(512);
+        String text = shaPasswordEncoder.encodePassword("admin", "用户信息");
+        System.out.println(text);
     }
 }

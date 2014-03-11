@@ -96,7 +96,7 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
     <script type="text/javascript" src="extjs/ux/Toast.js"></script>
     <script type="text/javascript" src="extjs/js/ext-lang-zh_CN.js"></script>
     <script type="text/javascript" src="js/validate.js"></script>
-    <script type="text/javascript" src="js/md5.js"></script>
+    <script type="text/javascript" src="js/sha512.js"></script>
     <script type="text/javascript" src="js/login.js"></script>
     <script type="text/javascript">
         //解决Ext在ie9报错：不支持extjs对象的“createContextualFragment属性或方法”

@@ -54,7 +54,7 @@
     </group>
     <group name="js_merge">
         <js>/js/reLogin.js</js>
-        <js>/js/md5.js</js>
+        <js>/js/sha512.js</js>
         <js>/js/MSIE.PNG.js</js>
     </group>
     <group name="platform_css_merge">
@@ -87,7 +87,7 @@
         <js>/extjs/ux/Toast.js</js>
         <js>/extjs/js/ext-lang-zh_CN.js</js>
         <js>/js/validate.js</js>
-        <js>/js/md5.js</js>
+        <js>/js/sha512.js</js>
         <js>/js/login.js</js>
         <js>/js/MSIE.PNG.js</js>
     </group>

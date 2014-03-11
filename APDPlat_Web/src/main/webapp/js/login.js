@@ -176,7 +176,7 @@ Ext.form.Field.prototype.msgTarget='side';//提示的方式，枚举值为"qtip"
                 return false;
             }
             var url = 'j_spring_security_check';
-            j_password=hex_md5(j_password+'{用户信息}');
+            j_password=hex_sha512(j_password+'{用户信息}');
             Ext.Ajax.request({
                 url : url,
                 params : {
