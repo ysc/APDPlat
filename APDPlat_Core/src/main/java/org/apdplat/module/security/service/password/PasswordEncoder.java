@@ -32,6 +32,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
  * @author 杨尚川
  */
 public class PasswordEncoder {
+    private PasswordEncoder(){}
     public static String encode(String password,User user){
         password = new ShaPasswordEncoder(512).encodePassword(password,user.getMetaData());
         SaltSource saltSource = SpringContextUtils.getBean("saltSource");
