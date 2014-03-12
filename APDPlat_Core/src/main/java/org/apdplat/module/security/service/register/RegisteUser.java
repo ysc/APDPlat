@@ -48,6 +48,8 @@ public class RegisteUser extends RegisterService<User>{
     protected RegisteOrg registeOrg;
     @Resource(name="registeRole")
     protected RegisteRole registeRole;
+    @Resource(name="passwordEncoder")
+    private PasswordEncoder passwordEncoder;
 
     @Override
     protected void registe() {
@@ -63,7 +65,7 @@ public class RegisteUser extends RegisterService<User>{
         Page<User> page=Page.newInstance(User.class, RegisteUser.class.getResourceAsStream(xml));
         if(page!=null){
             for(User user : page.getModels()){
-                user.setPassword(PasswordEncoder.encode(user.getPassword(), user));
+                user.setPassword(passwordEncoder.encode(user.getPassword(), user));
                 user.setOrg(registeOrg.getRegisteData().get(0));
                 user.addRole(registeRole.getRegisteData().get(0).getChild().get(0));
                 serviceFacade.create(user);

@@ -40,12 +40,14 @@ public class UserServiceImpl implements UserService{
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UserServiceImpl.class);
     @Resource(name = "userDetailsServiceImpl")
     private UserDetailsServiceImpl userDetailsServiceImpl;
+    @Resource(name="passwordEncoder")
+    private PasswordEncoder passwordEncoder;
     
     @Override
     public String login(String username, String password) {
         try{
             User user=(User)userDetailsServiceImpl.loadUserByUsername(username);
-            password=PasswordEncoder.encode(password, user);
+            password=passwordEncoder.encode(password, user);
             if(password.equals(user.getPassword())){
                 return "认证成功";
             }else{
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService{
         try{
             User user=(User)userDetailsServiceImpl.loadUserByUsername(username);
             if(user!=null){
-                password=PasswordEncoder.encode(password, user);
+                password=passwordEncoder.encode(password, user);
                 if(password.equals(user.getPassword())){
                     return user;
                 }

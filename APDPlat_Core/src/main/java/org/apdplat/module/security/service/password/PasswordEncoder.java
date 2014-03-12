@@ -20,10 +20,11 @@
 
 package org.apdplat.module.security.service.password;
 
+import javax.annotation.Resource;
 import org.apdplat.module.security.model.User;
-import org.apdplat.platform.util.SpringContextUtils;
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 /**
  * 用户密码双重加密：
@@ -31,11 +32,17 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
  * 2、使用SHA-256算法，salt为saltSource.getSalt(user)，即：用户名+APDPlat应用级产品开发平台的作者是杨尚川，联系方式（邮件：ysc@apdplat.org）(QQ：281032878)
  * @author 杨尚川
  */
-public class PasswordEncoder {
-    private PasswordEncoder(){}
-    public static String encode(String password,User user){
+@Service
+public class PasswordEncoder {    
+    @Resource(name="saltSource")
+    private SaltSource saltSource;
+
+    public void setSaltSource(SaltSource saltSource) {
+        this.saltSource = saltSource;
+    }
+    
+    public String encode(String password,User user){
         password = new ShaPasswordEncoder(512).encodePassword(password,user.getMetaData());
-        SaltSource saltSource = SpringContextUtils.getBean("saltSource");
         return new ShaPasswordEncoder(256).encodePassword(password,saltSource.getSalt(user));
     }
     public static void main(String[] args){

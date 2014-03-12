@@ -60,6 +60,8 @@ public class UserService {
     private OnlineUserService onlineUserService;
     @Resource(name="passwordStrategyExecuter")
     private PasswordStrategyExecuter passwordStrategyExecuter;
+    @Resource(name="passwordEncoder")
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 分页获取在线用户
@@ -163,9 +165,9 @@ public class UserService {
             LOG.error(e.getMessage());
             return result;
         }            
-        oldPassword=PasswordEncoder.encode(oldPassword.trim(),user);
+        oldPassword=passwordEncoder.encode(oldPassword.trim(),user);
         if(oldPassword.equals(user.getPassword())){
-            user.setPassword(PasswordEncoder.encode(newPassword.trim(),user));
+            user.setPassword(passwordEncoder.encode(newPassword.trim(),user));
             serviceFacade.update(user);
             message = "修改成功";
             result.put("success", true);
@@ -211,7 +213,7 @@ public class UserService {
                 continue;
             }
             //设置新密码
-            user.setPassword(PasswordEncoder.encode(password, user));
+            user.setPassword(passwordEncoder.encode(password, user));
             //同步到数据库
             serviceFacade.update(user);
             success++;
@@ -302,7 +304,7 @@ public class UserService {
                 }catch(PasswordInvalidException e){
                     throw new RuntimeException(e.getMessage());
                 }
-                property.setValue(PasswordEncoder.encode(property.getValue().toString(),user));
+                property.setValue(passwordEncoder.encode(property.getValue().toString(),user));
                 break;
             }
         }
@@ -346,7 +348,7 @@ public class UserService {
             throw new RuntimeException(e.getMessage());
         }
         LOG.debug("加密用户密码");
-        model.setPassword(PasswordEncoder.encode(model.getPassword(), model));
+        model.setPassword(passwordEncoder.encode(model.getPassword(), model));
         LOG.debug("组装角色: " + roles);
         assemblyRoles(model, roles);
         LOG.debug("组装岗位: " + positions);
