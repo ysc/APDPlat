@@ -21,7 +21,7 @@
 package org.apdplat.module.security.ws;
 
 import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.service.PasswordEncoder;
+import org.apdplat.module.security.service.password.PasswordEncoder;
 import org.apdplat.module.security.service.UserDetailsServiceImpl;
 import org.apdplat.platform.log.APDPlatLogger;
 import javax.annotation.Resource;

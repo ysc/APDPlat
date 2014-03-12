@@ -20,6 +20,7 @@
 
 package org.apdplat.module.security.service;
 
+import org.apdplat.module.security.service.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

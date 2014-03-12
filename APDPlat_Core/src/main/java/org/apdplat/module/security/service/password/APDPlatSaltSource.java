@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apdplat.module.security.service;
+package org.apdplat.module.security.service.password;
 
 import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.core.userdetails.UserDetails;

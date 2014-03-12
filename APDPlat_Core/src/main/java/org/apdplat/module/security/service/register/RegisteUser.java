@@ -21,7 +21,7 @@
 package org.apdplat.module.security.service.register;
 
 import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.service.PasswordEncoder;
+import org.apdplat.module.security.service.password.PasswordEncoder;
 import org.apdplat.module.system.service.RegisterService;
 import org.apdplat.platform.result.Page;
 import org.apdplat.platform.util.XMLUtils;

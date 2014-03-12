@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apdplat.module.security.service;
+package org.apdplat.module.security.service.password;
 
 import org.apdplat.module.security.model.User;
 import org.apdplat.platform.util.SpringContextUtils;
