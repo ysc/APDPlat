@@ -24,7 +24,6 @@ import org.apdplat.module.security.model.Position;
 import org.apdplat.module.security.model.Role;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.security.model.UserGroup;
-import org.apdplat.module.security.service.PasswordEncoder;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.criteria.Property;
