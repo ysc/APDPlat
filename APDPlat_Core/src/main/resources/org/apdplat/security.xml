@@ -34,11 +34,9 @@
     
     <s:authentication-manager alias="authenticationManager">
         <s:authentication-provider   user-service-ref="userDetailsServiceImpl" >
-            <!--加密由客户端来完成
-            <s:password-encoder  hash="md5">
-                <s:salt-source user-property="metaData"/>
+            <s:password-encoder  hash="sha-256">
+                <s:salt-source ref="saltSource"/>
             </s:password-encoder>
-            -->
         </s:authentication-provider>
     </s:authentication-manager>
     
