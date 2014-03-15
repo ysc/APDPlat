@@ -36,23 +36,35 @@ import org.springframework.stereotype.Service;
 public class PasswordEncoder {    
     @Resource(name="saltSource")
     private SaltSource saltSource;
+    private final ShaPasswordEncoder shaPasswordEncoder256 = new ShaPasswordEncoder(256);
+    private final ShaPasswordEncoder shaPasswordEncoder512 = new ShaPasswordEncoder(512);
 
     public void setSaltSource(SaltSource saltSource) {
         this.saltSource = saltSource;
     }
     
     public String encode(String password,User user){
-        password = new ShaPasswordEncoder(512).encodePassword(password,user.getMetaData());
-        return new ShaPasswordEncoder(256).encodePassword(password,saltSource.getSalt(user));
+        return encode256(encode512(password, user), user);
+    }
+    private String encode512(String password,User user){
+        return shaPasswordEncoder512.encodePassword(password,user.getMetaData());
+    }
+    private String encode256(String password,User user){
+        return shaPasswordEncoder256.encodePassword(password,saltSource.getSalt(user));
     }
     public static void main(String[] args){
         User user = new User();
         user.setUsername("admin");
         user.setPassword("admin");
-        String password = new ShaPasswordEncoder(512).encodePassword(user.getPassword(),user.getMetaData());
-        System.out.println("Step 1 use SHA-512: "+password+" length:"+password.length());
+        
         SaltSource saltSource = new APDPlatSaltSource();
-        password = new ShaPasswordEncoder(256).encodePassword(password,saltSource.getSalt(user));
+        PasswordEncoder passwordEncoder = new PasswordEncoder();
+        passwordEncoder.setSaltSource(saltSource);
+        
+        String password = passwordEncoder.encode512(user.getPassword(), user);
+        System.out.println("Step 1 use SHA-512: "+password+" length:"+password.length());
+        
+        password = passwordEncoder.encode256(password, user);
         System.out.println("Step 2 use SHA-256: "+password+" length:"+password.length());
     }
 }
