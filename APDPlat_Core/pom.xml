@@ -87,7 +87,6 @@
         <cxf.version>2.7.3</cxf.version>
         <wro4j.version>1.7.0</wro4j.version>
         <birt.version>4.2.2</birt.version>
-        <activiti.version>5.13</activiti.version>
         <aspectj.version>1.7.4</aspectj.version>
         <commons-net.version>3.3</commons-net.version>
         <jackson.version>2.3.1</jackson.version>
@@ -791,58 +790,7 @@
             </exclusions>
         </dependency>
         
-        <!-- activiti -->
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-engine</artifactId>
-            <version>${activiti.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring</artifactId>
-            <version>${activiti.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-explorer</artifactId>
-            <version>${activiti.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.vaadin</groupId>
-                    <artifactId>vaadin</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.vaadin.addons</groupId>
-                    <artifactId>dcharts-widget</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.activiti</groupId>
-                    <artifactId>activiti-simple-workflow</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-modeler</artifactId>
-            <version>${activiti.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
+        
         <dependency>
             <groupId>ro.isdc.wro4j</groupId>
             <artifactId>wro4j-core</artifactId>
