@@ -1,4 +1,8 @@
-<p><a href="https://github.com/ysc/APDPlat/wiki/%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97" target="_blank">APDPlat入门指南</a></p>
+[APDPlat快速体验](https://github.com/ysc/APDPlat/wiki)
+
+[APDPlat入门指南](https://github.com/ysc/APDPlat/wiki/%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97)
+
+[APDPlat专题文章](http://yangshangchuan.iteye.com/category/270424)
 
 APDPlat是Application Product Development Platform（应用级产品开发平台）的缩写。
 
