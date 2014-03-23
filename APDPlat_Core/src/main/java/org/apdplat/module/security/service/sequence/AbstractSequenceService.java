@@ -98,7 +98,19 @@ public abstract class AbstractSequenceService   implements SequenceService{
         }
         String result=finalMachineCode.toString().substring(0, finalMachineCode.toString().length()-1);
         return result;
-    }    
+    }     
+    protected String getSigarFile(String osName){
+        StringBuilder result = new StringBuilder();
+        result.append("libsigar-");
+        String osArch = System.getProperty("os.arch");        
+        if(osArch.contains("64")){
+            result.append("amd64-");
+        }else{
+            result.append("x86-");
+        }
+        result.append(osName).append("-1.6.4.so");
+        return result.toString();
+    }
     /**
      * 利用sigar来生成机器码，当然这个实现不是很好，无法获得CPU ID，希望有兴趣的朋友来改进这个实现
      * @param osName 操作系统类型
@@ -106,8 +118,8 @@ public abstract class AbstractSequenceService   implements SequenceService{
      */
     protected String getSigarSequence(String osName) {
         try {
-            File libFile = new File(FileUtils.getAbsolutePath("/WEB-INF/lib/"+PropertyHolder.getProperty("libsigar."+osName)));
-            LOG.debug("libsigar."+osName+" : "+libFile.getAbsolutePath());
+            File libFile = new File(FileUtils.getAbsolutePath("/WEB-INF/lib/"+getSigarFile(osName)));
+            LOG.debug("libsigar: "+libFile.getAbsolutePath());
             
             System.load(libFile.getAbsolutePath());
             Set<String> result = new HashSet<>();
