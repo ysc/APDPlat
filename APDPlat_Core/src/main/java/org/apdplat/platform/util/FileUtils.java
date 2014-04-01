@@ -299,7 +299,9 @@ public class FileUtils {
         try {
             return getTextFileContent(new FileInputStream(getAbsolutePath(path)));
         } catch (FileNotFoundException ex) {
-            LOG.error("文件不存在", ex);
+            if(!path.contains("apdplat.licence")){
+                LOG.error("文件不存在", ex);
+            }
         }
         //Null Object设计模式
         return Collections.emptyList();
