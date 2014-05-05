@@ -37,7 +37,7 @@
 #x-form-el-Doughnut3D{ background:url(../images/chart/Doughnut3D.png)  no-repeat!important; }
 #x-form-el-SSGrid{ background:url(../images/chart/chart_bar.png)  no-repeat!important; }
 
-.chart_curve
+.chart_curve {
     background-image: url( ../images/chart/chart_curve.png ) !important;
 }
 .chart_line {
