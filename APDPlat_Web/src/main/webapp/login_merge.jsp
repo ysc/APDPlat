@@ -17,6 +17,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page  import="org.apdplat.platform.util.SpringContextUtils"%>
 <%@page  import="org.apdplat.module.security.service.OnlineUserService"%>
 <%@page  import="org.apdplat.module.security.service.SpringSecurityService"%>
 <%@page  import="org.apdplat.module.security.service.UserDetailsServiceImpl"%>
@@ -34,7 +35,8 @@ if(!SpringSecurityService.isSecurity()){
     response.sendRedirect("platform/index.jsp");
     return;
 }
-String name=OnlineUserService.getUsername(request.getSession(true).getId());
+OnlineUserService onlineUserService = SpringContextUtils.getBean("onlineUserService");
+String name=onlineUserService.getUsername(request.getSession(true).getId());
 if(!"匿名用户".equals(name)){
     //用户已经等登录直接进入主界面
     response.sendRedirect("platform/index.jsp");

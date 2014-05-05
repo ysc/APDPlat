@@ -87,7 +87,7 @@ String shortcut=PropertyHolder.getProperty("module.short.name");
 %>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title><%=appName%></title>
     <link rel="shortcut icon" href="images/<%= shortcut %>.ico" />
     <link rel="stylesheet" type="text/css" href="extjs/css/ext-all.css"/>
