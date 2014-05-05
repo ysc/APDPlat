@@ -22,7 +22,7 @@
 <%@page  import="org.apdplat.module.security.service.SpringSecurityService"%>
 <%@page  import="org.apdplat.module.security.service.UserDetailsServiceImpl"%>
 <%@page  import="org.apdplat.module.system.service.PropertyHolder"%>
-<%@page  import="java.util.Collection"%>
+<%@page  import="java.util.List"%>
 <%@page  import="org.apdplat.platform.util.FileUtils"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <%
@@ -78,7 +78,7 @@ String contextPath=org.apdplat.module.system.service.SystemListener.getContextPa
 String appName=PropertyHolder.getProperty("app.name");
 String requestCode="";
 if(FileUtils.existsFile("/WEB-INF/licence")){
-    Collection<String> reqs = FileUtils.getTextFileContent("/WEB-INF/licence");
+    List<String> reqs = FileUtils.getTextFileContent("/WEB-INF/licence");
     if(reqs!=null && reqs.size()==1){
         requestCode=reqs.iterator().next().toString();
     }
