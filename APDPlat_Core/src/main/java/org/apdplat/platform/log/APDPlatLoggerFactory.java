@@ -32,12 +32,19 @@ public class APDPlatLoggerFactory {
     
     private APDPlatLoggerFactory() {
     }
-    
-    public static synchronized APDPlatLogger getAPDPlatLogger(Class clazz) {
+
+    public static APDPlatLogger getAPDPlatLogger(Class clazz) {
         APDPlatLogger log = CACHE.get(clazz);
+
         if(log == null){
-            log = new APDPlatLoggerImpl(clazz);
-            CACHE.put(clazz, log);
+            synchronized(clazz) {
+                if(!CACHE.containsKey(clazz)) {
+                    log = new APDPlatLoggerImpl(clazz);
+                    CACHE.put(clazz, log);
+                }else{
+                    log = CACHE.get(clazz);
+                }
+            }
         }
         return log;
     }
