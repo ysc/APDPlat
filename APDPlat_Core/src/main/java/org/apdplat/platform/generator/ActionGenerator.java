@@ -100,10 +100,12 @@ public class ActionGenerator extends Generator{
             Module rootModule = ModuleParser.getRootModule(new FileInputStream(moduleFile));
             List<Module> modules=ModuleService.getLeafModule(rootModule);
             //计算基本包名
-            String actionPackageBase=findPackageName(workspaceModuleBasePath);
+            StringBuilder actionPackageBase = new StringBuilder(findPackageName(workspaceModuleBasePath));
             int index=actionPackageBase.indexOf("\\src\\main\\java\\");
-            actionPackageBase=actionPackageBase.substring(index).replace("\\src\\main\\java\\", "").replace("\\", ".");
-            for(Module module : modules){        
+            String newActionPackageBase=actionPackageBase.substring(index).replace("\\src\\main\\java\\", "").replace("\\", ".");
+            actionPackageBase.setLength(0);
+            actionPackageBase.append(newActionPackageBase);
+            modules.forEach(module -> {
                 List<Command> specialCommands=ModuleService.getSpecialCommand(module);    
                 String action=Character.toUpperCase(module.getEnglish().charAt(0))+module.getEnglish().substring(1);
                 String actionName=action+"Action";    
@@ -120,13 +122,13 @@ public class ActionGenerator extends Generator{
                     //模块有指定的Model
                     String modelPackage=model.getClass().getName().replace("."+model.getClass().getSimpleName(), "");
                     generateAction(actionPackage,actionNamespace,actionName,modelPackage,model.getClass().getSimpleName(),workspaceModuleBasePath,specialCommands);
-                    continue;
+                    return;
                 }
                 System.out.println("模块 "+module.getChinese()+" 没有对应的模型 ");
                 
                 if(models.contains(action)){
                     System.out.println(module.getEnglish()+" 有对应的模型，忽略generateFromModule");
-                    continue;
+                    return;
                 }
                 
                 System.out.println("generateFromModule actionPackage："+actionPackage);
@@ -134,7 +136,7 @@ public class ActionGenerator extends Generator{
                 System.out.println("generateFromModule actionPath："+actionPath);
                 System.out.println("generateFromModule action："+actionName);
                 generateFromModule(specialCommands,actionPackage,actionNamespace,actionName,workspaceModuleBasePath,actionPath);
-            }
+            });
         } catch (FileNotFoundException e) {
             LOG.error("生成ACTION错误",e);
         }
@@ -252,7 +254,6 @@ public class ActionGenerator extends Generator{
     }
     /**
      * 根据模型生成Action
-     * @param clazz 模型
      * @param workspaceModuleBasePath 开发时模块的根路径
      */
     private static void generateAction(String actionPackage, String actionNamespace, String actionName, String modelPackage,String model, String workspaceModuleBasePath, List<Command> specialCommands) {
