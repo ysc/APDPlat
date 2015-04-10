@@ -45,12 +45,12 @@ public class StateAction extends ExtJSActionSupport {
     public String store(){
         List<IndexDir> dirs=IndexFileService.getIndexDirs();
         List<Map<String,String>> data=new ArrayList<>();
-        for(IndexDir item : dirs){
+        dirs.forEach(item -> {
             Map<String,String> map=new HashMap<>();
             map.put("value", item.getEnglishName());
             map.put("text", item.getChineseName());
             data.add(map);
-        }
+        });
         Struts2Utils.renderJson(data);
         return null;
     }
