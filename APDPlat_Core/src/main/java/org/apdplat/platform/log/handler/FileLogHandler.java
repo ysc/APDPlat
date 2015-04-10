@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FileLogHandler implements LogHandler{
-    private static AtomicInteger count = new AtomicInteger(1);
+    private static AtomicInteger count = new AtomicInteger();
 
     @Override
     public <T extends Model> void handle(List<T> list) {

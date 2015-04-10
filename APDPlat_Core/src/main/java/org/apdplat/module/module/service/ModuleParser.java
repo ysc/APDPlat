@@ -121,14 +121,14 @@ public class ModuleParser {
      * @param module  模块树的根
      */
     private static void assembleMudule(Module module){
-        AtomicInteger order1=new AtomicInteger(1);
+        AtomicInteger order1=new AtomicInteger();
         module.getCommands().forEach(c -> {
             c.setModule(module);
             if(c.getOrderNum()==0){
                 c.setOrderNum(order1.incrementAndGet());
             }
         });
-        AtomicInteger order2=new AtomicInteger(1);
+        AtomicInteger order2=new AtomicInteger();
         List<Module> toDelete=new ArrayList<>();
         module.getSubModules().forEach(m -> {
             //根据参数module.hide来设置模块

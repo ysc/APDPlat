@@ -161,7 +161,7 @@ public class ElasticSearchLogHandler implements LogHandler{
      */
     public <T extends Model> String getJsonDocuments(List<T> list){        
         StringBuilder json = new StringBuilder();
-        AtomicInteger j = new AtomicInteger(1);
+        AtomicInteger j = new AtomicInteger();
         LOG.debug("开始构造JSON文档");
         list.forEach(model -> {
             try {
