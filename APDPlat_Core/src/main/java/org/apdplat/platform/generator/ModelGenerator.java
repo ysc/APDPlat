@@ -96,11 +96,11 @@ public class ModelGenerator extends Generator {
     public static List<ModelInfo> generate(String moduleProjectName){
         List<ModelInfo> all = new ArrayList<>();
         List<InputStream> ins = getModelExcels(moduleProjectName);
-        for(InputStream in : ins){
+        ins.forEach(in -> {
             List<ModelInfo> modelInfos = readModelInfos(in);
             generate(modelInfos, moduleProjectName);
             all.addAll(modelInfos);
-        }
+        });
         return all;
     }
     /**
