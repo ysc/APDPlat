@@ -88,7 +88,7 @@ public class APDPlatConfigSyncService  implements ApplicationListener{
      */
     private void syncToDB(){
         Properties properties = PropertyHolder.getProperties();
-        for(Object key : properties.keySet()){
+        properties.keySet().forEach(key -> {
             APDPlatConfig config = new APDPlatConfig();
             config.setConfigKey(key.toString());
             String value = properties.getProperty(key.toString());
@@ -99,7 +99,7 @@ public class APDPlatConfigSyncService  implements ApplicationListener{
             }catch(Exception e){
                 LOG.info("配置项 "+key+" 已经存在于数据库中，配置文件中的值不会覆盖数据库中的值，如需覆盖，则启用配置config.db.override=true");
             }
-        }
+        });
     }
     /**
      * 用数据库里面的配置信息覆盖配置文件里面的配置信息
@@ -107,10 +107,10 @@ public class APDPlatConfigSyncService  implements ApplicationListener{
     private void syncFromDB(){
         List<APDPlatConfig> configs = serviceFacade.query(APDPlatConfig.class).getModels();
         LOG.info("从数据库中加载的配置信息数目："+configs.size());
-        for(APDPlatConfig config : configs){
+        configs.forEach(config -> {
             LOG.info("旧值（配置文件）："+config.getConfigKey()+"="+PropertyHolder.getProperty(config.getConfigKey()));
             LOG.info("新值（数据库）："+config.getConfigKey()+"="+config.getConfigValue());
             PropertyHolder.setProperty(config.getConfigKey(), config.getConfigValue());
-        }
+        });
     }
 }
