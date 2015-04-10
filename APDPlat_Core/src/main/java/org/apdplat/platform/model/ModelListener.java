@@ -54,44 +54,44 @@ public class ModelListener {
     
     @PrePersist
     public void prePersist(Model model) {
-        for(ModelHandler modelHandler : modelHandlers){
+        modelHandlers.forEach(modelHandler -> {
             modelHandler.prePersist(model);
-        }
+        });
     }
     @PostPersist
     public void postPersist(Model model) {
-        for(ModelHandler modelHandler : modelHandlers){
+        modelHandlers.forEach(modelHandler -> {
             modelHandler.postPersist(model);
-        }
+        });
     }
     @PreRemove
     public void preRemove(Model model) {
-        for(ModelHandler modelHandler : modelHandlers){
+        modelHandlers.forEach(modelHandler -> {
             modelHandler.preRemove(model);
-        }
+        });
     }
     @PostRemove
     public void postRemove(Model model) {
-        for(ModelHandler modelHandler : modelHandlers){
+        modelHandlers.forEach(modelHandler -> {
             modelHandler.postRemove(model);
-        }
+        });
     }
     @PreUpdate
     public  void preUpdate(Model model) {
-        for(ModelHandler modelHandler : modelHandlers){
+        modelHandlers.forEach(modelHandler -> {
             modelHandler.preUpdate(model);
-        }
+        });
     }
     @PostUpdate
     public void postUpdate(Model model) {
-        for(ModelHandler modelHandler : modelHandlers){
+        modelHandlers.forEach(modelHandler -> {
             modelHandler.postUpdate(model);
-        }
+        });
     }
     @PostLoad
     public void postLoad(Model model) {
-        for(ModelHandler modelHandler : modelHandlers){
+        modelHandlers.forEach(modelHandler -> {
             modelHandler.postLoad(model);
-        }
+        });
     }
 }
