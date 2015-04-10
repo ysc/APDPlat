@@ -114,11 +114,11 @@ public class OnlineUserService{
     private List<User> getAllUsers(){
         List<User> result=new ArrayList<>();
         List<Object> users = sessionRegistry.getAllPrincipals();
-        for(Object obj : users){
+        users.forEach(obj -> {
             User user = (User)obj;
             result.add(user);
             LOG.debug("获取到会话ID为："+sessionRegistry.getAllSessions(obj, false).get(0).getSessionId() +" 的在线用户");
-        }
+        });
         return result;
     }
     /**
@@ -135,13 +135,13 @@ public class OnlineUserService{
         List<Integer> ids = OrgService.getChildIds(org);
         ids.add(org.getId());
         LOG.debug("特定组织架构及其所有子机构:"+ids);
-        for(Object obj : users){
+        users.forEach(obj -> {
             User user = (User)obj;
             if(ids.contains(user.getOrg().getId())){
                 result.add(user);
                 LOG.info("获取到会话ID为："+sessionRegistry.getAllSessions(obj, false).get(0).getSessionId() +" 的在线用户");
             }
-        }
+        });
         return result;
     }
     /**
