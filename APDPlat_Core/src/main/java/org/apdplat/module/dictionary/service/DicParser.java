@@ -33,6 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -109,16 +110,16 @@ public class DicParser {
      * @param dic  数据字典树的根
      */
     private static void assembleDic(Dic dic){
-        Integer i=1;
-        for(DicItem c : dic.getDicItems()){
-            c.setDic(dic);
-            if(c.getOrderNum()==0){
-                c.setOrderNum(i++);
+        AtomicInteger i = new AtomicInteger();
+        dic.getDicItems().forEach(item -> {
+            item.setDic(dic);
+            if(item.getOrderNum()==0){
+                item.setOrderNum(i.incrementAndGet());
             }
-            if(c.getCode()==null){
-                c.setCode(i.toString());
+            if(item.getCode()==null){
+                item.setCode(i.toString());
             }
-        }
+        });
         dic.getSubDics().forEach(d -> {
             d.setParentDic(dic);
             assembleDic(d);
