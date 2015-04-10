@@ -37,7 +37,7 @@ public class OperateLogChartDataService {
     public static List<OperateStatistics> getData(List<OperateLog> models){
         Map<String,OperateStatistics> temp=new HashMap<>();
         //将日志数据转换为统计报表数据
-        for(OperateLog item : models){
+        models.forEach(item -> {
             String username=item.getUsername();
             if(username == null){
                 username = "匿名用户";
@@ -57,11 +57,11 @@ public class OperateLogChartDataService {
             if(OperateLogType.UPDATE.equals(item.getOperatingType())){
                 sta.increaseUpdateCount();
             }
-        }
+        });
         List<OperateStatistics> data=new ArrayList<>();
-        for(OperateStatistics item : temp.values()){
+        temp.values().forEach(item -> {
             data.add(item);
-        }
+        });
         return data;
     }
 }
