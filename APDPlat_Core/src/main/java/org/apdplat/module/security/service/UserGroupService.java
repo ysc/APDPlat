@@ -48,18 +48,18 @@ public class UserGroupService {
         StringBuilder json=new StringBuilder();
         
         json.append("[");
-        for(UserGroup userGroup : userGroups){
+        userGroups.forEach(userGroup -> {
             json.append("{'text':'")
-                .append(userGroup.getUserGroupName())
-                .append("','id':'userGroup-")
-                .append(userGroup.getId())
-                .append("','iconCls':'")
-                .append("role")
-                .append("'")
-                .append(",'leaf':true")
-                .append("},");
-        }
-        json=json.deleteCharAt(json.length()-1);
+                    .append(userGroup.getUserGroupName())
+                    .append("','id':'userGroup-")
+                    .append(userGroup.getId())
+                    .append("','iconCls':'")
+                    .append("role")
+                    .append("'")
+                    .append(",'leaf':true")
+                    .append("},");
+        });
+        json.setLength(json.length()-1);
         json.append("]");
             
         return json.toString();
