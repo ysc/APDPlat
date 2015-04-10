@@ -23,6 +23,8 @@ package org.apdplat.module.system.service;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.util.FileUtils;
@@ -59,14 +61,14 @@ public class DatabaseDriverChecker {
         LOG.info("当前使用的日志数据库为："+forlogDatabase);
         drivers.remove(database);        
         drivers.remove(forlogDatabase);
-        i = 1;
-        for(String key : drivers.keySet()){
+        AtomicInteger count = new AtomicInteger();
+        drivers.keySet().forEach(key -> {
             String driver = drivers.get(key);
-            LOG.info((i++)+"、"+"将不用的数据库驱动移动到备份目录："+key+":"+driver);
+            LOG.info(count.incrementAndGet()+"、"+"将不用的数据库驱动移动到备份目录："+key+":"+driver);
             File source = new File(FileUtils.getAbsolutePath("/WEB-INF/lib/"+driver));
             if(!source.exists()){
                 LOG.info("文件不存在，忽略移动："+source.getAbsolutePath());
-                continue;
+                return;
             }
             File distPath = new File(FileUtils.getAbsolutePath("/WEB-INF/lib-jdbc-driver-not-in-use"));
             if(!distPath.exists()){
@@ -81,7 +83,7 @@ public class DatabaseDriverChecker {
                 source.deleteOnExit();
                 LOG.error("移动成功，但源文件删除未成功，重启JVM使其生效");
             }
-        }
+        });
         //加速垃圾回收
         drivers.clear();
     }
