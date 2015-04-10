@@ -147,9 +147,9 @@ public class BufferLogCollector  implements ApplicationListener {
                 list.add(buffers.remove());            
             }        
             //把日志交给LogHandler处理
-            for(LogHandler logHandler : logHandlers){
+            logHandlers.forEach(logHandler -> {
                 logHandler.handle(list);
-            }  
+            });
             //加速垃圾回收
             list.clear();
             LOG.info("缓冲区中的日志处理完毕");
