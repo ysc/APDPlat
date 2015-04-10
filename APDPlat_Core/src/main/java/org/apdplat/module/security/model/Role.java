@@ -110,8 +110,8 @@ public class Role extends SimpleModel {
         StringBuilder ids=new StringBuilder();
         
         Set<Integer> moduleIds=new HashSet<>();
-        
-        for(Command command : this.commands){
+
+        this.commands.forEach(command -> {
             ids.append("command-").append(command.getId()).append(",");
             Module module=command.getModule();
             moduleIds.add(module.getId());
@@ -120,11 +120,11 @@ public class Role extends SimpleModel {
                 moduleIds.add(module.getId());
                 module=module.getParentModule();
             }
-        }
-        for(Integer moduleId : moduleIds){
+        });
+        moduleIds.forEach(moduleId -> {
             ids.append("module-").append(moduleId).append(",");
-        }
-        ids=ids.deleteCharAt(ids.length()-1);
+        });
+        ids.setLength(ids.length()-1);
         return ids.toString();
     }
     /**
@@ -150,14 +150,14 @@ public class Role extends SimpleModel {
             //当然，加入以下return语句逻辑更清晰
             return result;
         }
-        for (Command command : commands) {
+        commands.forEach(command -> {
             Map<String,String> map=ModuleService.getCommandPathToRole(command);
-            for(String role : map.values()){
+            map.values().forEach(role -> {
                 StringBuilder str = new StringBuilder();
                 str.append("ROLE_MANAGER").append(role);
                 result.add(str.toString());
-            }
-        }
+            });
+        });
         return result;
     }
  
