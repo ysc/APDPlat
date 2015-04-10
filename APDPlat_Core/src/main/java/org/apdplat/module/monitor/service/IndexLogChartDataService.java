@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
@@ -52,10 +54,10 @@ public class IndexLogChartDataService {
         if(models.size()<1){
             return data;
         }
-        for(IndexLog item : models){
+        models.forEach(item -> {
             String key=DateTypeConverter.toDefaultDateTime(item.getStartTime());
             data.put(key, item.getProcessTime());
-        }
+        });
         return data;
     }
     public static LinkedHashMap<String,Long> getRateData(List<IndexLog> models){    
@@ -63,18 +65,18 @@ public class IndexLogChartDataService {
         if(models.size()<1){
             return data;
         }
-        long success=0;
-        long fail=0;
-        for(IndexLog item : models){
+        AtomicLong success=new AtomicLong();
+        AtomicLong fail=new AtomicLong();
+        models.forEach(item -> {
             if(IndexLogResult.SUCCESS.equals(item.getOperatingResult())){
-                success++;
+                success.incrementAndGet();
             }
             if(IndexLogResult.FAIL.equals(item.getOperatingResult())){
-                fail++;
+                fail.incrementAndGet();
             }
-        }
-        data.put("重建索引成功", success);
-        data.put("重建索引失败", fail);
+        });
+        data.put("重建索引成功", success.get());
+        data.put("重建索引失败", fail.get());
         return data;
     }
 }
