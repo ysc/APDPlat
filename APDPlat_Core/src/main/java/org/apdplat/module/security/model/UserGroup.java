@@ -75,9 +75,9 @@ public class UserGroup extends SimpleModel {
 
     public String getModuleCommandStr(){
         StringBuilder ids=new StringBuilder();
-        for(Role role : roles){
+        roles.forEach(role -> {
             ids.append(role.getModuleCommandStr());
-        }
+        });
         return ids.toString();
     }
     public String getRoleStrs(){
@@ -85,10 +85,10 @@ public class UserGroup extends SimpleModel {
             return "";
         }
         StringBuilder result=new StringBuilder();
-        for(Role role : this.roles){
+        this.roles.forEach(role -> {
             result.append("role-").append(role.getId()).append(",");
-        }
-        result=result.deleteCharAt(result.length()-1);
+        });
+        result.setLength(result.length()-1);
         return result.toString();
     }
     /**
@@ -96,10 +96,10 @@ public class UserGroup extends SimpleModel {
      * @return
      */
     public List<String> getAuthorities() {
-        List<String> result = new ArrayList<>();        
-        for(Role role : roles){
+        List<String> result = new ArrayList<>();
+        roles.forEach(role -> {
             result.addAll(role.getAuthorities());
-        }
+        });
         return result;
     }
 
