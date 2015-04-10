@@ -61,10 +61,10 @@ public class RegistePosition extends RegisterService<Position>{
     }
 
     private void assemblePosition(Position position) {
-        for(Position child : position.getChild()){
+        position.getChild().forEach(child -> {
             child.setParent(position);
             assemblePosition(child);
-        }
+        });
     }
 
     private void registePosition(Position position) {
