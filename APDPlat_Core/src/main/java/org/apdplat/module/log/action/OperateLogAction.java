@@ -83,12 +83,12 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
      */
     public String store(){        
         List<Map<String,String>> data=new ArrayList<>();
-        for(String key : ModelMetaData.getModelDes().keySet()){
+        ModelMetaData.getModelDes().keySet().forEach(key -> {
             Map<String,String> temp=new HashMap<>();
             temp.put("value", ModelMetaData.getModelDes().get(key));
             temp.put("text", ModelMetaData.getModelDes().get(key));
             data.add(temp);
-        }
+        });
         Struts2Utils.renderJson(data);
         return null;
     }
