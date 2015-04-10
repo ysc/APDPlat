@@ -49,13 +49,13 @@ public abstract class Generator {
      * 给特定的Action指定特定的Model
      * 如：CanLendTipAction 对应 Sms
      * 则action为canLendTip，realModel为 sms
-     * @param action
+     * @param actions
      * @param model 
      */
     public static <T extends Model> void setActionModelMap(List<String> actions,T model){
-        for(String action : actions){
+        actions.forEach(action -> {
             actionToModel.put(action, model);
-        }
+        });
     }
     protected static void saveFile(File file, String content) {
         BufferedWriter writer = null;
