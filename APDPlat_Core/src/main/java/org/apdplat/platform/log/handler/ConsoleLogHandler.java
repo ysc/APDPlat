@@ -33,10 +33,10 @@ public class ConsoleLogHandler implements LogHandler{
     private static int count = 1;
     @Override
     public <T extends Model> void handle(List<T> list) {
-        for(T t : list){
+        list.forEach(t -> {
             System.out.println((count++) + ":");
             System.out.println(t.toString());
-        }
+        });
     }
 
 }
