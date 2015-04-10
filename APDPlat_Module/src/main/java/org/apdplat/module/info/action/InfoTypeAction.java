@@ -51,11 +51,11 @@ public class InfoTypeAction extends ExtJSSimpleAction<InfoType> {
     }
     @Override
     protected void assemblyModelForPartUpdate(List<Property> properties) {
-        for(Property property : properties){
+        properties.forEach(property -> {
             if("lang".equals(property.getName())){
                 properties.remove(property);
             }
-        }
+        });
     }
     //修改模型的时候，在修改内容之前先设置语言
     @Override
