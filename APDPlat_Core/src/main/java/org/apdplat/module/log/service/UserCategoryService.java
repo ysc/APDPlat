@@ -55,40 +55,40 @@ public class UserCategoryService  extends CategoryService{
 
     private Element createCategories(List<OperateStatistics> data){
     	Element element = new Element("categories");
-    	for(OperateStatistics item : data){
+        data.forEach(item -> {
             Element subElement = createCategory(item.getUsername());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
     private Element createAddDataset(List<OperateStatistics> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "添加数据"));
-    	for(OperateStatistics item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getAddCount());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
     private Element createDeleteDataset(List<OperateStatistics> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "删除数据"));
-    	for(OperateStatistics item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getDeleteCount());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
     private Element createUpdateDataset(List<OperateStatistics> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "修改数据"));
-    	for(OperateStatistics item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getUpdateCount());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 }
