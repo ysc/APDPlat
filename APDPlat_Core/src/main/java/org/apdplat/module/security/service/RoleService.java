@@ -43,19 +43,19 @@ public class RoleService {
     public static List<String> getChildNames(Role role){
         List<String> names=new ArrayList<>();
         List<Role> child=role.getChild();
-        for(Role item : child){
+        child.forEach(item -> {
             names.add(item.getRoleName());
             names.addAll(getChildNames(item));
-        }
+        });
         return names;
     }
     public static List<Integer> getChildIds(Role role){
         List<Integer> ids=new ArrayList<>();
         List<Role> child=role.getChild();
-        for(Role item : child){
+        child.forEach(item -> {
             ids.add(item.getId());
             ids.addAll(getChildIds(item));
-        }
+        });
         return ids;
     }
     public static boolean isParentOf(Role parent,Role child){
@@ -88,9 +88,9 @@ public class RoleService {
                 json.append("','leaf':false,'cls':'folder'");
                 
                 if (recursion) {
-                    for(Role item : rootRole.getChild()){
+                    rootRole.getChild().forEach(item -> {
                         json.append(",children:").append(toJson(item.getId(), recursion));
-                    }
+                    });
                 }
             }
         json.append("}");
@@ -111,8 +111,7 @@ public class RoleService {
         StringBuilder json=new StringBuilder();
         json.append("[");
 
-        
-        for(Role item : child){
+        child.forEach(item -> {
             json.append("{'text':'")
                 .append(item.getRoleName())
                 .append("','id':'role-")
@@ -126,9 +125,9 @@ public class RoleService {
                     }
                 }
            json .append("},");
-        }
+        });
         //删除最后一个,号，添加一个]号
-        json=json.deleteCharAt(json.length()-1);
+        json.setLength(json.length()-1);
         json.append("]");
 
         return json.toString();
