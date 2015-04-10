@@ -78,21 +78,21 @@ public class RegisteModule extends RegisterService<Module>{
         List<Module> modules=serviceFacade.query(Module.class,null,null,orderCriteria).getModels();
         StringBuilder css=new StringBuilder();
         css.append("/* 自动生成的文件，请不要修改 */");
-        for(Module module : modules){
-            if("root".equals(module.getEnglish().trim())){
+        modules.forEach(module -> {
+            if ("root".equals(module.getEnglish().trim())) {
                 //忽略根模块
-                continue;
+                return;
             }
             String path = ModuleService.getModulePath(module);
-            path=path.substring(0, path.length()-1);
+            path = path.substring(0, path.length() - 1);
             css.append(".")
-                .append(module.getEnglish())
-                .append("{")
-                .append("background-image: url(../images/module/")
-                .append(path)
-                .append(".png) !important;")
-                .append("}");
-        }
+                    .append(module.getEnglish())
+                    .append("{")
+                    .append("background-image: url(../images/module/")
+                    .append(path)
+                    .append(".png) !important;")
+                    .append("}");
+        });
         FileUtils.createAndWriteFile("/platform/css/module.css", css.toString());
         LOG.info("module css:"+css);
     }
@@ -104,7 +104,7 @@ public class RegisteModule extends RegisterService<Module>{
         //查出所有模块
         List<Command> list=serviceFacade.query(Command.class,null,null,orderCriteria).getModels();
         Set<String> commandCsses=new HashSet<>();
-        for(Command command : list){
+        list.forEach(command -> {
             //在module.xml中配置的命令可能会对于前台的几个按钮
             String dependency = PropertyHolder.getProperty("command." + command.getEnglish());
             String[] commands = null;
@@ -114,18 +114,18 @@ public class RegisteModule extends RegisterService<Module>{
                 commands = new String[]{command.getEnglish()};
             }
             commandCsses.addAll(Arrays.asList(commands));
-        }
+        });
         StringBuilder css=new StringBuilder();
         css.append("/* 自动生成的文件，请不要修改 */");
-        for(String commandCss : commandCsses){
+        commandCsses.forEach(commandCss -> {
             css.append(".")
-                .append(commandCss)
-                .append("{")
-                .append("background-image: url(../images/operation/")
-                .append(commandCss)
-                .append(".png) !important;")
-                .append("}");
-        }
+                    .append(commandCss)
+                    .append("{")
+                    .append("background-image: url(../images/operation/")
+                    .append(commandCss)
+                    .append(".png) !important;")
+                    .append("}");
+        });
         FileUtils.createAndWriteFile("/platform/css/operation.css", css.toString());
         LOG.info("operation css:"+css);
     }
@@ -141,9 +141,9 @@ public class RegisteModule extends RegisterService<Module>{
     public void registe() {
         data=new ArrayList<>();
         List<Module> modules=ModuleParser.getRootModules();
-        for(Module module : modules){
+        modules.forEach(module -> {
             registeModule(module);
-        }
+        });
     }
     private void registeModule(Module module){
         Page<Module> page=serviceFacade.query(Module.class);
@@ -170,21 +170,22 @@ public class RegisteModule extends RegisterService<Module>{
                 }
             }
             if(root!=null){
+                Module parentModule=root;
                 LOG.info("将第一次以后的模块的根模块设置为第一次注册的根模块");
-                for(Module subModule : module.getSubModules()){
+                module.getSubModules().forEach(subModule -> {
                     if(hasRegisteModule(subModule)){
                         LOG.info("模块 "+subModule.getChinese()+" 在此前已经被注册过，此次忽略，检查其子模块");                        
                         registeSubModule(subModule);
-                        continue;
+                        return;
                     }
                     //确保后续注册的模块的顺序在最后
                     subModule.setOrderNum(subModule.getOrderNum()+(int)page.getTotalRecords());
-                    subModule.setParentModule(root);
+                    subModule.setParentModule(parentModule);
                     LOG.info("注册后续模块: "+subModule.getChinese());
                     serviceFacade.create(subModule);
                     registed=true;
                     data.add(subModule);
-                }
+                });
             }else{
                 LOG.info("没有找到根模块，注册失败！");
             }
@@ -193,7 +194,7 @@ public class RegisteModule extends RegisterService<Module>{
     private void registeSubModule(Module module){        
         LOG.info("模块 "+module.getChinese()+" 在此前已经被注册过，检查其命令");
         chechCommand(module);
-        for(Module sub : module.getSubModules()){
+        module.getSubModules().forEach(sub -> {
             if(hasRegisteModule(sub)){
                 LOG.info("模块 "+sub.getChinese()+" 在此前已经被注册过，此次忽略，检查其子模块");
                 registeSubModule(sub);
@@ -205,23 +206,23 @@ public class RegisteModule extends RegisterService<Module>{
                 registed=true;
                 data.add(sub);
             }
-        }
+        });
     }
     
     private void chechCommand(Module module){
         Set<String> existCommands=new HashSet<>();
         Module existsModule=moduleService.getModule(module.getEnglish());
         if(existsModule!=null){
-            for(Command command : existsModule.getCommands()){
+            existsModule.getCommands().forEach(command -> {
                 existCommands.add(command.getEnglish());
-            }
-            for(Command command : module.getCommands()){
+            });
+            module.getCommands().forEach(command -> {
                 if(!existCommands.contains(command.getEnglish())){
                     command.setModule(existsModule);
                     serviceFacade.create(command);
                     LOG.info("注册新增命令: "+command.getChinese()+" ,模块："+existsModule.getChinese());
                 }
-            }
+            });
         }
     }
     private boolean hasRegisteModule(Module module){
