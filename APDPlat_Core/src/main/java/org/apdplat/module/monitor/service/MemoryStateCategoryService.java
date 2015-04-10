@@ -62,10 +62,10 @@ public class MemoryStateCategoryService extends CategoryService{
     }
     private Element createCategories(List<MemoryState> data){
         Element element = new Element("categories");
-    	for(MemoryState item : data){
+        data.forEach(item -> {
             Element subElement = createCategory(DateTypeConverter.toDefaultDateTime(item.getRecordTime()));
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
@@ -85,50 +85,50 @@ public class MemoryStateCategoryService extends CategoryService{
     private Element createMaxMemoryDataset(List<MemoryState> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "最大可用内存"));
-        for(MemoryState item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getMaxMemory().intValue());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
     private Element createTotalMemoryDataset(List<MemoryState> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "已分配内存"));
-        for(MemoryState item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getTotalMemory().intValue());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
     private Element createFreeMemoryDataset(List<MemoryState> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "已释放内存"));
-        for(MemoryState item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getFreeMemory().intValue());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
     private Element createUsableMemoryDataset(List<MemoryState> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "可用内存"));
-        for(MemoryState item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getUsableMemory().intValue());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 
     private Element createUsingMemoryDataset(List<MemoryState> data) {
     	Element element = new Element("dataset");
     	element.setAttribute(new Attribute("seriesName", "已用内存"));
-        for(MemoryState item : data){
+        data.forEach(item -> {
             Element subElement = createDataset(item.getTotalMemory().intValue()-item.getFreeMemory().intValue());
             element.addContent(subElement);
-        }
+        });
         return element;
     }
 }
