@@ -88,7 +88,7 @@ public class SmsGenerator {
         
         actions.add("smsSearch");
         String modelName="Sms";
-        for(ModelInfo modelInfo : modelInfos){
+        modelInfos.forEach(modelInfo -> {
             if(modelInfo.getModelEnglish().equalsIgnoreCase(modelName)){
                 String modelClzz=modelInfo.getModelPackage()+"."+modelInfo.getModelEnglish();
                 try {
@@ -103,7 +103,7 @@ public class SmsGenerator {
                     return;
                 }
             }
-        }
+        });
         
         //不会强行覆盖ACTION，如果待生成的文件存在则会忽略生成s
         //生成action
