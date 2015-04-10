@@ -21,7 +21,6 @@
 package org.apdplat.module.dictionary.action;
 
 import org.apdplat.module.dictionary.model.Dic;
-import org.apdplat.module.dictionary.model.DicItem;
 import org.apdplat.module.dictionary.service.DicService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.util.Struts2Utils;
@@ -46,10 +45,10 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
     
     /**
      * 
-     * 此类用来提供下列列表服务,主要有两中下列类型：
+     * 此类用来提供下拉列表服务,主要有两种下拉类型：
      * 1、普通下拉选项
      * 2、树形下拉选项
-     * 
+     * @return 不需要返回值，直接给客户端写数据
      */
     public String store(){
         Dic dictionary=dicService.getDic(dic);
@@ -62,16 +61,16 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
             Struts2Utils.renderJson(json);
         }else{
             List<Map<String,String>> data=new ArrayList<>();
-            for(DicItem item : dictionary.getDicItems()){
-                Map<String,String> map=new HashMap<>();
+            dictionary.getDicItems().forEach(item -> {
+                Map<String,String> itemMap=new HashMap<>();
                 if(justCode){
-                    map.put("value", item.getCode());
+                    itemMap.put("value", item.getCode());
                 }else{
-                    map.put("value", item.getId().toString());
+                    itemMap.put("value", item.getId().toString());
                 }
-                map.put("text", item.getName());
-                data.add(map);
-            }
+                itemMap.put("text", item.getName());
+                data.add(itemMap);
+            });
             Struts2Utils.renderJson(data);
         }
         return null;
