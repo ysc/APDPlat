@@ -98,10 +98,10 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
                 if(!canDel) {
                     continue;
                 }
-                for(User user : users){
+                users.forEach(user -> {
                     user.removePosition(position);
                     getService().update(user);
-                }
+                });
             }
         }
         @Override
