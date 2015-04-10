@@ -107,12 +107,12 @@ public class UserAction extends ExtJSSimpleAction<User> {
         }
         List<User> users=getService().query(User.class).getModels();
         List<Map<String,String>> data=new ArrayList<>();
-        for(User user : users){
+        users.forEach(user -> {
             Map<String,String> temp=new HashMap<>();
             temp.put("value", user.getUsername());
             temp.put("text", user.getUsername());
             data.add(temp);
-        }
+        });
         Struts2Utils.renderJson(data);
         return null;
     }
@@ -165,23 +165,23 @@ public class UserAction extends ExtJSSimpleAction<User> {
             StringBuilder str=new StringBuilder();
             //搜索出来的模型已经被detach了，无法获得延迟加载的数据
             User tmp=getService().retrieve(User.class, user.getId());
-            for(Role r : tmp.getRoles()){
+            tmp.getRoles().forEach(r -> {
                 str.append(r.getRoleName()).append(",");
-            }
-            temp.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            });
+            temp.put("roles", str.length() > 1 ? str.toString().substring(0, str.length() - 1) : "");
 
-            str=new StringBuilder();
-            for(Position p : tmp.getPositions()){
+            str.setLength(0);
+            tmp.getPositions().forEach(p -> {
                 str.append(p.getPositionName()).append(",");
-            }
-            temp.put("positions", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            });
+            temp.put("positions", str.length() > 1 ? str.toString().substring(0, str.length() - 1) : "");
             result.add(temp);
             
-            str=new StringBuilder();
-            for(UserGroup p : tmp.getUserGroups()){
+            str.setLength(0);
+            tmp.getUserGroups().forEach(p -> {
                 str.append(p.getUserGroupName()).append(",");
-            }
-            temp.put("userGroups", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            });
+            temp.put("userGroups", str.length() > 1 ? str.toString().substring(0, str.length()-1):"");
             result.add(temp);
         }
     }
@@ -194,22 +194,22 @@ public class UserAction extends ExtJSSimpleAction<User> {
             render(temp,user);
 
             StringBuilder str=new StringBuilder();
-            for(Role r : user.getRoles()){
+            user.getRoles().forEach(r -> {
                 str.append(r.getRoleName()).append(",");
-            }
-            temp.put("roles", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            });
+            temp.put("roles", str.length() > 1 ? str.toString().substring(0, str.length() - 1) : "");
 
-            str=new StringBuilder();
-            for(Position p : user.getPositions()){
+            str.setLength(0);
+            user.getPositions().forEach(p -> {
                 str.append(p.getPositionName()).append(",");
-            }
-            temp.put("positions", str.length()>1?str.toString().substring(0, str.length()-1):"");
+            });
+            temp.put("positions", str.length() > 1 ? str.toString().substring(0, str.length() - 1) : "");
             result.add(temp);
 
-            str=new StringBuilder();
-            for(UserGroup p : user.getUserGroups()){
+            str.setLength(0);
+            user.getUserGroups().forEach(p -> {
                 str.append(p.getUserGroupName()).append(",");
-            }
+            });
             temp.put("userGroups", str.length()>1?str.toString().substring(0, str.length()-1):"");
             result.add(temp);
         }
