@@ -61,10 +61,10 @@ public class RegisteRole extends RegisterService<Role>{
     }
 
     private void assembleRole(Role role) {
-        for(Role child : role.getChild()){
+        role.getChild().forEach(child -> {
             child.setParent(role);
             assembleRole(child);
-        }
+        });
     }
 
     private void registeRole(Role role) {
