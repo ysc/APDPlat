@@ -93,9 +93,9 @@ public class PropertyHolder {
             }    
             LOG.info("系统配置属性装载完毕");
             LOG.info("******************属性列表***************************");
-            for(String propertyName : props.stringPropertyNames()){
+            props.stringPropertyNames().forEach(propertyName -> {
                 LOG.info("  "+propertyName+" = "+props.getProperty(propertyName));
-            }
+            });
             LOG.info("***********************************************************");
             
             //指定日志输出语言
