@@ -93,12 +93,12 @@ public class BackupAction extends DefaultAction {
     public String store(){
         List<String> existBackup=backupService.getExistBackupFileNames();
         List<Map<String,String>> data=new ArrayList<>();
-        for(String item : existBackup){
+        existBackup.forEach(item -> {
             Map<String,String> map=new HashMap<>();
             map.put("value", item);
             map.put("text", item);
             data.add(map);
-        }
+        });
         Struts2Utils.renderJson(data);
         return null;
     }
