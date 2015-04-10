@@ -180,10 +180,10 @@ public class User extends SimpleModel  implements UserDetails{
             return "";
         }
         StringBuilder result=new StringBuilder();
-        for(Role role : this.roles){
+        this.roles.forEach(role -> {
             result.append("role-").append(role.getId()).append(",");
-        }
-        result=result.deleteCharAt(result.length()-1);
+        });
+        result.setLength(result.length()-1);
         return result.toString();
     }
     
@@ -192,10 +192,10 @@ public class User extends SimpleModel  implements UserDetails{
             return "";
         }
         StringBuilder result=new StringBuilder();
-        for(Position position : this.positions){
+        this.positions.forEach(position -> {
             result.append("position-").append(position.getId()).append(",");
-        }
-        result=result.deleteCharAt(result.length()-1);
+        });
+        result.setLength(result.length());
         return result.toString();
     }
     
@@ -204,10 +204,10 @@ public class User extends SimpleModel  implements UserDetails{
             return "";
         }
         StringBuilder result=new StringBuilder();
-        for(UserGroup userGroup : this.userGroups){
+        this.userGroups.forEach(userGroup -> {
             result.append("userGroup-").append(userGroup.getId()).append(",");
-        }
-        result=result.deleteCharAt(result.length()-1);
+        });
+        result.setLength(result.length()-1);
         return result.toString();
     }
 
@@ -235,9 +235,9 @@ public class User extends SimpleModel  implements UserDetails{
                     }
                 }
                 //如果用户不是超级管理员则进行一下处理
-                for(Role role : userGroup.getRoles()){
+                userGroup.getRoles().forEach(role -> {
                     result.addAll(role.getCommands());
-                }
+                });
             }
         }
         if(this.positions != null && !this.positions.isEmpty()) {
@@ -278,9 +278,9 @@ public class User extends SimpleModel  implements UserDetails{
                     }
                 }
                 //如果用户不是超级管理员则进行一下处理
-                for(Role role : userGroup.getRoles()){
+                userGroup.getRoles().forEach(role -> {
                     result.addAll(assemblyModule(role.getCommands()));
-                }
+                });
             }
         }
         if(this.positions != null && !this.positions.isEmpty()) {
@@ -301,8 +301,8 @@ public class User extends SimpleModel  implements UserDetails{
         if(commands==null) {
             return modules;
         }
-        
-        for(Command command : commands){
+
+        commands.forEach(command -> {
             if(command!=null){
                 Module module=command.getModule();
                 if(module!=null){
@@ -310,7 +310,7 @@ public class User extends SimpleModel  implements UserDetails{
                     assemblyModule(modules,module);
                 }
             }
-        }
+        });
         return modules;
     }
     private void assemblyModule(List<Module> modules,Module module){
@@ -324,9 +324,9 @@ public class User extends SimpleModel  implements UserDetails{
     }
     public String getAuthoritiesStr(){
         StringBuilder result=new StringBuilder();
-        for(GrantedAuthority auth : getAuthorities()){
+        getAuthorities().forEach(auth -> {
             result.append(auth.getAuthority()).append(",");
-        }
+        });
         return result.toString();
     }
     /**
@@ -355,14 +355,14 @@ public class User extends SimpleModel  implements UserDetails{
             }
             if(this.userGroups != null && !this.userGroups.isEmpty()){
                 LOG.debug("     userGroups:");
-                for(UserGroup userGroup : this.userGroups){
-                    for(Role role : userGroup.getRoles()){
-                        for (String priv : role.getAuthorities()) {
-                            LOG.debug(priv);
-                            grantedAuthArray.add(new SimpleGrantedAuthority(priv.toUpperCase()));
+                this.userGroups.forEach(userGroup -> {
+                    userGroup.getRoles().forEach(role -> {
+                        for (String privilege : role.getAuthorities()) {
+                            LOG.debug(privilege);
+                            grantedAuthArray.add(new SimpleGrantedAuthority(privilege.toUpperCase()));
                         }
-                    }
-                }
+                    });
+                });
             }        
             if(this.positions != null && !this.positions.isEmpty()) {
                 LOG.debug("     positions:");
