@@ -60,9 +60,9 @@ public class AutoLoginFilter implements Filter {
                 UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(defaultUserName);
 
                 UserHolder.saveUserDetailsToContext(userDetails, (HttpServletRequest) request);
-                for(GrantedAuthority au : userDetails.getAuthorities()){
+                userDetails.getAuthorities().forEach(au -> {
                     LOG.info("\t"+au.getAuthority());
-                }
+                });
             }
         }
 
