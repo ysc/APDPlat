@@ -210,23 +210,22 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }
             
             old(model);
-            for(Property property : properties){
+            properties.forEach(property -> {
                 //把从浏览器传来的值射入model
-                if(property.getName().contains(".")){
-                     //处理两个对象之间的引用，如：model.org.id=1
-                     if(property.getName().contains(".id")){
-                        String[] attr=property.getName().replace(".",",").split(",");
-                        if(attr.length==2){
-                            Field field=ReflectionUtils.getDeclaredField(model, attr[0]);
-                            T change=getService().retrieve((Class<T>)field.getType(), (Integer)property.getValue());
+                if (property.getName().contains(".")) {
+                    //处理两个对象之间的引用，如：model.org.id=1
+                    if (property.getName().contains(".id")) {
+                        String[] attr = property.getName().replace(".", ",").split(",");
+                        if (attr.length == 2) {
+                            Field field = ReflectionUtils.getDeclaredField(model, attr[0]);
+                            T change = getService().retrieve((Class<T>) field.getType(), (Integer) property.getValue());
                             ReflectionUtils.setFieldValue(model, attr[0], change);
                         }
-                     }
-                }
-                else{
+                    }
+                } else {
                     ReflectionUtils.setFieldValue(model, property.getName(), property.getValue());
                 }
-            }
+            });
             now(model);
             //在更新前调用模板方法对模型进行处理
             assemblyModelForUpdate(model);
@@ -332,12 +331,12 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     }
     private List<T> processSearchResult(List<T> models){
         List<T> result =  new ArrayList<>();
-        for(T obj : models){
+        models.forEach(obj -> {
             T t=getService().retrieve(modelClass, obj.getId());
             if(t!=null){
                 result.add(t);
             }
-        }
+        });
         return result;
     }
     @Override
@@ -502,11 +501,11 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }
         }
        result.add(data);
-       for( T obj : page.getModels()){
-           data =new ArrayList<>();
-           renderDataForExport(data,obj);
-           result.add(data);
-       }
+       page.getModels().forEach(obj -> {
+           List<String> d =new ArrayList<>();
+           renderDataForExport(d,obj);
+           result.add(d);
+       });
     }
     private void renderDataForExport(List<String> data, T obj) {
         //获取所有字段，包括继承的
@@ -550,10 +549,10 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
                     LOG.debug("处理集合,字段为："+field.getName()+",大小为："+col.size());
                     if(col.size()>0){
                         StringBuilder str=new StringBuilder();
-                        for(Object m : col){
+                        col.forEach(m -> {
                             str.append(ReflectionUtils.getFieldValue(m, fieldRef).toString()).append(",");
-                        }
-                        str=str.deleteCharAt(str.length()-1);
+                        });
+                        str.setLength(str.length()-1);
                         colStr=str.toString();
                     }
                 }else{
