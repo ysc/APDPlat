@@ -59,10 +59,10 @@ public class OperateTyeCategoryService extends CategoryService{
     }
 
     private void createUserDatasets(List<OperateStatistics> data, Element rootElement) {
-    	for(OperateStatistics item : data){
+        data.forEach(item -> {
             Element dataset = createUserDataset(item);
             rootElement.addContent(dataset);
-        }
+        });
     }
 
     private Element createUserDataset(OperateStatistics data) {
