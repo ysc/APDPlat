@@ -82,9 +82,9 @@ public  class DaoFacade extends DaoSupport{
 
 	public <T extends Model>  void update(Class<T> modelClass,Integer modelId, List<Property> properties) {
 		T model=retrieve(modelClass,modelId);
-		for(Property property : properties){
+        properties.forEach(property -> {
 			ReflectionUtils.setFieldValue(model, property.getName(), property.getValue());
-		}
+		});
 		update(model);
 	}
 	public <T extends Model>  void update(T model) {
