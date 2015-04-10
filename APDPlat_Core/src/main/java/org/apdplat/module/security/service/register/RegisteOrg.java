@@ -61,10 +61,10 @@ public class RegisteOrg extends RegisterService<Org>{
     }
 
     private void assembleOrg(Org org) {
-        for(Org child : org.getChild()){
+        org.getChild().forEach(child -> {
             child.setParent(org);
             assembleOrg(child);
-        }
+        });
     }
 
     private void registeOrg(Org org) {
