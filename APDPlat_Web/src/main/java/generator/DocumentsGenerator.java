@@ -102,7 +102,7 @@ public class DocumentsGenerator {
         actions4.add("departmentDocuments");
         actions4.add("documentsSearch");
         String modelName4="Document";
-        for(ModelInfo modelInfo : modelInfos){
+        modelInfos.forEach(modelInfo -> {
             if(modelInfo.getModelEnglish().toUpperCase().equals(modelName.toUpperCase())){
                 String modelClzz=modelInfo.getModelPackage()+"."+modelInfo.getModelEnglish();
                 try {
@@ -173,7 +173,7 @@ public class DocumentsGenerator {
                     return;
                 }
             }
-        }
+        });
         
         //不会强行覆盖ACTION，如果待生成的文件存在则会忽略生成s
         //生成action
