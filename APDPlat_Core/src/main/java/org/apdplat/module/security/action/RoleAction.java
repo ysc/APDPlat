@@ -99,7 +99,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             boolean canDel=true;
             //获取拥有等待删除的角色的所有用户
             List<User> users=role.getUsers();
-            for(User user : users){                
+            for(User user : users){
                 if(PropertyHolder.getBooleanProperty("demo")){
                     if(user.getUsername().equals("admin")){
                         throw new RuntimeException("演示版本不能删除admin用户拥有的角色");
@@ -112,10 +112,10 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             if(!canDel) {
                 continue;
             }
-            for(User user : users){
+            users.forEach(user -> {
                 user.removeRole(role);
                 getService().update(user);
-            }
+            });
         }
     }
 
