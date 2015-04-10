@@ -31,6 +31,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
@@ -62,15 +65,15 @@ public class ProcessTimeChartDataService {
         LOG.debug("最后请求时间："+DateTypeConverter.toDefaultDateTime(latest.getEndTime()));
         long totalTime=latest.getEndTime().getTime()-first.getStartTime().getTime();
         LOG.debug("系统总时间："+latest.getEndTime().getTime()+"-"+first.getStartTime().getTime()+"="+totalTime);
-        long processTime=0;
-        for(ProcessTime item : models){
+        AtomicLong processTime=new AtomicLong();
+        models.forEach(item -> {
             LOG.debug("      增加请求处理时间："+item.getProcessTime());
-            processTime+=item.getProcessTime();
-        }
-        LOG.debug("处理请求时间："+processTime);
-        long waitTime=totalTime-processTime;
+            processTime.addAndGet(item.getProcessTime());
+        });
+        LOG.debug("处理请求时间：" + processTime.get());
+        long waitTime=totalTime-processTime.get();
         LOG.debug("系统空闲时间："+waitTime);
-        data.put("处理请求时间", processTime);
+        data.put("处理请求时间", processTime.get());
         data.put("系统空闲时间", -waitTime);
         
         return data;
@@ -79,34 +82,26 @@ public class ProcessTimeChartDataService {
         //同一命令只留最耗时的命令
         models=mini(models);
         
-        LinkedHashMap<Long,ProcessTime> LinkedHashMap=new LinkedHashMap<>();
+        LinkedHashMap<Long,ProcessTime> data=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
-        for(ProcessTime item : models){            
-            LinkedHashMap.put(item.getProcessTime(),item);
-        }
-        Collection<Long> keys=LinkedHashMap.keySet();
-        List<Long> list=new ArrayList<>();
-        for(Long key : keys){
-            list.add(key);
-        }
-        Collections.sort(list);
-        Collections.reverse(list);
+        models.forEach(item -> {
+            data.put(item.getProcessTime(), item);
+        });
         LinkedHashMap<String,Long> result=new LinkedHashMap<>();
-        int i=0;
-        for(Long processTime : list){
-            String newKey=DateTypeConverter.toDefaultDateTime(LinkedHashMap.get(processTime).getStartTime())+", "+LinkedHashMap.get(processTime).getResource();
-            result.put(newKey, processTime);
-            i++;
-            if(i>=top){
-                break;
+        AtomicInteger i=new AtomicInteger();
+        data.keySet().stream().sorted((a,b) -> b.compareTo(a)).forEach(processTime -> {
+            if(i.incrementAndGet()>top){
+                return;
             }
-        }
+            String newKey=DateTypeConverter.toDefaultDateTime(data.get(processTime).getStartTime())+", "+data.get(processTime).getResource();
+            result.put(newKey, processTime);
+        });
         return result;
     }
     public static LinkedHashMap<String,Long> getUserTimeData(List<ProcessTime> models){        
         LinkedHashMap<String,Long> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
-        for(ProcessTime item : models){
+        models.forEach(item -> {
             String username=item.getUsername();
             if(username == null){
                 username = "匿名用户";
@@ -120,7 +115,7 @@ public class ProcessTimeChartDataService {
             }
             
             temp.put(username,value);
-        }
+        });
         return temp;
     }
     
@@ -142,7 +137,7 @@ public class ProcessTimeChartDataService {
     private static LinkedHashMap<String,Long> getSequenceTimeData(List<ProcessTime> models,String format){        
         LinkedHashMap<String,ProcessTime> temp=new LinkedHashMap<>();
         //将日志数据转换为统计报表数据
-        for(ProcessTime item : models){
+        models.forEach(item -> {
             String key=new SimpleDateFormat(format).format(item.getStartTime());
             ProcessTime value=temp.get(key);
             if(value==null){
@@ -152,11 +147,11 @@ public class ProcessTimeChartDataService {
             }
             
             temp.put(key,value);
-        } 
+        });
         LinkedHashMap<String,Long> LinkedHashMap=new LinkedHashMap<>();
-        for(String key : temp.keySet()){
+        temp.keySet().forEach(key -> {
             LinkedHashMap.put(key+", "+temp.get(key).getResource(), temp.get(key).getProcessTime());
-        }
+        });
         return LinkedHashMap;
     }
 
@@ -166,20 +161,16 @@ public class ProcessTimeChartDataService {
      * @return 
      */
     private static List<ProcessTime> mini(List<ProcessTime> models) {
-        LinkedHashMap<String,ProcessTime> LinkedHashMap=new LinkedHashMap<>();
-        for(ProcessTime item : models){
-            ProcessTime value=LinkedHashMap.get(item.getResource());
+        LinkedHashMap<String,ProcessTime> data=new LinkedHashMap<>();
+        models.forEach(item -> {
+            ProcessTime value=data.get(item.getResource());
             if(value==null){
                 value=item;
             }else{
                 value=value.getProcessTime()>item.getProcessTime()?value:item;
             }
-            LinkedHashMap.put(item.getResource(), value);
-        }
-        List<ProcessTime> list=new ArrayList<>();
-        for(ProcessTime item : LinkedHashMap.values()){
-            list.add(item);
-        }
-        return list;
+            data.put(item.getResource(), value);
+        });
+        return new ArrayList<>(data.values());
     }
 }
