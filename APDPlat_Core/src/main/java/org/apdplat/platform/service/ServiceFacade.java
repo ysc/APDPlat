@@ -60,9 +60,9 @@ public  class ServiceFacade{
          */
 	@Transactional
 	public <T extends Model> void create(List<T> models) {
-            for(T model : models){
-		dao.create(model);
-            }
+		models.forEach(model -> {
+			dao.create(model);
+		});
 	}
 
 	@Transactional
