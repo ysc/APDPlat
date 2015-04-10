@@ -52,11 +52,11 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     }
     @Override
     protected void assemblyModelForPartUpdate(List<Property> properties) {
-        for(Property property : properties){
+        properties.forEach(property -> {
             if("lang".equals(property.getName())){
                 properties.remove(property);
             }
-        }
+        });
     }
     @Override
     protected void old(News model) {
