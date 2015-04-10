@@ -47,19 +47,19 @@ public class PositionService {
     public static List<String> getChildNames(Position position){
         List<String> names=new ArrayList<>();
         List<Position> child=position.getChild();
-        for(Position item : child){
+        child.forEach(item -> {
             names.add(item.getPositionName());
             names.addAll(getChildNames(item));
-        }
+        });
         return names;
     }
     public static List<Integer> getChildIds(Position position){
         List<Integer> ids=new ArrayList<>();
         List<Position> child=position.getChild();
-        for(Position item : child){
+        child.forEach(item -> {
             ids.add(item.getId());
             ids.addAll(getChildIds(item));
-        }
+        });
         return ids;
     }
     public static boolean isParentOf(Position parent,Position child){
@@ -92,9 +92,9 @@ public class PositionService {
                 json.append("','leaf':false,'cls':'folder'");
                 
                 if (recursion) {
-                    for(Position item : rootPosition.getChild()){
+                    rootPosition.getChild().forEach(item -> {
                         json.append(",children:").append(toJson(item.getId(), recursion));
-                    }
+                    });
                 }
             }
         json.append("}");
@@ -115,8 +115,7 @@ public class PositionService {
         StringBuilder json=new StringBuilder();
         json.append("[");
 
-        
-        for(Position item : child){
+        child.forEach(item -> {
             json.append("{'text':'")
                 .append(item.getPositionName())
                 .append("','id':'position-")
@@ -130,9 +129,9 @@ public class PositionService {
                     }
                 }
            json .append("},");
-        }
+        });
         //删除最后一个,号，添加一个]号
-        json=json.deleteCharAt(json.length()-1);
+        json.setLength(json.length()-1);
         json.append("]");
 
         return json.toString();
