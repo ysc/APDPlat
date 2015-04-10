@@ -428,23 +428,23 @@ public class ModuleService {
     }
     public static List<Module> getAllModule(List<Module> rootModules){
         List<Module> modules=new ArrayList<>();
-        for(Module m : rootModules){
-            moduleWalk(modules,m);
-        }
+        rootModules.forEach(module -> {
+            moduleWalk(modules,module);
+        });
         return modules;
     }
     private static void moduleWalk(List<Module> modules, Module module){
         modules.add(module);
-        for(Module m : module.getSubModules()){
+        module.getSubModules().forEach(m -> {
             moduleWalk(modules,m);
-        }
+        });
     }
     /**
      * 根据英文名称获取模型，从XML文件中获取模块信息，不从数据库中获取，英文此方法主要供代码辅助生成使用
      * @param moduleEnglishName
      * @return 
      */
-    public static Module getModuleFromXml(String moduleEnglishName){   
+    public static Module getModuleFromXml(String moduleEnglishName){
         for(Module module : getAllModule(ModuleParser.getRootModules())){
             if(moduleEnglishName.equals(module.getEnglish())){
                 return module;
@@ -457,14 +457,14 @@ public class ModuleService {
      * @return 
      */
     public static List<Module> getLeafModule(Module rootModule){
-        List<Module> leaf = new ArrayList<>(); 
-        for(Module module : getAllModule(rootModule)){
+        List<Module> leaf = new ArrayList<>();
+        getAllModule(rootModule).forEach(module -> {
             if(module.getCommands().isEmpty()){
                 LOG.info(module.getChinese()+" 模块不是叶子模块");
             }else{
                 leaf.add(module);
             }
-        }
+        });
         return leaf;
     }
 }
