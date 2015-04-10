@@ -64,12 +64,12 @@ public class RegisteUser extends RegisterService<User>{
         LOG.info("验证通过");
         Page<User> page=Page.newInstance(User.class, RegisteUser.class.getResourceAsStream(xml));
         if(page!=null){
-            for(User user : page.getModels()){
+            page.getModels().forEach(user -> {
                 user.setPassword(passwordEncoder.encode(user.getPassword(), user));
                 user.setOrg(registeOrg.getRegisteData().get(0));
                 user.addRole(registeRole.getRegisteData().get(0).getChild().get(0));
                 serviceFacade.create(user);
-            }
+            });
         }
     }
 }
