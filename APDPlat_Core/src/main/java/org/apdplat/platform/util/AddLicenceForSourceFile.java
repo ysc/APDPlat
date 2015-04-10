@@ -106,16 +106,16 @@ public class AddLicenceForSourceFile {
         System.out.println("为 "+count+" 个Java源代码文件添加licence信息头");
         if(fail.size()>0){
             System.out.println("处理失败个数 "+fail.size());
-            for(String f : fail){
+            fail.forEach(f -> {
                 System.out.println("        "+f);
-            }
+            });
             throw new RuntimeException("失败：为Java源代码文件添加licence信息头");
         }
         if(wrong.size()>0){
             System.out.println("JAVA源代码错误个数 "+wrong.size());
-            for(String w : wrong){
+            wrong.forEach(w -> {
                 System.out.println("        "+w);
-            }
+            });
             throw new RuntimeException("错误：为Java源代码文件添加licence信息头");
         }        
     }
@@ -129,16 +129,16 @@ public class AddLicenceForSourceFile {
         System.out.println("为 "+count+" 个Jsp源代码文件添加licence信息头");
         if(fail.size()>0){
             System.out.println("处理失败个数 "+fail.size());
-            for(String f : fail){
+            fail.forEach(f -> {
                 System.out.println("        "+f);
-            }
+            });
             throw new RuntimeException("失败：为Jsp源代码文件添加licence信息头");
         }
         if(wrong.size()>0){
             System.out.println("Jsp源代码错误个数 "+wrong.size());
-            for(String w : wrong){
+            wrong.forEach(w -> {
                 System.out.println("        "+w);
-            }
+            });
             throw new RuntimeException("错误：为Jsp源代码文件添加licence信息头");
         }        
     }
@@ -152,9 +152,9 @@ public class AddLicenceForSourceFile {
         System.out.println("为 "+count+" 个js源代码文件添加licence信息头");
         if(fail.size()>0){
             System.out.println("处理失败个数 "+fail.size());
-            for(String f : fail){
+            fail.forEach(f -> {
                 System.out.println("        "+f);
-            }
+            });
             throw new RuntimeException("失败：为JS源代码文件添加licence信息头");
         }    
     }
