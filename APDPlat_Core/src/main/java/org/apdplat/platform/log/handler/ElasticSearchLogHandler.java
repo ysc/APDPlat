@@ -32,6 +32,8 @@ import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apdplat.module.monitor.model.MemoryState;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.converter.DateTypeConverter;
@@ -129,7 +131,7 @@ public class ElasticSearchLogHandler implements LogHandler{
             LOG.debug(resultStr);          
             //使用Jackson解析返回的JSON
             JsonNode node = MAPPER.readTree(resultStr);
-            for(JsonNode item : node.get("items")){
+            node.get("items").forEach(item -> {
                 JsonNode createJsonNode = item.get("create");
                 JsonNode okJsonNode = createJsonNode.get("ok");
                 if(okJsonNode != null){
@@ -144,7 +146,7 @@ public class ElasticSearchLogHandler implements LogHandler{
                         LOG.error("索引失败："+errorMessage);
                     }
                 }
-            }
+            });
             LOG.debug("批量提交索引JSON文档完毕");
         }catch(IOException e){
             LOG.error("批量提交索引失败", e);
@@ -159,12 +161,12 @@ public class ElasticSearchLogHandler implements LogHandler{
      */
     public <T extends Model> String getJsonDocuments(List<T> list){        
         StringBuilder json = new StringBuilder();
-        int j = 1;
+        AtomicInteger j = new AtomicInteger(1);
         LOG.debug("开始构造JSON文档");
-        for(T model : list){
-            try{
+        list.forEach(model -> {
+            try {
                 String simpleName = model.getClass().getSimpleName();
-                LOG.debug((j++)+"、simpleName: 【"+simpleName+"】");
+                LOG.debug((j.incrementAndGet()) + "、simpleName: 【" + simpleName + "】");
                 json.append("{\"index\":{\"_index\":\"")
                         .append(INDEX_NAME)
                         .append("\",\"_type\":\"")
@@ -174,36 +176,36 @@ public class ElasticSearchLogHandler implements LogHandler{
                 json.append("{");
                 Field[] fields = model.getClass().getDeclaredFields();
                 int len = fields.length;
-                for(int i = 0; i < len; i++){
+                for (int i = 0; i < len; i++) {
                     Field field = fields[i];
                     String name = field.getName();
                     field.setAccessible(true);
                     Object value = field.get(model);
                     //小心空指针异常，LogHandler线程会悄无声息地推出！
-                    if(value == null){
-                        LOG.debug("忽略空字段："+name);
+                    if (value == null) {
+                        LOG.debug("忽略空字段：" + name);
                         continue;
                     }
-                    if(i>0){
+                    if (i > 0) {
                         json.append(",");
                     }
-                    String valueClass=value.getClass().getSimpleName();
-                    LOG.debug("name: "+name+"   type: "+valueClass);
-                    if("Timestamp".equals(valueClass) || "Date".equals(valueClass)){
+                    String valueClass = value.getClass().getSimpleName();
+                    LOG.debug("name: " + name + "   type: " + valueClass);
+                    if ("Timestamp".equals(valueClass) || "Date".equals(valueClass)) {
                         //提交给ES的日期时间值要为"2014-01-31T13:53:54"这样的形式
-                        value=DateTypeConverter.toDefaultDateTime((Date)value).replace(" ", "T");
+                        value = DateTypeConverter.toDefaultDateTime((Date) value).replace(" ", "T");
                     }
                     String prefix = "\"";
                     String suffix = "\"";
                     //提交给ES的数字和布尔值不要加双引号
-                    if("Float".equals(valueClass)
-                            || "Double".equals(valueClass) 
-                            || "Long".equals(valueClass) 
+                    if ("Float".equals(valueClass)
+                            || "Double".equals(valueClass)
+                            || "Long".equals(valueClass)
                             || "Integer".equals(valueClass)
                             || "Short".equals(valueClass)
-                            || "Boolean".equals(valueClass)){
-                        prefix="";
-                        suffix="";
+                            || "Boolean".equals(valueClass)) {
+                        prefix = "";
+                        suffix = "";
                     }
                     json.append("\"")
                             .append(name)
@@ -213,10 +215,10 @@ public class ElasticSearchLogHandler implements LogHandler{
                             .append(suffix);
                 }
                 json.append("}\n");
-            }catch(SecurityException | IllegalArgumentException | IllegalAccessException e){
-                LOG.error("构造索引请求失败【"+model.getMetaData()+"】\n"+model, e);
+            } catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                LOG.error("构造索引请求失败【" + model.getMetaData() + "】\n" + model, e);
             }
-        }
+        });
         LOG.debug("JSON文档构造完毕：\n"+json.toString());
         return json.toString();
     }
