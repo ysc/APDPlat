@@ -110,7 +110,7 @@ public class SpringSecurityService {
         //格式2：/**/platform/**
         //格式1含义解释：匿名用户、普通管理员、超级管理员都可以访问的路径
         //格式2含义解释：超级管理员 或是 普通管理员都可以访问的路径
-        for(String url : urls){
+        urls.forEach(url -> {
             //格式1：url中指定了只有特定角色才能访问
             if(url.contains("=")){
                 String[] attr=url.split("=");
@@ -139,29 +139,29 @@ public class SpringSecurityService {
                 key=new AntPathRequestMatcher(url,"GET");
                 requestMap.put(key, value);
             }
-        }
+        });
 
         
  //2、动态指定系统中模块及命令的url访问规则 
         //遍历所有的Command对象
-        for(Command command : serviceFacade.query(Command.class).getModels()){
+        serviceFacade.query(Command.class).getModels().forEach(command -> {
             List<String> paths=ModuleService.getCommandPath(command);
             //命令访问路径到角色名称的映射
             Map<String,String> map=ModuleService.getCommandPathToRole(command);
-            for(String path : paths){
+            paths.forEach(path -> {
                 //POST
                 RequestMatcher key=new AntPathRequestMatcher(path.toString().toLowerCase()+".action*","POST");
-                value=new ArrayList<>();
+                List val=new ArrayList<>();
                 //要把路径转换为角色
                 //如：命令路径：/**/security/user!query 映射角色：_SECURITY_USER_QUERY
-                value.add(new SecurityConfig("ROLE_MANAGER"+map.get(path)));
-                value.add(superManager);
-                requestMap.put(key, value);
+                val.add(new SecurityConfig("ROLE_MANAGER"+map.get(path)));
+                val.add(superManager);
+                requestMap.put(key, val);
                 //GET
                 key=new AntPathRequestMatcher(path.toString().toLowerCase()+".action*","GET");
-                requestMap.put(key, value);
-            }
-        }
+                requestMap.put(key, val);
+            });
+        });
         
  //3、超级管理员对所有的POST操作具有权限
         RequestMatcher key=new AntPathRequestMatcher("/**","POST");
@@ -180,12 +180,12 @@ public class SpringSecurityService {
         filterSecurityInterceptor.setSecurityMetadataSource(source);
 
         LOG.debug("system privilege info:\n");
-        for(Map.Entry<RequestMatcher, Collection<ConfigAttribute>> entry : requestMap.entrySet()){
+        requestMap.entrySet().forEach(entry -> {
             LOG.debug(entry.getKey().toString());
-            for(ConfigAttribute att : entry.getValue()){
-                LOG.debug("\t"+att.toString());
-            }
-        }
+            entry.getValue().forEach(att -> {
+                LOG.debug("\t" + att.toString());
+            });
+        });
         LOG.info("完成初始化权限子系统...");
     }
 }
