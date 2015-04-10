@@ -136,7 +136,7 @@ public class SolrLogHandler implements LogHandler{
         //构造批量索引请求
         List<SolrInputDocument> docs = new ArrayList<>(list.size());
         LOG.info("开始构造Solr文档");
-        for(T model : list){
+        list.forEach(model -> {
             try{
                 String simpleName = model.getClass().getSimpleName();
                 LOG.debug((j++)+"、simpleName: 【"+simpleName+"】");          
@@ -165,7 +165,7 @@ public class SolrLogHandler implements LogHandler{
             }catch(IllegalAccessException | IllegalArgumentException | SecurityException e){
                 LOG.error("构造索引请求失败【"+model.getMetaData()+"】\n"+model, e);
             }
-        }
+        });
         LOG.info("Solr文档构造完毕");
         return docs;
     }
