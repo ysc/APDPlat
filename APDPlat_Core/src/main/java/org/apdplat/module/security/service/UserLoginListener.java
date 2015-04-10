@@ -158,7 +158,7 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
         }
         
         LOG.info("有 "+len+" 个用户还没有注销，强制所有用户退出");
-        for(String username : logs.keySet()){
+        logs.keySet().forEach(username -> {
             UserLogin userLogin=logs.get(username);
             LOG.info("开始记录用户 "+username+" 的注销日志");
             userLogin.setLogoutTime(new Date());
@@ -167,6 +167,6 @@ public class UserLoginListener implements HttpSessionAttributeListener,HttpSessi
             ServiceFacade serviceFacade = SpringContextUtils.getBean("serviceFacadeForLog");
             serviceFacade.update(userLogin);
             logs.remove(username);
-        }
+        });
     }
 }
