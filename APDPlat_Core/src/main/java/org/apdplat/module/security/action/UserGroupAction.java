@@ -69,10 +69,10 @@ public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
             if(!canDel) {
                 continue;
             }
-            for(User user : users){
+            users.forEach(user -> {
                 user.removeUserGroup(userGroup);
                 getService().update(user);
-            }
+            });
         }
     }
 
