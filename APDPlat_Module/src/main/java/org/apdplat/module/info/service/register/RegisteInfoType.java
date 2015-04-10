@@ -66,21 +66,21 @@ public class RegisteInfoType extends RegisterService<InfoType>{
      */
     private void assembleInfoType(InfoType infoType) {
         assembleInfoTypeContent(infoType);
-        for(InfoType child : infoType.getChild()){
+        infoType.getChild().forEach(child -> {
             //重点在这行代码，默认从XML解析出来的的树是向下引用，没有向上引用
             //具体可看对应的XML配置文件即可明白
             child.setParent(infoType);
             assembleInfoType(child);
-        }
+        });
     }
     /**
      * 默认从XML解析出来的的树有对内容的引用，但内容没有对树节点的引用
      * @param infoType 
      */
     private void assembleInfoTypeContent(InfoType infoType) {
-        for(InfoTypeContent infoTypeContents : infoType.getInfoTypeContents()){
+        infoType.getInfoTypeContents().forEach(infoTypeContents -> {
             infoTypeContents.setInfoType(infoType);
-        }
+        });
     }
 
     private void registeInfoType(InfoType infoType) {
