@@ -55,23 +55,19 @@ public class ProcessTimeSingleService  extends SingleService{
     private void createSets(LinkedHashMap<String, Long> data, Element rootElement, boolean sort) {
         if(sort){
             //根据VALUE排序
-            Map.Entry[] entrys=SortUtils.getSortedMapByValue(data);
-            for(Map.Entry<String,Long> entry : entrys){
+            data
+            .entrySet()
+            .stream()
+            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
+            .forEach(entry -> {
                 Element element = createSet(entry.getKey(), entry.getValue());
                 rootElement.addContent(element);
-            }
+            });
         }else{
-            //如果不根据VALUE排序，则根据KEY排序
-//            Collection<String> keys=data.keySet();
-//            List<String> list=new ArrayList<String>();
-//            for(String key : keys){
-//                list.add(key);
-//            }
-//            Collections.sort(list);
-            for(String key : data.keySet()){
+            data.keySet().forEach(key -> {
                 Element element = createSet(key, data.get(key));
                 rootElement.addContent(element);
-            }
+            });
         }
     }
 }
