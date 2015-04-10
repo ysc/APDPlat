@@ -43,9 +43,9 @@ public class BackupFileSenderExecuter  implements  BackupFileSender, Application
     private static final List<BackupFileSender> backupFileSenders = new LinkedList<>();  
     @Override
     public void send(File file) {
-        for(BackupFileSender sender : backupFileSenders){
+        backupFileSenders.forEach(sender -> {
             sender.send(file);
-        }
+        });
     }
     @Override
     public void onApplicationEvent(ApplicationEvent event){
