@@ -29,6 +29,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 
 /**
@@ -92,27 +95,27 @@ public class RuningTimeChartDataService {
         LOG.debug("系统最后关闭时间："+DateTypeConverter.toDefaultDateTime(latest.getShutdownTime()));
         long totalTime=latest.getShutdownTime().getTime()-first.getStartupTime().getTime();
         LOG.debug("系统总时间："+latest.getShutdownTime().getTime()+"-"+first.getStartupTime().getTime()+"="+totalTime);
-        long runingTime=0;
-        for(RuningTime item : models){
+        AtomicLong runningTime=new AtomicLong();
+        models.forEach(item -> {
             LOG.debug("      增加系统运行时间："+item.getRuningTime());
-            runingTime+=item.getRuningTime();
-        }
-        LOG.debug("系统运行时间："+runingTime);
-        long stopTime=totalTime-runingTime;
+            runningTime.addAndGet(item.getRuningTime());
+        });
+        LOG.debug("系统运行时间：" + runningTime.get());
+        long stopTime=totalTime-runningTime.get();
         LOG.debug("系统停机时间："+stopTime);
-        data.put("运行时间", runingTime);
+        data.put("运行时间", runningTime.get());
         data.put("停机时间", -stopTime);
         
         return data;
     }
     public static List<RuningTime> getValidData(List<RuningTime> runingTimes){
         List<RuningTime> models = new ArrayList<>();
-        for(RuningTime runingTime : runingTimes){            
+        runingTimes.forEach(runingTime -> {
             //如果系统启动时间或是关闭时间有一项为空，则忽略
             if(runingTime.getStartupTime() != null && runingTime.getShutdownTime() != null){
                 models.add(runingTime);
             }
-        }
+        });
         return models;
     }
 }
