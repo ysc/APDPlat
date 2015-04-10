@@ -27,6 +27,7 @@ import org.apdplat.module.module.service.ModuleParser;
 import org.apdplat.module.module.service.ModuleService;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  *
@@ -51,29 +52,29 @@ public class WebGenerator {
         System.out.println("--------------------------------------------------------------");
         System.out.println("分割模块数:"+list.size());
         System.out.println("--------------------------------------------------------------");
-        int i=1;
-        for(Module module : list){
+        AtomicInteger i=new AtomicInteger();
+        list.forEach(module -> {
             System.out.println("--------------------------------------------------------------");
-            System.out.println("分割模块"+(i++)+"包含模块数目:"+module.getSubModules().size());
+            System.out.println("分割模块"+i.incrementAndGet()+"包含模块数目:"+module.getSubModules().size());
             System.out.println("--------------------------------------------------------------");
             int j=1;
-            for(Module m : module.getSubModules()){
+            module.getSubModules().forEach(m -> {
                 if(generateModules!=null && !generateModules.contains(m.getEnglish())){
                     System.out.println("忽略生成模块【"+m.getEnglish()+"】的JSP和JS文件");
-                    continue;
+                    return;
                 }
                 System.out.println("    "+(j++)+":"+m.getChinese()+"("+m.getEnglish()+")");
                 generateForModule(m);
-            }
+            });
             System.out.println("--------------------------------------------------------------");
-        }
+        });
     }
     private static void generateForModule(Module module){
         //如果模块不为叶子节点
         if(module.getCommands().isEmpty()){
-            for(Module subModule : module.getSubModules()){
+            module.getSubModules().forEach(subModule -> {
                 generateForModule(subModule);
-            }
+            });
         }else{
             String path=ModuleService.getModulePath(module.getParentModule());
             System.out.println("        module: "+module.getChinese()+"("+module.getEnglish()+")"+", path: "+path);
