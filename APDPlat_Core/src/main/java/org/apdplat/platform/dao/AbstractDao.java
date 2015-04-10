@@ -60,9 +60,9 @@ public abstract class AbstractDao<T extends Model> extends DaoSupport implements
 	@Override
 	public void update(Integer modelId, List<Property> properties) {
 		T model=retrieve(modelId);
-		for(Property property : properties){
+		properties.forEach(property -> {
 			ReflectionUtils.setFieldValue(model, property.getName(), property.getValue());
-		}
+		});
 		update(model);
 	}
 
