@@ -105,16 +105,16 @@ public class DicService {
             List<DicItem> dicItems=dic.getDicItems();
             if(!dicItems.isEmpty()){
                 json.append("[");
-                for(DicItem d : dicItems){
+                dicItems.forEach(dicItem -> {
                     json.append("{'text':'")
-                        .append(d.getName())
+                        .append(dicItem.getName())
                         .append("','id':'")
-                        .append(d.getId())
+                        .append(dicItem.getId())
                         .append("','iconCls':'")
-                        .append(d.getName())
+                        .append(dicItem.getName())
                         .append("','leaf':true")
                         .append("},");
-                }
+                });
                 json.setLength(json.length()-1);
                 json.append("]");
             }
