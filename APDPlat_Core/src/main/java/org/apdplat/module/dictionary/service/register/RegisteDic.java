@@ -53,10 +53,9 @@ public class RegisteDic extends RegisterService<Dic>{
     @Override
     public void registe() {
         data=new ArrayList<>();
-        List<Dic> dics=DicParser.getDics();
-        for(Dic dic : dics){
+        DicParser.getDics().forEach(dic -> {
             registeDic(dic);
-        }
+        });
     }
     private void registeDic(Dic dic){
         Page<Dic> page=serviceFacade.query(Dic.class);
@@ -82,25 +81,26 @@ public class RegisteDic extends RegisterService<Dic>{
                 }
             }
             if(root!=null){
+                Dic parentDic=root;
                 LOG.info("将第一次以后的数据字典的根数据字典设置为第一次注册的根数据字典(Set the later data dictionary to the first registered root data dictionary)");
-                for(Dic subDic : dic.getSubDics()){
-                    if(hasRegisteDic(subDic)){
-                        LOG.info("数据字典(This data dictionary) "+subDic.getChinese()+" (already registered)在此前已经被注册过，此次忽略，检查其子数据字典");
+                dic.getSubDics().forEach(subDic -> {
+                    if (hasRegisteDic(subDic)) {
+                        LOG.info("数据字典(This data dictionary) " + subDic.getChinese() + " (already registered)在此前已经被注册过，此次忽略，检查其子数据字典");
                         registeSubDic(subDic);
-                        continue;
+                        return;
                     }
-                    subDic.setParentDic(root);
-                    LOG.info("注册后续数据字典(Register the follow-up data dictionary): "+subDic.getChinese());
+                    subDic.setParentDic(parentDic);
+                    LOG.info("注册后续数据字典(Register the follow-up data dictionary): " + subDic.getChinese());
                     serviceFacade.create(subDic);
                     data.add(subDic);
-                }
+                });
             }else{
                 LOG.info("没有找到根数据字典，注册失败！(Not find out root data dictionary, failed to register)");
             }
         }
     }
     private void registeSubDic(Dic dic){
-        for(Dic sub : dic.getSubDics()){
+        dic.getSubDics().forEach(sub -> {
             if(hasRegisteDic(sub)){
                 LOG.info("数据字典(Data dictionary) "+sub.getChinese()+" (already registered, checking other sub-data dictionary)在此前已经被注册过，此次忽略，检查其子数据字典");
                 registeSubDic(sub);
@@ -111,7 +111,7 @@ public class RegisteDic extends RegisterService<Dic>{
                 serviceFacade.create(sub);
                 data.add(sub);
             }
-        }
+        });
     }
     private boolean hasRegisteDic(Dic dic){
         Dic existsDic=dicService.getDic(dic.getEnglish());
