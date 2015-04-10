@@ -44,10 +44,10 @@ public abstract class SingleService extends ChartService{
     }
 
     private void createSets(LinkedHashMap<String, Long> data, Element rootElement) {
-        for(String key : data.keySet()){
+        data.keySet().forEach(key -> {
             Element element = createSet(key, data.get(key));
             rootElement.addContent(element);
-        }
+        });
     }
     
     protected static Element createSet(Object label,Long value) {
