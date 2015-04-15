@@ -84,7 +84,7 @@
         <jcaptcha-all.version>1.0-RC6</jcaptcha-all.version>
         <sigar.version>1.6.4</sigar.version>        
         <cxf.version>2.7.3</cxf.version>
-        <wro4j.version>1.7.0</wro4j.version>
+        <wro4j.version>1.7.7</wro4j.version>
         <birt.version>4.2.2</birt.version>
         <aspectj.version>1.7.4</aspectj.version>
         <commons-net.version>3.3</commons-net.version>

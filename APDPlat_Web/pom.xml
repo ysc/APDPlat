@@ -46,7 +46,7 @@
         <java.version>1.8</java.version>
         <!-- 主要依赖库的版本定义 -->
         <apdplat.version>2.5</apdplat.version>
-        <wro4j.version>1.7.0</wro4j.version>
+        <wro4j.version>1.7.7</wro4j.version>
         <junit.version>4.8.2</junit.version>
         <javaee-api.version>7.0</javaee-api.version>
         <!-- 数据库驱动 -->
@@ -126,11 +126,6 @@
             </snapshots>
         </pluginRepository>
         <pluginRepository>
-            <name>oss.sonatype.org</name>
-            <id>oss.sonatype.org</id>
-            <url>http://oss.sonatype.org/content/groups/public</url>
-        </pluginRepository>
-        <pluginRepository>
             <id>codehaus-snapshots</id>
             <name>Codehaus Snapshots</name>
             <url>http://nexus.codehaus.org/snapshots/</url>
@@ -196,7 +191,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
-                              
     </dependencies>
     <build>
         <plugins>  
@@ -288,6 +282,13 @@
                     <!-- 有 org.apdplat.platform.wro4j.APDPlatWro4jSingleMergeManagerFactory 和 org.apdplat.platform.wro4j.APDPlatWro4jMultiMergeManagerFactory 可供选择 -->
                     <wroManagerFactory>org.apdplat.platform.wro4j.APDPlatWro4jSingleMergeManagerFactory</wroManagerFactory>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-utils</artifactId>
+                        <version>3.0.17</version>
+                    </dependency>
+                </dependencies>
             </plugin>
                         
             <plugin>
