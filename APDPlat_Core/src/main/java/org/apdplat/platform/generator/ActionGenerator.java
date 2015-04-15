@@ -70,14 +70,13 @@ public class ActionGenerator extends Generator{
      * @param modelInfos 批量模型
      * @param workspaceModuleBasePath 模块所在项目物理根路径
      */
-    public static void generate(List<ModelInfo>  modelInfos,String workspaceModuleBasePath){        
-        workspaceModuleBasePath+="/src/main/java/";
+    public static void generate(List<ModelInfo>  modelInfos,String workspaceModuleBasePath){
         modelInfos.forEach(modelInfo -> {
             String modelClzz=modelInfo.getModelPackage()+"."+modelInfo.getModelEnglish();
             Class clazz;
             try {
                 clazz = Class.forName(modelClzz);
-                generateFromModel(clazz,workspaceModuleBasePath);
+                generateFromModel(clazz,workspaceModuleBasePath+"/src/main/java/");
             } catch (ClassNotFoundException ex) {
                 System.out.println("没有找到模型类: "+modelClzz);
             }

@@ -26,12 +26,8 @@ import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.FileUtils;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
@@ -165,10 +161,8 @@ public class SpringSecurityService {
         
  //3、超级管理员对所有的POST操作具有权限
         RequestMatcher key=new AntPathRequestMatcher("/**","POST");
-        //value为超级管理员
-        value=new ArrayList<>();
-        value.add(superManager);
-        requestMap.put(key, value);
+        //superManager为超级管理员
+        requestMap.put(key, Arrays.asList(superManager));
         
         
  //4、超级管理员对所有的GET操作具有权限

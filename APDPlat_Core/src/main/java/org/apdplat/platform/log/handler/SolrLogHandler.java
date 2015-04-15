@@ -27,6 +27,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -131,15 +133,15 @@ public class SolrLogHandler implements LogHandler{
      * @param list 对象列表
      * @return SOLR文档列表
      */
-    public <T extends Model> List<SolrInputDocument> getSolrInputDocuments(List<T> list){        
-        int j = 1;
+    public <T extends Model> List<SolrInputDocument> getSolrInputDocuments(List<T> list){
+        AtomicInteger j=new AtomicInteger();
         //构造批量索引请求
         List<SolrInputDocument> docs = new ArrayList<>(list.size());
         LOG.info("开始构造Solr文档");
         list.forEach(model -> {
             try{
                 String simpleName = model.getClass().getSimpleName();
-                LOG.debug((j++)+"、simpleName: 【"+simpleName+"】");          
+                LOG.debug(j.incrementAndGet()+"、simpleName: 【"+simpleName+"】");
                 SolrInputDocument doc = new SolrInputDocument();                
                 Field[] fields = model.getClass().getDeclaredFields();
                 int len = fields.length;

@@ -55,15 +55,15 @@ public class WebGenerator {
         AtomicInteger i=new AtomicInteger();
         list.forEach(module -> {
             System.out.println("--------------------------------------------------------------");
-            System.out.println("分割模块"+i.incrementAndGet()+"包含模块数目:"+module.getSubModules().size());
+            System.out.println("分割模块" + i.incrementAndGet() + "包含模块数目:" + module.getSubModules().size());
             System.out.println("--------------------------------------------------------------");
-            int j=1;
+            AtomicInteger j=new AtomicInteger();
             module.getSubModules().forEach(m -> {
                 if(generateModules!=null && !generateModules.contains(m.getEnglish())){
                     System.out.println("忽略生成模块【"+m.getEnglish()+"】的JSP和JS文件");
                     return;
                 }
-                System.out.println("    "+(j++)+":"+m.getChinese()+"("+m.getEnglish()+")");
+                System.out.println("    "+j.incrementAndGet()+":"+m.getChinese()+"("+m.getEnglish()+")");
                 generateForModule(m);
             });
             System.out.println("--------------------------------------------------------------");
