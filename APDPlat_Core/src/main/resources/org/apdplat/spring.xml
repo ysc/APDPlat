@@ -143,7 +143,7 @@
          <!-- 定义ehCache的工厂，并设置所使用的Cache name -->
     <bean id="ehCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
         <property name="cacheManager">
-            <ref local="defaultCacheManager"/>
+            <ref bean="defaultCacheManager"/>
         </property>
         <property name="cacheName">
             <value>DEFAULT_CACHE</value>
