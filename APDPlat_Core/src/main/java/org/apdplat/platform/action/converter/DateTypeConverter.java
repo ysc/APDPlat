@@ -26,17 +26,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import org.apache.struts2.util.StrutsTypeConverter;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 
-
-
 /**
- *日期转换
+ * 日期转换
  * @author 杨尚川
  */
 
-public class DateTypeConverter extends StrutsTypeConverter {
+public class DateTypeConverter implements TypeConverter {
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(DateTypeConverter.class);
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";

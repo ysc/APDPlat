@@ -21,16 +21,15 @@
 package org.apdplat.platform.action.converter;
 
 /**
- *日期转换
+ * 日期转换
  * @author 杨尚川
  */
 
 import org.apdplat.platform.log.APDPlatLogger;
 import java.util.Map;
-import org.apache.struts2.util.StrutsTypeConverter;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 
-public class DoubleTypeConverter extends StrutsTypeConverter{
+public class DoubleTypeConverter implements TypeConverter{
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(DoubleTypeConverter.class);
 
 
