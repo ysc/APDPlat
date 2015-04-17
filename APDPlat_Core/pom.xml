@@ -413,13 +413,12 @@
         <!--
     Spring MVC for Servlet Environments (depends on spring-core, spring-beans, spring-context, spring-web)
     Define this if you use Spring MVC with a Servlet Container such as Apache Tomcat (org.springframework.web.servlet.*)
-
+      -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
-      -->
         <!--
     Spring MVC for Portlet Environments (depends on spring-core, spring-beans, spring-context, spring-web)
     Define this if you use Spring MVC with a Portlet Container (org.springframework.web.portlet.*)
