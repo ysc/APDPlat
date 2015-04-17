@@ -226,6 +226,15 @@
                     /ckfinder/core/connector/java/connector.java
             </url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>Spring MVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Spring MVC</servlet-name>
+        <url-pattern>*.action</url-pattern>
+    </servlet-mapping>
 
   <!--会话超时时间，单位为分钟-->
     <session-config>
