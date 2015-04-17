@@ -82,7 +82,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //加try catch的目的是为了能执行finally的代码，在登录失败的情况下保存失败原因
         try{
             return load(username);
-        }catch(  UsernameNotFoundException e){
+        }catch(UsernameNotFoundException e){
+            LOG.error("查找"+username+"用户失败", e);
             throw e;
         }
         finally{
@@ -96,9 +97,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             Collection<String> reqs = FileUtils.getTextFileContent("/WEB-INF/licence");
             message="您还没有购买产品";
             if(reqs!=null && reqs.size()==1){
-                message+=":"+reqs.iterator().next().toString();
+                message+=":"+reqs.iterator().next();
             }
-            LOG.info(message);
+            LOG.error("查找"+username+"用户失败: "+ message);
             throw new UsernameNotFoundException(message);
         }
         if (StringUtils.isBlank(username)) {
