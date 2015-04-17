@@ -64,6 +64,7 @@ APDPlat_Web/src/main/webapp/platform/css/platform_css_merge.css
 APDPlat_Web/src/main/webapp/platform/js/platform_js_merge.js
 APDPlat_Web/src/main/webapp/css/login_merge.css
 APDPlat_Web/src/main/webapp/js/login_merge.js
+APDPlat_Web/nb-configuration.xml
 .settings/
 .classpath
 .project
