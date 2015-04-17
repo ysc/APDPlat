@@ -18,6 +18,14 @@
     <listener>
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
+    <filter>
+        <filter-name>IPAccessControlFilter</filter-name>
+        <filter-class>org.apdplat.platform.filter.IPAccessControlFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>IPAccessControlFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <!-- 性能过滤器放置到最前, 放置到最后不起作用，放置到最前的统计时间更准确地表示了服务器的处理速度 -->
     <filter>
         <description>记录请求的处理时间，为性能分析提供数据</description>
