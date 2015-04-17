@@ -46,14 +46,11 @@ public abstract class AbstractAction<T extends Model, S extends Service<T>>  ext
         if (this.service == null) {
             this.service = (S) springContextUtils.getBean(getDefaultServiceName());
         }
-    }
-
-    @PostConstruct
-    private void initModel() {
         if (this.model == null) {
             this.model = (T) springContextUtils.getBean(getDefaultModelName());
         }
     }
+
     private String getDefaultServiceName(){
         return getDefaultModelName()+"Service";
     }
@@ -76,26 +73,17 @@ public abstract class AbstractAction<T extends Model, S extends Service<T>>  ext
 
         super.setFeedback(new Feedback(model.getId(), "添加成功"));
 
-        return SUCCESS;
+        return "";
     }
 
-    @Override
-    public String createForm() {
-        return FORM;
-    }
 
     @Override
     public String retrieve() {
         this.setModel(service.retrieve(model.getId()));
 
-        return DETAIL;
+        return "";
     }
 
-    @Override
-    public String updateForm() {
-        setModel(service.retrieve(model.getId()));
-        return null;
-    }
 
     @Override
     public String updatePart() {
@@ -103,7 +91,7 @@ public abstract class AbstractAction<T extends Model, S extends Service<T>>  ext
 
         super.setFeedback(new Feedback(model.getId(), "添加成功"));
 
-        return SUCCESS;
+        return "";
     }
 
     @Override
@@ -112,20 +100,20 @@ public abstract class AbstractAction<T extends Model, S extends Service<T>>  ext
 
         super.setFeedback(new Feedback(model.getId(), "更新成功"));
 
-        return SUCCESS;
+        return "";
     }
 
     @Override
     public String delete() {
         service.delete(super.getIds());
 
-        return SUCCESS;
+        return "";
     }
 
     @Override
     public String query() {
         this.setPage(service.query(super.getPageCriteria(), super.buildPropertyCriteria(), super.buildOrderCriteria()));
-        return LIST;
+        return "";
     }
 
     @Override
