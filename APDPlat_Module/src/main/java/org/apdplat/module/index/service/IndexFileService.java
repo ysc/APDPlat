@@ -21,9 +21,6 @@
 package org.apdplat.module.index.service;
 
 import org.apdplat.module.index.model.IndexDir;
-import org.apdplat.platform.model.ModelMetaData;
-import org.apdplat.platform.search.IndexManager;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,46 +29,13 @@ import java.util.List;
  * @author 杨尚川
  */
 public class IndexFileService {
-    private static final  File FILE;
-    
-    static{
-        //compass存放lucene索引的根目录
-        FILE=new File(IndexManager.getIndexDir(),"index");
-    }
     /**
      * 获取所有对象对应的索引目录
      * @return  索引目录名称列表
      */
     public static List<IndexDir> getIndexDirs() {
         List<IndexDir> dirs=new ArrayList<>();
-        
-        File[] files=FILE.listFiles();
-        for(int i=0;i<files.length;i++){
-            File f=files[i];
-            IndexDir dir=new IndexDir();
-            dir.setEnglishName(f.getName());
-            dir.setChineseName(ModelMetaData.getMetaData(f.getName()));
-            dirs.add(dir);
-        }
-        
+
         return dirs;
     }
-    /**
-     * 获取某个对象的所有索引文件
-     * @param dir 索引对象的目录名称
-     * @return 索引文件列表
-     */
-    public static List<File> getIndexFiles(String dir) {
-        File dirFile=new File(FILE,dir);
-        List<File> result=new ArrayList<>();
-        
-        File[] files=dirFile.listFiles();
-        for(int i=0;i<files.length;i++){
-            File f=files[i];
-            result.add(f);
-        }
-        
-        return result;
-    }
-    
 }
