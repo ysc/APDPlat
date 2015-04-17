@@ -66,46 +66,6 @@
       <url-pattern>*.css</url-pattern>
     </filter-mapping>
     -->
-    
-    <!-- 对于每一个数据库，都需要一个OpenEntityManagerInViewFilter  -->
-    <!-- 默认数据库 -->
-    <filter>
-        <description>在每一次请求到来的时候打开Jpa的实体管理器，在请求结束的时候关闭</description>
-        <filter-name>OpenEntityManagerInViewFilter</filter-name>
-        <filter-class>org.apdplat.platform.filter.OpenEntityManagerInViewFilter</filter-class>
-        <init-param>
-            <param-name>excludeSuffixs</param-name>
-            <param-value>js,css,jpg,gif,png</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>OpenEntityManagerInViewFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>    
-    <!-- ForLog数据库 -->    
-    <!-- LOG数据不需要在WEB前端进行删除和修改，所以不需要OpenEntityManagerInViewFilter
-    <filter>
-        <description>在每一次请求到来的时候打开Jpa的实体管理器，在请求结束的时候关闭</description>
-        <filter-name>OpenEntityManagerInViewFilterForLog</filter-name>
-        <filter-class>org.apdplat.platform.filter.OpenEntityManagerInViewFilter</filter-class>
-        <init-param>
-            <param-name>excludeSuffixs</param-name>
-            <param-value>js,css,jpg,gif,png</param-value>
-        </init-param>
-        <init-param>
-            <param-name>entityManagerFactoryBeanName</param-name>
-            <param-value>entityManagerFactoryForLog</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>OpenEntityManagerInViewFilterForLog</filter-name>
-        <url-pattern>/log/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>OpenEntityManagerInViewFilterForLog</filter-name>
-        <url-pattern>/monitor/*</url-pattern>
-    </filter-mapping>
-     -->    
         
     <filter>
         <description>对POST方式提交的数据做编码转换，对GET方式提交的数据需要在应用服务器中配置URIEncoding="utf-8"</description>

@@ -9,4 +9,17 @@
     http://www.springframework.org/schema/aop      http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
     http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <import resource="classpath:spring.xml" />
+    <bean name="openEntityManagerInViewInterceptor"
+          class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor">
+        <property name="entityManagerFactory">
+            <ref bean="entityManagerFactory" />
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="openEntityManagerInViewInterceptor" />
+            </list>
+        </property>
+    </bean>
 </beans>
