@@ -27,28 +27,37 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@Scope("prototype")
 @Controller
+@Scope("prototype")
 @RequestMapping("/security")
 public class OrgAction extends ExtJSSimpleAction<Org> {
-        private String node;
         @Resource(name="orgService")
         private OrgService orgService;
 
-        public String store(){
-            return query();
-        }
-        @Override
         @ResponseBody
-        public String query(){
+        @RequestMapping({"/org!query.action","/org!store.action"})
+        public String query(@RequestParam(required=false) String node,
+                            @RequestParam(required=false) Integer start,
+                            @RequestParam(required=false) Integer limit,
+                            @RequestParam(required=false) String propertyCriteria,
+                            @RequestParam(required=false) String orderCriteria,
+                            @RequestParam(required=false) String queryString,
+                            @RequestParam(required=false) String search){
             //如果node为null则采用普通查询方式
             if(node==null){
+                super.setStart(start);
+                super.setLimit(limit);
+                super.setPropertyCriteria(propertyCriteria);
+                super.setOrderCriteria(orderCriteria);
+                super.setQueryString(queryString);
+                super.setSearch("true".equals(search));
                 return super.query();
             }
             //如果指定了node则采用自定义的查询方式
-            if(node.trim().startsWith("root")){
+            if("root".startsWith(node.trim())){
                 String json=orgService.toRootJson();
                 return json;
             }else{
@@ -56,9 +65,5 @@ public class OrgAction extends ExtJSSimpleAction<Org> {
                 String json=orgService.toJson(id);
                 return json;
             }
-        }
-
-        public void setNode(String node) {
-            this.node = node;
         }
 }

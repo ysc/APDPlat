@@ -22,12 +22,13 @@ package org.apdplat.module.module.action;
 
 import org.apdplat.module.module.model.Module;
 import org.apdplat.module.module.service.ModuleService;
+import org.apdplat.module.module.service.ModuleCache;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.apdplat.module.module.service.ModuleCache;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -44,14 +45,26 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class EditModuleAction extends ExtJSSimpleAction<Module> {
         @Resource(name="moduleService")
         private ModuleService moduleService;
-        private String node;
-        @Override
+
         @ResponseBody
-        public String query(){
+        @RequestMapping("/edit-module!query.action")
+        public String query(@RequestParam(required=false) String node,
+                            @RequestParam(required=false) Integer start,
+                            @RequestParam(required=false) Integer limit,
+                            @RequestParam(required=false) String propertyCriteria,
+                            @RequestParam(required=false) String orderCriteria,
+                            @RequestParam(required=false) String queryString,
+                            @RequestParam(required=false) String search){
             if(node==null){
+                super.setStart(start);
+                super.setLimit(limit);
+                super.setPropertyCriteria(propertyCriteria);
+                super.setOrderCriteria(orderCriteria);
+                super.setQueryString(queryString);
+                super.setSearch("true".equals(search));
                 return super.query();
             }
-            if(node.trim().startsWith("root")){
+            if("root".startsWith(node.trim())){
                 String json=moduleService.toRootJsonForEdit();
                 return json;
             }
@@ -68,14 +81,11 @@ public class EditModuleAction extends ExtJSSimpleAction<Module> {
                 }
             }
             
-            return "";
+            return "[]";
         }
         @Override
         protected void afterSuccessPartUpdateModel(Module model) {
             //手动清空缓存
             ModuleCache.clear();
-        }
-        public void setNode(String node) {
-            this.node = node;
         }
 }

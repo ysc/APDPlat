@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.module.service.ModuleCache;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
 * 维护树形模块，对应于module.xml文件
  * 在module.xml中的数据未导入到数据库之前，可以通过修改module.xml文件的形式修改树形模块
@@ -38,7 +41,22 @@ import org.springframework.stereotype.Controller;
 @Scope("prototype")
 @RequestMapping("/module")
 public class EditCommandAction extends ExtJSSimpleAction<Command> {
-
+    @ResponseBody
+    @RequestMapping("/edit-command!query.action")
+    public String query(@RequestParam(required=false) Integer start,
+                        @RequestParam(required=false) Integer limit,
+                        @RequestParam(required=false) String propertyCriteria,
+                        @RequestParam(required=false) String orderCriteria,
+                        @RequestParam(required=false) String queryString,
+                        @RequestParam(required=false) String search){
+        super.setStart(start);
+        super.setLimit(limit);
+        super.setPropertyCriteria(propertyCriteria);
+        super.setOrderCriteria(orderCriteria);
+        super.setQueryString(queryString);
+        super.setSearch("true".equals(search));
+        return super.query();
+    }
     @Override
     protected void afterSuccessPartUpdateModel(Command model) {
         //手动清空缓存

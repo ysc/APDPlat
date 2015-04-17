@@ -34,20 +34,20 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
 @RequestMapping("/security")
 public class RoleAction extends ExtJSSimpleAction<Role> {
-    private String node;
     @Resource(name="roleService")
     private RoleService roleService;
     private List<Command> commands;
-    private boolean recursion=false;
 
     @ResponseBody
-    public String store(){            
+    @RequestMapping("/role!store.action")
+    public String store(@RequestParam(required=false) boolean recursion){
         if(recursion){
             int rootId = roleService.getRootRole().getId();
             String json=roleService.toJson(rootId,recursion);
@@ -56,16 +56,29 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
 
         return query();
     }
-    
-    @Override
+
     @ResponseBody
-    public String query(){
+    @RequestMapping("/role!query.action")
+    public String query(@RequestParam(required=false) String node,
+                        @RequestParam(required=false) boolean recursion,
+                        @RequestParam(required=false) Integer start,
+                        @RequestParam(required=false) Integer limit,
+                        @RequestParam(required=false) String propertyCriteria,
+                        @RequestParam(required=false) String orderCriteria,
+                        @RequestParam(required=false) String queryString,
+                        @RequestParam(required=false) String search){
         //如果node为null则采用普通查询方式
         if(node==null){
+            super.setStart(start);
+            super.setLimit(limit);
+            super.setPropertyCriteria(propertyCriteria);
+            super.setOrderCriteria(orderCriteria);
+            super.setQueryString(queryString);
+            super.setSearch("true".equals(search));
             return super.query();
         }
         //如果指定了node则采用自定义的查询方式
-        if(node.trim().startsWith("root")){
+        if("root".startsWith(node.trim())){
             String json=roleService.toRootJson(recursion);
             return json;
         }else{
@@ -76,7 +89,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
                 return json;
             }   
         }
-        return "";
+        return "[]";
     }
     @Override
     protected void old(Role model) {
@@ -156,13 +169,5 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
                 }
             }
         }        
-    }
-
-    public void setRecursion(boolean recursion) {
-        this.recursion = recursion;
-    }
-
-    public void setNode(String node) {
-        this.node = node;
     }
 }

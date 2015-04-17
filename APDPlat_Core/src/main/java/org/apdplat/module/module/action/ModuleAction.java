@@ -29,6 +29,7 @@ import org.apdplat.module.module.service.ModuleCache;
 import org.apdplat.module.security.service.UserHolder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -41,12 +42,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ModuleAction extends ExtJSSimpleAction<Module> {
         @Resource(name="moduleService")
         private ModuleService moduleService;
-        private String node;
-        private boolean privilege=false;
-        private boolean recursion=false;      
-        @Override
+
         @ResponseBody
-        public String query(){
+        @RequestMapping("/module!query.action")
+        public String query(@RequestParam(required=false) String node,
+                            @RequestParam(required=false) boolean privilege,
+                            @RequestParam(required=false) boolean recursion){
             if(node==null){
                 return super.query();
             }
@@ -82,20 +83,9 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
                 LOG.debug("ModuleAction.query() cost time: "+(System.currentTimeMillis()-start)+" 毫秒");
                 LOG.debug("设置缓存数据，key:"+key+", value:"+json);
                 ModuleCache.put(key, json);
+                LOG.info("json:"+json);
                 return json;
             }
-            return null;
-        }
-
-        public void setRecursion(boolean recursion) {
-            this.recursion = recursion;
-        }
-
-        public void setPrivilege(boolean privilege) {
-            this.privilege = privilege;
-        }
-
-        public void setNode(String node) {
-            this.node = node;
+            return "";
         }
 }

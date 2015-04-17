@@ -42,33 +42,41 @@ import org.apdplat.module.security.service.UserReportService;
 import org.apdplat.module.security.service.UserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
 @RequestMapping("/security")
 public class UserAction extends ExtJSSimpleAction<User> {
-    private int orgId;
-    private String oldPassword;
-    private String newPassword;
+    private Integer orgId;
     private String roles;
     private String positions;
     private String userGroups;
-    
-    //在线用户 根据org查找
-    private String org;
-    //在线用户 根据role查找
-    private String role;
-    //用户重置密码
-    private String password;
-    
-    //用户选择组件
-    private boolean select;
-    
+
     @Resource(name="userReportService")
     private UserReportService userReportService;
     @Resource(name="userService")
     private UserService userService;
+
+    @ResponseBody
+    @RequestMapping("/user!query.action")
+    public String query(@RequestParam(required=false) Integer start,
+                        @RequestParam(required=false) Integer limit,
+                        @RequestParam(required=false) String propertyCriteria,
+                        @RequestParam(required=false) String orderCriteria,
+                        @RequestParam(required=false) Integer orgId,
+                        @RequestParam(required=false) String queryString,
+                        @RequestParam(required=false) String search){
+        this.orgId = orgId;
+        super.setStart(start);
+        super.setLimit(limit);
+        super.setPropertyCriteria(propertyCriteria);
+        super.setOrderCriteria(orderCriteria);
+        super.setQueryString(queryString);
+        super.setSearch("true".equals(search));
+        return super.query();
+    }
     
     @Override
     @ResponseBody
@@ -87,13 +95,22 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
 
     @ResponseBody
-    public String reset(){
+    @RequestMapping("/user!reset.action")
+    public String reset(@RequestParam String ids,
+                        @RequestParam String password){
+        super.setIds(ids);
         String result = userService.reset(getIds(), password);
         return result;
     }
 
     @ResponseBody
-    public String online(){
+    @RequestMapping("/user!online.action")
+    public String online(@RequestParam(required=false) Integer start,
+                         @RequestParam(required=false) Integer limit,
+                         @RequestParam(required=false) String org,
+                         @RequestParam(required=false) String role){
+        super.setStart(start);
+        super.setLimit(limit);
         page = userService.getOnlineUsers(getStart(), getLimit(), org, role);
         
         Map data = new HashMap();
@@ -106,8 +123,9 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
 
     @ResponseBody
-    public String store(){
-        if(select){
+    @RequestMapping("/user!store.action")
+    public String store(@RequestParam(required=false) String select){
+        if("true".equals(select)){
             return super.query();
         }
         List<User> users=getService().query(User.class).getModels();
@@ -138,7 +156,9 @@ public class UserAction extends ExtJSSimpleAction<User> {
         }
     }
     @ResponseBody
-    public String modifyPassword(){
+    @RequestMapping("/user!modify-password.action")
+    public String modifyPassword(@RequestParam String oldPassword,
+                                 @RequestParam String newPassword){
         Map data = userService.modifyPassword(oldPassword, newPassword);
         String json = JSONArray.fromObject(data).toString();
         return json;
@@ -235,45 +255,5 @@ public class UserAction extends ExtJSSimpleAction<User> {
         map.put("orgName", orgName);
         map.put("orgId", id+"");
         map.put("des", model.getDes());
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-
-    public void setPositions(String positions) {
-        this.positions = positions;
-    }
-
-    public void setUserGroups(String userGroups) {
-        this.userGroups = userGroups;
-    }
-
-    public void setOrg(String org) {
-        this.org = org;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public void setOrgId(int orgId) {
-        this.orgId = orgId;
-    }
-
-    public void setSelect(boolean select) {
-        this.select = select;
     }
 }
