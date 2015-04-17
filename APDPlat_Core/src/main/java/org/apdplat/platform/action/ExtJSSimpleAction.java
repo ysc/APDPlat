@@ -49,6 +49,7 @@ import javax.persistence.Temporal;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.platform.annotation.RenderDate;
 import org.apdplat.platform.annotation.RenderTime;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -161,10 +162,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     }
 
     @Override
-    public String createForm() {
-        return FORM;
-    }
-    @Override
     @ResponseBody
     public String retrieve() {
         this.setModel(getService().retrieve(modelClass, model.getId()));
@@ -181,12 +178,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
    
     protected void afterRetrieve(T model){
         
-    }
-    
-    @Override
-    public String updateForm() {
-        setModel(getService().retrieve(modelClass, model.getId()));
-        return null;
     }
 
     @Override
@@ -288,8 +279,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     public String query() {
         beforeQuery();
         if(search){
-            search();
-            return null;
+            return search();
         }
         this.setPage(getService().query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
         Map map = new HashMap();
