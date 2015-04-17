@@ -27,7 +27,7 @@ import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.model.ModelListener;
 import org.apdplat.platform.search.IndexManager;
-import org.compass.annotations.Searchable;
+import org.apdplat.platform.search.Searchable;
 import org.springframework.stereotype.Service;
 
 /**
