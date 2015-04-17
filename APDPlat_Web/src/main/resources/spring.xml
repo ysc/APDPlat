@@ -9,6 +9,5 @@
     http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <import resource="classpath:/org/apdplat/spring.xml" />
     <import resource="classpath:/org/apdplat/security.xml" />
-    <import resource="classpath:/org/apdplat/compass.xml" />
     <import resource="classpath:/org/apdplat/ws.xml" />
 </beans>
