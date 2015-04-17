@@ -375,6 +375,7 @@ public class User extends SimpleModel  implements UserDetails{
             }
         }
         if(grantedAuthArray.isEmpty()){
+            LOG.debug("don't have any privilege");
             return null;
         }
         grantedAuthArray.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
