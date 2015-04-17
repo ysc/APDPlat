@@ -80,7 +80,7 @@ String requestCode="";
 if(FileUtils.existsFile("/WEB-INF/licence")){
     List<String> reqs = FileUtils.getTextFileContent("/WEB-INF/licence");
     if(reqs!=null && reqs.size()==1){
-        requestCode=reqs.iterator().next().toString();
+        requestCode=reqs.iterator().next();
     }
 }
 String shortcut=PropertyHolder.getProperty("module.short.name");
