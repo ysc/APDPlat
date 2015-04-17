@@ -47,11 +47,11 @@
         <!-- 主要依赖库的版本定义 -->
         <org.springframework.version>4.0.9.RELEASE</org.springframework.version>
         <poi.version>3.8-beta4</poi.version>
-        <spring-security-core.version>3.1.4.RELEASE</spring-security-core.version>
-        <spring-security-web.version>3.1.4.RELEASE</spring-security-web.version>
-        <spring-security-config.version>3.1.4.RELEASE</spring-security-config.version>
-        <spring-security-acl.version>3.1.4.RELEASE</spring-security-acl.version>
-        <spring-security-taglibs.version>3.1.4.RELEASE</spring-security-taglibs.version>
+        <spring-security-core.version>3.2.0.RELEASE</spring-security-core.version>
+        <spring-security-web.version>3.2.0.RELEASE</spring-security-web.version>
+        <spring-security-config.version>3.2.0.RELEASE</spring-security-config.version>
+        <spring-security-acl.version>3.2.0.RELEASE</spring-security-acl.version>
+        <spring-security-taglibs.version>3.2.0.RELEASE</spring-security-taglibs.version>
         <json-lib.version>2.3</json-lib.version>
         <cglib.version>2.2</cglib.version>
         <commons-pool.version>1.2</commons-pool.version>
