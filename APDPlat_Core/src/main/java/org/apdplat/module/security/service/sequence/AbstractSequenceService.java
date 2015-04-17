@@ -20,18 +20,20 @@
 
 package org.apdplat.module.security.service.sequence;
 
-import org.apdplat.module.system.service.PropertyHolder;
-import org.apdplat.platform.log.APDPlatLogger;
-import org.apdplat.platform.util.ConvertUtils;
-import org.apdplat.platform.util.FileUtils;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import org.apdplat.module.system.service.PropertyHolder;
+import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
+import org.apdplat.platform.util.ConvertUtils;
+import org.apdplat.platform.util.FileUtils;
 import org.hyperic.sigar.Mem;
 import org.hyperic.sigar.NetFlags;
 import org.hyperic.sigar.NetInterfaceConfig;
@@ -113,6 +115,7 @@ public abstract class AbstractSequenceService   implements SequenceService{
     }
     /**
      * 利用sigar来生成机器码，当然这个实现不是很好，无法获得CPU ID，希望有兴趣的朋友来改进这个实现
+     * 如果不能生成，则给一个默认值
      * @param osName 操作系统类型
      * @return 机器码
      */
@@ -162,6 +165,13 @@ public abstract class AbstractSequenceService   implements SequenceService{
         } catch (Throwable ex) {
             LOG.error("生成 "+osName+" 平台下的机器码失败", ex);
         }
-        return null;
+        String defaultInfo = getDefault();
+        LOG.debug("使用默认的信息来生成机器码:"+defaultInfo);
+        return getMD5(defaultInfo);
+    }
+    private String getDefault(){
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.getProperties().list(new PrintStream(out));
+        return out.toString();
     }
 }
