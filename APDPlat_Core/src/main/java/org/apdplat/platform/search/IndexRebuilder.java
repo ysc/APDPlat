@@ -22,7 +22,6 @@ package org.apdplat.platform.search;
 
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.ConvertUtils;
-import java.io.File;
 import java.util.Locale;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,11 +46,6 @@ public class IndexRebuilder {
      */
     public boolean build(){
         try{
-            LOG.info("开始删除索引文件");
-            LOG.info("Start to delete index file", Locale.ENGLISH);
-            delDir(IndexManager.getIndexDir());
-            LOG.info("删除索引文件结束");
-            LOG.info("Finish delete index file", Locale.ENGLISH);
             LOG.info("开始建立索引文件...");
             LOG.info("Start to create index file...", Locale.ENGLISH);
             long beginTime = System.currentTimeMillis();
@@ -84,19 +78,5 @@ public class IndexRebuilder {
             return false;
         }
         return true;
-    }
-    private void delDir(File file){
-        if(file.isFile()){
-            file.delete();
-        }else if(file.isDirectory()){
-            File[] files=file.listFiles();
-            if(files.length==0){
-                file.delete();
-            }else{
-                for(File f : files){
-                    delDir(f);
-                }
-            }
-        }
     }
 }
