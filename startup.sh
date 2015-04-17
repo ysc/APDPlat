@@ -11,9 +11,9 @@ else
 fi
 mvn clean install
 echo clean install finished
-rm -rf ~/tomcat-8.0.21/apache-tomcat-8.0.21/webapps/APDPlat_Web-2.5
+rm -rf ~/tomcat-8.0.21/apache-tomcat-8.0.21/webapps/APDPlat_Web-2.6
 echo old webapps directory deleted
-cp APDPlat_Web/target/APDPlat_Web-2.5.war ~/tomcat-8.0.21/apache-tomcat-8.0.21/webapps/
+cp APDPlat_Web/target/APDPlat_Web-2.6.war ~/tomcat-8.0.21/apache-tomcat-8.0.21/webapps/
 echo copy war finished
 rm -rf ~/tomcat-8.0.21/apache-tomcat-8.0.21/logs
 echo old logs directory deleted
