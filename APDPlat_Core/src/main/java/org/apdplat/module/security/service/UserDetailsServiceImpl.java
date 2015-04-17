@@ -21,12 +21,10 @@
 package org.apdplat.module.security.service;
 
 import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.service.filter.IPAccessControler;
 import org.apdplat.platform.criteria.Criteria;
 import org.apdplat.platform.criteria.Operator;
 import org.apdplat.platform.criteria.PropertyCriteria;
 import org.apdplat.platform.criteria.PropertyEditor;
-import org.apdplat.platform.filter.OpenEntityManagerInViewFilter;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.result.Page;
 import org.apdplat.platform.service.ServiceFacade;
@@ -38,7 +36,6 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -59,7 +56,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public static String SPRING_SECURITY_LAST_USERNAME = null;
     private static Map<String,String> messages = new HashMap<>();
     private String message;
-    private static final IPAccessControler ipAccessControler=new IPAccessControler();
     
     /**
      * 在登录的JSP页面中，如果用户登录失败，可调用此方法返回登录失败的原因
@@ -85,11 +81,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         SPRING_SECURITY_LAST_USERNAME = username;
         //加try catch的目的是为了能执行finally的代码，在登录失败的情况下保存失败原因
         try{
-            if(ipAccessControler.deny(OpenEntityManagerInViewFilter.request)){
-                message = "IP访问策略限制";
-                LOG.info(message);
-                throw new UsernameNotFoundException(message);
-            }
             return load(username);
         }catch(  UsernameNotFoundException e){
             throw e;
