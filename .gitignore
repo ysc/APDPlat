@@ -10,6 +10,12 @@ APDPlat_Web/target/
 APDPlat_Web/.settings/
 APDPlat_Web/.classpath
 APDPlat_Web/.project
+APDPlat_Web/src/main/webapp/WEB-INF/lib-jdbc-driver-not-in-use/
+APDPlat_Web/src/main/webapp/WEB-INF/lib/server
+APDPlat_Web/src/main/webapp/WEB-INF/licence
+APDPlat_Web/src/main/webapp/platform/css/module.css
+APDPlat_Web/src/main/webapp/platform/css/operation.css
+APDPlat_Web/src/main/webapp/platform/js/dic.js
 APDPlat.iml
 APDPlat.ipr
 APDPlat.iws
