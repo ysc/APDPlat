@@ -35,12 +35,6 @@ public interface Action {
     public String create();
 
     /**
-     * 获取添加模型的表单
-     * @return
-     */
-    public String createForm();
-
-    /**
      * 检索一个特定的模型
      * @return
      */
@@ -58,11 +52,6 @@ public interface Action {
      */
     public String updatePart();
 
-    /**
-     * 获取更新模型的表单
-     * @return
-     */
-    public String updateForm();
 
     /**
      * 删除一系列指定的模型
