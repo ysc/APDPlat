@@ -55,13 +55,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @MappedSuperclass
 public abstract class ActionSupport extends DataPrivilegeControl{
     protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
-    
-    protected static final String LIST = "list";
-    protected static final String FORM = "form";
-    protected static final String INPUT = "input";
-    protected static final String ERROR = "error";
-    protected static final String SUCCESS = "success";
-    protected static final String DETAIL = "detail";
+
     private Feedback feedback;
     private PageCriteria pageCriteria = new PageCriteria(1, 17);
     private String propertyCriteria;
