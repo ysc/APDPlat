@@ -12,13 +12,13 @@ APDPlat使用的技术主要有：
 
     1)、Web前端使用EXT JS。
 
-    2)、前端控制器使用Struts2。
+    2)、前端控制器原来使用Struts2，从版本2.6开始使用Spring MVC。
 
     3)、IOC容器使用Spring。
 
     4)、ORM使用JPA，默认实现是Hibernate。
 
-    5)、内置搜索（OSEM）使用Compass。
+    5)、内置搜索（OSEM）使用Compass，从版本2.6开始废弃。
 
     6)、认证授权使用SpringSecurity。
 
