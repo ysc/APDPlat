@@ -21,29 +21,28 @@
 package org.apdplat.module.security.action;
 
 import org.apdplat.module.security.service.SecurityCheck;
-import org.apdplat.platform.action.ActionSupport;
 import org.apdplat.platform.util.FileUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- *
+ * 激活产品
  * @author 杨尚川
  */
-@Scope("prototype")
 @Controller
 @RequestMapping("/security")
-public class ActiveAction extends ActionSupport{
-    private String licence;
-    
+public class ActiveAction{
+    @ResponseBody
+    @RequestMapping("/active!buy.action")
     public String buy(){
         
-        return null;
+        return "暂不支持在线购买";
     }
     @ResponseBody
-    public String active(){
+    @RequestMapping("/active!active.action")
+    public String active(@RequestParam String licence){
         FileUtils.createAndWriteFile("/WEB-INF/classes/licences/apdplat.licence", licence);
         SecurityCheck.check();
         if(FileUtils.existsFile("/WEB-INF/licence")){
@@ -51,9 +50,5 @@ public class ActiveAction extends ActionSupport{
         }else{
                 return "激活成功，感谢您的购买！";
         }
-    }
-
-    public void setLicence(String licence) {
-        this.licence = licence;
     }
 }
