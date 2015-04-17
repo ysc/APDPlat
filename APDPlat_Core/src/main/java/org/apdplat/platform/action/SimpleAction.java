@@ -74,26 +74,16 @@ public abstract class SimpleAction<T extends Model> extends ActionSupport implem
 
         super.setFeedback(new Feedback(model.getId(), "添加成功"));
 
-        return SUCCESS;
-    }
-
-    @Override
-    public String createForm() {
-        return FORM;
+        return "";
     }
 
     @Override
     public String retrieve() {
         this.setModel(service.retrieve(modelClass, model.getId()));
 
-        return DETAIL;
+        return "";
     }
 
-    @Override
-    public String updateForm() {
-        setModel(service.retrieve(modelClass, model.getId()));
-        return null;
-    }
 
     @Override
     public String updatePart() {
@@ -101,7 +91,7 @@ public abstract class SimpleAction<T extends Model> extends ActionSupport implem
 
         super.setFeedback(new Feedback(model.getId(), "添加成功"));
 
-        return SUCCESS;
+        return "";
     }
 
     @Override
@@ -110,20 +100,20 @@ public abstract class SimpleAction<T extends Model> extends ActionSupport implem
 
         super.setFeedback(new Feedback(model.getId(), "更新成功"));
 
-        return SUCCESS;
+        return "";
     }
 
     @Override
     public String delete() {
         service.delete(modelClass, super.getIds());
 
-        return SUCCESS;
+        return "";
     }
 
     @Override
     public String query() {
         this.setPage(service.query(modelClass, super.getPageCriteria(), super.buildPropertyCriteria(), super.buildOrderCriteria()));
-        return LIST;
+        return "";
     }
 
     @Override
