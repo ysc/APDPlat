@@ -20,10 +20,9 @@
 
 package org.apdplat.module.system.action;
 
-import org.apdplat.platform.action.DefaultAction;
+import org.apdplat.platform.action.ActionSupport;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.FileUtils;
-import org.apdplat.platform.util.Struts2Utils;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -33,19 +32,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
 *
 * @author 杨尚川
 */
 @Scope("prototype")
 @Controller
-@Namespace("/system")
-public class UploadImageAction extends DefaultAction {
+@RequestMapping("/system")
+public class UploadImageAction extends ActionSupport {
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(UploadImageAction.class);
     
     //上传
@@ -57,30 +57,30 @@ public class UploadImageAction extends DefaultAction {
     private String photoContentType;
     private String photoFileName;
 
+    @ResponseBody
     public String photoPath(){
-        String result=ServletActionContext.getRequest().getSession().getAttribute("path").toString();
-        Struts2Utils.renderText(result);
-        return null;
+        String result=getSession().getAttribute("path").toString();
+        return result;
     }
 
+    @ResponseBody
     public String upload(){
         try{
             processPhotoFile();
-            ServletActionContext.getRequest().getSession().setAttribute("path", path);
-            Struts2Utils.renderHtml("true");
+            getSession().setAttribute("path", path);
+            return "true";
         }catch(Exception e){
-            Struts2Utils.renderHtml("false");
+            return "false";
         }
-        return null;
     }
+    @ResponseBody
     public String delete(){
         try{
             deletePhotoFile();
-            Struts2Utils.renderText("true");
-        }catch(Exception e){
-            Struts2Utils.renderText("false");
+            return "true";
+        }catch (Exception e) {
+            return "false";
         }
-        return null;
     }
     private void deletePhotoFile(){
         if(path==null || "".equals(path)) {

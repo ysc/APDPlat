@@ -26,28 +26,27 @@ import org.apdplat.module.security.model.UserGroup;
 import org.apdplat.module.security.service.UserGroupService;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/security")
+@RequestMapping("/security")
 public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
     @Resource(name="userGroupService")
     private UserGroupService userGroupService;
     private List<Role> roles = null;
-    
+
+    @ResponseBody
     public String store(){     
         String json = userGroupService.toAllUserGroupJson();
-        Struts2Utils.renderJson(json);
-
-        return null;
+        return json;
     } 
     /**
      * 删除用户组前，把该用户组从所有引用该用户组的用户中移除

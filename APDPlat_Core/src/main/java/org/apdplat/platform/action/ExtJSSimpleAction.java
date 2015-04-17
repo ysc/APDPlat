@@ -20,6 +20,7 @@
 
 package org.apdplat.platform.action;
 
+import net.sf.json.JSONObject;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.system.service.ExcelService;
 import org.apdplat.platform.action.converter.DateTypeConverter;
@@ -32,7 +33,6 @@ import org.apdplat.platform.model.Model;
 import org.apdplat.platform.result.Page;
 import org.apdplat.platform.util.ReflectionUtils;
 import org.apdplat.platform.util.SpringContextUtils;
-import org.apdplat.platform.util.Struts2Utils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,6 +49,7 @@ import javax.persistence.Temporal;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.platform.annotation.RenderDate;
 import org.apdplat.platform.annotation.RenderTime;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -89,6 +90,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return null;
     }
 
+    @ResponseBody
     public String chart(){
         if(StringUtils.isNotBlank(getQueryString())){
             //搜索出所有数据   
@@ -106,12 +108,11 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             LOG.info("生成的报表数据为空");
             return null;
         }
-        Struts2Utils.renderXml(data);
         //业务处理完毕后删除页面数据引用，加速垃圾回收
         this.getPage().getModels().clear();
         this.setPage(null);
         
-        return null;
+        return data;
     }
 
     protected String generateReportData(List<T> models){
@@ -126,6 +127,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return getService().retrieve(User.class, user.getId());
     }
     @Override
+    @ResponseBody
     public String create() {
         try{
             try{
@@ -133,29 +135,29 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }catch(Exception e){
                 map=new HashMap();
                 map.put("success", false);
-                map.put("message", e.getMessage()+",不能添加");
-                Struts2Utils.renderJson(map);
-                return null;
+                map.put("message", e.getMessage() + ",不能添加");
+                String json = JSONObject.fromObject(map).toString();
+                return json;
             }
             assemblyModelForCreate(model);
             objectReference(model);
             getService().create(model);
             afterSuccessCreateModel(model);
         }catch(Exception e){
-            LOG.error("创建模型失败",e);
+            LOG.error("创建模型失败", e);
             afterFailCreateModel(model);
 
             map=new HashMap();
             map.put("success", false);
-            map.put("message", "创建失败 "+e.getMessage());
-            Struts2Utils.renderJson(map);
-            return null;
+            map.put("message", "创建失败 " + e.getMessage());
+            String json = JSONObject.fromObject(map).toString();
+            return json;
         }
         map=new HashMap();
         map.put("success", true);
         map.put("message", "创建成功");
-        Struts2Utils.renderJson(map);
-        return null;
+        String json = JSONObject.fromObject(map).toString();
+        return json;
     }
 
     @Override
@@ -163,19 +165,18 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return FORM;
     }
     @Override
+    @ResponseBody
     public String retrieve() {
         this.setModel(getService().retrieve(modelClass, model.getId()));
         if(model==null){
-            Struts2Utils.renderText("false");
-            return null;
+            return "false";
         }
         afterRetrieve(model);
-        Map temp = new HashMap();
-        renderJsonForRetrieve(temp);
-        retrieveAfterRender(temp,model);
-        Struts2Utils.renderJson(temp);
-
-        return null;
+        Map map = new HashMap();
+        renderJsonForRetrieve(map);
+        retrieveAfterRender(map, model);
+        String json = JSONObject.fromObject(map).toString();
+        return json;
     }
    
     protected void afterRetrieve(T model){
@@ -232,34 +233,33 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             getService().update(model);
             afterSuccessPartUpdateModel(model);
         }catch(Exception e){
-            LOG.error("更新模型失败",e);
+            LOG.error("更新模型失败", e);
             afterFailPartUpdateModel(model);
             map=new HashMap();
             map.put("success", false);
-            map.put("message", "修改失败 "+e.getMessage());
-            Struts2Utils.renderJson(map);
-            return null;
+            map.put("message", "修改失败 " + e.getMessage());
+            String json = JSONObject.fromObject(map).toString();
+            return json;
         }
         map=new HashMap();
         map.put("success", true);
         map.put("message", "修改成功");
-        Struts2Utils.renderJson(map);
-        return null;
+        String json = JSONObject.fromObject(map).toString();
+        return json;
     }
     @Override
+    @ResponseBody
     public String updateWhole() {
         try{
             assemblyModelForUpdate(model);
             getService().update(model);
             afterSuccessWholeUpdateModel(model);
         }catch(Exception e){
-            LOG.error("更新模型失败",e);
+            LOG.error("更新模型失败", e);
             afterFailWholeUpdateModel(model);
-            Struts2Utils.renderText("false");
-            return null;
+            return "false";
         }
-        Struts2Utils.renderText("true");
-        return null;
+        return "true";
     }
     public void prepareForDelete(Integer[] ids){
 
@@ -268,23 +268,23 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return null;
     }
     @Override
+    @ResponseBody
     public String delete() {
         try{
             prepareForDelete(getIds());
             List<Integer> deletedIds=getService().delete(modelClass, getIds());
             afterDelete(deletedIds);
         }catch(Exception e){
-            LOG.info("删除数据出错",e);
-            Struts2Utils.renderText(e.getMessage());
-            return null;
+            LOG.info("删除数据出错", e);
+            return e.getMessage();
         }
-        Struts2Utils.renderText("删除成功");
-        return null;
+        return "删除成功";
     }
     public void afterDelete(List<Integer> deletedIds){
 
     }
     @Override
+    @ResponseBody
     public String query() {
         beforeQuery();
         if(search){
@@ -292,19 +292,20 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             return null;
         }
         this.setPage(getService().query(modelClass, getPageCriteria(), buildPropertyCriteria(), buildOrderCriteria()));
-        Map json = new HashMap();
-        json.put("totalProperty", page.getTotalRecords());
+        Map map = new HashMap();
+        map.put("totalProperty", page.getTotalRecords());
         List<Map> result = new ArrayList<>();
         renderJsonForQuery(result);
-        json.put("root", result);
-        Struts2Utils.renderJson(json);
+        map.put("root", result);
         //业务处理完毕后删除页面数据引用，加速垃圾回收
         this.getPage().getModels().clear();
         this.setPage(null);
-        
-        return null;
+
+        String json = JSONObject.fromObject(map).toString();
+        return json;
     }
 
+    @ResponseBody
     public String export() {
         if(search){
             //导出全部搜索结果
@@ -322,12 +323,11 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         List<List<String>> result = new ArrayList<>();
         renderForExport(result);
         String path=excelService.write(result, exportFileName());
-        Struts2Utils.renderText(path);
         //业务处理完毕后删除页面数据引用，加速垃圾回收
         this.getPage().getModels().clear();
         this.setPage(null);
         
-        return null;
+        return path;
     }
     private List<T> processSearchResult(List<T> models){
         List<T> result =  new ArrayList<>();
@@ -340,19 +340,20 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return result;
     }
     @Override
+    @ResponseBody
     public String search() {
         beforeSearch();
         page=getService().search(getQueryString(), getPageCriteria(), modelClass);
         //List<T> models=processSearchResult(page.getModels());
         //page.setModels(models);
 
-        Map json = new HashMap();
-        json.put("totalProperty", page.getTotalRecords());
+        Map map = new HashMap();
+        map.put("totalProperty", page.getTotalRecords());
         List<Map> result = new ArrayList<>();
         renderJsonForSearch(result);
-        json.put("root", result);
-        Struts2Utils.renderJson(json);
-        return null;
+        map.put("root", result);
+        String json = JSONObject.fromObject(map).toString();
+        return json;
     }
     protected  void beforeQuery(){
 

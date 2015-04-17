@@ -20,13 +20,13 @@
 
 package org.apdplat.module.system.action;
 
+import net.sf.json.JSONObject;
 import org.apdplat.module.system.model.BackupScheduleConfig;
 import org.apdplat.module.system.service.backup.BackupSchedulerService;
 import org.apdplat.module.system.service.backup.AbstractBackupService;
-import org.apdplat.platform.action.DefaultAction;
+import org.apdplat.platform.action.ActionSupport;
 import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.FileUtils;
-import org.apdplat.platform.util.Struts2Utils;
 import org.apdplat.platform.util.ZipUtils;
 import java.io.File;
 import java.util.ArrayList;
@@ -34,16 +34,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.system.service.backup.BackupService;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/system")
-public class BackupAction extends DefaultAction {
+@RequestMapping("/system")
+public class BackupAction extends ActionSupport {
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(BackupAction.class);
     
     private String date;
@@ -53,8 +54,8 @@ public class BackupAction extends DefaultAction {
     private BackupSchedulerService backupSchedulerService;
     private int hour;
     private int minute;
-    
-    
+
+    @ResponseBody
     public String query(){
         Map map=new HashMap();
         BackupScheduleConfig config=null;
@@ -72,44 +73,46 @@ public class BackupAction extends DefaultAction {
         }else{
             map.put("state", "无定时调度任务");
         }
-        
-        Struts2Utils.renderJson(map);
-        return null;
+
+        String json = JSONObject.fromObject(map).toString();
+        return json;
     }
+    @ResponseBody
     public String clearTask(){
         String result=backupSchedulerService.unSchedule();
-        Struts2Utils.renderText(result);
-        return null;
+        return result;
     }
+    @ResponseBody
     public String setTask(){     
         if(-1<hour && hour<24 && -1<minute && minute<60){
            String result=backupSchedulerService.schedule(hour, minute);
-           Struts2Utils.renderText(result);
-        } else{
-            Struts2Utils.renderText("调度时间不正确");
-        } 
-        return null;
+            return result;
+        }
+        return "调度时间不正确";
     }
+    @ResponseBody
     public String store(){
         List<String> existBackup=backupService.getExistBackupFileNames();
         List<Map<String,String>> data=new ArrayList<>();
         existBackup.forEach(item -> {
-            Map<String,String> map=new HashMap<>();
+            Map<String, String> map = new HashMap<>();
             map.put("value", item);
             map.put("text", item);
             data.add(map);
         });
-        Struts2Utils.renderJson(data);
-        return null;
+
+        String json = JSONObject.fromObject(data).toString();
+        return json;
     }
+    @ResponseBody
     public String backup(){
         if(backupService.backup()){
-            Struts2Utils.renderText("true");
+            return "true";
         }else{
-            Struts2Utils.renderText("false");
+            return "false";
         }
-        return null;
     }
+    @ResponseBody
     public String download(){        
         if(date==null || "".equals(date.trim())){
             LOG.info("请指定下载备份数据库的时间点");
@@ -127,10 +130,10 @@ public class BackupAction extends DefaultAction {
         String backupFile=backupService.getBackupFilePath()+date+".bak";
         //生成一个临时压缩文件
         ZipUtils.createZip(backupFile, outputFile.getAbsolutePath());
-            
-        Struts2Utils.renderText(destPath+"/"+date+".zip");
-        return null;
+
+        return destPath+"/"+date+".zip";
     }
+    @ResponseBody
     public String restore(){
         if(date==null || "".equals(date.trim())){
             LOG.info("请指定恢复数据库到哪一个时间点");
@@ -138,11 +141,9 @@ public class BackupAction extends DefaultAction {
         }
         date= date.replace(" ", "-").replace(":", "-");
         if(backupService.restore(date)){
-            Struts2Utils.renderText("true");
-        }else{
-            Struts2Utils.renderText("false");
+            return "true";
         }
-        return null;
+        return "false";
     }
     public void setDate(String date) {
         this.date = date;

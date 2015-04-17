@@ -24,15 +24,15 @@ import org.apdplat.module.dictionary.model.Dic;
 import org.apdplat.module.dictionary.model.DicItem;
 import org.apdplat.module.dictionary.service.DicService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apdplat.platform.util.Struts2Utils;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/dictionary")
+@RequestMapping("/dictionary")
 public class DicItemAction extends ExtJSSimpleAction<DicItem> {
     @Resource(name = "dicService")
     private DicService dicService;
@@ -42,9 +42,10 @@ public class DicItemAction extends ExtJSSimpleAction<DicItem> {
      * 返回数据字典目录树
      * @return 
      */
+    @ResponseBody
     public String store() {
         if (node == null) {
-            return null;
+            return "";
         }
         Dic dic=null;
         if(node.trim().startsWith("root")){
@@ -56,9 +57,9 @@ public class DicItemAction extends ExtJSSimpleAction<DicItem> {
         
         if (dic != null) {
             String json = dicService.toJson(dic);
-            Struts2Utils.renderJson(json);
+            return json;
         }
-        return null;
+        return "";
     }
 
     public void setNode(String node) {

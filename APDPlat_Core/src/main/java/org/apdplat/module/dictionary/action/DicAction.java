@@ -20,22 +20,23 @@
 
 package org.apdplat.module.dictionary.action;
 
+import net.sf.json.JSONArray;
 import org.apdplat.module.dictionary.model.Dic;
 import org.apdplat.module.dictionary.service.DicService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/dictionary")
+@RequestMapping("/dictionary")
 public class DicAction extends ExtJSSimpleAction<Dic> {
     @Resource(name = "dicService")
     private DicService dicService;
@@ -50,15 +51,16 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
      * 2、树形下拉选项
      * @return 不需要返回值，直接给客户端写数据
      */
+    @ResponseBody
     public String store(){
         Dic dictionary=dicService.getDic(dic);
         if(dictionary==null){
             LOG.info("没有找到数据词典 "+dic);
-            return null;
+            return "";
         }
         if("true".equals(tree)){
             String json = dicService.toStoreJson(dictionary);
-            Struts2Utils.renderJson(json);
+            return json;
         }else{
             List<Map<String,String>> data=new ArrayList<>();
             dictionary.getDicItems().forEach(item -> {
@@ -71,9 +73,9 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
                 itemMap.put("text", item.getName());
                 data.add(itemMap);
             });
-            Struts2Utils.renderJson(data);
+            String json = JSONArray.fromObject(data).toString();
+            return json;
         }
-        return null;
     }
 
     public void setJustCode(boolean justCode) {

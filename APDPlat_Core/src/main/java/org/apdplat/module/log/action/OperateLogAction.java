@@ -20,6 +20,7 @@
 
 package org.apdplat.module.log.action;
 
+import net.sf.json.JSONArray;
 import org.apdplat.module.log.model.OperateLog;
 import org.apdplat.module.log.model.OperateStatistics;
 import org.apdplat.module.log.service.OperateLogChartDataService;
@@ -27,21 +28,21 @@ import org.apdplat.module.log.service.OperateTyeCategoryService;
 import org.apdplat.module.log.service.UserCategoryService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.model.ModelMetaData;
-import org.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.platform.log.BufferLogCollector;
 import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/log")
+@RequestMapping("/log")
 public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
     @Resource(name="userCategoryService")
     private UserCategoryService userCategoryService;
@@ -81,6 +82,7 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
      * 所有模型信息
      * @return 
      */
+    @ResponseBody
     public String store(){        
         List<Map<String,String>> data=new ArrayList<>();
         ModelMetaData.getModelDes().keySet().forEach(key -> {
@@ -89,8 +91,8 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
             temp.put("text", ModelMetaData.getModelDes().get(key));
             data.add(temp);
         });
-        Struts2Utils.renderJson(data);
-        return null;
+        String json = JSONArray.fromObject(data).toString();
+        return json;
     }
 
     public void setCategory(String category) {

@@ -22,7 +22,7 @@ package org.apdplat.module.module.action;
 
 import org.apdplat.module.module.model.Command;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.module.service.ModuleCache;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Controller;
 */
 @Controller
 @Scope("prototype")
-@Namespace("/module")
+@RequestMapping("/module")
 public class EditCommandAction extends ExtJSSimpleAction<Command> {
 
     @Override

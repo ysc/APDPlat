@@ -27,18 +27,18 @@ import org.apdplat.module.security.service.RoleService;
 import org.apdplat.module.security.service.UserHolder;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/security")
+@RequestMapping("/security")
 public class RoleAction extends ExtJSSimpleAction<Role> {
     private String node;
     @Resource(name="roleService")
@@ -46,19 +46,19 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
     private List<Command> commands;
     private boolean recursion=false;
 
+    @ResponseBody
     public String store(){            
         if(recursion){
             int rootId = roleService.getRootRole().getId();
             String json=roleService.toJson(rootId,recursion);
-            Struts2Utils.renderJson(json);
-
-            return null;
+            return json;
         }
 
         return query();
     }
     
     @Override
+    @ResponseBody
     public String query(){
         //如果node为null则采用普通查询方式
         if(node==null){
@@ -67,16 +67,16 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         //如果指定了node则采用自定义的查询方式
         if(node.trim().startsWith("root")){
             String json=roleService.toRootJson(recursion);
-            Struts2Utils.renderJson(json);
+            return json;
         }else{
             String[] attr=node.trim().split("-");
             if(attr.length==2){
                 int roleId=Integer.parseInt(attr[1]);
                 String json=roleService.toJson(roleId,recursion);
-                Struts2Utils.renderJson(json);                    
+                return json;
             }   
         }
-        return null;
+        return "";
     }
     @Override
     protected void old(Role model) {

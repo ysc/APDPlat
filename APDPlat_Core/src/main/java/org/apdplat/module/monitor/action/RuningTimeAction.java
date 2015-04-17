@@ -28,7 +28,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.platform.log.BufferLogCollector;
 import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
@@ -36,7 +36,7 @@ import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@Namespace("/monitor")
+@RequestMapping("/monitor")
 public class RuningTimeAction extends ExtJSSimpleAction<RuningTime> {
     private String category;
     @Resource(name="runingTimeSingleService")

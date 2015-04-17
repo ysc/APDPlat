@@ -20,21 +20,22 @@
 
 package org.apdplat.module.index.action;
 
+import net.sf.json.JSONArray;
 import org.apdplat.module.index.model.IndexScheduleConfig;
 import org.apdplat.module.index.service.IndexSchedulerService;
 import org.apdplat.platform.action.ExtJSActionSupport;
 import org.apdplat.platform.search.IndexManager;
-import org.apdplat.platform.util.Struts2Utils;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/index")
+@RequestMapping("/index")
 public class SetupAction extends ExtJSActionSupport {
     @Resource(name="indexManager")
     private IndexManager indexManager;
@@ -43,7 +44,8 @@ public class SetupAction extends ExtJSActionSupport {
     
     private int hour;
     private int minute;
-    
+
+    @ResponseBody
     public String query(){
         Map map=new HashMap();
         try{
@@ -61,28 +63,28 @@ public class SetupAction extends ExtJSActionSupport {
             LOG.error("无定时调度任务", e);
             map.put("state", "无定时调度任务");
         }
-        
-        Struts2Utils.renderJson(map);
-        return null;
+
+        String json = JSONArray.fromObject(map).toString();
+        return json;
     }
+    @ResponseBody
     public String rebuidAll() {        
         indexManager.rebuidAll();
-        Struts2Utils.renderText("已将重建索引任务提交给后台");
-        return null;
+        return "已将重建索引任务提交给后台";
     }
+    @ResponseBody
     public String clearTask(){
         String result=indexSchedulerService.unSchedule();
-        Struts2Utils.renderText(result);
-        return null;
+        return result;
     }
+    @ResponseBody
     public String setTask(){     
         if(-1<hour && hour<24 && -1<minute && minute<60){
            String result=indexSchedulerService.schedule(hour, minute);
-           Struts2Utils.renderText(result);
+           return result;
         } else{
-            Struts2Utils.renderText("调度时间不正确");
-        } 
-        return null;
+           return "调度时间不正确";
+        }
     }
 
     public void setHour(int hour) {

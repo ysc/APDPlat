@@ -25,17 +25,17 @@ import org.apdplat.module.info.model.News;
 import org.apdplat.module.info.service.InfoTypeService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.criteria.Property;
-import org.apdplat.platform.util.Struts2Utils;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/info")
+@RequestMapping("/info")
 public class InfoTypeAction extends ExtJSSimpleAction<InfoType> {
 
     private String node;
@@ -85,6 +85,7 @@ public class InfoTypeAction extends ExtJSSimpleAction<InfoType> {
     }
 
     @Override
+    @ResponseBody
     public String query() {
         //如果node为null则采用普通查询方式
         if (node == null) {
@@ -93,13 +94,12 @@ public class InfoTypeAction extends ExtJSSimpleAction<InfoType> {
         //如果指定了node则采用自定义的查询方式
         if ("root".equals(node.trim())) {
             String json = infoTypeService.toRootJson(lang);
-            Struts2Utils.renderJson(json);
+            return json;
         } else {
             int id = Integer.parseInt(node.trim());
             String json = infoTypeService.toJson(id, lang);
-            Struts2Utils.renderJson(json);
+            return json;
         }
-        return null;
     }
 
     public void setNode(String node) {

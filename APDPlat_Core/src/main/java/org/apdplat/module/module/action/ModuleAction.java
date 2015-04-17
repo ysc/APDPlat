@@ -23,20 +23,21 @@ package org.apdplat.module.module.action;
 import org.apdplat.module.module.model.Module;
 import org.apdplat.module.module.service.ModuleService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apdplat.platform.util.Struts2Utils;
 import javax.annotation.Resource;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.module.service.ModuleCache;
 import org.apdplat.module.security.service.UserHolder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 /**
 * 为树形模块导航菜单服务
 * @author 杨尚川
 */
 @Controller
 @Scope("prototype")
-@Namespace("/module")
+@RequestMapping("/module")
 public class ModuleAction extends ExtJSSimpleAction<Module> {
         @Resource(name="moduleService")
         private ModuleService moduleService;
@@ -44,6 +45,7 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
         private boolean privilege=false;
         private boolean recursion=false;      
         @Override
+        @ResponseBody
         public String query(){
             if(node==null){
                 return super.query();
@@ -57,8 +59,7 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
             String value=ModuleCache.get(key);
             if(value!=null){
                 LOG.debug("使用缓存数据，key:"+key+", value:"+value);
-                Struts2Utils.renderJson(value);
-                return null;
+                return value;
             }
             
             long start=System.currentTimeMillis();
@@ -81,7 +82,7 @@ public class ModuleAction extends ExtJSSimpleAction<Module> {
                 LOG.debug("ModuleAction.query() cost time: "+(System.currentTimeMillis()-start)+" 毫秒");
                 LOG.debug("设置缓存数据，key:"+key+", value:"+json);
                 ModuleCache.put(key, json);
-                Struts2Utils.renderJson(json);
+                return json;
             }
             return null;
         }

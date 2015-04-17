@@ -20,6 +20,7 @@
 
 package org.apdplat.module.security.action;
 
+import net.sf.json.JSONArray;
 import org.apdplat.module.security.model.Position;
 import org.apdplat.module.security.model.Role;
 import org.apdplat.module.security.model.User;
@@ -28,22 +29,24 @@ import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.criteria.Property;
 import org.apdplat.platform.criteria.PropertyCriteria;
-import org.apdplat.platform.util.Struts2Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.convention.annotation.Namespace;
+import javax.servlet.ServletContext;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.security.service.UserReportService;
 import org.apdplat.module.security.service.UserService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@Namespace("/security")
+@RequestMapping("/security")
 public class UserAction extends ExtJSSimpleAction<User> {
     private int orgId;
     private String oldPassword;
@@ -68,10 +71,10 @@ public class UserAction extends ExtJSSimpleAction<User> {
     private UserService userService;
     
     @Override
+    @ResponseBody
     public String report(){
-        byte[] report = userReportService.getReport(ServletActionContext.getServletContext(), ServletActionContext.getRequest());
-        Struts2Utils.renderImage(report, "text/html");        
-        return null;
+        byte[] report = userReportService.getReport(servletContext, getRequest());
+        return new String(report);
     }
     @Override
     protected void checkModel(User model) throws Exception{
@@ -82,25 +85,27 @@ public class UserAction extends ExtJSSimpleAction<User> {
     public PropertyCriteria buildPropertyCriteria(){
         return userService.buildPropertyCriteria(super.buildPropertyCriteria(), orgId);
     }
-    
+
+    @ResponseBody
     public String reset(){
         String result = userService.reset(getIds(), password);
-        Struts2Utils.renderText(result);
-        return null;
+        return result;
     }
-    
+
+    @ResponseBody
     public String online(){
         page = userService.getOnlineUsers(getStart(), getLimit(), org, role);
         
-        Map json = new HashMap();
-        json.put("totalProperty", page.getTotalRecords());
+        Map data = new HashMap();
+        data.put("totalProperty", page.getTotalRecords());
         List<Map> result = new ArrayList<>();
         renderJsonForQuery(result);
-        json.put("root", result);
-        Struts2Utils.renderJson(json);
-        return null;
+        data.put("root", result);
+        String json = JSONArray.fromObject(data).toString();
+        return json;
     }
 
+    @ResponseBody
     public String store(){
         if(select){
             return super.query();
@@ -113,8 +118,8 @@ public class UserAction extends ExtJSSimpleAction<User> {
             temp.put("text", user.getUsername());
             data.add(temp);
         });
-        Struts2Utils.renderJson(data);
-        return null;
+        String json = JSONArray.fromObject(data).toString();
+        return json;
     }
     @Override
     public void assemblyModelForCreate(User model) {
@@ -132,11 +137,11 @@ public class UserAction extends ExtJSSimpleAction<User> {
             }
         }
     }
+    @ResponseBody
     public String modifyPassword(){
-        Map result = userService.modifyPassword(oldPassword, newPassword);
-        Struts2Utils.renderJson(result);
-        
-        return null;
+        Map data = userService.modifyPassword(oldPassword, newPassword);
+        String json = JSONArray.fromObject(data).toString();
+        return json;
     }
     
     // 在更新一个特定的部分的Model之前对Model添加需要修改的属性

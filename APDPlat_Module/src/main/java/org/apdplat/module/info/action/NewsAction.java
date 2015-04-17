@@ -33,13 +33,13 @@ import org.apdplat.platform.criteria.PropertyType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@Namespace("/info")
+@RequestMapping("/info")
 public class NewsAction extends ExtJSSimpleAction<News> {
     private String lang = "zh";
     private int infoTypeId;
