@@ -27,16 +27,16 @@ import org.apdplat.platform.criteria.PageCriteria;
  * @author 杨尚川
  */
 public abstract class ExtJSActionSupport extends ActionSupport{
-    private int start=-1;
-    private int limit=-1;
+    private Integer start=null;
+    private Integer limit=null;
 
     public void convert(){
-        if(start==-1 && limit!=-1){
+        if(start==null && limit!=null){
             PageCriteria pageCriteria=new PageCriteria();
             pageCriteria.setSize(limit);
             super.setPageCriteria(pageCriteria);
         }
-        if(start!=-1 && limit!=-1){
+        if(start!=null && limit!=null){
             PageCriteria pageCriteria=new PageCriteria();
             int page=(start+limit)/limit;
             int size=limit;
@@ -46,20 +46,20 @@ public abstract class ExtJSActionSupport extends ActionSupport{
         }
     }
 
-    public int getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
         convert();
     }
 
-    public int getStart() {
+    public Integer getStart() {
         return start;
     }
 
-    public void setStart(int start) {
+    public void setStart(Integer start) {
         this.start = start;
         convert();
     }
