@@ -1,12 +1,12 @@
 #不用登录就可以访问登录页面
 /**/login.jsp*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
 #不需要登录就可以上传文件（IE外其他浏览器限制，swfupload在上传的时候新开一个会话）
-/**/*!upload.action*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
+/**/*/upload.action*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
 #web service可以匿名访问
 /**/ws/**=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
 #不需要登录就可以购买激活产品
-/**/security/active!active.action*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
-/**/security/active!buy.action*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
+/**/security/active/active.action*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
+/**/security/active/buy.action*=ROLE_ANONYMOUS,ROLE_MANAGER,ROLE_SUPERMANAGER
 #文件管理功能只有登录之后才能使用
 /**/ckeditor/**
 /**/ckfinder/**
@@ -14,12 +14,12 @@
 #platform目录下面的内容只有登录之后才能访问
 /**/platform/**
 #store方法是专门用来获取动态形成的数据字典，用户只要登陆之后就有访问权限
-/**/*!store.action*
+/**/*/store.action*
 #加载用户界面中的多级菜单模块，用户只要登陆之后就有访问权限
-/**/module/module!query.action*
+/**/module/module/query.action*
 #修改密码功能，用户只要登陆之后就有访问权限
-/**/security/user!modifypassword.action*
+/**/security/user/modifypassword.action*
 #查看在线用户功能，用户只要登陆之后就有访问权限
-/**/security/user!online.action*
+/**/security/user/online.action*
 #下面的action是属于未指定的情况
 /**/platform/**/*.action=ROLE_SUPERMANAGER
