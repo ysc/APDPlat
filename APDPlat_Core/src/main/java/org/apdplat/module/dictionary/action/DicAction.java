@@ -50,7 +50,7 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
      * @param dic
      * @param tree
      * @param justCode
-     * @return 不需要返回值，直接给客户端写数据
+     * @return 返回值直接给客户端
      */
     @ResponseBody
     @RequestMapping("/dic!store.action")
