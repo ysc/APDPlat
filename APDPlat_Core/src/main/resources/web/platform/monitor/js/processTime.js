@@ -23,7 +23,7 @@ var namespace='monitor';
     
     var category="userTime";
     var top=50;
-    var chartDataURL=contextPath+'/'+namespace+'/'+action+'!chart.action?top='+top+'&category=';
+    var chartDataURL=contextPath+'/'+namespace+'/'+action+'/chart.action?top='+top+'&category=';
  
     ProcessTimeChart=function(){
         return{

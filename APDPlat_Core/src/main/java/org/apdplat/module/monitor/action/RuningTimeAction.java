@@ -24,22 +24,21 @@ import org.apdplat.module.monitor.model.RuningTime;
 import org.apdplat.module.monitor.service.RuningTimeChartDataService;
 import org.apdplat.module.monitor.service.RuningTimeSingleService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
+import org.apdplat.platform.log.BufferLogCollector;
+import org.apdplat.platform.service.ServiceFacade;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.apdplat.platform.log.BufferLogCollector;
-import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/monitor")
+@RequestMapping("/monitor/runing-time/")
 public class RuningTimeAction extends ExtJSSimpleAction<RuningTime> {
-    private String category;
-    @Resource(name="runingTimeSingleService")
+    @Resource
     private RuningTimeSingleService runingTimeSingleService;
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
@@ -50,9 +49,8 @@ public class RuningTimeAction extends ExtJSSimpleAction<RuningTime> {
         return service;
     }
     @Override
-    public String query(){
+    protected  void beforeQuery(){
         BufferLogCollector.handleLog();
-        return super.query();
     }
     @Override
     protected void afterRender(Map map,RuningTime obj){
@@ -68,7 +66,7 @@ public class RuningTimeAction extends ExtJSSimpleAction<RuningTime> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<RuningTime> models) {
+    protected String generateReportData(List<RuningTime> models, String category, String top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("runingRate".equals(category)){
             data=RuningTimeChartDataService.getRuningRateData(models);
@@ -78,9 +76,5 @@ public class RuningTimeAction extends ExtJSSimpleAction<RuningTime> {
         }
         
         return runingTimeSingleService.getXML(data);
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

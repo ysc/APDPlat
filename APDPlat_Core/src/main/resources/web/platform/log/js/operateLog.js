@@ -22,7 +22,7 @@ var namespace='log';
     var action='operate-log';
     
     var category="operateType";
-    var chartDataURL=contextPath+'/'+namespace+'/'+action+'!chart.action?category=';
+    var chartDataURL=contextPath+'/'+namespace+'/'+action+'/chart.action?category=';
     
     OperateLogChart=function(){
         return{

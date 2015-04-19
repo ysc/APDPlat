@@ -24,31 +24,30 @@ import net.sf.json.JSONArray;
 import org.apdplat.module.log.model.OperateLog;
 import org.apdplat.module.log.model.OperateStatistics;
 import org.apdplat.module.log.service.OperateLogChartDataService;
-import org.apdplat.module.log.service.OperateTyeCategoryService;
+import org.apdplat.module.log.service.OperateTypeCategoryService;
 import org.apdplat.module.log.service.UserCategoryService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.model.ModelMetaData;
+import org.apdplat.platform.log.BufferLogCollector;
+import org.apdplat.platform.service.ServiceFacade;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.apdplat.platform.log.BufferLogCollector;
-import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/log")
+@RequestMapping("/log/operate-log/")
 public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
-    @Resource(name="userCategoryService")
+    @Resource
     private UserCategoryService userCategoryService;
-    @Resource(name="operateTyeCategoryService")
-    private OperateTyeCategoryService operateTyeCategoryService;
-    private String category;
+    @Resource
+    private OperateTypeCategoryService operateTypeCategoryService;
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
     private ServiceFacade service;
@@ -58,9 +57,8 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
         return service;
     }
     @Override
-    public String query(){
+    protected  void beforeQuery(){
         BufferLogCollector.handleLog();
-        return super.query();
     }
     @Override
     protected void afterRender(Map map,OperateLog obj){
@@ -70,12 +68,12 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
     }
     
     @Override
-    protected String generateReportData(List<OperateLog> models) {
+    protected String generateReportData(List<OperateLog> models, String category, String top) {
         List<OperateStatistics> data=OperateLogChartDataService.getData(models);
         if("user".equals(category)){
             return userCategoryService.getXML(data);
         }else{
-            return operateTyeCategoryService.getXML(data);
+            return operateTypeCategoryService.getXML(data);
         }
     }
     /**
@@ -83,6 +81,7 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
      * @return 
      */
     @ResponseBody
+    @RequestMapping("store.action")
     public String store(){        
         List<Map<String,String>> data=new ArrayList<>();
         ModelMetaData.getModelDes().keySet().forEach(key -> {
@@ -93,9 +92,5 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
         });
         String json = JSONArray.fromObject(data).toString();
         return json;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

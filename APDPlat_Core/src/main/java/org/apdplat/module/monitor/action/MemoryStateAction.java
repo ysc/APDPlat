@@ -24,21 +24,20 @@ import org.apdplat.module.monitor.model.MemoryState;
 import org.apdplat.module.monitor.service.MemoryStateCategoryService;
 import org.apdplat.module.monitor.service.MemoryStateChartDataService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
+import org.apdplat.platform.log.BufferLogCollector;
+import org.apdplat.platform.service.ServiceFacade;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.apdplat.platform.log.BufferLogCollector;
-import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/monitor")
+@RequestMapping("/monitor/memory-state/")
 public class MemoryStateAction extends ExtJSSimpleAction<MemoryState> {
-    private String category;
-    @Resource(name="memoryStateCategoryService")
+    @Resource
     private MemoryStateCategoryService memoryStateCategoryService;
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
@@ -49,9 +48,8 @@ public class MemoryStateAction extends ExtJSSimpleAction<MemoryState> {
         return service;
     }
     @Override
-    public String query(){
+    protected  void beforeQuery(){
         BufferLogCollector.handleLog();
-        return super.query();
     }
     @Override
     protected void afterRender(Map map,MemoryState obj){
@@ -62,7 +60,7 @@ public class MemoryStateAction extends ExtJSSimpleAction<MemoryState> {
     }
     
     @Override
-    protected String generateReportData(List<MemoryState> models) {
+    protected String generateReportData(List<MemoryState> models, String category, String top) {
         if("sequence".equals(category)){
             //不改变数据，就用models
         }
@@ -76,8 +74,5 @@ public class MemoryStateAction extends ExtJSSimpleAction<MemoryState> {
             models=MemoryStateChartDataService.getSequenceDataMonth(models);
         }
         return memoryStateCategoryService.getXML(models);
-    }
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

@@ -22,7 +22,7 @@ var namespace='monitor';
     var action='user-login';
     
     var category="loginTimes";
-    var chartDataURL=contextPath+'/'+namespace+'/'+action+'!chart.action?category=';
+    var chartDataURL=contextPath+'/'+namespace+'/'+action+'/chart.action?category=';
     
     UserLoginChart=function(){
         return{

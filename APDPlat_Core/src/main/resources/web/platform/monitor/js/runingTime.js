@@ -22,7 +22,7 @@ var namespace='monitor';
     var action='runing-time';
     
     var category="runingRate";
-    var chartDataURL=contextPath+'/'+namespace+'/'+action+'!chart.action?category=';
+    var chartDataURL=contextPath+'/'+namespace+'/'+action+'/chart.action?category=';
     
     RuningTimeChart=function(){
         return{

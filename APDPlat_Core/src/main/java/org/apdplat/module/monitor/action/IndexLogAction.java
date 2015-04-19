@@ -24,22 +24,21 @@ import org.apdplat.module.monitor.model.IndexLog;
 import org.apdplat.module.monitor.service.IndexLogChartDataService;
 import org.apdplat.module.monitor.service.IndexLogSingleService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
+import org.apdplat.platform.log.BufferLogCollector;
+import org.apdplat.platform.service.ServiceFacade;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.apdplat.platform.log.BufferLogCollector;
-import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/monitor")
+@RequestMapping("/monitor/index-log/")
 public class IndexLogAction extends ExtJSSimpleAction<IndexLog> {
-    private String category;
-    @Resource(name="indexLogSingleService")
+    @Resource
     private IndexLogSingleService indexLogSingleService;
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
@@ -50,9 +49,8 @@ public class IndexLogAction extends ExtJSSimpleAction<IndexLog> {
         return service;
     }
     @Override
-    public String query(){
+    protected  void beforeQuery(){
         BufferLogCollector.handleLog();
-        return super.query();
     }
     @Override
     protected void afterRender(Map map,IndexLog obj){
@@ -62,7 +60,7 @@ public class IndexLogAction extends ExtJSSimpleAction<IndexLog> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<IndexLog> models) {
+    protected String generateReportData(List<IndexLog> models, String category, String top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("rate".equals(category)){
             data=IndexLogChartDataService.getRateData(models);
@@ -72,8 +70,5 @@ public class IndexLogAction extends ExtJSSimpleAction<IndexLog> {
         }
         
         return indexLogSingleService.getXML(data);
-    }
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

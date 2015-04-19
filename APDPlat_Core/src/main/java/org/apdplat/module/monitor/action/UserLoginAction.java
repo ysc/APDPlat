@@ -24,22 +24,21 @@ import org.apdplat.module.monitor.model.UserLogin;
 import org.apdplat.module.monitor.service.UserLoginChartDataService;
 import org.apdplat.module.monitor.service.UserLoginSingleService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
+import org.apdplat.platform.log.BufferLogCollector;
+import org.apdplat.platform.service.ServiceFacade;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.apdplat.platform.log.BufferLogCollector;
-import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/monitor")
+@RequestMapping("/monitor/user-login/")
 public class UserLoginAction extends ExtJSSimpleAction<UserLogin> {
-    private String category;
-    @Resource(name="userLoginSingleService")
+    @Resource
     private UserLoginSingleService userLoginSingleService;
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
@@ -50,9 +49,8 @@ public class UserLoginAction extends ExtJSSimpleAction<UserLogin> {
         return service;
     }
     @Override
-    public String query(){
+    protected  void beforeQuery(){
         BufferLogCollector.handleLog();
-        return super.query();
     }    
     @Override
     protected void afterRender(Map map,UserLogin obj){
@@ -63,7 +61,7 @@ public class UserLoginAction extends ExtJSSimpleAction<UserLogin> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<UserLogin> models) {
+    protected String generateReportData(List<UserLogin> models, String category, String top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         switch (category) {
             case "loginTimes":
@@ -75,8 +73,5 @@ public class UserLoginAction extends ExtJSSimpleAction<UserLogin> {
         }
         
         return userLoginSingleService.getXML(data);
-    }
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

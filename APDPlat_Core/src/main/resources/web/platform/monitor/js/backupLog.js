@@ -22,7 +22,7 @@ var namespace='monitor';
     var action='backup-log';
     
     var category="rate";
-    var chartDataURL=contextPath+'/'+namespace+'/'+action+'!chart.action?category=';
+    var chartDataURL=contextPath+'/'+namespace+'/'+action+'/chart.action?category=';
    
     BackupLogChart=function(){
         return{

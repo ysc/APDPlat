@@ -22,7 +22,7 @@ var namespace='monitor';
     var action='memory-state';
     
     var category="sequenceDD";
-    var chartDataURL=contextPath+'/'+namespace+'/'+action+'!chart.action?category=';
+    var chartDataURL=contextPath+'/'+namespace+'/'+action+'/chart.action?category=';
     
     MemoryStateChart=function(){
         return{

@@ -24,23 +24,21 @@ import org.apdplat.module.monitor.model.ProcessTime;
 import org.apdplat.module.monitor.service.ProcessTimeChartDataService;
 import org.apdplat.module.monitor.service.ProcessTimeSingleService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
+import org.apdplat.platform.log.BufferLogCollector;
+import org.apdplat.platform.service.ServiceFacade;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.apdplat.platform.log.BufferLogCollector;
-import org.apdplat.platform.service.ServiceFacade;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/monitor")
+@RequestMapping("/monitor/process-time/")
 public class ProcessTimeAction extends ExtJSSimpleAction<ProcessTime> {
-    private String category;
-    private int top;
-    @Resource(name="processTimeSingleService")
+    @Resource
     private ProcessTimeSingleService processTimeSingleService;
     //使用日志数据库
     @Resource(name = "serviceFacadeForLog")
@@ -51,9 +49,8 @@ public class ProcessTimeAction extends ExtJSSimpleAction<ProcessTime> {
         return service;
     }
     @Override
-    public String query(){
+    protected  void beforeQuery(){
         BufferLogCollector.handleLog();
-        return super.query();
     }
     @Override
     protected void afterRender(Map map,ProcessTime obj){
@@ -63,7 +60,7 @@ public class ProcessTimeAction extends ExtJSSimpleAction<ProcessTime> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<ProcessTime> models) {
+    protected String generateReportData(List<ProcessTime> models, String category, String top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("userTime".equals(category)){
             data=ProcessTimeChartDataService.getUserTimeData(models);
@@ -97,12 +94,5 @@ public class ProcessTimeAction extends ExtJSSimpleAction<ProcessTime> {
         }
         //不能排序
         return processTimeSingleService.getXML(data,false);
-    }
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setTop(int top) {
-        this.top = top;
     }
 }
