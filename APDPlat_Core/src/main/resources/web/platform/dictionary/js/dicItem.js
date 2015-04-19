@@ -28,7 +28,7 @@ var dicId="1";
     var propertyCriteria=propertyCriteriaPre+dicId;
     
     //本页面特殊URL
-    var treeStoreUrl=contextPath+'/'+namespace+'/'+action+'!store.action';
+    var treeStoreUrl=contextPath+'/'+namespace+'/'+action+'/store.action';
     //添加模型信息
     CreateModel = function() {
         return {

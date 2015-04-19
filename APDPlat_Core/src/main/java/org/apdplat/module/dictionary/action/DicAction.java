@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/dictionary")
+@RequestMapping("/dictionary/dic/")
 public class DicAction extends ExtJSSimpleAction<Dic> {
     @Resource
     private DicService dicService;
@@ -53,14 +53,14 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
      * @return 返回值直接给客户端
      */
     @ResponseBody
-    @RequestMapping("/dic!store.action")
+    @RequestMapping("store.action")
     public String store(@RequestParam(required=false) String dic,
                         @RequestParam(required=false) String tree,
                         @RequestParam(required=false) String justCode){
         Dic dictionary=dicService.getDic(dic);
         if(dictionary==null){
             LOG.info("没有找到数据词典 "+dic);
-            return "";
+            return "[]";
         }
         if("true".equals(tree)){
             String json = dicService.toStoreJson(dictionary);
