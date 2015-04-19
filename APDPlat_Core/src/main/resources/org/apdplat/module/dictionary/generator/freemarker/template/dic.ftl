@@ -4,9 +4,9 @@
     var ${dic.english}Store=new Ext.data.Store({
         proxy : new parent.Ext.data.HttpProxy({
             <#if dic.justCode>
-            url : contextPath+'/dictionary/dic!store.action?dic=${dic.english}&justCode=true'
+            url : contextPath+'/dictionary/dic/store.action?dic=${dic.english}&justCode=true'
             <#else>
-            url : contextPath+'/dictionary/dic!store.action?dic=${dic.english}'
+            url : contextPath+'/dictionary/dic/store.action?dic=${dic.english}'
             </#if>
         }),
         reader: new Ext.data.JsonReader({},
