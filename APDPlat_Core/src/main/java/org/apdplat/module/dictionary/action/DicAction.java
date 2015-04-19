@@ -32,27 +32,31 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
 @RequestMapping("/dictionary")
 public class DicAction extends ExtJSSimpleAction<Dic> {
-    @Resource(name = "dicService")
+    @Resource
     private DicService dicService;
-    private String dic;
-    private String tree;
-    private boolean justCode;
     
     /**
      * 
      * 此类用来提供下拉列表服务,主要有两种下拉类型：
      * 1、普通下拉选项
      * 2、树形下拉选项
+     * @param dic
+     * @param tree
+     * @param justCode
      * @return 不需要返回值，直接给客户端写数据
      */
     @ResponseBody
-    public String store(){
+    @RequestMapping("/dic!store.action")
+    public String store(@RequestParam(required=false) String dic,
+                        @RequestParam(required=false) String tree,
+                        @RequestParam(required=false) String justCode){
         Dic dictionary=dicService.getDic(dic);
         if(dictionary==null){
             LOG.info("没有找到数据词典 "+dic);
@@ -65,7 +69,7 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
             List<Map<String,String>> data=new ArrayList<>();
             dictionary.getDicItems().forEach(item -> {
                 Map<String,String> itemMap=new HashMap<>();
-                if(justCode){
+                if("true".equals(justCode)){
                     itemMap.put("value", item.getCode());
                 }else{
                     itemMap.put("value", item.getId().toString());
@@ -76,17 +80,5 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
             String json = JSONArray.fromObject(data).toString();
             return json;
         }
-    }
-
-    public void setJustCode(boolean justCode) {
-        this.justCode = justCode;
-    }
-
-    public void setTree(String tree) {
-        this.tree = tree;
-    }
-
-    public void setDic(String dic) {
-        this.dic = dic;
     }
 }
