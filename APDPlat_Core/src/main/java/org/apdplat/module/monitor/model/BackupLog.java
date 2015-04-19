@@ -31,9 +31,9 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.apdplat.platform.annotation.Database;
-import org.apdplat.platform.search.Index;
-import org.apdplat.platform.search.Searchable;
-import org.apdplat.platform.search.SearchableProperty;
+import org.apdplat.platform.search.annotations.Index;
+import org.apdplat.platform.search.annotations.Searchable;
+import org.apdplat.platform.search.annotations.SearchableProperty;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

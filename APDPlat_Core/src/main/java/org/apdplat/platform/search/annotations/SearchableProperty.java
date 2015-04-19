@@ -18,8 +18,7 @@
  *
  */
 
-
-package org.apdplat.platform.search;
+package org.apdplat.platform.search.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -32,18 +31,28 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SearchableComponent {
-    String refAlias() default "";
+public @interface SearchableProperty {
+    Class type() default Object.class;
 
     boolean override() default true;
 
-    Cascade[] cascade() default {};
+    String propertyConverter() default "";
 
-    int maxDepth() default 1;
+    String accessor() default "";
 
-    String prefix() default "";
+    String name() default "";
+
+    float boost() default 1.0F;
+
+    Store store() default Store.NA;
+
+    Index index() default Index.NA;
+
+    String analyzer() default "";
 
     String converter() default "";
 
-    String accessor() default "";
+    String format() default "";
+
+    String nullValue() default "";
 }

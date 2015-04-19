@@ -18,18 +18,20 @@
  *
  */
 
-package org.apdplat.platform.search;
+package org.apdplat.platform.search.annotations;
 
 /**
  *
  * @author 杨尚川
  */
-public enum Cascade {
-    ALL,
-    CREATE,
-    SAVE,
-    DELETE;
+public enum Index {
+    NA,
+    NO,
+    ANALYZED,
+    TOKENIZED,
+    NOT_ANALYZED,
+    UN_TOKENIZED;
 
-    private Cascade() {
+    private Index() {
     }
 }

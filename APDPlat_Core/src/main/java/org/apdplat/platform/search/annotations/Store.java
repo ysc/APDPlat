@@ -18,7 +18,7 @@
  *
  */
 
-package org.apdplat.platform.search;
+package org.apdplat.platform.search.annotations;
 
 /**
  *

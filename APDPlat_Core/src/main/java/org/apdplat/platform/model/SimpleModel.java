@@ -25,7 +25,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import org.apdplat.module.security.model.User;
 import org.apdplat.platform.annotation.ModelAttrRef;
-import org.apdplat.platform.search.SearchableComponent;
+import org.apdplat.platform.search.annotations.SearchableComponent;
 
 /**
  *

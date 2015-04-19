@@ -54,7 +54,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
-import org.apdplat.platform.search.SearchableComponent;
+import org.apdplat.platform.search.annotations.SearchableComponent;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

@@ -26,6 +26,10 @@ import org.apdplat.platform.annotation.ModelAttr;
 import org.apdplat.platform.annotation.ModelAttrRef;
 import org.apdplat.platform.annotation.ModelCollRef;
 import org.apdplat.platform.generator.ActionGenerator;
+import org.apdplat.platform.search.annotations.Index;
+import org.apdplat.platform.search.annotations.Searchable;
+import org.apdplat.platform.search.annotations.SearchableComponent;
+import org.apdplat.platform.search.annotations.SearchableProperty;
 import org.apdplat.platform.service.ServiceFacade;
 import org.apdplat.platform.util.SpringContextUtils;
 import java.util.ArrayList;
@@ -49,7 +53,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import org.apdplat.platform.annotation.Database;
 import org.apdplat.platform.model.SimpleModel;
-import org.apdplat.platform.search.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -74,7 +77,7 @@ public class User extends SimpleModel  implements UserDetails{
     protected Org org;
 
     //用户名不分词
-    @SearchableProperty(index=Index.NOT_ANALYZED)
+    @SearchableProperty(index= Index.NOT_ANALYZED)
     @ModelAttr("用户名")
     protected String username;
 

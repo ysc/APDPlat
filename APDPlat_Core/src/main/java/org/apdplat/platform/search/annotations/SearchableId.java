@@ -18,20 +18,33 @@
  *
  */
 
-package org.apdplat.platform.search;
+package org.apdplat.platform.search.annotations;
 
-/**
- *
- * @author 杨尚川
- */
-public enum Index {
-    NA,
-    NO,
-    ANALYZED,
-    TOKENIZED,
-    NOT_ANALYZED,
-    UN_TOKENIZED;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    private Index() {
-    }
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SearchableId {
+    boolean override() default true;
+
+    String idConverter() default "";
+
+    String accessor() default "";
+
+    String name() default "";
+
+    float boost() default 1.0F;
+
+    Store store() default Store.NA;
+
+    Index index() default Index.NA;
+
+    String analyzer() default "";
+
+    String converter() default "";
+
+    String format() default "";
 }
