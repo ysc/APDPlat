@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 </#if>
-import org.compass.annotations.*;
+import org.apdplat.platform.search.annotations.*;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import javax.xml.bind.annotation.XmlAttribute;
