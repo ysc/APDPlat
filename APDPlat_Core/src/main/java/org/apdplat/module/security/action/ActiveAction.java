@@ -32,16 +32,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author 杨尚川
  */
 @Controller
-@RequestMapping("/security")
+@RequestMapping("/security/active/")
 public class ActiveAction{
     @ResponseBody
-    @RequestMapping("/active!buy.action")
+    @RequestMapping("buy.action")
     public String buy(){
         
         return "暂不支持在线购买";
     }
     @ResponseBody
-    @RequestMapping("/active!active.action")
+    @RequestMapping("active.action")
     public String active(@RequestParam String licence){
         FileUtils.createAndWriteFile("/WEB-INF/classes/licences/apdplat.licence", licence);
         SecurityCheck.check();

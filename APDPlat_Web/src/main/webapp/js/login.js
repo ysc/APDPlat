@@ -22,7 +22,7 @@ Ext.BLANK_IMAGE_URL = '../extjs/images/default/s.gif';
 var model;
 var loginTitle='登录系统';
 var requestCode;
-var activeURL="security/active!active.action";
+var activeURL="security/active/active.action";
 //fieldset的验证
 Ext.QuickTips.init();//支持tips提示
 Ext.form.Field.prototype.msgTarget='side';//提示的方式，枚举值为"qtip","title","under","side",id(元素id)  
