@@ -20,13 +20,13 @@
 
 package org.apdplat.module.module.action;
 
+import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.module.module.model.Module;
 import org.apdplat.module.module.service.ModuleService;
-import org.apdplat.platform.action.ExtJSSimpleAction;
-import javax.annotation.Resource;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.module.service.ModuleCache;
 import org.apdplat.module.security.service.UserHolder;
+import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,54 +38,54 @@ import org.springframework.web.bind.annotation.ResponseBody;
 */
 @Controller
 @Scope("prototype")
-@RequestMapping("/module")
+@RequestMapping("/module/module/")
 public class ModuleAction extends ExtJSSimpleAction<Module> {
-        @Resource(name="moduleService")
-        private ModuleService moduleService;
+    @Resource
+    private ModuleService moduleService;
 
-        @ResponseBody
-        @RequestMapping("/module!query.action")
-        public String query(@RequestParam(required=false) String node,
-                            @RequestParam(required=false) boolean privilege,
-                            @RequestParam(required=false) boolean recursion){
-            if(node==null){
-                return super.query();
-            }
-            //手动缓存控制
-            String key="node:"+node+"_privilege:"+privilege+"_recursion:"+recursion;
-            //如果privilege=ture，所有用户共享一份数据
-            if(!privilege){
-                key=UserHolder.getCurrentLoginUser().getUsername()+"_"+key;
-            }
-            String value=ModuleCache.get(key);
-            if(value!=null){
-                LOG.debug("使用缓存数据，key:"+key+", value:"+value);
-                return value;
-            }
-            
-            long start=System.currentTimeMillis();
-            Module module=null;
-            if(node.contains("-")){
-                String[] temp=node.split("-");
-                int id=Integer.parseInt(temp[1]);
-                module=moduleService.getModule(id);
-            }else if(node.trim().startsWith("root")){
-                module=moduleService.getRootModule();
-            }
-            if(module!=null){
-                String json="";
-                if(privilege){
-                    json=moduleService.toJsonForPrivilege(module);
-                }else{
-                    json=moduleService.toJsonForUser(module,recursion);
-                }
-                
-                LOG.debug("ModuleAction.query() cost time: "+(System.currentTimeMillis()-start)+" 毫秒");
-                LOG.debug("设置缓存数据，key:"+key+", value:"+json);
-                ModuleCache.put(key, json);
-                LOG.info("json:"+json);
-                return json;
-            }
-            return "";
+    @ResponseBody
+    @RequestMapping("store.action")
+    public String store(@RequestParam(required=false) String node,
+                        @RequestParam(required=false) boolean recursion,
+                        @RequestParam(required=false) boolean privilege){
+        if(node==null){
+            return "[]";
         }
+        //手动缓存控制
+        String key="node:"+node+"_privilege:"+privilege+"_recursion:"+recursion;
+        //如果privilege=ture，所有用户共享一份数据
+        if(!privilege){
+            key=UserHolder.getCurrentLoginUser().getUsername()+"_"+key;
+        }
+        String value=ModuleCache.get(key);
+        if(value!=null){
+            LOG.debug("使用缓存数据，key:"+key+", value:"+value);
+            return value;
+        }
+
+        long start=System.currentTimeMillis();
+        Module module=null;
+        if(node.trim().startsWith("root")){
+            module=moduleService.getRootModule();
+        }else if(node.contains("-")){
+            String[] temp=node.split("-");
+            int id=Integer.parseInt(temp[1]);
+            module=moduleService.getModule(id);
+        }
+        if(module!=null){
+            String json="";
+            if(privilege){
+                json=moduleService.toJsonForPrivilege(module);
+            }else{
+                json=moduleService.toJsonForUser(module,recursion);
+            }
+
+            LOG.debug("ModuleAction.query() cost time: "+(System.currentTimeMillis()-start)+" 毫秒");
+            LOG.debug("设置缓存数据，key:"+key+", value:"+json);
+            ModuleCache.put(key, json);
+            LOG.info("json:"+json);
+            return json;
+        }
+        return "[]";
+    }
 }

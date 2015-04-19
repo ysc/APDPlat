@@ -185,7 +185,7 @@ function createViewport(){
     });
     // 构建左边的菜单
     Ext.Ajax.request({
-        url : contextPath + '/module/module!query.action?node=root&recursion=false',
+        url : contextPath + '/module/module/store.action?node=root&recursion=false',
         success : function(response, options) {
                 var arr = eval(response.responseText);
                 var activedPanelId = Ext.util.Cookies.get("activedPanelId");
@@ -197,7 +197,7 @@ function createViewport(){
                                 autoScroll : true,
                                 border : false,
                                 loader : new Ext.tree.TreeLoader({
-                                        dataUrl : contextPath + '/module/module!query.action?recursion=false'
+                                        dataUrl : contextPath + '/module/module/store.action?recursion=false'
                                 }),
                                 root : new Ext.tree.AsyncTreeNode({
                                         text:arr[i].text,
