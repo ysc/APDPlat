@@ -22,12 +22,10 @@ package org.apdplat.module.module.action;
 
 import org.apdplat.module.module.model.Command;
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.module.service.ModuleCache;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
 * 维护树形模块，对应于module.xml文件
@@ -39,24 +37,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 */
 @Controller
 @Scope("prototype")
-@RequestMapping("/module")
+@RequestMapping("/module/edit-command/")
 public class EditCommandAction extends ExtJSSimpleAction<Command> {
-    @ResponseBody
-    @RequestMapping("/edit-command!query.action")
-    public String query(@RequestParam(required=false) Integer start,
-                        @RequestParam(required=false) Integer limit,
-                        @RequestParam(required=false) String propertyCriteria,
-                        @RequestParam(required=false) String orderCriteria,
-                        @RequestParam(required=false) String queryString,
-                        @RequestParam(required=false) String search){
-        super.setStart(start);
-        super.setLimit(limit);
-        super.setPropertyCriteria(propertyCriteria);
-        super.setOrderCriteria(orderCriteria);
-        super.setQueryString(queryString);
-        super.setSearch("true".equals(search));
-        return super.query();
-    }
+
     @Override
     protected void afterSuccessPartUpdateModel(Command model) {
         //手动清空缓存

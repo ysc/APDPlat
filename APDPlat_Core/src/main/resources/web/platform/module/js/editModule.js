@@ -32,7 +32,7 @@ var rootPropertyCriteria="parentModule.english:eq:root";
 var namespace='module';
 var action='edit-module';
 
-var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
+var treeDataUrl=contextPath+'/'+namespace+'/'+action+'/store.action';
             
 ModifyModel = function() {
     return {

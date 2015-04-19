@@ -41,28 +41,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 */
 @Controller
 @Scope("prototype")
-@RequestMapping("/module")
+@RequestMapping("/module/edit-module/")
 public class EditModuleAction extends ExtJSSimpleAction<Module> {
-        @Resource(name="moduleService")
+        @Resource
         private ModuleService moduleService;
 
         @ResponseBody
-        @RequestMapping("/edit-module!query.action")
-        public String query(@RequestParam(required=false) String node,
-                            @RequestParam(required=false) Integer start,
-                            @RequestParam(required=false) Integer limit,
-                            @RequestParam(required=false) String propertyCriteria,
-                            @RequestParam(required=false) String orderCriteria,
-                            @RequestParam(required=false) String queryString,
-                            @RequestParam(required=false) String search){
+        @RequestMapping("store.action")
+        public String store(@RequestParam(required=false) String node){
             if(node==null){
-                super.setStart(start);
-                super.setLimit(limit);
-                super.setPropertyCriteria(propertyCriteria);
-                super.setOrderCriteria(orderCriteria);
-                super.setQueryString(queryString);
-                super.setSearch("true".equals(search));
-                return super.query();
+                return "[]";
             }
             if(node.trim().startsWith("root")){
                 String json=moduleService.toRootJsonForEdit();
