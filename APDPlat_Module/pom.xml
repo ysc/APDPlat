@@ -45,7 +45,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <!-- 主要依赖库的版本定义 -->
-        <apdplat.version>2.5</apdplat.version>
+        <apdplat.version>2.6</apdplat.version>
         <junit.version>4.8.2</junit.version>
         <javaee-api.version>7.0</javaee-api.version>
                 
