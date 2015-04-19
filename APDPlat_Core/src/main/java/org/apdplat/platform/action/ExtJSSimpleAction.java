@@ -49,6 +49,8 @@ import javax.persistence.Temporal;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.platform.annotation.RenderDate;
 import org.apdplat.platform.annotation.RenderTime;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -84,6 +86,15 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         }catch(Exception e){
             LOG.error("initModel fail");
         }
+    }
+
+    /**
+     * 前端向后端传递模型参数的时候都有model.前缀
+     * @param binder
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setFieldDefaultPrefix("model.");
     }
     
     public String report(){
