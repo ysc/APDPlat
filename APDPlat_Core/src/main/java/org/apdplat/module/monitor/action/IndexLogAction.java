@@ -60,7 +60,7 @@ public class IndexLogAction extends ExtJSSimpleAction<IndexLog> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<IndexLog> models, String category, String top) {
+    protected String generateReportData(List<IndexLog> models, String category, Integer top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("rate".equals(category)){
             data=IndexLogChartDataService.getRateData(models);

@@ -60,7 +60,7 @@ public class MemoryStateAction extends ExtJSSimpleAction<MemoryState> {
     }
     
     @Override
-    protected String generateReportData(List<MemoryState> models, String category, String top) {
+    protected String generateReportData(List<MemoryState> models, String category, Integer top) {
         if("sequence".equals(category)){
             //不改变数据，就用models
         }

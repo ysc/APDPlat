@@ -60,7 +60,7 @@ public class ProcessTimeAction extends ExtJSSimpleAction<ProcessTime> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<ProcessTime> models, String category, String top) {
+    protected String generateReportData(List<ProcessTime> models, String category, Integer top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("userTime".equals(category)){
             data=ProcessTimeChartDataService.getUserTimeData(models);

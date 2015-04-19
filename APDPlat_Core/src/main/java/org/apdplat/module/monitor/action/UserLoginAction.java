@@ -61,7 +61,7 @@ public class UserLoginAction extends ExtJSSimpleAction<UserLogin> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<UserLogin> models, String category, String top) {
+    protected String generateReportData(List<UserLogin> models, String category, Integer top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         switch (category) {
             case "loginTimes":

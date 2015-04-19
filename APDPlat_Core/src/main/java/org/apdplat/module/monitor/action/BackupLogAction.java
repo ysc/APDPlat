@@ -60,7 +60,7 @@ public class BackupLogAction extends ExtJSSimpleAction<BackupLog> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<BackupLog> models, String category, String top) {
+    protected String generateReportData(List<BackupLog> models, String category, Integer top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("rate".equals(category)){
             data=BackupLogChartDataService.getRateData(models);

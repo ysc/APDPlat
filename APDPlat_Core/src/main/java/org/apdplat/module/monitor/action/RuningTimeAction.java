@@ -66,7 +66,7 @@ public class RuningTimeAction extends ExtJSSimpleAction<RuningTime> {
         map.remove("appName");
     }
     @Override
-    protected String generateReportData(List<RuningTime> models, String category, String top) {
+    protected String generateReportData(List<RuningTime> models, String category, Integer top) {
         LinkedHashMap<String,Long> data=new LinkedHashMap<>();
         if("runingRate".equals(category)){
             data=RuningTimeChartDataService.getRuningRateData(models);

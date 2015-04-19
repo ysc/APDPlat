@@ -148,7 +148,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     @ResponseBody
     @RequestMapping("chart.action")
     public String chart(@RequestParam(required=false) String category,
-                        @RequestParam(required=false) String top){
+                        @RequestParam(required=false) Integer top){
         if(StringUtils.isNotBlank(getQueryString())){
             //搜索出所有数据   
             beforeSearch();
@@ -172,7 +172,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return data;
     }
 
-    protected String generateReportData(List<T> models, String category, String top){
+    protected String generateReportData(List<T> models, String category, Integer top){
         return null;
     }
     private String getDefaultModelName(){

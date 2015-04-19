@@ -68,7 +68,7 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
     }
     
     @Override
-    protected String generateReportData(List<OperateLog> models, String category, String top) {
+    protected String generateReportData(List<OperateLog> models, String category, Integer top) {
         List<OperateStatistics> data=OperateLogChartDataService.getData(models);
         if("user".equals(category)){
             return userCategoryService.getXML(data);
