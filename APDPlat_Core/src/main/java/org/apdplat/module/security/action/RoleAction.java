@@ -78,7 +78,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
             return super.query();
         }
         //如果指定了node则采用自定义的查询方式
-        if("root".startsWith(node.trim())){
+        if(node.trim().startsWith("root")){
             String json=roleService.toRootJson(recursion);
             return json;
         }else{

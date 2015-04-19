@@ -64,7 +64,7 @@ public class EditModuleAction extends ExtJSSimpleAction<Module> {
                 super.setSearch("true".equals(search));
                 return super.query();
             }
-            if("root".startsWith(node.trim())){
+            if(node.trim().startsWith("root")){
                 String json=moduleService.toRootJsonForEdit();
                 return json;
             }

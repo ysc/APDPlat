@@ -52,7 +52,7 @@ public class DicItemAction extends ExtJSSimpleAction<DicItem> {
             return "[]";
         }
         Dic dic=null;
-        if("root".startsWith(node.trim())){
+        if(node.trim().startsWith("root")){
             dic = dicService.getRootDic();
         }else{
             int id=Integer.parseInt(node);
