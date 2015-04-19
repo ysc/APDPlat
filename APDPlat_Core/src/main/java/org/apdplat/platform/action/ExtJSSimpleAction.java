@@ -50,9 +50,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apdplat.platform.annotation.RenderDate;
 import org.apdplat.platform.annotation.RenderTime;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -95,6 +93,51 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.setFieldDefaultPrefix("model.");
+    }
+
+    @ResponseBody
+    @RequestMapping("query.action")
+    public String query(@RequestParam(required=false) Integer start,
+                        @RequestParam(required=false) Integer limit,
+                        @RequestParam(required=false) String propertyCriteria,
+                        @RequestParam(required=false) String orderCriteria,
+                        @RequestParam(required=false) String queryString,
+                        @RequestParam(required=false) String search){
+        super.setStart(start);
+        super.setLimit(limit);
+        super.setPropertyCriteria(propertyCriteria);
+        super.setOrderCriteria(orderCriteria);
+        super.setQueryString(queryString);
+        setSearch("true".equals(search));
+        return query();
+    }
+
+    @ResponseBody
+    @RequestMapping("retrieve.action")
+    public String retrieve(@ModelAttribute T model) {
+        this.model = model;
+        return retrieve();
+    }
+
+    @ResponseBody
+    @RequestMapping("delete.action")
+    public String delete(@RequestParam String ids) {
+        super.setIds(ids);
+        return delete();
+    }
+
+    @ResponseBody
+    @RequestMapping("create.action")
+    public String create(@ModelAttribute T model) {
+        this.model = model;
+        return create();
+    }
+
+    @ResponseBody
+    @RequestMapping("updatePart.action")
+    public String updatePart(@ModelAttribute T model) {
+        this.model = model;
+        return updatePart();
     }
     
     public String report(){
@@ -139,7 +182,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return getService().retrieve(User.class, user.getId());
     }
     @Override
-    @ResponseBody
     public String create() {
         try{
             try{
@@ -173,7 +215,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     }
 
     @Override
-    @ResponseBody
     public String retrieve() {
         this.setModel(getService().retrieve(modelClass, model.getId()));
         if(model==null){
@@ -250,7 +291,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return json;
     }
     @Override
-    @ResponseBody
     public String updateWhole() {
         try{
             assemblyModelForUpdate(model);
@@ -270,7 +310,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return null;
     }
     @Override
-    @ResponseBody
     public String delete() {
         try{
             prepareForDelete(getIds());
@@ -286,7 +325,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
 
     }
     @Override
-    @ResponseBody
     public String query() {
         beforeQuery();
         if(search){
@@ -306,7 +344,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return json;
     }
 
-    @ResponseBody
     public String export() {
         if(search){
             //导出全部搜索结果
@@ -341,7 +378,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return result;
     }
     @Override
-    @ResponseBody
     public String search() {
         beforeSearch();
         page=getService().search(getQueryString(), getPageCriteria(), modelClass);
