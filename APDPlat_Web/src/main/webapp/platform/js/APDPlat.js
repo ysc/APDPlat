@@ -381,17 +381,17 @@ GridBaseModel = function() {
             this.namespace=namespace;
             this.action=action;
             //批量查询
-            this.storeURL=contextPath+'/'+namespace+'/'+action+'!query.action';
+            this.storeURL=contextPath+'/'+namespace+'/'+action+'/query.action';
             //单条查询
-            this.retrieveURL=contextPath+'/'+namespace+'/'+action+'!retrieve.action?model.id=';
+            this.retrieveURL=contextPath+'/'+namespace+'/'+action+'/retrieve.action?model.id=';
             //批量删除
-            this.deleteURL=contextPath+'/'+namespace+'/'+action+'!delete.action';
+            this.deleteURL=contextPath+'/'+namespace+'/'+action+'/delete.action';
             //导出数据
-            this.exportURL=contextPath+'/'+namespace+'/'+action+'!export.action';
+            this.exportURL=contextPath+'/'+namespace+'/'+action+'/export.action';
             //添加一条数据
-            this.createURL=contextPath+'/'+namespace+'/'+action+'!create.action';
+            this.createURL=contextPath+'/'+namespace+'/'+action+'/create.action';
             //修改部分数据
-            this.updatePartURL=contextPath+'/'+namespace+'/'+action+'!updatePart.action?model.id=';
+            this.updatePartURL=contextPath+'/'+namespace+'/'+action+'/updatePart.action?model.id=';
         },
         showBefore: function(){
             
