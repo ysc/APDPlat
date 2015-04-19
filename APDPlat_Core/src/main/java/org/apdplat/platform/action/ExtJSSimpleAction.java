@@ -146,7 +146,9 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     }
 
     @ResponseBody
-    public String chart(){
+    @RequestMapping("chart.action")
+    public String chart(@RequestParam(required=false) String category,
+                        @RequestParam(required=false) String top){
         if(StringUtils.isNotBlank(getQueryString())){
             //搜索出所有数据   
             beforeSearch();
@@ -158,7 +160,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             this.setPage(getService().query(modelClass));
         }
         //生成报表XML数据
-        String data=generateReportData(page.getModels());
+        String data=generateReportData(page.getModels(), category, top);
         if(StringUtils.isBlank(data)){
             LOG.info("生成的报表数据为空");
             return null;
@@ -170,7 +172,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         return data;
     }
 
-    protected String generateReportData(List<T> models){
+    protected String generateReportData(List<T> models, String category, String top){
         return null;
     }
     private String getDefaultModelName(){
