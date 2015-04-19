@@ -63,9 +63,9 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     protected T model = null;
     protected Class<T> modelClass;
     protected Page<T> page = new Page<>();
-    @Resource(name = "springContextUtils")
+    @Resource
     protected SpringContextUtils springContextUtils;
-    @Resource(name = "excelService")
+    @Resource
     protected ExcelService excelService;
     protected Map map=null;
 
