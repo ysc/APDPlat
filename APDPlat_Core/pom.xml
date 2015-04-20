@@ -82,7 +82,7 @@
         <birt.version>4.2.2</birt.version>
         <aspectj.version>1.7.4</aspectj.version>
         <commons-net.version>3.3</commons-net.version>
-        <jackson.version>1.9.13</jackson.version>
+        <jackson.version>2.5.2</jackson.version>
         <solrj.version>4.6.1</solrj.version>
         
         <p6spy.version>1.3</p6spy.version>
@@ -729,12 +729,18 @@
             <version>${commons-net.version}</version>
             <type>jar</type>
         </dependency>
-        
+
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
-        </dependency>     
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         
         <dependency>
             <groupId>org.apache.solr</groupId>
