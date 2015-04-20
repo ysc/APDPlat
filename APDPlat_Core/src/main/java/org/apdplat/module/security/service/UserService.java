@@ -319,17 +319,17 @@ public class UserService {
     public void assemblyModelForUpdate(User model, String roles, String positions, String userGroups){
         if(StringUtils.isNotBlank(roles)){
             LOG.debug("清除角色并重新组装: " + roles);
-            model.clearRole();
+            model.clearRoles();
             assemblyRoles(model, roles);
         }
         if(StringUtils.isNotBlank(positions)){
             LOG.debug("清除岗位并重新组装: " + positions);
-            model.clearPosition();
+            model.clearPositions();
             assemblyPositions(model, positions);
         }
         if(StringUtils.isNotBlank(userGroups)){
             LOG.debug("清除用户组并重新组装: " + userGroups);
-            model.clearUserGroup();
+            model.clearUserGroups();
             assemblyUserGroups(model, userGroups);
         }        
     }
