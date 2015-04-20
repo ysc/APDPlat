@@ -52,7 +52,6 @@
         <spring-security-config.version>3.2.0.RELEASE</spring-security-config.version>
         <spring-security-acl.version>3.2.0.RELEASE</spring-security-acl.version>
         <spring-security-taglibs.version>3.2.0.RELEASE</spring-security-taglibs.version>
-        <json-lib.version>2.3</json-lib.version>
         <cglib.version>2.2</cglib.version>
         <commons-pool.version>1.2</commons-pool.version>
         <commons-dbcp.version>1.2.1</commons-dbcp.version>
@@ -496,18 +495,6 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>${cglib.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>${json-lib.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-            <classifier>jdk15</classifier>
         </dependency>
 
         <dependency>
