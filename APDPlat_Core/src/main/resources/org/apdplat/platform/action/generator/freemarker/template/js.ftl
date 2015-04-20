@@ -43,7 +43,7 @@
                                             {
     </#if>
     <#if searchableAttr.treeDic != ''>
-    new TreeSelector('search_${searchableAttr.english}','',contextPath+"/dictionary/dic!store.action?tree=true&dic=${searchableAttr.treeDic}","root","","${searchableAttr.chinese}",'','95%',true),
+    new TreeSelector('search_${searchableAttr.english}','',contextPath+"/dictionary/dic/store.action?tree=true&dic=${searchableAttr.treeDic}","root","","${searchableAttr.chinese}",'','95%',true),
     </#if>
     <#if searchableAttr.simpleDic == '' && searchableAttr.treeDic == '' &&  searchableAttr.type != 'Date'>
         <#if searchableAttr.type == 'Integer'>
@@ -95,7 +95,7 @@
                                             {
     </#if>
     <#if searchableAttr.treeDic != ''>
-    new TreeSelector('search_${searchableAttr.english}','',contextPath+"/dictionary/dic!store.action?tree=true&dic=${searchableAttr.treeDic}","root","","${searchableAttr.chinese}",'','95%',true),
+    new TreeSelector('search_${searchableAttr.english}','',contextPath+"/dictionary/dic/store.action?tree=true&dic=${searchableAttr.treeDic}","root","","${searchableAttr.chinese}",'','95%',true),
     </#if>
     <#if searchableAttr.simpleDic == '' && searchableAttr.treeDic == ''  &&  searchableAttr.type != 'Date'>
         <#if searchableAttr.type == 'Integer'>
@@ -196,7 +196,7 @@
                                    items: [
 <#list leftModelAttrs as modelAttr>
     <#if modelAttr.treeDic != ''>
-    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic!store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
+    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic/store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
     </#if>
                                             {
     <#if modelAttr.simpleDic == ''  && modelAttr.treeDic == '' &&  modelAttr.type != 'Date'>
@@ -264,7 +264,7 @@
                                   items: [
 <#list rightModelAttrs as modelAttr>
     <#if modelAttr.treeDic != ''>
-    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic!store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
+    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic/store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
     </#if>
                                             {
     <#if modelAttr.simpleDic == ''  && modelAttr.treeDic == '' &&  modelAttr.type != 'Date'>
@@ -358,7 +358,7 @@
                                    items: [
 <#list leftModelAttrs as modelAttr>
     <#if modelAttr.treeDic != ''>
-    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic!store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
+    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic/store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
     </#if>
                                             {
     <#if modelAttr.simpleDic == ''  && modelAttr.treeDic == '' &&  modelAttr.type != 'Date'>
@@ -430,7 +430,7 @@
                                   items: [
 <#list rightModelAttrs as modelAttr>
     <#if modelAttr.treeDic != ''>
-    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic!store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
+    new TreeSelector('model.${modelAttr.english}.name','',contextPath+"/dictionary/dic/store.action?tree=true&dic=${modelAttr.treeDic}","root","","${modelAttr.chinese}",'model.${modelAttr.english}.id','95%',true),
     </#if>
                                             {
     <#if modelAttr.simpleDic == ''  && modelAttr.treeDic == '' &&  modelAttr.type != 'Date'>
