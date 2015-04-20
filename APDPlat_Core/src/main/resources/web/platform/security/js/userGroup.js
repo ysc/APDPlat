@@ -22,7 +22,7 @@ var namespace='security';
     var action='user-group';
     
     var roleSelector;
-    var selectRoleStoreURL=contextPath + '/security/role!store.action?recursion=true';
+    var selectRoleStoreURL=contextPath + '/security/role/store.action?recursion=true';
          
     //添加模型信息
     CreateModel = function() {

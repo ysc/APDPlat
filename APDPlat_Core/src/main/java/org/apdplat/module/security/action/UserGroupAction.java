@@ -33,38 +33,21 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/security")
+@RequestMapping("/security/user-group/")
 public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
-    @Resource(name="userGroupService")
+    @Resource
     private UserGroupService userGroupService;
     private List<Role> roles = null;
 
     @ResponseBody
-    @RequestMapping("/user-group!store.action")
+    @RequestMapping("store.action")
     public String store(){     
         String json = userGroupService.toAllUserGroupJson();
         return json;
-    }
-    @ResponseBody
-    @RequestMapping("/user-group!query.action")
-    public String query(@RequestParam(required=false) Integer start,
-                        @RequestParam(required=false) Integer limit,
-                        @RequestParam(required=false) String propertyCriteria,
-                        @RequestParam(required=false) String orderCriteria,
-                        @RequestParam(required=false) String queryString,
-                        @RequestParam(required=false) String search) {
-        super.setStart(start);
-        super.setLimit(limit);
-        super.setPropertyCriteria(propertyCriteria);
-        super.setOrderCriteria(orderCriteria);
-        super.setQueryString(queryString);
-        super.setSearch("true".equals(search));
-        return super.query();
     }
     /**
      * 删除用户组前，把该用户组从所有引用该用户组的用户中移除
@@ -79,7 +62,7 @@ public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
             //获取拥有等待删除的角色的所有用户
             List<User> users=userGroup.getUsers();
             for(User user : users){
-                if(loginUser.getId()==user.getId()){
+                if(loginUser.getId().intValue()==user.getId().intValue()){
                     canDel=false;
                 }
             }
@@ -95,15 +78,23 @@ public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
 
     @Override
     public void assemblyModelForCreate(UserGroup model) {
-        model.setRoles(roles);
+        String roleStr = getRequest().getParameter("roles");
+        LOG.debug("roles:" + roleStr);
+        setRoles(roleStr);
+        model.clearRoles();
+        roles.forEach(role -> model.addRole(role));
     }
 
     @Override
     public void assemblyModelForUpdate(UserGroup model){
         //默认roles==null
         //当在修改用户组的时候，如果客户端不修改roles，则roles==null
+        String roleStr = getRequest().getParameter("roles");
+        LOG.debug("roles:"+roleStr);
+        setRoles(roleStr);
         if(roles!=null){
-            model.setRoles(roles);
+            model.clearRoles();
+            roles.forEach(role->model.addRole(role));
         }
     }
     @Override
@@ -111,6 +102,9 @@ public class UserGroupAction extends ExtJSSimpleAction<UserGroup> {
         map.put("roles", model.getRoleStrs());
     }
     public void setRoles(String roleStr) {
+        if(roleStr==null){
+            return;
+        }
         String[] ids=roleStr.split(",");
         roles=new ArrayList<>();
         for(String id :ids){
