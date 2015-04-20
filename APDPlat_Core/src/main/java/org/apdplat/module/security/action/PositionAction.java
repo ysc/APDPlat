@@ -38,57 +38,33 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/security")
+@RequestMapping("/security/position/")
 public class PositionAction extends ExtJSSimpleAction<Position> {
-    @Resource(name="positionService")
+    @Resource
     private PositionService positionService;
     private List<Command> commands;
 
     @ResponseBody
-    @RequestMapping("/position!store.action")
-    public String store(@RequestParam(required=false) boolean recursion){
-        if(recursion){
-            int rootId = positionService.getRootPosition().getId();
-            String json=positionService.toJson(rootId,recursion);
-            return json;
-        }
-
-        return query();
-    }
-    @ResponseBody
-    @RequestMapping("/position!query.action")
-    public String query(@RequestParam(required=false) String node,
-                        @RequestParam(required=false) boolean recursion,
-                        @RequestParam(required=false) Integer start,
-                        @RequestParam(required=false) Integer limit,
-                        @RequestParam(required=false) String propertyCriteria,
-                        @RequestParam(required=false) String orderCriteria,
-                        @RequestParam(required=false) String queryString,
-                        @RequestParam(required=false) String search){
-        //如果node为null则采用普通查询方式
+    @RequestMapping("store.action")
+    public String store(@RequestParam(required=false) String node,
+                        @RequestParam(required=false) String recursion){
         if(node==null){
-            super.setStart(start);
-            super.setLimit(limit);
-            super.setPropertyCriteria(propertyCriteria);
-            super.setOrderCriteria(orderCriteria);
-            super.setQueryString(queryString);
-            super.setSearch("true".equals(search));
-            return super.query();
+            node = "root";
         }
-
-        //如果指定了node则采用自定义的查询方式
+        boolean r = "true".equals(recursion);
         if(node.trim().startsWith("root")){
-            String json=positionService.toRootJson(recursion);
+            int rootId = positionService.getRootPosition().getId();
+            String json=positionService.toJson(rootId,r);
             return json;
         }else{
             String[] attr=node.trim().split("-");
             if(attr.length==2){
                 int positionId=Integer.parseInt(attr[1]);
-                String json=positionService.toJson(positionId,recursion);
+                String json=positionService.toJson(positionId,r);
                 return json;
             }
         }
-        return "";
+        return "[]";
     }
 
     /**
@@ -124,6 +100,9 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
 
     @Override
     public void assemblyModelForCreate(Position model) {
+        String privileges = getRequest().getParameter("privileges");
+        LOG.debug("privileges:"+privileges);
+        setPrivileges(privileges);
         model.setCommands(commands);
     }
 
@@ -131,11 +110,17 @@ public class PositionAction extends ExtJSSimpleAction<Position> {
     public void assemblyModelForUpdate(Position model){
         //默认commands==null
         //当在修改角色的时候，如果客户端不修改commands，则commands==null
+        String privileges = getRequest().getParameter("privileges");
+        LOG.debug("privileges:"+privileges);
+        setPrivileges(privileges);
         if(commands!=null){
             model.setCommands(commands);
         }
     }
     public void setPrivileges(String privileges) {
+        if(privileges==null){
+            return;
+        }
         String[] ids=privileges.split(",");
         commands=new ArrayList<>();
         for(String id :ids){

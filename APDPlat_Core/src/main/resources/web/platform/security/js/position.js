@@ -28,14 +28,14 @@ var namespace='security';
 var action='position';
 var privilegeSelector;
 
-var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
+var treeDataUrl=contextPath+'/'+namespace+'/'+action+'/store.action';
 
 //添加岗位
 CreateModel = function() {
     return {
         getItems: function() {
             var privilegeLoader = new parent.Ext.tree.TreeLoader({
-                dataUrl:contextPath + '/module/module!query.action?privilege=true'
+                dataUrl:contextPath + '/module/module/store.action?privilege=true'
             });
             privilegeSelector = new parent.Ext.ux.tree.CheckTreePanel({
                         title : '',
@@ -111,7 +111,7 @@ ModifyModel = function() {
     return {
         getItems: function(model) {
             var privilegeLoader = new parent.Ext.tree.TreeLoader({
-                dataUrl:contextPath + '/module/module!query.action?privilege=true'
+                dataUrl:contextPath + '/module/module/store.action?privilege=true'
             });
             privilegeSelector = new parent.Ext.ux.tree.CheckTreePanel({
                         title : '',
@@ -198,7 +198,7 @@ GridModel = function() {
                             {name: 'version'},
                             {name: 'positionName'}
                     ];
-           return fields;     
+           return fields;
         },
         getColumns: function(){
             var columns=[
@@ -206,7 +206,7 @@ GridModel = function() {
                             {header: "版本", width: 20, dataIndex: 'version', sortable: true},
                             {header: "岗位名称", width: 40, dataIndex: 'positionName', sortable: true,editor:new Ext.form.TextField()}
                         ];
-            return columns;           
+            return columns;
         },
         getGrid: function(){
             var pageSize=14;
@@ -220,7 +220,7 @@ GridModel = function() {
             GridBaseModel.updateAttrSuccess=function(response, opts){
                 GridBaseModel.refresh();
                 TreeModel.refreshTree(false);
-            };    
+            };
             //添加特殊参数
             if(currentId!=-1){
                 GridBaseModel.propertyCriteria=propertyCriteria;
@@ -254,7 +254,7 @@ TreeModel = function(){
         getTreeWithContextMenu: function(){
             TreeBaseModel.onClick=this.onClick;
             TreeBaseModel.remove=this.remove;
-            TreeBaseModel.modify=this.modify;    
+            TreeBaseModel.modify=this.modify;
 
             var create=true;
             var remove=true;
