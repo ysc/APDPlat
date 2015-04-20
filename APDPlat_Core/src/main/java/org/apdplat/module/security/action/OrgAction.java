@@ -32,31 +32,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Scope("prototype")
-@RequestMapping("/security")
+@RequestMapping("/security/org/")
 public class OrgAction extends ExtJSSimpleAction<Org> {
-        @Resource(name="orgService")
+        @Resource
         private OrgService orgService;
 
         @ResponseBody
-        @RequestMapping({"/org!query.action","/org!store.action"})
-        public String query(@RequestParam(required=false) String node,
-                            @RequestParam(required=false) Integer start,
-                            @RequestParam(required=false) Integer limit,
-                            @RequestParam(required=false) String propertyCriteria,
-                            @RequestParam(required=false) String orderCriteria,
-                            @RequestParam(required=false) String queryString,
-                            @RequestParam(required=false) String search){
-            //如果node为null则采用普通查询方式
+        @RequestMapping("store.action")
+        public String store(@RequestParam(required=false) String node){
             if(node==null){
-                super.setStart(start);
-                super.setLimit(limit);
-                super.setPropertyCriteria(propertyCriteria);
-                super.setOrderCriteria(orderCriteria);
-                super.setQueryString(queryString);
-                super.setSearch("true".equals(search));
-                return super.query();
+                return "[]";
             }
-            //如果指定了node则采用自定义的查询方式
             if(node.trim().startsWith("root")){
                 String json=orgService.toRootJson();
                 return json;

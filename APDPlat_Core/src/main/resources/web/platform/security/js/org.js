@@ -27,7 +27,7 @@ var propertyCriteria=propertyCriteriaPre+currentId;
 var namespace='security';
 var action='org';
 
-var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
+var treeDataUrl=contextPath+'/'+namespace+'/'+action+'/store.action';
             
 //添加组织架构
 CreateModel = function() {
