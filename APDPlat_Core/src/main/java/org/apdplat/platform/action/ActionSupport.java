@@ -47,6 +47,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.service.ServiceFacade;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -55,6 +56,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @MappedSuperclass
 public abstract class ActionSupport extends DataPrivilegeControl{
     protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(); 
 
     private Feedback feedback;
     private PageCriteria pageCriteria = new PageCriteria(1, 17);
