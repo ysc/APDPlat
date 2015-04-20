@@ -29,7 +29,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -69,7 +68,6 @@ public class Org extends SimpleModel{
     protected String address;
     @SearchableProperty
     @ModelAttr("部门主要职能")
-    @Lob
     protected String functions;
     @ManyToOne
     @SearchableComponent

@@ -124,7 +124,7 @@ public class Role extends SimpleModel {
         moduleIds.forEach(moduleId -> {
             ids.append("module-").append(moduleId).append(",");
         });
-        ids.setLength(ids.length()-1);
+        ids.setLength(ids.length() - 1);
         return ids.toString();
     }
     /**
@@ -133,7 +133,7 @@ public class Role extends SimpleModel {
      */
     public List<String> getAuthorities() {
         List<String> result = new ArrayList<>();
-        if (superManager) {
+        if (isSuperManager()) {
             result.add("ROLE_SUPERMANAGER");
             //超级管理员只需要一个标识就够了
             //事实上，一个角色如果是超级管理员，那么它的commands是为空的
@@ -210,7 +210,10 @@ public class Role extends SimpleModel {
         return superManager;
     }
 
-    public void setSuperManager(boolean superManager) {
+    public void setSuperManager(Boolean superManager) {
+        if(superManager == null){
+            superManager = Boolean.FALSE;
+        }
         this.superManager = superManager;
     }
 

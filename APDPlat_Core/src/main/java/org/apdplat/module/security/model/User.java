@@ -436,10 +436,6 @@ public class User extends SimpleModel  implements UserDetails{
         return Collections.unmodifiableList(this.userGroups);
     }
 
-    public void setUserGroups(List<UserGroup> userGroups) {
-        this.userGroups = userGroups;
-    }
-
     public void addUserGroup(UserGroup userGroup) {
         this.userGroups.add(userGroup);
     }
@@ -448,7 +444,7 @@ public class User extends SimpleModel  implements UserDetails{
         this.userGroups.remove(userGroup);
     }
 
-    public void clearUserGroup() {
+    public void clearUserGroups() {
         this.userGroups.clear();
     }
 
@@ -465,7 +461,7 @@ public class User extends SimpleModel  implements UserDetails{
         this.roles.remove(role);
     }
 
-    public void clearRole() {
+    public void clearRoles() {
         this.roles.clear();
     }
     
@@ -483,7 +479,7 @@ public class User extends SimpleModel  implements UserDetails{
         this.positions.remove(position);
     }
 
-    public void clearPosition() {
+    public void clearPositions() {
         this.positions.clear();
     }
             

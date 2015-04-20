@@ -88,7 +88,7 @@ public class UserGroup extends SimpleModel {
         this.roles.forEach(role -> {
             result.append("role-").append(role.getId()).append(",");
         });
-        result.setLength(result.length()-1);
+        result.setLength(result.length() - 1);
         return result.toString();
     }
     /**
@@ -124,10 +124,6 @@ public class UserGroup extends SimpleModel {
     public List<Role> getRoles() {
         return Collections.unmodifiableList(this.roles);
     }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
     
     public void addRole(Role role){
         this.roles.add(role);
@@ -137,7 +133,7 @@ public class UserGroup extends SimpleModel {
         this.roles.remove(role);
     }
     
-    public void clearRole(){
+    public void clearRoles(){
         this.roles.clear();
     }
     
