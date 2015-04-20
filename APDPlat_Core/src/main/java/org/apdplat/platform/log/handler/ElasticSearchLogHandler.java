@@ -34,6 +34,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apdplat.module.monitor.model.MemoryState;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.converter.DateTypeConverter;
@@ -41,8 +43,6 @@ import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.util.ConvertUtils;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -135,14 +135,14 @@ public class ElasticSearchLogHandler implements LogHandler{
                 JsonNode createJsonNode = item.get("create");
                 JsonNode okJsonNode = createJsonNode.get("ok");
                 if(okJsonNode != null){
-                    boolean r = okJsonNode.getBooleanValue();
+                    boolean r = okJsonNode.asBoolean();
                     if(r){
                         success++;
                     }
                 }else{
                     JsonNode errorJsonNode = createJsonNode.get("error");
                     if(errorJsonNode != null){
-                        String errorMessage = errorJsonNode.getTextValue();
+                        String errorMessage = errorJsonNode.asText();
                         LOG.error("索引失败："+errorMessage);
                     }
                 }
