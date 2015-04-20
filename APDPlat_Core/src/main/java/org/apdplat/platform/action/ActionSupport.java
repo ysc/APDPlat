@@ -20,6 +20,7 @@
 
 package org.apdplat.platform.action;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apdplat.module.security.model.User;
 import org.apdplat.platform.common.DataPrivilegeControl;
 import org.apdplat.platform.criteria.Operator;
@@ -47,7 +48,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.apdplat.platform.service.ServiceFacade;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -56,7 +56,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @MappedSuperclass
 public abstract class ActionSupport extends DataPrivilegeControl{
     protected final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(getClass());
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(); 
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private Feedback feedback;
     private PageCriteria pageCriteria = new PageCriteria(1, 17);
@@ -81,6 +81,16 @@ public abstract class ActionSupport extends DataPrivilegeControl{
     
     @Resource(name = "serviceFacade")
     private ServiceFacade service;
+    
+    public String toJson(Object object){
+        try{
+            return OBJECT_MAPPER.writeValueAsString(object);
+        }catch(Exception e){
+            LOG.error("生成json出错", e);
+        }
+        return "";
+    }
+    
     /**
      * 子类可重载使用特定的数据库服务
      * @return 
