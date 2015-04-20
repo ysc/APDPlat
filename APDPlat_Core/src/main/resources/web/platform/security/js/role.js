@@ -28,14 +28,14 @@ var namespace='security';
 var action='role';
 var privilegeSelector;
 
-var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action';
+var treeDataUrl=contextPath+'/'+namespace+'/'+action+'/store.action';
 
 //添加角色
 CreateModel = function() {
     return {
         getItems: function() {
             var privilegeLoader = new parent.Ext.tree.TreeLoader({
-                dataUrl:contextPath + '/module/module!query.action?privilege=true'
+                dataUrl:contextPath + '/module/module/store.action?privilege=true'
             });
             privilegeSelector = new parent.Ext.ux.tree.CheckTreePanel({
                         title : '',
@@ -138,7 +138,7 @@ ModifyModel = function() {
     return {
         getItems: function(model) {
             var privilegeLoader = new parent.Ext.tree.TreeLoader({
-                dataUrl:contextPath + '/module/module!query.action?privilege=true'
+                dataUrl:contextPath + '/module/module/store.action?privilege=true'
             });
             privilegeSelector = new parent.Ext.ux.tree.CheckTreePanel({
                         title : '',

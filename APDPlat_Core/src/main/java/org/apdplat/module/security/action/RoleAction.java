@@ -39,53 +39,29 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/security")
+@RequestMapping("/security/role/")
 public class RoleAction extends ExtJSSimpleAction<Role> {
-    @Resource(name="roleService")
+    @Resource
     private RoleService roleService;
     private List<Command> commands;
 
     @ResponseBody
-    @RequestMapping("/role!store.action")
-    public String store(@RequestParam(required=false) boolean recursion){
-        if(recursion){
-            int rootId = roleService.getRootRole().getId();
-            String json=roleService.toJson(rootId,recursion);
-            return json;
-        }
-
-        return query();
-    }
-
-    @ResponseBody
-    @RequestMapping("/role!query.action")
-    public String query(@RequestParam(required=false) String node,
-                        @RequestParam(required=false) boolean recursion,
-                        @RequestParam(required=false) Integer start,
-                        @RequestParam(required=false) Integer limit,
-                        @RequestParam(required=false) String propertyCriteria,
-                        @RequestParam(required=false) String orderCriteria,
-                        @RequestParam(required=false) String queryString,
-                        @RequestParam(required=false) String search){
-        //如果node为null则采用普通查询方式
+    @RequestMapping("store.action")
+    public String store(@RequestParam(required=false) String node,
+                        @RequestParam(required=false) String recursion){
         if(node==null){
-            super.setStart(start);
-            super.setLimit(limit);
-            super.setPropertyCriteria(propertyCriteria);
-            super.setOrderCriteria(orderCriteria);
-            super.setQueryString(queryString);
-            super.setSearch("true".equals(search));
-            return super.query();
+            node = "root";
         }
-        //如果指定了node则采用自定义的查询方式
+        boolean r = "true".equals(recursion);
         if(node.trim().startsWith("root")){
-            String json=roleService.toRootJson(recursion);
+            int rootId = roleService.getRootRole().getId();
+            String json = roleService.toJson(rootId, r);
             return json;
         }else{
             String[] attr=node.trim().split("-");
             if(attr.length==2){
                 int roleId=Integer.parseInt(attr[1]);
-                String json=roleService.toJson(roleId,recursion);
+                String json=roleService.toJson(roleId,r);
                 return json;
             }   
         }
@@ -118,7 +94,7 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
                         throw new RuntimeException("演示版本不能删除admin用户拥有的角色");
                     }
                 }
-                if(loginUser.getId()==user.getId()){
+                if(loginUser.getId().intValue()==user.getId().intValue()){
                     canDel=false;
                 }
             }
@@ -137,6 +113,9 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         if(model.isSuperManager()){
             return;
         }
+        String privileges = getRequest().getParameter("privileges");
+        LOG.debug("privileges:"+privileges);
+        setPrivileges(privileges);
         model.setCommands(commands);
     }
 
@@ -148,6 +127,9 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         }
         //默认commands==null
         //当在修改角色的时候，如果客户端不修改commands，则commands==null
+        String privileges = getRequest().getParameter("privileges");
+        LOG.debug("privileges:"+privileges);
+        setPrivileges(privileges);
         if(commands!=null){
             model.setCommands(commands);
         }
@@ -158,6 +140,9 @@ public class RoleAction extends ExtJSSimpleAction<Role> {
         map.put("superManager", model.isSuperManager());
     }
     public void setPrivileges(String privileges) {
+        if(privileges==null){
+            return;
+        }
         String[] ids=privileges.split(",");
         commands=new ArrayList<>();
         for(String id :ids){
