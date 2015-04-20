@@ -21,10 +21,7 @@
 package org.apdplat.module.security.action;
 
 import net.sf.json.JSONArray;
-import org.apdplat.module.security.model.Position;
-import org.apdplat.module.security.model.Role;
 import org.apdplat.module.security.model.User;
-import org.apdplat.module.security.model.UserGroup;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
 import org.apdplat.platform.criteria.Property;
@@ -34,9 +31,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
-import javax.servlet.ServletContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.security.service.UserReportService;
 import org.apdplat.module.security.service.UserService;
@@ -47,36 +41,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/security")
+@RequestMapping("/security/user/")
 public class UserAction extends ExtJSSimpleAction<User> {
-    private Integer orgId;
-    private String roles;
-    private String positions;
-    private String userGroups;
-
-    @Resource(name="userReportService")
+    @Resource
     private UserReportService userReportService;
-    @Resource(name="userService")
+    @Resource
     private UserService userService;
-
-    @ResponseBody
-    @RequestMapping("/user!query.action")
-    public String query(@RequestParam(required=false) Integer start,
-                        @RequestParam(required=false) Integer limit,
-                        @RequestParam(required=false) String propertyCriteria,
-                        @RequestParam(required=false) String orderCriteria,
-                        @RequestParam(required=false) Integer orgId,
-                        @RequestParam(required=false) String queryString,
-                        @RequestParam(required=false) String search){
-        this.orgId = orgId;
-        super.setStart(start);
-        super.setLimit(limit);
-        super.setPropertyCriteria(propertyCriteria);
-        super.setOrderCriteria(orderCriteria);
-        super.setQueryString(queryString);
-        super.setSearch("true".equals(search));
-        return super.query();
-    }
     
     @Override
     @ResponseBody
@@ -91,11 +61,12 @@ public class UserAction extends ExtJSSimpleAction<User> {
     
     @Override
     public PropertyCriteria buildPropertyCriteria(){
-        return userService.buildPropertyCriteria(super.buildPropertyCriteria(), orgId);
+        String orgId = getRequest().getParameter("orgId");
+        return userService.buildPropertyCriteria(super.buildPropertyCriteria(), Integer.parseInt(orgId));
     }
 
     @ResponseBody
-    @RequestMapping("/user!reset.action")
+    @RequestMapping("reset.action")
     public String reset(@RequestParam String ids,
                         @RequestParam String password){
         super.setIds(ids);
@@ -104,7 +75,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
 
     @ResponseBody
-    @RequestMapping("/user!online.action")
+    @RequestMapping("online.action")
     public String online(@RequestParam(required=false) Integer start,
                          @RequestParam(required=false) Integer limit,
                          @RequestParam(required=false) String org,
@@ -123,7 +94,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
 
     @ResponseBody
-    @RequestMapping("/user!store.action")
+    @RequestMapping("store.action")
     public String store(@RequestParam(required=false) String select){
         if("true".equals(select)){
             return super.query();
@@ -141,6 +112,9 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
     @Override
     public void assemblyModelForCreate(User model) {
+        String roles = getRequest().getParameter("roles");
+        String positions = getRequest().getParameter("positions");
+        String userGroups = getRequest().getParameter("userGroups");
         userService.assemblyModelForCreate(model, roles, positions, userGroups);
     }
     @Override
@@ -156,7 +130,7 @@ public class UserAction extends ExtJSSimpleAction<User> {
         }
     }
     @ResponseBody
-    @RequestMapping("/user!modify-password.action")
+    @RequestMapping("modify-password.action")
     public String modifyPassword(@RequestParam String oldPassword,
                                  @RequestParam String newPassword){
         Map data = userService.modifyPassword(oldPassword, newPassword);
@@ -171,6 +145,9 @@ public class UserAction extends ExtJSSimpleAction<User> {
     }
     @Override
     protected void assemblyModelForUpdate(User model){
+        String roles = getRequest().getParameter("roles");
+        String positions = getRequest().getParameter("positions");
+        String userGroups = getRequest().getParameter("userGroups");
         userService.assemblyModelForUpdate(model, roles, positions, userGroups);
     }
     @Override

@@ -30,12 +30,12 @@
     var positionSelector;
 
     //本页面特殊URL
-    var selectOrgStoreURL=contextPath+'/security/org!store.action';
-    var selectRoleStoreURL=contextPath + '/security/role!store.action?recursion=true';
-    var selectPositionURL=contextPath + '/security/position!store.action?recursion=true';
-    var selectUserGroupURL=contextPath + '/security/user-group!store.action';
-    var resetURL=contextPath+'/'+namespace+'/'+action+'!reset.action';
-    var reportURL=contextPath+'/'+namespace+'/'+action+'!report.action';
+    var selectOrgStoreURL=contextPath+'/security/org/store.action';
+    var selectRoleStoreURL=contextPath + '/security/role/store.action?recursion=true';
+    var selectPositionURL=contextPath + '/security/position/store.action?recursion=true';
+    var selectUserGroupURL=contextPath + '/security/user-group/store.action';
+    var resetURL=contextPath+'/'+namespace+'/'+action+'/reset.action';
+    var reportURL=contextPath+'/'+namespace+'/'+action+'/report.action';
      
     //高级搜索
     AdvancedSearchModel = function() {
