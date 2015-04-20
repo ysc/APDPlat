@@ -20,7 +20,6 @@
 
 package org.apdplat.platform.action;
 
-import net.sf.json.JSONObject;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.system.service.ExcelService;
 import org.apdplat.platform.action.converter.DateTypeConverter;
@@ -67,7 +66,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     protected SpringContextUtils springContextUtils;
     @Resource
     protected ExcelService excelService;
-    protected Map map=null;
 
     @PostConstruct
     private void initModel() {
@@ -189,11 +187,10 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             try{
                 checkModel(model);
             }catch(Exception e){
-                map=new HashMap();
+                Map map=new HashMap();
                 map.put("success", false);
                 map.put("message", e.getMessage() + ",不能添加");
-                String json = JSONObject.fromObject(map).toString();
-                return json;
+                return toJson(map);
             }
             assemblyModelForCreate(model);
             objectReference(model);
@@ -202,18 +199,15 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         }catch(Exception e){
             LOG.error("创建模型失败", e);
             afterFailCreateModel(model);
-
-            map=new HashMap();
+            Map map=new HashMap();
             map.put("success", false);
             map.put("message", "创建失败 " + e.getMessage());
-            String json = JSONObject.fromObject(map).toString();
-            return json;
+            return toJson(map);
         }
-        map=new HashMap();
+        Map map=new HashMap();
         map.put("success", true);
         map.put("message", "创建成功");
-        String json = JSONObject.fromObject(map).toString();
-        return json;
+        return toJson(map);
     }
 
     @Override
@@ -226,8 +220,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         Map map = new HashMap();
         renderJsonForRetrieve(map);
         retrieveAfterRender(map, model);
-        String json = JSONObject.fromObject(map).toString();
-        return json;
+        return toJson(map);
     }
    
     protected void afterRetrieve(T model){
@@ -250,7 +243,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
             }else{
                 LOG.info("前台界面传递了版本信息,version="+version);
             }
-            if(version!=model.getVersion()){
+            if(version.intValue()!=model.getVersion().intValue()){
                 LOG.info("当前数据的版本为 "+model.getVersion()+",您的版本为 "+version);
                 throw new RuntimeException("您的数据已过期，请重新修改");
             }
@@ -280,17 +273,15 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         }catch(Exception e){
             LOG.error("更新模型失败", e);
             afterFailPartUpdateModel(model);
-            map=new HashMap();
+            Map map=new HashMap();
             map.put("success", false);
             map.put("message", "修改失败 " + e.getMessage());
-            String json = JSONObject.fromObject(map).toString();
-            return json;
+            return toJson(map);
         }
-        map=new HashMap();
+        Map map=new HashMap();
         map.put("success", true);
         map.put("message", "修改成功");
-        String json = JSONObject.fromObject(map).toString();
-        return json;
+        return toJson(map);
     }
     @Override
     public String updateWhole() {
@@ -341,9 +332,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         //业务处理完毕后删除页面数据引用，加速垃圾回收
         this.getPage().getModels().clear();
         this.setPage(null);
-
-        String json = JSONObject.fromObject(map).toString();
-        return json;
+        return toJson(map);
     }
 
     public String export() {
@@ -391,8 +380,7 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         List<Map> result = new ArrayList<>();
         renderJsonForSearch(result);
         map.put("root", result);
-        String json = JSONObject.fromObject(map).toString();
-        return json;
+        return toJson(map);
     }
     protected  void beforeQuery(){
 
@@ -405,7 +393,6 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
     }
     /**
      * 在【添加】一个特定的【完整】的Model之前对Model的组装，以确保组装之后的Model是一个语义完整的模型
-     * @return
      */
     protected void assemblyModelForCreate(T model) {
 
