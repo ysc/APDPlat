@@ -20,7 +20,6 @@
 
 package org.apdplat.module.log.action;
 
-import net.sf.json.JSONArray;
 import org.apdplat.module.log.model.OperateLog;
 import org.apdplat.module.log.model.OperateStatistics;
 import org.apdplat.module.log.service.OperateLogChartDataService;
@@ -83,14 +82,13 @@ public class OperateLogAction extends ExtJSSimpleAction<OperateLog> {
     @ResponseBody
     @RequestMapping("store.action")
     public String store(){        
-        List<Map<String,String>> data=new ArrayList<>();
+        List<Map<String,String>> map=new ArrayList<>();
         ModelMetaData.getModelDes().keySet().forEach(key -> {
             Map<String,String> temp=new HashMap<>();
             temp.put("value", ModelMetaData.getModelDes().get(key));
             temp.put("text", ModelMetaData.getModelDes().get(key));
-            data.add(temp);
+            map.add(temp);
         });
-        String json = JSONArray.fromObject(data).toString();
-        return json;
+        return toJson(map);
     }
 }

@@ -20,7 +20,6 @@
 
 package org.apdplat.module.dictionary.action;
 
-import net.sf.json.JSONArray;
 import org.apdplat.module.dictionary.model.Dic;
 import org.apdplat.module.dictionary.service.DicService;
 import org.apdplat.platform.action.ExtJSSimpleAction;
@@ -77,8 +76,7 @@ public class DicAction extends ExtJSSimpleAction<Dic> {
                 itemMap.put("text", item.getName());
                 data.add(itemMap);
             });
-            String json = JSONArray.fromObject(data).toString();
-            return json;
+            return toJson(data);
         }
     }
 }

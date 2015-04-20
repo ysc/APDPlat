@@ -20,7 +20,6 @@
 
 package org.apdplat.module.security.action;
 
-import net.sf.json.JSONArray;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.ExtJSSimpleAction;
@@ -84,13 +83,12 @@ public class UserAction extends ExtJSSimpleAction<User> {
         super.setLimit(limit);
         page = userService.getOnlineUsers(getStart(), getLimit(), org, role);
         
-        Map data = new HashMap();
-        data.put("totalProperty", page.getTotalRecords());
+        Map map = new HashMap();
+        map.put("totalProperty", page.getTotalRecords());
         List<Map> result = new ArrayList<>();
         renderJsonForQuery(result);
-        data.put("root", result);
-        String json = JSONArray.fromObject(data).toString();
-        return json;
+        map.put("root", result);
+        return toJson(map);
     }
 
     @ResponseBody
@@ -100,15 +98,14 @@ public class UserAction extends ExtJSSimpleAction<User> {
             return super.query();
         }
         List<User> users=getService().query(User.class).getModels();
-        List<Map<String,String>> data=new ArrayList<>();
+        List<Map<String,String>> map=new ArrayList<>();
         users.forEach(user -> {
             Map<String,String> temp=new HashMap<>();
             temp.put("value", user.getUsername());
             temp.put("text", user.getUsername());
-            data.add(temp);
+            map.add(temp);
         });
-        String json = JSONArray.fromObject(data).toString();
-        return json;
+        return toJson(map);
     }
     @Override
     public void assemblyModelForCreate(User model) {
@@ -133,9 +130,8 @@ public class UserAction extends ExtJSSimpleAction<User> {
     @RequestMapping("modify-password.action")
     public String modifyPassword(@RequestParam String oldPassword,
                                  @RequestParam String newPassword){
-        Map data = userService.modifyPassword(oldPassword, newPassword);
-        String json = JSONArray.fromObject(data).toString();
-        return json;
+        Map map = userService.modifyPassword(oldPassword, newPassword);
+        return toJson(map);
     }
     
     // 在更新一个特定的部分的Model之前对Model添加需要修改的属性
