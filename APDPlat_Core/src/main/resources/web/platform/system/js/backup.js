@@ -21,12 +21,12 @@
 var namespace='system';
     var action='backup';
 
-    var storeURL=contextPath+'/'+namespace+'/'+action+'!query.action';
-    var restoreURL=contextPath+'/'+namespace+'/'+action+'!restore.action';
-    var backupURL=contextPath+'/'+namespace+'/'+action+'!backup.action';
-    var clearTaskURL=contextPath+'/'+namespace+'/'+action+'!clearTask.action';
-    var setTaskURL=contextPath+'/'+namespace+'/'+action+'!setTask.action';
-    var downloadURL=contextPath+'/'+namespace+'/'+action+'!download.action';
+    var storeURL=contextPath+'/'+namespace+'/'+action+'/query.action';
+    var restoreURL=contextPath+'/'+namespace+'/'+action+'/restore.action';
+    var backupURL=contextPath+'/'+namespace+'/'+action+'/backup.action';
+    var clearTaskURL=contextPath+'/'+namespace+'/'+action+'/clearTask.action';
+    var setTaskURL=contextPath+'/'+namespace+'/'+action+'/setTask.action';
+    var downloadURL=contextPath+'/'+namespace+'/'+action+'/download.action';
 
     Backup = function() {
         return {
