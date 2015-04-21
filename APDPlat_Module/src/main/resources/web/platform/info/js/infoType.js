@@ -28,7 +28,7 @@ var namespace='info';
 var action='info-type';
 
 var lang='zh';
-var treeDataUrl=contextPath+'/'+namespace+'/'+action+'!query.action?lang=';
+var treeDataUrl=contextPath+'/'+namespace+'/'+action+'/store.action?lang=';
      
 //添加
 CreateModel = function() {

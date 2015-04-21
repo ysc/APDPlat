@@ -27,7 +27,7 @@ var infoTypeId="-1";
     
     var lang='zh';
     //本页面特殊URL
-    var selectInfoTypeStoreUrl=contextPath+'/info/info-type!store.action?lang=';
+    var selectInfoTypeStoreUrl=contextPath+'/info/info-type/store.action?lang=';
     
     //高级搜索
     AdvancedSearchModel = function() {
