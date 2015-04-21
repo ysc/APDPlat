@@ -8,7 +8,7 @@
     <subDics>
         <dic english="info" chinese="内容管理">
             <subDics>                
-                <dic english="choice" chinese="是否">
+                <dic english="choice" chinese="是否" justCode="true">
                     <dicItems>
                         <dicItem code="true" name="是"/>
                         <dicItem code="false" name="否"/>
