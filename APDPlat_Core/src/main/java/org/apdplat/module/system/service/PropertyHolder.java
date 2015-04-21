@@ -60,9 +60,13 @@ public class PropertyHolder {
                     LOG.error("错误的配置："+line);
                     continue;
                 }
-                String key = line.substring(0, index);
-                String value = line.substring(index+1, line.length());
-                map.put(key, value);
+                if(index>0 && line.length()>index+1) {
+                    String key = line.substring(0, index).trim();
+                    String value = line.substring(index + 1, line.length()).trim();
+                    map.put(key, value);
+                }else{
+                    LOG.error("错误的配置："+line);
+                }
             }
         } catch (IOException ex) {
             LOG.error("配置文件加载失败:" + ex.getMessage());
