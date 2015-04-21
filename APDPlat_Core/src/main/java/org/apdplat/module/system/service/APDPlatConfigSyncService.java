@@ -21,7 +21,6 @@
 package org.apdplat.module.system.service;
 
 import java.util.List;
-import java.util.Properties;
 import javax.annotation.Resource;
 import org.apdplat.module.system.model.APDPlatConfig;
 import org.apdplat.platform.log.APDPlatLogger;
@@ -40,7 +39,7 @@ import org.springframework.stereotype.Service;
 public class APDPlatConfigSyncService  implements ApplicationListener{
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(APDPlatConfigSyncService.class);
     
-    @Resource(name="serviceFacade")
+    @Resource
     private ServiceFacade serviceFacade;
 
     @Override
@@ -87,17 +86,15 @@ public class APDPlatConfigSyncService  implements ApplicationListener{
      * 将配置文件里面的配置信息导入数据库，如果数据库中已经存在相应的配置信息，则忽略导入
      */
     private void syncToDB(){
-        Properties properties = PropertyHolder.getProperties();
-        properties.keySet().forEach(key -> {
+        PropertyHolder.getProperties().entrySet().forEach(entry -> {
             APDPlatConfig config = new APDPlatConfig();
-            config.setConfigKey(key.toString());
-            String value = properties.getProperty(key.toString());
-            config.setConfigValue(value);
-            try{
+            config.setConfigKey(entry.getKey());
+            config.setConfigValue(entry.getValue());
+            try {
                 serviceFacade.create(config);
-                LOG.info("成功将配置项 "+key+"="+value+" 加入数据库");
-            }catch(Exception e){
-                LOG.info("配置项 "+key+" 已经存在于数据库中，配置文件中的值不会覆盖数据库中的值，如需覆盖，则启用配置config.db.override=true");
+                LOG.info("成功将配置项 " + entry.getKey() + "=" + entry.getValue() + " 加入数据库");
+            } catch (Exception e) {
+                LOG.info("配置项 " + entry.getKey() + " 已经存在于数据库中，配置文件中的值不会覆盖数据库中的值，如需覆盖，则启用配置config.db.override=true");
             }
         });
     }
