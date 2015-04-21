@@ -57,7 +57,7 @@ public class News extends SimpleModel{
     protected InfoType infoType;
     
     @ModelAttr("是否可用")
-    protected boolean enabled=true;
+    protected Boolean enabled=true;
     
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "news")
@@ -131,11 +131,14 @@ public class News extends SimpleModel{
         this.infoType = infoType;
     }
 
-    public boolean isEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setEnabled(Boolean enabled) {
+        if(enabled==null){
+            enabled = Boolean.FALSE;
+        }
         this.enabled = enabled;
     }    
 
