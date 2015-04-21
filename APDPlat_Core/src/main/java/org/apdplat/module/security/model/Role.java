@@ -91,7 +91,7 @@ public class Role extends SimpleModel {
     protected List<User> users=new ArrayList<>();
 
     @ModelAttr("超级管理员")
-    protected boolean superManager = false;
+    protected Boolean superManager = false;
     /**
      * 角色拥有的命令
      */
@@ -206,7 +206,7 @@ public class Role extends SimpleModel {
         this.child.clear();
     }
     @XmlAttribute
-    public boolean isSuperManager() {
+    public Boolean isSuperManager() {
         return superManager;
     }
 
