@@ -20,12 +20,9 @@
 
 package org.apdplat.module.system.action;
 
-import net.sf.json.JSONObject;
 import org.apdplat.module.system.model.BackupScheduleConfig;
 import org.apdplat.module.system.service.backup.BackupSchedulerService;
-import org.apdplat.module.system.service.backup.AbstractBackupService;
 import org.apdplat.platform.action.ActionSupport;
-import org.apdplat.platform.log.APDPlatLogger;
 import org.apdplat.platform.util.FileUtils;
 import org.apdplat.platform.util.ZipUtils;
 import java.io.File;
@@ -36,26 +33,22 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.apdplat.module.system.service.backup.BackupService;
-import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/system")
+@RequestMapping("/system/backup/")
 public class BackupAction extends ActionSupport {
-    private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(BackupAction.class);
-    
-    private String date;
-    @Resource(name="backupServiceExecuter")
-    private BackupService backupService;    
-    @Resource(name="backupSchedulerService")
+    @Resource
+    private BackupService backupServiceExecuter;    
+    @Resource
     private BackupSchedulerService backupSchedulerService;
-    private int hour;
-    private int minute;
 
     @ResponseBody
+    @RequestMapping("query.action")
     public String query(){
         Map map=new HashMap();
         BackupScheduleConfig config=null;
@@ -73,17 +66,18 @@ public class BackupAction extends ActionSupport {
         }else{
             map.put("state", "无定时调度任务");
         }
-
-        String json = JSONObject.fromObject(map).toString();
-        return json;
+        return toJson(map);
     }
     @ResponseBody
+    @RequestMapping("clearTask.action")
     public String clearTask(){
         String result=backupSchedulerService.unSchedule();
         return result;
     }
     @ResponseBody
-    public String setTask(){     
+    @RequestMapping("setTask.action")
+    public String setTask(@RequestParam int hour,
+                          @RequestParam int minute){     
         if(-1<hour && hour<24 && -1<minute && minute<60){
            String result=backupSchedulerService.schedule(hour, minute);
             return result;
@@ -91,8 +85,9 @@ public class BackupAction extends ActionSupport {
         return "调度时间不正确";
     }
     @ResponseBody
+    @RequestMapping("store.action")
     public String store(){
-        List<String> existBackup=backupService.getExistBackupFileNames();
+        List<String> existBackup=backupServiceExecuter.getExistBackupFileNames();
         List<Map<String,String>> data=new ArrayList<>();
         existBackup.forEach(item -> {
             Map<String, String> map = new HashMap<>();
@@ -100,20 +95,20 @@ public class BackupAction extends ActionSupport {
             map.put("text", item);
             data.add(map);
         });
-
-        String json = JSONObject.fromObject(data).toString();
-        return json;
+        return toJson(data);
     }
     @ResponseBody
+    @RequestMapping("backup.action")
     public String backup(){
-        if(backupService.backup()){
+        if(backupServiceExecuter.backup()){
             return "true";
         }else{
             return "false";
         }
     }
     @ResponseBody
-    public String download(){        
+    @RequestMapping("download.action")
+    public String download(@RequestParam String date){        
         if(date==null || "".equals(date.trim())){
             LOG.info("请指定下载备份数据库的时间点");
             return null;
@@ -127,33 +122,23 @@ public class BackupAction extends ActionSupport {
         
         outputFile=new File(outputFile, date+".zip");
         //获取备份文件
-        String backupFile=backupService.getBackupFilePath()+date+".bak";
+        String backupFile=backupServiceExecuter.getBackupFilePath()+date+".bak";
         //生成一个临时压缩文件
         ZipUtils.createZip(backupFile, outputFile.getAbsolutePath());
 
         return destPath+"/"+date+".zip";
     }
     @ResponseBody
-    public String restore(){
+    @RequestMapping("restore.action")
+    public String restore(@RequestParam String date){
         if(date==null || "".equals(date.trim())){
             LOG.info("请指定恢复数据库到哪一个时间点");
             return null;
         }
         date= date.replace(" ", "-").replace(":", "-");
-        if(backupService.restore(date)){
+        if(backupServiceExecuter.restore(date)){
             return "true";
         }
         return "false";
-    }
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
     }
 }
