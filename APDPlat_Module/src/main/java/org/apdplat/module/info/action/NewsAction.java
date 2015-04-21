@@ -39,15 +39,13 @@ import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/info")
+@RequestMapping("/info/news/")
 public class NewsAction extends ExtJSSimpleAction<News> {
-    private String lang = "zh";
-    private int infoTypeId;
-    
     //setTitle和setContent依赖于setLang，所以在创建的时候没有办法确保顺序
     //所以要强制指定
     @Override
     protected void assemblyModelForCreate(News model) {
+        String lang = getRequest().getParameter("lang");
         model.forceSpecifyLanguageForCreate(lang);
     }
     @Override
@@ -60,12 +58,15 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     }
     @Override
     protected void old(News model) {
-        LOG.info("控制器设置语言："+lang);
+        String lang = getRequest().getParameter("lang");
+        LOG.info("控制器设置语言：" + lang);
         model.setLang(lang);
     }
     //方式二：使用IN语句
     @Override
     public PropertyCriteria buildPropertyCriteria(){
+        String infoTypeIdStr = getRequest().getParameter("infoTypeId");
+        int infoTypeId = Integer.parseInt(infoTypeIdStr);
         PropertyCriteria propertyCriteria=new PropertyCriteria();
         if(infoTypeId>0){
             InfoType obj=getService().retrieve(InfoType.class, infoTypeId);
@@ -84,8 +85,9 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     }
     @Override
     protected void renderJsonForRetrieve(Map map) {
+        String lang = getRequest().getParameter("lang");
         model.setLang(lang);
-        render(map,model);
+        render(map, model);
         map.put("infoTypeId", model.getInfoType().getId());
         map.put("content", model.getContent());
     }
@@ -102,6 +104,7 @@ public class NewsAction extends ExtJSSimpleAction<News> {
     }
     @Override
     protected void render(Map map,News model){
+        String lang = getRequest().getParameter("lang");
         model.setLang(lang);
         map.put("id", model.getId());
         map.put("version", model.getVersion());
@@ -113,11 +116,5 @@ public class NewsAction extends ExtJSSimpleAction<News> {
         map.put("createTime", DateTypeConverter.toDefaultDateTime(model.getCreateTime()));
         map.put("updateTime", DateTypeConverter.toDefaultDateTime(model.getUpdateTime()));
         map.put("enabled", model.isEnabled()==true?"是":"否");
-    }
-    public void setInfoTypeId(int infoTypeId) {
-        this.infoTypeId = infoTypeId;
-    }
-    public void setLang(String lang) {
-        this.lang = lang;
     }
 }
