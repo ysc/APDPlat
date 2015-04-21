@@ -55,12 +55,14 @@ public class PropertyHolder {
                 if("".equals(line) || line.startsWith("#")){
                     continue;
                 }
-                String[] attr = line.split("=");
-                if(attr != null && attr.length == 2){
-                    map.put(attr[0].trim(), attr[1].trim());
-                }else{
+                int index = line.indexOf("=");
+                if(index==-1){
                     LOG.error("错误的配置："+line);
+                    continue;
                 }
+                String key = line.substring(0, index);
+                String value = line.substring(index+1, line.length());
+                map.put(key, value);
             }
         } catch (IOException ex) {
             LOG.error("配置文件加载失败:" + ex.getMessage());
