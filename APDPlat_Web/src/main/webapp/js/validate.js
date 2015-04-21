@@ -82,7 +82,7 @@
                             items: [{
                                     xtype:'panel',
                                     anchor: '95%',
-                                    html:'请将您的姓名、单位以及机器码发送到手机:18919193664，并拨打电话联系作者'
+                                html:'请将您的姓名、单位以及机器码发送到邮箱：ysc@apdplat.org'
                                 }]
                     },{
                             xtype: 'fieldset',
