@@ -32,6 +32,10 @@ import java.util.Map;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
+/**
+ * 系统配置
+ * @author 杨尚川
+ */
 public class PropertyHolder {
     private static final APDPlatLogger LOG = APDPlatLoggerFactory.getAPDPlatLogger(PropertyHolder.class);
     private static final Map<String, String> props = new HashMap<>();
