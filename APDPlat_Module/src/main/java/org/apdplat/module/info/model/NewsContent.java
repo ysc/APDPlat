@@ -51,7 +51,6 @@ public class NewsContent extends SimpleModel{
     @SearchableProperty
     @ModelAttr("标题")
     protected String title;
-    @Lob
     @SearchableProperty
     @ModelAttr("内容")
     protected String content;
