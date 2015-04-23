@@ -27,6 +27,6 @@ import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/index")
+@RequestMapping("/index/state/")
 public class StateAction extends ExtJSActionSupport {
 }

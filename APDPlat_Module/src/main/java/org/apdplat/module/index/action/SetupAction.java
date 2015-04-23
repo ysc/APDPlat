@@ -27,6 +27,6 @@ import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/index")
+@RequestMapping("/index/setup/")
 public class SetupAction extends ExtJSActionSupport {
 }

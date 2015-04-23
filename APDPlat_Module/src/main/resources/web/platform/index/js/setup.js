@@ -21,10 +21,10 @@
 var namespace='index'; 
     var action='setup';
     
-    var storeURL=contextPath+'/'+namespace+'/'+action+'!query.action';
-    var rebuildAllURL=contextPath+'/'+namespace+'/'+action+'!rebuidAll.action';
-    var clearTaskURL=contextPath+'/'+namespace+'/'+action+'!clearTask.action';
-    var setTaskURL=contextPath+'/'+namespace+'/'+action+'!setTask.action';
+    var storeURL=contextPath+'/'+namespace+'/'+action+'/query.action';
+    var rebuildAllURL=contextPath+'/'+namespace+'/'+action+'/rebuidAll.action';
+    var clearTaskURL=contextPath+'/'+namespace+'/'+action+'/clearTask.action';
+    var setTaskURL=contextPath+'/'+namespace+'/'+action+'/setTask.action';
 
     var  hour=-1;
     var  minute=-1;
