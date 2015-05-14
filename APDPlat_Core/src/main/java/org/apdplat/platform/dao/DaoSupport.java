@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
 import org.apdplat.platform.log.APDPlatLoggerFactory;
+import org.hibernate.jpa.internal.QueryImpl;
 /**
  * 通用的DAO操作支持类
  * @author 杨尚川
@@ -107,8 +108,8 @@ public abstract class DaoSupport extends DataPrivilegeControl{
         return page;
     }
     private void setQueryCache(Query query){
-        if (query instanceof org.hibernate.ejb.QueryImpl) {
-            ((org.hibernate.ejb.QueryImpl) query).getHibernateQuery().setCacheable(true);
+        if (query instanceof QueryImpl) {
+            ((QueryImpl) query).getHibernateQuery().setCacheable(true);
         }
     }
 
