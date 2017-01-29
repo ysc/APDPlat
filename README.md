@@ -65,3 +65,5 @@ APDPlat使用的技术主要有：
 	26)、JSON处理使用Jackson。
 	
 	27)、分布式搜索和实时分析使用elasticsearch
+
+[https://travis-ci.org/ysc/APDPlat](https://travis-ci.org/ysc/APDPlat)
