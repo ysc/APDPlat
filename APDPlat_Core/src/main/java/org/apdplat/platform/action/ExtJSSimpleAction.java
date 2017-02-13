@@ -20,36 +20,32 @@
 
 package org.apdplat.platform.action;
 
+import org.apache.commons.lang.StringUtils;
 import org.apdplat.module.security.model.User;
 import org.apdplat.module.system.service.ExcelService;
+import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.action.converter.DateTypeConverter;
-import org.apdplat.platform.annotation.ModelAttr;
-import org.apdplat.platform.annotation.ModelAttrRef;
-import org.apdplat.platform.annotation.ModelCollRef;
-import org.apdplat.platform.annotation.RenderIgnore;
+import org.apdplat.platform.annotation.*;
 import org.apdplat.platform.criteria.Property;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.result.Page;
 import org.apdplat.platform.util.ReflectionUtils;
 import org.apdplat.platform.util.SpringContextUtils;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
-import org.apache.commons.lang.StringUtils;
-import org.apdplat.platform.annotation.RenderDate;
-import org.apdplat.platform.annotation.RenderTime;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  *
@@ -82,6 +78,17 @@ public abstract class ExtJSSimpleAction<T extends Model> extends ExtJSActionSupp
         }catch(Exception e){
             LOG.error("initModel fail");
         }
+    }
+
+    @InitBinder
+    public void InitBinder(HttpServletRequest request,
+                           ServletRequestDataBinder binder) {
+        String format = PropertyHolder.getProperty("date.format");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, null, new CustomDateEditor(
+                dateFormat, true));
+        LOG.info("日期类型绑定: {}", format);
     }
 
     /**
