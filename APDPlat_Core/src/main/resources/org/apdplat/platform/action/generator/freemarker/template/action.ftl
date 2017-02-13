@@ -22,13 +22,13 @@ package ${actionPackage};
 
 import ${modelPackage}.${model};
 import org.apdplat.platform.action.ExtJSSimpleAction;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@Namespace("/${actionNamespace}")
+@RequestMapping("/${actionNamespace}")
 public class ${actionName} extends ExtJSSimpleAction<${model}> {
 <#list specialCommands as specialCommand>
     /**
