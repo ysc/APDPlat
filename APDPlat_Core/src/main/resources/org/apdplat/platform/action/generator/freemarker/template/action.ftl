@@ -28,7 +28,7 @@ import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@RequestMapping("/${actionNamespace}")
+@RequestMapping("/${actionNamespace}/${actionPath}")
 public class ${actionName} extends ExtJSSimpleAction<${model}> {
 <#list specialCommands as specialCommand>
     /**

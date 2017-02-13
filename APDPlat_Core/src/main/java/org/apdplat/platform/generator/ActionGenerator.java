@@ -20,6 +20,9 @@
 
 package org.apdplat.platform.generator;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.apdplat.module.module.model.Command;
 import org.apdplat.module.module.model.Module;
 import org.apdplat.module.module.service.ModuleParser;
@@ -27,20 +30,13 @@ import org.apdplat.module.module.service.ModuleService;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.platform.generator.ModelGenerator.ModelInfo;
 import org.apdplat.platform.model.Model;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 /**
  *
@@ -150,6 +146,7 @@ public class ActionGenerator extends Generator{
         context.put("actionPackage", actionPackage);
         context.put("actionNamespace", actionNamespace);
         context.put("actionName", actionName);
+        context.put("actionPath", Character.toLowerCase(actionName.charAt(0))+actionName.substring(1, actionName.length()-6));
         context.put("specialCommands", specialCommands);
 
         boolean result=false;
@@ -278,6 +275,7 @@ public class ActionGenerator extends Generator{
         context.put("modelPackage", modelPackage);
         context.put("model", model);
         context.put("actionName", actionName);
+        context.put("actionPath", Character.toLowerCase(actionName.charAt(0))+actionName.substring(1, actionName.length()-6));
         context.put("specialCommands", specialCommands);
 
         boolean result=false;

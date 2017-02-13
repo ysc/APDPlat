@@ -20,25 +20,21 @@
 
 package org.apdplat.platform.generator;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import org.apdplat.module.system.service.PropertyHolder;
 import org.apdplat.module.system.service.SystemListener;
 import org.apdplat.platform.model.Model;
 import org.apdplat.platform.model.ModelFieldData;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javax.persistence.Entity;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+
+import javax.persistence.Entity;
+import java.io.IOException;
+import java.util.*;
 
 /**
  *
@@ -193,7 +189,7 @@ public class JsGenerator  extends Generator{
             searchWidth=800;
         }
         context.put("namespace", modulePath);
-        context.put("action", dealWithAcdtion(module));
+        context.put("action", module);
         context.put("attrs", attrs);
         context.put("dicNames", dicNames);
         context.put("labelWidth", labelWidth);

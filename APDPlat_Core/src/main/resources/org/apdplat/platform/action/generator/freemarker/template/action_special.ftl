@@ -21,13 +21,13 @@
 package ${actionPackage};
 
 import org.apdplat.platform.action.ExtJSActionSupport;
-import org.apache.struts2.convention.annotation.Namespace;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 @Scope("prototype")
 @Controller
-@Namespace("/${actionNamespace}")
+@RequestMapping("/${actionNamespace}/${actionPath}")
 public class ${actionName} extends ExtJSActionSupport {
 <#list specialCommands as specialCommand>
     /**
